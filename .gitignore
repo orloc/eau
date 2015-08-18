@@ -1,3 +1,5 @@
+/web/bower_components*
+.idea
 /app/bootstrap.php.cache
 /app/cache/*
 !app/cache/.gitkeep

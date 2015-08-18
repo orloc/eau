@@ -1,0 +1,19 @@
+{
+  "name": "eveApp",
+  "version": "0.0.0",
+  "authors": [
+    "Grant Tepper <grant.tepper@gmail.com>"
+  ],
+  "description": "eve platform",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "startbootstrap-sb-admin-2": "~1.0.7"
+  }
+}
