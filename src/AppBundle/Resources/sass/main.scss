@@ -1,0 +1,18 @@
+body {
+  height: 100%;
+  width: 100%;
+  background: url('../img/maxresdefault.jpg') no-repeat;
+  background-size: cover;
+}
+
+.login-container {
+  width: 100%;
+  top: 20%;
+  left: 0;
+  position: fixed;
+
+  .login-panel {
+    margin: 0 auto;
+    width: 60%;
+  }
+}
