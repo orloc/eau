@@ -19,45 +19,30 @@
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 <body>
-
-    {% block body_content %}
-    <div id="wrapper">
-        <!-- Navigation -->
-        {% include '::common/navigation.html.twig' %}
-
-        <!-- Page Content -->
-        <div id="page-wrapper">
-            <div class="container-fluid">
-                {% block content %}
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <h1 class="page-header">Blank</h1>
-                        </div>
-                        <!-- /.col-lg-12 -->
-                    </div>
-                {% endblock %}
-                <!-- /.row -->
-            </div>
-            <!-- /.container-fluid -->
+{% for type, messages in app.session.flashBag.all %}
+    {% for message in messages %}
+        <div class="{{ type }}">
+            {{ message|trans({}, 'FOSUserBundle') }}
         </div>
-        <!-- /#page-wrapper -->
+    {% endfor %}
+{% endfor %}
 
-    </div>
-    {% endblock %}
-    <!-- /#wrapper -->
+{% block body_content %}
+{% endblock %}
+<!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
-    <script src="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js') }}"></script>
-    {%  block javascripts %}
-    {% endblock %}
+<!-- jQuery -->
+<script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
+<script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
+<script src="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js') }}"></script>
+{%  block javascripts %}
+{% endblock %}
 
 </body>
 
