@@ -1,3 +1,6 @@
+@import 'compass/css3';
+@import '_partials/_fonts.scss';
+
 body {
   height: 100%;
   width: 100%;
@@ -11,8 +14,56 @@ body {
   left: 0;
   position: fixed;
 
+
   .login-panel {
     margin: 0 auto;
-    width: 60%;
+    width: 75%;
+    min-height: 300px;
+    background: lighten(black,10);
+    border: grey;
+
+    .panel-heading {
+      height: 70px;
+      position: relative;
+      background: lighten(black,5);
+      border: grey;
+
+      .panel-title {
+        font-family: 'eve_alphabold', sans-serif;
+        font-size: 45px;
+        position: absolute;
+        span {font-size: 10px; padding-left: 10px;}
+      }
+    }
+
+    .panel-body {
+      height: 100%;
+    }
+
+    form {
+      height: 100%;
+      padding: 10px;
+
+      input {
+        margin: 0 auto;
+        background-color: darken(white, 20);
+        width: 80%;
+        font-size: 18px;
+        height: 48px;
+      }
+
+      .btn {
+        width: 45%;
+        margin-top: 3em;
+        background-color: lighten(black,20);
+        color: darken(white, 30);
+        font-family: 'eve_alphabold', sans-serif;
+
+        &:hover {
+          background-color: lighten(black, 15);
+        }
+      }
+    }
   }
+
 }
