@@ -21,4 +21,14 @@ class User extends BaseUser {
      */
     protected $id;
 
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }
