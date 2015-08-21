@@ -1,3 +1,4 @@
+.sass-cache
 /web/bower_components*
 .idea
 /app/bootstrap.php.cache
