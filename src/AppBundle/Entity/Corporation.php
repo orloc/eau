@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="corporations")
+ * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
- *
  *
  * @package AppBundle\Entity
  */
@@ -25,7 +29,7 @@ class Corporation
     protected $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      * @JMS\Expose()
      */
     protected $name;
@@ -64,6 +68,18 @@ class Corporation
      * @JMS\Expose()
      */
     protected $deleted_at;
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata){
+        $metadata->addPropertyConstraints('api_key',[
+            new Assert\NotBlank()
+        ])
+        ->addPropertyConstraints('verification_code', [
+            new Assert\NotBlank()
+        ])
+        ->addPropertyConstraints('access_mask', [
+                new Assert\NotBlank()
+        ]);
+    }
 
     public function __construct()
     {

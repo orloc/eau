@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
+use AppBundle\Entity\Corporation;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,7 +19,7 @@ class CorporationController extends AbstractController implements ApiControllerI
     /**
      * Lists all User entities.
      *
-     * @Route("/", name="api.corp")
+     * @Route("/", name="api.corps")
      * @Method("GET")
      */
     public function indexAction()
@@ -39,6 +40,29 @@ class CorporationController extends AbstractController implements ApiControllerI
      */
     public function createAction(Request $request)
     {
+        $corp = new Corporation();
+        $content = $request->request;
+
+        $corp->setApiKey($content->get('api_key'))
+            ->setVerificationCode($content->get('verification_code'))
+            ->setAccessMask($content->get('access_mask'));
+
+        $validator = $this->get('validator');
+
+        $errors = $validator->validate($corp);
+
+        if (count($errors) > 0){
+            return $this->getErrorResponse($errors);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($corp);
+        $em->flush();
+
+        $json = $this->get('jms_serializer')->serialize($corp, 'json');
+
+        return $this->jsonResponse($json);
 
     }
 

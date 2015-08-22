@@ -14,7 +14,6 @@
                         <div class="form-group">
                             <input name="api_key"
                                    type="text"
-                                   ng-minlength="4"
                                    class="form-control"
                                    placeholder="API Key..."
                                    ng-required="true"
@@ -31,6 +30,8 @@
                         <div class="form-group">
                             <input name="verification_code"
                                    type="text"
+                                   ng-minlength="64"
+                                   ng-maxlength="64"
                                    class="form-control"
                                    placeholder="Verification Code..."
                                    ng-required="true"
@@ -48,7 +49,6 @@
                             <input name="access_mask"
                                    type="text"
                                    class="form-control"
-                                   ng-minlength="6"
                                    placeholder="Access Mask..."
                                    ng-required="true"
                                    ng-model="newCorp.access_mask"

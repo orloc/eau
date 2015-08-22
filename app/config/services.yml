@@ -22,4 +22,10 @@ services:
          class: AppBundle\Validator\DuplicateEmailConstraintValidator
          arguments: [ "@doctrine.orm.entity_manager" ]
          tags:
-             - { name: validator.constraint_validator, alias: duplicate_email_validator }
+              - { name: validator.constraint_validator, alias: duplicate_email_validator }
+
+      app.corporation.subscriber:
+          class: AppBundle\EventListener\CorporationListener
+          arguments: [ "@security.token_storage" ]
+          tags:
+              - { name: doctrine.event_subscriber, connection: default }

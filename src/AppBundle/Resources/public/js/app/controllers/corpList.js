@@ -15,7 +15,7 @@ angular.module('eveTool')
 
     $scope.submit = function(){
         $scope.submitLoading = true;
-        $http.post(Routing.generate('api.corp_create'), $scope.newUser).then(function(data){
+        $http.post(Routing.generate('api.corp_create'), $scope.newCorp).then(function(data){
             $scope.corps.push(data.data);
             $scope.submitLoading = false;
 
