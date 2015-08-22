@@ -24,6 +24,21 @@ class UserController extends Controller
      */
     public function indexAction()
     {
+        $repo = $this->getDoctrine()->getRepository('AppBundle:User');
+
+
+        $users = $repo->createQueryBuilder('u')
+            ->select('u')->getQuery()->getArrayResult();
+
+
+        $dataTable = $this->get('app.dataTable.user');
+        $dataTable->buildDataTable();
+
+        $dataTable->setData($this->get('jms_serializer')->serialize($users, 'json'));
+
+        return $this->render('AppBundle:Admin/User:index.html.twig', [
+            'dataTable' => $dataTable
+        ]);
     }
     /**
      * Creates a new User entity.
