@@ -1,0 +1,26 @@
+{% extends 'AppBundle:Admin:layout.html.twig' %}
+
+{% block content -%}
+    <div class="row" ng-controller="userListController">
+        <h3>Corporation <span class="muted small">LIST</span>
+            <button type="button" ng-click="openNew()" class="pull-right btn btn-sm" ng-cloak>
+                <i class="fa fa-plus" ng-show="!nav_open"></i>
+                <i class="fa fa-minus" ng-show="nav_open"></i>
+            </button></h3>
+        <table class="table table-bordered table-hover table-striped table-condensed" ng-cloak>
+            <thead>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Created At</th>
+            </thead>
+            <tbody>
+            <tr ng-repeat="c in corporations">
+                <td>{{ '{{ c.id }}' }}</td>
+                <td>{{ '{{ c.name }}' }}</td>
+                <td>{{ '{{ c.created_at | date:"short" }}' }}</td>
+            </tr>
+            </tbody>
+        </table>
+        {% include 'AppBundle:Admin/Corporation:new.html.twig' %}
+    </div>
+{% endblock %}

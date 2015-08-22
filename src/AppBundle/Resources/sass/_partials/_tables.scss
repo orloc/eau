@@ -1,0 +1,26 @@
+table.table.data-table {
+  padding: 10px;
+
+  thead {
+    tr th {
+      background-color: $darkerBlack;
+      color: $offWhite;
+      text-transform: capitalize;
+    }
+  }
+  tbody {
+    background-color: $offWhite;
+    tr td {
+      color: $offGrey;
+      font-weight: 400;
+      padding: 10px;
+      font-size: 16px;
+      border: 0;
+    }
+  }
+}
+table.table.data-table>tbody>tr:nth-child(odd)>td,
+table.data-table>tbody>tr:nth-child(odd)>th {
+  background-color: darken($offWhite, 10);
+}
+

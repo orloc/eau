@@ -3,6 +3,7 @@
 @import '_partials/_colors.scss';
 @import '_partials/_pushMenu.scss';
 @import '_partials/_form.scss';
+@import '_partials/_tables.scss';
 
 body {
   height: 100%;
@@ -17,8 +18,25 @@ h1, h2, h3, {
   font-family: 'eve_alphabold', sans-serif;
 }
 
-p {
+p, a {
   color: $offWhite;
+}
+#wrapper {
+  background-color: $darkerBlack;
+}
+
+.sidebar-nav {
+  background-color: $darkerBlack;
+  color: $offGrey;
+
+  ul li {
+    border-color: $offGrey;
+  }
+}
+
+.navbar {
+  background-color: $darkestBlack;
+  border: $darkerBlack;
 }
 
 .navbar-brand {
@@ -27,6 +45,11 @@ p {
   span {
     font-size: 15px;
   }
+}
+
+#page-wrapper {
+  background-color: lighten($blueish, 20);
+  border-left: $darkerBlack;
 }
 
 /*

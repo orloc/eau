@@ -17,3 +17,9 @@ services:
          class: AppBundle\EventListener\ExceptionListener
          tags:
              - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+      app.validator.duplicate_email:
+         class: AppBundle\Validator\DuplicateEmailConstraintValidator
+         arguments: [ "@doctrine.orm.entity_manager" ]
+         tags:
+             - { name: validator.constraint_validator, alias: duplicate_email_validator }

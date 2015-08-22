@@ -5,17 +5,8 @@
     <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
     <form name="newUserForm">
         <table class="table-form">
+            {#
             <tbody>
-                <tr ng-repeat="e in errors">
-                    <td></td>
-                    <td>
-                        <div class="alert alert-danger">
-                            <p class="small text-danger">
-                                <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
                 <tr>
                     <td>
                         <i ng-class="{ 'text-danger fa fa-times': newUserForm.username.$invalid, 'text-success fa fa-check': newUserForm.username.$valid}"></i>
@@ -78,7 +69,6 @@
                                    ng-minlength="6"
                                    placeholder="Password Confirmation..."
                                    ng-required="true"
-                                   compare-to="newUser.password"
                                    ng-model="newUser.password_confirmation"
                             />
                         </div>
@@ -92,9 +82,9 @@
                         <select class="form-control"
                                 name="role"
                                 ng-required="true"
-                                ng-model="newUser.role"
-                                ng-options="item.role as item.name for item in roles">
+                                ng-model="newUser.role">
                             <option value="">Select a Role</option>
+                            <option value="ROLE_ADMIN">Admin</option>
                         </select>
                     </td>
                 </tr>
@@ -105,6 +95,7 @@
                     </td>
                 </tr>
             </tbody>
+            #}
         </table>
     </form>
 </div>

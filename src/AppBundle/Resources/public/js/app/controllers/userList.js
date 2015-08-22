@@ -7,6 +7,12 @@ angular.module('eveTool')
     $scope.submitLoading = false;
 
     $scope.newUser = {};
+    $scope.roles = [
+        {
+            role: 'ROLE_ADMIN',
+            name:'Admin'
+        }
+    ];
 
     $http.get(Routing.generate('api.users')).then(function(data){
             $scope.users = data.data;
@@ -24,6 +30,7 @@ angular.module('eveTool')
                 toggleNav();
             }
         }).catch(function(data){
+            $scope.errors = data.data;
             $scope.submitLoading = false;
         });
     };
@@ -36,23 +43,25 @@ angular.module('eveTool')
         if (!$scope.nav_open){
             $('.push-menu').animate({
                 right: "0px"
-            }, 400);
+            }, 300);
 
             $('body').animate({
                 left: "-350px"
-            }, 400);
+            }, 300);
             $scope.nav_open = true;
 
         } else {
             $('.push-menu').animate({
                 right: "-350px"
-            }, 400);
+            }, 300);
 
             $('body').animate({
                 left: "0px"
-            }, 400);
+            }, 300);
 
             $scope.nav_open = false;
         }
+
+        $scope.newUser = {};
     }
 }]);

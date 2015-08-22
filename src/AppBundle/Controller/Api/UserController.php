@@ -51,13 +51,13 @@ class UserController extends AbstractController implements ApiControllerInterfac
             ->setPlainPassword($content->get('password'))
             ->addRole($content->get('role'));
 
-
         $validator = $this->get('validator');
 
         $errors = $validator->validate($user);
 
-        if (count($errors)){
+        if (count($errors) > 0 ){
             //errors
+            return $this->getErrorResponse($errors);
         }
 
         $jms = $this->get('serializer');

@@ -2,9 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Validator\Constraints\DuplicateEmailConstraint;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="users")
@@ -35,6 +39,24 @@ class User extends BaseUser {
      * @JMS\Expose()
      */
     protected $deleted_at;
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata){
+        $metadata->addPropertyConstraints('username', [new Assert\NotBlank()])
+            ->addPropertyConstraints('email', [
+                new Assert\Email(),
+                new Assert\NotBlank(),
+                new DuplicateEmailConstraint()
+            ])
+            ->addPropertyConstraints('plainPassword',[
+                new Assert\NotBlank()
+            ])
+            ->addPropertyConstraints('roles', [
+                new Assert\Choice([
+                    'choices' => ['ROLE_ADMIN'],
+                    'message' => 'Not a valid role.'
+                ])
+            ]);
+    }
 
     public function __construct(){
         parent::__construct();

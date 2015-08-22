@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 abstract class AbstractController extends Controller {
 
@@ -12,5 +13,11 @@ abstract class AbstractController extends Controller {
             'Content-Type' => 'application/json'
         ],$headers));
 
+    }
+
+    protected function getErrorResponse(ConstraintViolationList $errors){
+        return $this->jsonResponse(
+            $this->get('serializer')->serialize($errors, 'json'),
+            400);
     }
 }
