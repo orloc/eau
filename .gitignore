@@ -1,3 +1,6 @@
+*~
+*.swp
+*.swo
 .sass-cache
 /web/bower_components*
 .idea
