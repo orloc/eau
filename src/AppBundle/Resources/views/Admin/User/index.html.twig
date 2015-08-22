@@ -24,8 +24,8 @@
                     <td>{{ '{{ u.email }}' }}</td>
                     <td>{{ '{{ u.last_login | date:"short" }}' }}</td>
                     <td>{{ '{{ u.created_at | date:"short" }}' }}</td>
-                    <td><i class="fa fa-check" ng-show="u.enabled"></i><i class="fa fa-times" ng-show="!u.enabled"></i> </td>
-                    <td><i class="fa fa-check" ng-show="u.locked"></i><i class="fa fa-times" ng-show="!u.locked"></i> </td>
+                    <td><i ng-class="{'fa fa-check text-success': u.enabled, 'fa fa-times text-danger': !u.enabled}"></i> </td>
+                    <td><i ng-class="{'fa fa-check text-success': u.locked, 'fa fa-times text-danger': !u.locked}"></i> </td>
                 </tr>
             </tbody>
         </table>
