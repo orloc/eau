@@ -1,11 +1,15 @@
 FOS\UserBundle\Model\User:
-    exclusion_policy: NONE
+    exclusion_policy: ALL
     properties:
-        emailCanonical:
-            exclude: true
-        salt:
-            exclude: true
-        password:
-            exclude: true
-        usernameCanonical:
-            exclude: true
+        username:
+            exclude: false
+        roles:
+            exclude: false
+        locked:
+            exlude: false
+        enabled:
+            exlude: false
+        email:
+            exclude : false
+        lastLogin:
+            exclude: false

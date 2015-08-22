@@ -1,9 +1,133 @@
 {% extends 'AppBundle:Admin:layout.html.twig' %}
 
 {% block content -%}
-    <h1>User list</h1>
     <div class="row" ng-controller="userListController">
-        {{ '{{ hi }}' }}
-    </div>
+        <h3>User <span class="muted small">LIST</span>
+            <button type="button" ng-click="openNew()" class="pull-right btn btn-sm" ng-cloak>
+                <i class="fa fa-plus" ng-show="!nav_open"></i>
+                <i class="fa fa-minus" ng-show="nav_open"></i>
+            </button></h3>
+        <table class="table table-bordered table-hover table-striped table-condensed" ng-cloak>
+            <thead>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Last Login</th>
+                <th>Created At</th>
+                <th>Enabled</th>
+                <th>Locked</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="u in users">
+                    <td>{{ '{{ u.id }}' }}</td>
+                    <td>{{ '{{ u.username }}' }}</td>
+                    <td>{{ '{{ u.email }}' }}</td>
+                    <td>{{ '{{ u.last_login | date:"short" }}' }}</td>
+                    <td>{{ '{{ u.created_at | date:"short" }}' }}</td>
+                    <td><i class="fa fa-check" ng-show="u.enabled"></i><i class="fa fa-times" ng-show="!u.enabled"></i> </td>
+                    <td><i class="fa fa-check" ng-show="u.locked"></i><i class="fa fa-times" ng-show="!u.locked"></i> </td>
+                </tr>
+            </tbody>
+        </table>
 
+        <div class="push-menu">
+            <div class="header">
+                <h3>New User</h3>
+            </div>
+            <p class="text-center">Please enter the required information.</p>
+            <form name="newUserForm">
+                <table class="table-form">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <i ng-class="{ 'text-danger fa fa-times': newUserForm.username.$invalid, 'text-success fa fa-check': newUserForm.username.$valid}"></i>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input name="username"
+                                           type="text"
+                                           ng-minlength="4"
+                                           class="form-control"
+                                           placeholder="Username..."
+                                           ng-required="true"
+                                           ng-model="newUser.username"
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i ng-class="{ 'text-danger fa fa-times': newUserForm.email.$invalid, 'text-success fa fa-check': newUserForm.email.$valid}"></i>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input name="email"
+                                           type="email"
+                                           class="form-control"
+                                           placeholder="Email..."
+                                           ng-required="true"
+                                           ng-model="newUser.email"
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i ng-class="{ 'text-danger fa fa-times': newUserForm.password.$invalid, 'text-success fa fa-check': newUserForm.password.$valid}"></i>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input name="password"
+                                           type="password"
+                                           class="form-control"
+                                           ng-minlength="6"
+                                           placeholder="Password..."
+                                           ng-required="true"
+                                           ng-model="newUser.password"
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i ng-class="{ 'text-danger fa fa-times': newUserForm.password_confirmation.$invalid, 'text-success fa fa-check': newUserForm.password_confirmation.$valid}"></i>
+                            </td>
+                            <td>
+                                <div class="form-group">
+                                    <input name="password_confirmation"
+                                           type="password"
+                                           class="form-control"
+                                           ng-minlength="6"
+                                           placeholder="Password Confirmation..."
+                                           ng-required="true"
+                                           ng-model="newUser.password_confirmation"
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <i ng-class="{ 'text-danger fa fa-times': newUserForm.role.$invalid, 'text-success fa fa-check': newUserForm.role.$valid}"></i>
+                            </td>
+                            <td>
+                                <select class="form-control"
+                                        name="role"
+                                        ng-required="true"
+                                        ng-model="newUser.role">
+                                    <option value="">Select a Role</option>
+                                    <option value="ROLE_ADMIN">Admin</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <button ladda="submitLoading" ng-disabled="!newUserForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+    </div>
 {% endblock %}

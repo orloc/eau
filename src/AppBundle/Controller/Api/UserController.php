@@ -3,6 +3,8 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Controller\AbstractController;
+use AppBundle\Controller\ApiControllerInterface;
+use AppBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -10,9 +12,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * User controller.
  *
- * @Route("/user")
+ * @Route("/user", options={"expose"=true})
  */
-class UserController extends AbstractController {
+class UserController extends AbstractController implements ApiControllerInterface {
 
     /**
      * Lists all User entities.
@@ -38,6 +40,20 @@ class UserController extends AbstractController {
      */
     public function createAction(Request $request)
     {
+        $content = $request->request;
+
+        $userManager = $this->get('fos_user.user_manager');
+
+        $user = $userManager->createUser();
+
+        $user->setUsername($content->get('username'))
+            ->setEmail($content->get('email'));
+
+        $validator = $this->get('validator');
+
+        $errors = $validator->validate($user);
+
+        var_dump($errors);die;
     }
 
     /**

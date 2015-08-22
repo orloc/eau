@@ -1,13 +1,16 @@
 {% extends '::base.html.twig' %}
 
+{% block stylesheets %}
+    <link href="{{ asset('/bundles/app/css/admin.css')}}" rel="stylesheet" type="text/css">
+{% endblock %}
 {% block body %}
 <div id="wrapper">
     <!-- Navigation -->
     {% include '::common/navigation.html.twig' %}
 
     <!-- Page Content -->
-    <div id="page-wrapper">
-        <div class="container-fluid" ng-app="eveTool">
+    <div id="page-wrapper" ng-app="eveTool">
+        <div class="container-fluid" >
             {% block content %}
                 {% block fos_user_content %}
                 {% endblock fos_user_content %}

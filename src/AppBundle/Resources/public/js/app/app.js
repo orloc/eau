@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('eveTool', []);
+angular.module('eveTool', ['ngMessages', 'angular-ladda']);

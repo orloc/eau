@@ -17,6 +17,9 @@
     "startbootstrap-sb-admin-2": "~1.0.7",
     "jQuery": "~2.1.4",
     "momentjs": "~2.10.6",
-    "angularjs": "~1.4.4"
+    "angularjs": "~1.4.4",
+    "font-awesome": "~4.4.0",
+    "angular-messages": "~1.4.4",
+    "angular-ladda": "~0.3.1"
   }
 }

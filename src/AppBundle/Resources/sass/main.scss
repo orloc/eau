@@ -1,5 +1,7 @@
 @import 'compass/css3';
 @import '_partials/_fonts.scss';
+@import '_partials/_colors.scss';
+@import '_partials/_form.scss';
 
 body {
   height: 100%;
@@ -20,13 +22,13 @@ body {
     margin: 0 auto;
     width: 75%;
     min-height: 300px;
-    background: lighten(black,10);
+    background: $darkerBlack;
     border: grey;
 
     .panel-heading {
       height: 70px;
       position: relative;
-      background: lighten(black,5);
+      background: $darkestBlack;
       border: grey;
 
       .panel-title {
@@ -47,7 +49,7 @@ body {
 
       input {
         margin: 0 auto;
-        background-color: darken(white, 20);
+        background-color: $offWhite;
         width: 80%;
         font-size: 18px;
         height: 48px;
@@ -56,15 +58,24 @@ body {
       .btn {
         width: 45%;
         margin-top: 3em;
-        background-color: lighten(black,20);
+        background-color: $offGrey;
         color: darken(white, 30);
         font-family: 'eve_alphabold', sans-serif;
 
         &:hover {
-          background-color: lighten(black, 15);
+          background-color: lighten($offGrey, 5);
         }
       }
     }
   }
 
+}
+
+/*
+  Allow angular.js to be loaded in body, hiding cloaked elements until
+  templates compile.  The !important is important given that there may be
+  other selectors that are more specific or come later and might alter display.
+ */
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
 }

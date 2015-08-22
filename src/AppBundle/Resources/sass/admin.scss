@@ -1,0 +1,40 @@
+@import 'compass/css3';
+@import '_partials/_fonts.scss';
+@import '_partials/_colors.scss';
+@import '_partials/_pushMenu.scss';
+@import '_partials/_form.scss';
+
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  left: 0;
+  margin: 0;
+}
+
+h1, h2, h3, {
+  font-family: 'eve_alphabold', sans-serif;
+}
+
+p {
+  color: $offWhite;
+}
+
+.navbar-brand {
+  font-family: 'eve_alphabold', sans-serif;
+  font-size: 30px;
+  span {
+    font-size: 15px;
+  }
+}
+
+/*
+  Allow angular.js to be loaded in body, hiding cloaked elements until
+  templates compile.  The !important is important given that there may be
+  other selectors that are more specific or come later and might alter display.
+ */
+[ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+
+}

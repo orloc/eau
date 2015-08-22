@@ -1,0 +1,51 @@
+form {
+  height: 100%;
+  padding: 10px;
+
+  input, select {
+    margin: 0 auto;
+    background-color: $offWhite;
+    color: black;
+    font-size: 14px;
+  }
+
+  select {
+    margin-bottom: 15px;
+  }
+
+}
+
+.table-form {
+  width: 100%;
+  tbody tr td {
+    height: 100%;
+    padding: 0;
+    i.fa {
+      margin-bottom: 15px;
+      padding-right: 5px;
+      padding-left: 5px;
+      font-size: 16px;
+    }
+  }
+}
+
+.btn {
+  background-color: $offGrey;
+  color: $offWhite;
+  font-family: 'eve_alphabold', sans-serif;
+
+  &:disabled {
+    background-color: lighten($offGrey, 5);
+  }
+
+  &:hover, &:active, &:focus {
+    &:disabled {
+      color: $offWhite;
+      background-color: lighten($offGrey, 5);
+    }
+    border: 0;
+    outline: 0;
+    background-color: lighten($offGrey, 10);
+    color: lighten($offWhite, 10);
+  }
+}
