@@ -47,13 +47,29 @@ class UserController extends AbstractController implements ApiControllerInterfac
         $user = $userManager->createUser();
 
         $user->setUsername($content->get('username'))
-            ->setEmail($content->get('email'));
+            ->setEmail($content->get('email'))
+            ->setPlainPassword($content->get('password'))
+            ->addRole($content->get('role'));
+
 
         $validator = $this->get('validator');
 
         $errors = $validator->validate($user);
 
-        var_dump($errors);die;
+        if (count($errors)){
+            //errors
+        }
+
+        $jms = $this->get('serializer');
+
+        try {
+            $userManager->updateUser($user, true);
+        } catch (\Exception $e){
+            return $this->jsonResponse($jms->serialize(['error' => 'There was an error with this request - likely the email is already taken.', 'code' => 400], 'json'), 400);
+        }
+
+        return $this->jsonResponse($jms->serialize($user, 'json'));
+
     }
 
     /**

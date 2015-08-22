@@ -16,12 +16,23 @@ angular.module('eveTool')
     $scope.submit = function(){
         $scope.submitLoading = true;
         $http.post(Routing.generate('api.user_create'), $scope.newUser).then(function(data){
+            $scope.users.push(data.data);
+            $scope.submitLoading = false;
 
+            $scope.newUser = {};
+            if ($scope.nav_open){
+                toggleNav();
+            }
+        }).catch(function(data){
             $scope.submitLoading = false;
         });
     };
 
     $scope.openNew = function(){
+        toggleNav();
+    };
+
+    function toggleNav() {
         if (!$scope.nav_open){
             $('.push-menu').animate({
                 right: "0px"
@@ -43,5 +54,5 @@ angular.module('eveTool')
 
             $scope.nav_open = false;
         }
-    };
+    }
 }]);
