@@ -49,12 +49,23 @@ class User extends BaseUser {
             ])
             ->addPropertyConstraints('plainPassword',[
                 new Assert\NotBlank()
+            ])
+            ->addPropertyConstraints('roles', [
+                new Assert\Choice([
+                    'callback' => 'getAvailableRoles'
+                ])
             ]);
     }
 
     public function __construct(){
         parent::__construct();
         $this->setCreatedAt(new \DateTime());
+    }
+
+    public static function getAvailableRoles(){
+        return [
+            'ROLE_ADMIN'
+        ];
     }
 
     /**
