@@ -24,6 +24,22 @@ class User extends BaseUser {
      */
     protected $id;
 
+    /**
+     * @ORM\Column(type="datetime")
+     * @JMS\Expose()
+     */
+    protected $created_at;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $deleted_at;
+
+    public function __construct(){
+        parent::__construct();
+        $this->setCreatedAt(new \DateTime());
+    }
 
     /**
      * Get id
@@ -33,5 +49,51 @@ class User extends BaseUser {
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set created_at
+     *
+     * @param \DateTime $createdAt
+     * @return User
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Set deleted_at
+     *
+     * @param \DateTime $deletedAt
+     * @return User
+     */
+    public function setDeletedAt($deletedAt)
+    {
+        $this->deleted_at = $deletedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get deleted_at
+     *
+     * @return \DateTime 
+     */
+    public function getDeletedAt()
+    {
+        return $this->deleted_at;
     }
 }
