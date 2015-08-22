@@ -24,7 +24,6 @@
         "doctrine/doctrine-fixtures-bundle": "^2.2",
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "friendsofsymfony/jsrouting-bundle": "^1.5",
-        "sg/datatablesbundle": "^0.7.1",
         "jms/serializer-bundle": "^1.0"
     },
     "require-dev": {

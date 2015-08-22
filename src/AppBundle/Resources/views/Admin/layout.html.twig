@@ -7,7 +7,7 @@
 
     <!-- Page Content -->
     <div id="page-wrapper">
-        <div class="container-fluid">
+        <div class="container-fluid" ng-app="eveTool">
             {% block content %}
                 {% block fos_user_content %}
                 {% endblock fos_user_content %}
@@ -19,4 +19,9 @@
     <!-- /#page-wrapper -->
 
 </div>
+{% endblock %}
+{% block extra_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('/bundles/app/js/app/app.js') }}"></script>
+    <script src="{{ asset('/bundles/app/js/app/controllers/userList.js') }}"></script>
 {% endblock %}

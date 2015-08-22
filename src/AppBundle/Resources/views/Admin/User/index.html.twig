@@ -2,11 +2,8 @@
 
 {% block content -%}
     <h1>User list</h1>
+    <div class="row" ng-controller="userListController">
+        {{ '{{ hi }}' }}
+    </div>
 
-    {{ datatable_render_html(dataTable) }}
-
-{% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    {{ datatable_render_js(dataTable) }}
 {% endblock %}

@@ -16,7 +16,7 @@
   "dependencies": {
     "startbootstrap-sb-admin-2": "~1.0.7",
     "jQuery": "~2.1.4",
-    "datatables": "~1.10.8",
-    "momentjs": "~2.10.6"
+    "momentjs": "~2.10.6",
+    "angularjs": "~1.4.4"
   }
 }

@@ -18,7 +18,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
-            new Sg\DatatablesBundle\SgDatatablesBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new \JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new \JMS\SerializerBundle\JMSSerializerBundle(),

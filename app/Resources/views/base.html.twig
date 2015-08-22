@@ -11,8 +11,6 @@
     <title>{% block title %}Eve Tool{% endblock %}</title>
 
     <link href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/bower_components/datatables/media/css/jquery.dataTables.css') }}" rel="stylesheet">
-    <link href="{{ asset('/bower_components/datatables/media/css/dataTables.bootstrap.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
@@ -38,15 +36,13 @@
 {% block body %}
 {% endblock %}
 <!-- /#wrapper -->
-
 <!-- jQuery -->
 <script src="{{ asset('/bower_components/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ asset('/bower_components/datatables/media/js/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('/bower_components/datatables/media/js/dataTables.bootstrap.js') }}"></script>
+<script src="{{ asset('/bower_components/angularjs/angular.js') }}"></script>
 <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
 <script src="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js') }}"></script>
-{%  block javascripts %}
+{%  block extra_javascript %}
 {% endblock %}
 
 </body>
