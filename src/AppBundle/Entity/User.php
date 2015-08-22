@@ -51,16 +51,19 @@ class User extends BaseUser {
                 new Assert\NotBlank()
             ])
             ->addPropertyConstraints('roles', [
-                new Assert\Choice([
-                    'choices' => ['ROLE_ADMIN'],
-                    'message' => 'Not a valid role.'
-                ])
+                new Assert\NotBlank()
             ]);
     }
 
     public function __construct(){
         parent::__construct();
         $this->setCreatedAt(new \DateTime());
+    }
+
+    public static function getAvailableRoles(){
+        return [
+            'ROLE_ADMIN'
+        ];
     }
 
     /**
