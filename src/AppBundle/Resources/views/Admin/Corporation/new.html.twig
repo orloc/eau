@@ -1,101 +1,68 @@
 <div class="push-menu">
     <div class="header">
-        <h3>New User</h3>
+        <h3>New Corporation</h3>
     </div>
     <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
-    <form name="newUserForm">
+    <form name="newCorpForm">
         <table class="table-form">
-            {#
             <tbody>
                 <tr>
                     <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newUserForm.username.$invalid, 'text-success fa fa-check': newUserForm.username.$valid}"></i>
+                        <i ng-class="{ 'text-danger fa fa-times': newCorpForm.api_key.$invalid, 'text-success fa fa-check': newCorpForm.api_key.$valid}"></i>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input name="username"
+                            <input name="api_key"
                                    type="text"
                                    ng-minlength="4"
                                    class="form-control"
-                                   placeholder="Username..."
+                                   placeholder="API Key..."
                                    ng-required="true"
-                                   ng-model="newUser.username"
+                                   ng-model="newCorp.api_key"
                             />
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newUserForm.email.$invalid, 'text-success fa fa-check': newUserForm.email.$valid}"></i>
+                        <i ng-class="{ 'text-danger fa fa-times': newCorpForm.verification_code.$invalid, 'text-success fa fa-check': newCorpForm.verification_code.$valid}"></i>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input name="email"
-                                   type="email"
+                            <input name="verification_code"
+                                   type="text"
                                    class="form-control"
-                                   placeholder="Email..."
+                                   placeholder="Verification Code..."
                                    ng-required="true"
-                                   ng-model="newUser.email"
+                                   ng-model="newCorp.verification_code"
                             />
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newUserForm.password.$invalid, 'text-success fa fa-check': newUserForm.password.$valid}"></i>
+                        <i ng-class="{ 'text-danger fa fa-times': newCorpForm.access_mask.$invalid, 'text-success fa fa-check': newCorpForm.access_mask.$valid}"></i>
                     </td>
                     <td>
                         <div class="form-group">
-                            <input name="password"
-                                   type="password"
-                                   class="form-control"
-                                   ng-minlength="6"
-                                   placeholder="Password..."
-                                   ng-required="true"
-                                   ng-model="newUser.password"
-                            />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newUserForm.password_confirmation.$invalid, 'text-success fa fa-check': newUserForm.password_confirmation.$valid}"></i>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input name="password_confirmation"
-                                   type="password"
+                            <input name="access_mask"
+                                   type="text"
                                    class="form-control"
                                    ng-minlength="6"
-                                   placeholder="Password Confirmation..."
+                                   placeholder="Access Mask..."
                                    ng-required="true"
-                                   ng-model="newUser.password_confirmation"
+                                   ng-model="newCorp.access_mask"
                             />
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newUserForm.role.$invalid, 'text-success fa fa-check': newUserForm.role.$valid}"></i>
-                    </td>
-                    <td>
-                        <select class="form-control"
-                                name="role"
-                                ng-required="true"
-                                ng-model="newUser.role">
-                            <option value="">Select a Role</option>
-                            <option value="ROLE_ADMIN">Admin</option>
-                        </select>
                     </td>
                 </tr>
                 <tr>
                     <td></td>
                     <td>
-                        <button ladda="submitLoading" ng-disabled="!newUserForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
+                        <button ladda="submitLoading" ng-disabled="!newCorpForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
                     </td>
                 </tr>
             </tbody>
-            #}
         </table>
     </form>
 </div>
