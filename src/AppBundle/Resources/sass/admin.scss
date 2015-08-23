@@ -31,6 +31,30 @@ p, a {
   border: $darkerBlack;
 }
 
+.navbar-top-links {
+  li.dropdown {
+    a:hover , a:focus{
+      background-color: $darkerBlack;
+      color: lighten($darkBlue, 20);
+    }
+
+    ul.dropdown-menu {
+      margin:0;
+      border:0;
+      border-radius:0;
+      background-color: $darkerBlack;
+      li a {
+        font-size: 16px;
+        color: lighten($darkBlue, 20);
+
+      }
+      &:hover {
+        background-color: lighten($darkerBlack, 10);
+      }
+    }
+  }
+}
+
 .navbar-brand {
   font-family: 'eve_alphabold', sans-serif;
   font-size: 30px;

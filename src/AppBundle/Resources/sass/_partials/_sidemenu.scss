@@ -5,6 +5,10 @@
   ul li {
     border-color: $offGrey;
 
+    a {
+      font-size: 17px;
+    }
+
     a.active, a:hover, a:focus {
       background-color: $darkestBlack;
       color: lighten($darkBlue, 20);
