@@ -26,7 +26,7 @@ class ServerController extends AbstractController implements ApiControllerInterf
         $status = $pheal->serverStatus();
 
         $data = [
-            'open' => $status->serverOpen ? "online" : "offline",
+            'online' => $status->serverOpen ? true : false,
             "players" => $status->onlinePlayers
         ];
 

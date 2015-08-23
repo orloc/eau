@@ -1,0 +1,9 @@
+<div class="serverStatus" ng-cloak>
+    <span class="group">
+        <i ng-class="{'fa fa-toggle-on text-success fa-fw': server_status.online, 'fa fa-fw fa-toggle-off text-danger': !server_status.online }"></i>
+        <span ng-show="server_status.online"> Online</span><span ng-hide="server_status.offline"></span>
+    </span>
+    <span class="group" ng-show="server_status.online">
+        <i class="fa fa-group fa-fw"></i> {{ '{{ server_status.players }}'}}
+    </span>
+</div>

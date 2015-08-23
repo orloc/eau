@@ -7,8 +7,10 @@ angular.module('eveTool')
             scope: {
                 things: "=compareTo"
             },
-            link : function(scope, element, attributes, ngModel) {
-                $scope.nav_open 
+            link : function(scope, element, attributes) {
+                scope.nav_open  = false;
+
+
             }
         };
 
