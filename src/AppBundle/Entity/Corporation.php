@@ -336,4 +336,37 @@ class Corporation
     {
         return $this->accounts;
     }
+
+    /**
+     * Add market_orders
+     *
+     * @param \AppBundle\Entity\MarketOrder $marketOrders
+     * @return Corporation
+     */
+    public function addMarketOrder(\AppBundle\Entity\MarketOrder $marketOrders)
+    {
+        $this->market_orders[] = $marketOrders;
+
+        return $this;
+    }
+
+    /**
+     * Remove market_orders
+     *
+     * @param \AppBundle\Entity\MarketOrder $marketOrders
+     */
+    public function removeMarketOrder(\AppBundle\Entity\MarketOrder $marketOrders)
+    {
+        $this->market_orders->removeElement($marketOrders);
+    }
+
+    /**
+     * Get market_orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMarketOrders()
+    {
+        return $this->market_orders;
+    }
 }
