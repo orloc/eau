@@ -1,0 +1,26 @@
+{% extends 'AppBundle:Admin:layout.html.twig' %}
+
+{% block content -%}
+    <div class="row" ng-controller="apiCredentialsController">
+        <h3>API Credentials <span class="muted small">LIST</span></h3>
+        <table class="table data-table table-hover table-condensed" ng-cloak>
+            <thead>
+                <th>ID</th>
+                <th>Lasted Accessed</th>
+                <th>Created At</th>
+                <th>Enabled</th>
+                <th><i class="fa fa-gears"></i></th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="key in credentials">
+                    <td>{{ '{{ key.id }}' }}</td>
+                    <td>{{ '{{ key.last_accessed | date:"short" }}' }}</td>
+                    <td>{{ '{{ key.created_at | date:"short" }}' }}</td>
+                    <td><i ng-class="{'fa fa-check text-success': key.enabled, 'fa fa-times text-danger': !key.enabled}"></i> </td>
+                    <td class="text-center">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -96,6 +96,22 @@ class UserController extends AbstractController implements ApiControllerInterfac
      */
     public function updateAction(Request $request, User $user)
     {
+        $errors = $this->processRequest($user, $request->request);
+
+        if (count($errors) > 0 ){
+            return $this->getErrorResponse($errors);
+        }
+
+        $userManager = $this->get('fos_user.user_manager');
+        $jms = $this->get('serializer');
+
+        try {
+            $userManager->updateUser($user, true);
+        } catch (\Exception $e){
+            return $this->jsonResponse($jms->serialize([ ['message' => 'There was an error with this request - likely the email OR username is already taken.']], 'json'), 409);
+        }
+
+        return $this->jsonResponse($jms->serialize($user, 'json'));
     }
 
     /**
