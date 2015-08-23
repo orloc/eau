@@ -3,6 +3,8 @@
         <h3>Edit User</h3>
     </div>
     <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
+
+    <button style="position: absolute; bottom: 0; right: 0; margin: 10px;" class="btn btn-sm btn-danger" ng-click="delete(editUser.id)">Delete</button>
     <form name="editUserForm">
         <table class="table-form" ng-show="edit_loaded">
             <tbody>

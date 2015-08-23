@@ -28,7 +28,7 @@
                     <td><i ng-class="{'fa fa-check text-success': u.enabled, 'fa fa-times text-danger': !u.enabled}"></i> </td>
                     <td><i ng-class="{'fa fa-check text-success': u.locked, 'fa fa-times text-danger': !u.locked}"></i> </td>
                     <td class="text-center">
-                        <button  ng-click="openEdit(u.id)" ng-disabled="nav_open || (edit_open && edit_id != u.id)" class="btn">
+                        <button  ng-click="openEdit(u.id, $index)" ng-disabled="nav_open || (edit_open && edit_id != u.id)" class="btn">
                             <i ng-show="!edit_open || edit_id !=u.id" class="fa fa-chevron-right"></i>
                             <i ng-show="edit_open && edit_id == u.id" class="fa fa-chevron-left"></i>
                         </button>

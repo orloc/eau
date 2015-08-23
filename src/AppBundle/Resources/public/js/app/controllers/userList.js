@@ -43,20 +43,29 @@ angular.module('eveTool')
         $scope.nav_open = !$scope.nav_open;
     };
 
-    $scope.openEdit = function(id){
+    $scope.openEdit = function(id, index){
         toggleNav('.edit');
         $scope.edit_id = id;
         $scope.edit_open = !$scope.edit_open;
-
-        if (!$scope.edit_open){
-            $scope.edit_id = null;
-        }
 
         $http.get(Routing.generate('api.user_show', { id: id })).then(function(data){
             $scope.editUser = data.data;
             $scope.editUser.role = data.data.roles[0];
             $scope.edit_loaded = true;
+            $scope.current_index = index;
         });
+    };
+
+    $scope.delete = function(id){
+        var response = window.confirm('Are you sure you wish to delete this user?');
+
+        if (response){
+            $http.delete(Routing.generate('api.user_delete', { id: id })).then(function(data){
+                console.log(data);
+                $scope.users.splice($scope.current_index, 1);
+                toggleNav('.edit');
+            });
+        }
     };
 
     function toggleNav(className) {
@@ -76,10 +85,14 @@ angular.module('eveTool')
             $('body').animate({
                 left: "0px"
             }, 300);
+
+            $scope.edit_id = null;
+            $scope.current_index = null;
+            $scope.editUser = {};
+            $scope.newUser = {};
+            $scope.editUser = {};
+            $scope.errors = {};
         }
 
-        $scope.newUser = {};
-        $scope.editUser = {};
-        $scope.errors = {};
     }
 }]);
