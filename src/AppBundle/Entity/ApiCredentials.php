@@ -10,14 +10,13 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="corporations")
+ * @ORM\Table(name="api_credentials")
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
  *
  * @package AppBundle\Entity
  */
-class Corporation
-{
+class ApiCredentials {
 
     /**
      * @ORM\Id
@@ -28,20 +27,30 @@ class Corporation
     protected $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
+     */
+    protected $api_key;
+
+    /**
+     * @ORM\Column(type="text")
      * @JMS\Expose()
      */
-    protected $name;
+    protected $type;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials")
+     * @ORM\Column(type="text")
      */
-    protected $api_credentials;
+    protected $verification_code;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\Column(type="boolean")
      */
-    protected $created_by;
+    protected $invalid;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $access_mask;
 
     /**
      * @ORM\Column(type="datetime")
@@ -50,16 +59,20 @@ class Corporation
     protected $created_at;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      * @JMS\Expose()
      */
-    protected $deleted_at;
+    protected $created_by;
 
-
-    public function __construct()
-    {
-        $this->setCreatedAt(new \DateTime());
+    public static function loadValidatorMetadata(ClassMetadata $metadata){
+        $metadata->addPropertyConstraints('api_key',[
+            new Assert\NotBlank()
+        ])
+            ->addPropertyConstraints('verification_code', [
+                new Assert\NotBlank()
+            ]);
     }
+
 
     /**
      * Get id
@@ -72,33 +85,10 @@ class Corporation
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return Corporation
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
      * Set api_key
      *
      * @param string $apiKey
-     * @return Corporation
+     * @return ApiCredentials
      */
     public function setApiKey($apiKey)
     {
@@ -118,10 +108,33 @@ class Corporation
     }
 
     /**
+     * Set type
+     *
+     * @param string $type
+     * @return ApiCredentials
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string 
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Set verification_code
      *
      * @param string $verificationCode
-     * @return Corporation
+     * @return ApiCredentials
      */
     public function setVerificationCode($verificationCode)
     {
@@ -141,10 +154,33 @@ class Corporation
     }
 
     /**
+     * Set invalid
+     *
+     * @param boolean $invalid
+     * @return ApiCredentials
+     */
+    public function setInvalid($invalid)
+    {
+        $this->invalid = $invalid;
+
+        return $this;
+    }
+
+    /**
+     * Get invalid
+     *
+     * @return boolean 
+     */
+    public function getInvalid()
+    {
+        return $this->invalid;
+    }
+
+    /**
      * Set access_mask
      *
      * @param integer $accessMask
-     * @return Corporation
+     * @return ApiCredentials
      */
     public function setAccessMask($accessMask)
     {
@@ -167,7 +203,7 @@ class Corporation
      * Set created_at
      *
      * @param \DateTime $createdAt
-     * @return Corporation
+     * @return ApiCredentials
      */
     public function setCreatedAt($createdAt)
     {
@@ -187,35 +223,12 @@ class Corporation
     }
 
     /**
-     * Set deleted_at
-     *
-     * @param \DateTime $deletedAt
-     * @return Corporation
-     */
-    public function setDeletedAt($deletedAt)
-    {
-        $this->deleted_at = $deletedAt;
-
-        return $this;
-    }
-
-    /**
-     * Get deleted_at
-     *
-     * @return \DateTime 
-     */
-    public function getDeletedAt()
-    {
-        return $this->deleted_at;
-    }
-
-    /**
      * Set created_by
      *
-     * @param \AppBundle\Entity\User $createdBy
-     * @return Corporation
+     * @param \DateTime $createdBy
+     * @return ApiCredentials
      */
-    public function setCreatedBy(\AppBundle\Entity\User $createdBy = null)
+    public function setCreatedBy($createdBy)
     {
         $this->created_by = $createdBy;
 
@@ -225,33 +238,10 @@ class Corporation
     /**
      * Get created_by
      *
-     * @return \AppBundle\Entity\User 
+     * @return \DateTime 
      */
     public function getCreatedBy()
     {
         return $this->created_by;
-    }
-
-    /**
-     * Set api_credentials
-     *
-     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
-     * @return Corporation
-     */
-    public function setApiCredentials(\AppBundle\Entity\ApiCredentials $apiCredentials = null)
-    {
-        $this->api_credentials = $apiCredentials;
-
-        return $this;
-    }
-
-    /**
-     * Get api_credentials
-     *
-     * @return \AppBundle\Entity\ApiCredentials 
-     */
-    public function getApiCredentials()
-    {
-        return $this->api_credentials;
     }
 }

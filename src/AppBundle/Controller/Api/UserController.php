@@ -56,7 +56,6 @@ class UserController extends AbstractController implements ApiControllerInterfac
         $errors = $validator->validate($user);
 
         if (count($errors) > 0 ){
-            //errors
             return $this->getErrorResponse($errors);
         }
 

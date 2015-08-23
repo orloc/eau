@@ -26,6 +26,6 @@ services:
 
       app.corporation.subscriber:
           class: AppBundle\EventListener\CorporationListener
-          arguments: [ "@security.token_storage" ]
+          arguments: [ "@security.token_storage" , "@tarioch.pheal.factory" ]
           tags:
               - { name: doctrine.event_subscriber, connection: default }

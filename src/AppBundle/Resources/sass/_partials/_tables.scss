@@ -6,10 +6,11 @@ table.table.data-table {
       background-color: $darkerBlack;
       color: $offWhite;
       text-transform: capitalize;
+      border-bottom: 1px lighten($darkerBlack, 20);
     }
   }
   tbody {
-    background-color: $offWhite;
+    background-color: lighten($offWhite,10);
     tr td {
       color: $offGrey;
       font-weight: 400;
@@ -21,6 +22,6 @@ table.table.data-table {
 }
 table.table.data-table>tbody>tr:nth-child(odd)>td,
 table.data-table>tbody>tr:nth-child(odd)>th {
-  background-color: darken($offWhite, 10);
+  background-color: $offWhite;
 }
 

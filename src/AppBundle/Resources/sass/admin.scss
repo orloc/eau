@@ -4,6 +4,7 @@
 @import '_partials/_pushMenu.scss';
 @import '_partials/_form.scss';
 @import '_partials/_tables.scss';
+@import '_partials/_sidemenu.scss';
 
 body {
   height: 100%;
@@ -23,15 +24,6 @@ p, a {
 }
 #wrapper {
   background-color: $darkerBlack;
-}
-
-.sidebar-nav {
-  background-color: $darkerBlack;
-  color: $offGrey;
-
-  ul li {
-    border-color: $offGrey;
-  }
 }
 
 .navbar {

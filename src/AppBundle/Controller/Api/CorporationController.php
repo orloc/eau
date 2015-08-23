@@ -44,8 +44,7 @@ class CorporationController extends AbstractController implements ApiControllerI
         $content = $request->request;
 
         $corp->setApiKey($content->get('api_key'))
-            ->setVerificationCode($content->get('verification_code'))
-            ->setAccessMask($content->get('access_mask'));
+            ->setVerificationCode($content->get('verification_code'));
 
         $validator = $this->get('validator');
 

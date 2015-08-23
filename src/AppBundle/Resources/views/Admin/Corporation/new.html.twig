@@ -41,22 +41,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newCorpForm.access_mask.$invalid, 'text-success fa fa-check': newCorpForm.access_mask.$valid}"></i>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input name="access_mask"
-                                   type="text"
-                                   class="form-control"
-                                   placeholder="Access Mask..."
-                                   ng-required="true"
-                                   ng-model="newCorp.access_mask"
-                            />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
                     <td></td>
                     <td>
                         <button ladda="submitLoading" ng-disabled="!newCorpForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>

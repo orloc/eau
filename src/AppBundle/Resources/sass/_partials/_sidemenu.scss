@@ -1,0 +1,13 @@
+.sidebar-nav {
+  background-color: $darkerBlack;
+  color: $offGrey;
+
+  ul li {
+    border-color: $offGrey;
+
+    a.active, a:hover, a:focus {
+      background-color: $darkestBlack;
+      color: lighten($darkBlue, 20);
+    }
+  }
+}
