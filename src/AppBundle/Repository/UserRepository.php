@@ -10,7 +10,8 @@ class UserRepository extends EntityRepository {
     public function getUsers(){
         return $this->createQueryBuilder('u')
             ->select('u')
-            ->where('u.deleted_at IS NULL');
+            ->where('u.deleted_at IS NULL')
+            ->getQuery()->getResult();
 
     }
 

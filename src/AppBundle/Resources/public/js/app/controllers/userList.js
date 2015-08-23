@@ -63,5 +63,6 @@ angular.module('eveTool')
         }
 
         $scope.newUser = {};
+        $scope.errors = {};
     }
 }]);

@@ -56,11 +56,11 @@ class UserController extends AbstractController implements ApiControllerInterfac
         try {
             $userManager->updateUser($user, true);
         } catch (\Exception $e){
-            return $this->jsonResponse($jms->serialize(['error' => 'There was an error with this request - likely the email is already taken.', 'code' => 409], 'json'), 409);
+            return $this->jsonResponse($jms->serialize([ ['message' => 'There was an error with this request - likely the email OR username is already taken.']], 'json'), 409);
         }
 
         return $this->jsonResponse($jms->serialize($user, 'json'), 201, [
-            'Location' => $this->generateUrl('api.user_show', $user->getId())
+            'Location' => $this->generateUrl('api.user_show', [ 'id' => $user->getId()])
         ]);
     }
 

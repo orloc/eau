@@ -35,7 +35,7 @@ class User extends BaseUser {
     protected $created_at;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true, )
      * @JMS\Expose()
      */
     protected $deleted_at;
