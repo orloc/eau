@@ -100,6 +100,23 @@ class Corporation
     }
 
     /**
+     * Add market_orders
+     *
+     * @param \AppBundle\Entity\MarketOrder $marketOrders
+     * @return Corporation
+     */
+    public function addMarketOrder(\AppBundle\Entity\MarketOrder $marketOrders)
+    {
+        if (!$this->accounts->contains($marketOrders)){
+            $this->market_orders[] = $marketOrders;
+            $marketOrders->setCorporation($this);
+        }
+
+        return $this;
+    }
+
+
+    /**
      * Get id
      *
      * @return integer 
@@ -335,19 +352,6 @@ class Corporation
     public function getAccounts()
     {
         return $this->accounts;
-    }
-
-    /**
-     * Add market_orders
-     *
-     * @param \AppBundle\Entity\MarketOrder $marketOrders
-     * @return Corporation
-     */
-    public function addMarketOrder(\AppBundle\Entity\MarketOrder $marketOrders)
-    {
-        $this->market_orders[] = $marketOrders;
-
-        return $this;
     }
 
     /**

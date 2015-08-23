@@ -11,11 +11,9 @@ angular.module('eveTool')
             },
             link : function(scope, element, attributes) {
                 var baseUrl = 'https://image.eveonline.com';
-
                 var path = scope.object_id+'_'+scope.imgWidth+'.png';
-                scope.url = [baseUrl,scope.imageType, path].join('/');
 
-                console.log(url);
+                scope.url = [baseUrl,scope.imageType, path].join('/');
             },
 
             template: "<img class='img img-responsive' height='50px' width='50px' src='{{ url }}' ng-cloak/>"
