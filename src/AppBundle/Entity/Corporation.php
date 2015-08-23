@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
@@ -34,6 +35,16 @@ class Corporation
     protected $name;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $eve_id;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Account", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $accounts;
+
+    /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="corporation", cascade={"persist"})
      */
     protected $api_credentials;
@@ -64,6 +75,23 @@ class Corporation
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime());
+        $this->accounts = new ArrayCollection();
+    }
+
+    /**
+     * Add accounts
+     *
+     * @param \AppBundle\Entity\Account $accounts
+     * @return Corporation
+     */
+    public function addAccount(\AppBundle\Entity\Account $accounts)
+    {
+        if (!$this->accounts->contains($accounts)){
+            $this->accounts[] = $accounts;
+            $accounts->setCorporation($this);
+        }
+
+        return $this;
     }
 
     /**
@@ -246,6 +274,7 @@ class Corporation
     public function setApiCredentials(\AppBundle\Entity\ApiCredentials $apiCredentials = null)
     {
         $this->api_credentials = $apiCredentials;
+        $apiCredentials->setCorporation($this);
 
         return $this;
     }
@@ -258,5 +287,48 @@ class Corporation
     public function getApiCredentials()
     {
         return $this->api_credentials;
+    }
+
+    /**
+     * Set eve_id
+     *
+     * @param integer $eveId
+     * @return Corporation
+     */
+    public function setEveId($eveId)
+    {
+        $this->eve_id = $eveId;
+
+        return $this;
+    }
+
+    /**
+     * Get eve_id
+     *
+     * @return integer 
+     */
+    public function getEveId()
+    {
+        return $this->eve_id;
+    }
+
+    /**
+     * Remove accounts
+     *
+     * @param \AppBundle\Entity\Account $accounts
+     */
+    public function removeAccount(\AppBundle\Entity\Account $accounts)
+    {
+        $this->accounts->removeElement($accounts);
+    }
+
+    /**
+     * Get accounts
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAccounts()
+    {
+        return $this->accounts;
     }
 }

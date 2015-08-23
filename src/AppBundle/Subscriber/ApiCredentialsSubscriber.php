@@ -49,6 +49,8 @@ class ApiCredentialsSubscriber implements EventSubscriber {
         $entity->setAccessMask($accessMask)
             ->setType($type);
 
+        var_dump($entity);die;
+
     }
 
 }
