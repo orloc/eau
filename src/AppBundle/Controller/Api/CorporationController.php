@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use AppBundle\Exception\InvalidExpirationException;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -54,11 +55,24 @@ class CorporationController extends AbstractController implements ApiControllerI
         }
 
         $em = $this->getDoctrine()->getManager();
+        $jms = $this->get('jms_serializer');
 
-        $em->persist($corp);
+        try {
+            $em->persist($corp);
+        } catch (InvalidExpirationException $e){
+            $this->get('logger')->warning('Invalid API creation attempt Key: %s Code %s User_Id: %s',
+                $content->get('api_key'),
+                $content->get('verification_code'),
+                $this->getUser()->getId()
+            );
+
+            return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
+        }
+
+        die;
         $em->flush();
 
-        $json = $this->get('jms_serializer')->serialize($corp, 'json');
+        $json = $jms->serialize($corp, 'json');
 
         return $this->jsonResponse($json);
 
@@ -71,16 +85,6 @@ class CorporationController extends AbstractController implements ApiControllerI
      * @Method("GET")
      */
     public function showAction($id)
-    {
-    }
-
-    /**
-     * Edits an existing User entity.
-     *
-     * @Route("/{id}", name="api.corp_update")
-     * @Method("PUT")
-     */
-    public function updateAction(Request $request, $id)
     {
     }
 

@@ -43,6 +43,11 @@ class ApiCredentials {
     protected $verification_code;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="api_credentials")
+     */
+    protected $corporation;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     protected $invalid;
@@ -244,5 +249,28 @@ class ApiCredentials {
     public function getCreatedBy()
     {
         return $this->created_by;
+    }
+
+    /**
+     * Set corporation
+     *
+     * @param \AppBundle\Entity\Corporation $corporation
+     * @return ApiCredentials
+     */
+    public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
+    {
+        $this->corporation = $corporation;
+
+        return $this;
+    }
+
+    /**
+     * Get corporation
+     *
+     * @return \AppBundle\Entity\Corporation 
+     */
+    public function getCorporation()
+    {
+        return $this->corporation;
     }
 }

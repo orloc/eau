@@ -34,7 +34,7 @@ class Corporation
     protected $name;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="corporation", cascade={"persist"})
      */
     protected $api_credentials;
 

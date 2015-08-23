@@ -3,6 +3,7 @@
 namespace AppBundle\Subscriber;
 
 use AppBundle\Entity\ApiCredentials;
+use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -38,12 +39,15 @@ class ApiCredentialsSubscriber implements EventSubscriber {
     protected function updateApiData(ApiCredentials $entity){
         $client = $this->pheal->createEveOnline($entity->getApiKey(), $entity->getVerificationCode());
         // validate API MASK
-        $result = $client->APIKeyInfo();;
+        $result = $client->APIKeyInfo()->key;
+        list($type, $expires, $accessMask) = [ $result->type, $result->expires, $result->accessMask ];
 
-        $character = $result->key->characters;
+        if (strlen($expires) > 0) {
+            throw new InvalidExpirationException('Expiration Date on API Key is finite.');
+        }
 
-        $entity->setName($result->key->characters->toArray()[0]['corporationName']);
-        var_dump($entity, $type);die;
+        $entity->setAccessMask($accessMask)
+            ->setType($type);
 
     }
 
