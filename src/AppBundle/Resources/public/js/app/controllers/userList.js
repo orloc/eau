@@ -4,9 +4,12 @@ angular.module('eveTool')
 .controller('userListController', ['$scope', '$http','$document', function($scope, $http, $document){
     $scope.users = [];
     $scope.nav_open = false;
+    $scope.edit_open = false;
+    $scope.edit_loaded = false;
     $scope.submitLoading = false;
 
     $scope.newUser = {};
+    $scope.editUser = {};
     $scope.roles = [
         {
             role: 'ROLE_ADMIN',
@@ -36,33 +39,47 @@ angular.module('eveTool')
     };
 
     $scope.openNew = function(){
-        toggleNav();
+        toggleNav('.new');
+        $scope.nav_open = !$scope.nav_open;
     };
 
-    function toggleNav() {
-        if (!$scope.nav_open){
-            $('.push-menu').animate({
+    $scope.openEdit = function(id){
+        toggleNav('.edit');
+        $scope.edit_id = id;
+        $scope.edit_open = !$scope.edit_open;
+
+        if (!$scope.edit_open){
+            $scope.edit_id = null;
+        }
+
+        $http.get(Routing.generate('api.user_show', { id: id })).then(function(data){
+            $scope.editUser = data.data;
+            $scope.editUser.role = data.data.roles[0];
+            $scope.edit_loaded = true;
+        });
+    };
+
+    function toggleNav(className) {
+        if (!$scope.nav_open && !$scope.edit_open){
+            $('.push-menu'+className).animate({
                 right: "0px"
             }, 300);
 
             $('body').animate({
                 left: "-350px"
             }, 300);
-            $scope.nav_open = true;
-
         } else {
-            $('.push-menu').animate({
+            $('.push-menu'+className).animate({
                 right: "-350px"
             }, 300);
 
             $('body').animate({
                 left: "0px"
             }, 300);
-
-            $scope.nav_open = false;
         }
 
         $scope.newUser = {};
+        $scope.editUser = {};
         $scope.errors = {};
     }
 }]);
