@@ -5,9 +5,11 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\User;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * User controller.
@@ -25,7 +27,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
     public function indexAction()
     {
         $users = $this->getDoctrine()->getRepository('AppBundle:User')
-            ->findAll();
+            ->getUsers();
 
         $json = $this->get('jms_serializer')->serialize($users, 'json');
 
@@ -40,20 +42,10 @@ class UserController extends AbstractController implements ApiControllerInterfac
      */
     public function createAction(Request $request)
     {
-        $content = $request->request;
-
         $userManager = $this->get('fos_user.user_manager');
-
         $user = $userManager->createUser();
 
-        $user->setUsername($content->get('username'))
-            ->setEmail($content->get('email'))
-            ->setPlainPassword($content->get('password'))
-            ->addRole($content->get('role'));
-
-        $validator = $this->get('validator');
-
-        $errors = $validator->validate($user);
+        $errors = $this->processRequest($user, $request->request);
 
         if (count($errors) > 0 ){
             return $this->getErrorResponse($errors);
@@ -64,11 +56,23 @@ class UserController extends AbstractController implements ApiControllerInterfac
         try {
             $userManager->updateUser($user, true);
         } catch (\Exception $e){
-            return $this->jsonResponse($jms->serialize(['error' => 'There was an error with this request - likely the email is already taken.', 'code' => 400], 'json'), 400);
+            return $this->jsonResponse($jms->serialize(['error' => 'There was an error with this request - likely the email is already taken.', 'code' => 409], 'json'), 409);
         }
 
-        return $this->jsonResponse($jms->serialize($user, 'json'));
+        return $this->jsonResponse($jms->serialize($user, 'json'), 201, [
+            'Location' => $this->generateUrl('api.user_show', $user->getId())
+        ]);
+    }
 
+    private function processRequest(User $user, ParameterBag $content){
+        $user->setUsername($content->get('username'))
+            ->setEmail($content->get('email'))
+            ->setPlainPassword($content->get('password'))
+            ->addRole($content->get('role'));
+
+        $validator = $this->get('validator');
+
+        return $validator->validate($user);
     }
 
     /**
@@ -76,18 +80,21 @@ class UserController extends AbstractController implements ApiControllerInterfac
      *
      * @Route("/{id}", name="api.user_show")
      * @Method("GET")
+     * @ParamConverter("user", class="AppBundle:User")
      */
-    public function showAction($id)
+    public function showAction($id, User $user)
     {
+        return $this->jsonResponse($this->get('serializer')->serialize($user, 'json'), 200);
     }
 
     /**
      * Edits an existing User entity.
      *
      * @Route("/{id}", name="api.user_update")
+     * @ParamConverter("user", class="AppBundle:User")
      * @Method("PUT")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, User $user)
     {
     }
 
@@ -96,8 +103,16 @@ class UserController extends AbstractController implements ApiControllerInterfac
      *
      * @Route("/{id}", name="api.user_delete")
      * @Method("DELETE")
+     * @ParamConverter("user", class="AppBundle:User")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, User $user)
     {
+        $user->setDeletedAt(new \DateTime());
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($user);
+        $em->flush();
+
+        return $this->jsonResponse(null, 204);
     }
 }

@@ -4,9 +4,7 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+      # Listeners
       app.api.request_listener:
          class: AppBundle\EventListener\ApiRequestListener
          arguments: ["@serializer"]
@@ -24,11 +22,19 @@ services:
          tags:
               - { name: validator.constraint_validator, alias: duplicate_email_validator }
 
+      # Subscribers
       app.corporation.subscriber:
           class: AppBundle\Subscriber\CorporationSubscriber
-          arguments: [ "@security.token_storage" , "@tarioch.pheal.factory" ]
+          arguments: [ "@security.token_storage" ]
           tags:
               - { name: doctrine.event_subscriber, connection: default }
 
+      app.api_credentials.subscriber:
+          class: AppBundle\Subscriber\ApiCredentialsSubscriber
+          arguments: [ "@security.token_storage", "@tarioch.pheal.factory" ]
+          tags:
+              - { name: doctrine.event_subscriber, connection: default }
+
+      # Manager
       app.corporation.manager:
           class: AppBundle\Service\Manager\CorporationManager

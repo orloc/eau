@@ -6,7 +6,8 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{ path('default') }}">EVE Tool <span class="small">v0.0.1</span></a>
+        <a class="navbar-brand" href="{% if not is_granted('ROLE_ADMIN') %}
+        {{ path('default') }} {% else %}  {{ path('dashboard') }} {% endif %}">EVE Tool <span class="small">v0.0.1</span></a>
     </div>
     <!-- /.navbar-header -->
 
@@ -29,29 +30,23 @@
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav" id="side-menu">
                 <li>
+                    <a href="{{ path('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                </li>
+                <li>
                     <a href="{{ path('user') }}"><i class="fa fa-user fa-fw"></i> Users</a>
                 </li>
                 <li>
-                    <a href="{{ path('corporation') }}"><i class="fa fa-gavel fa-fw"></i> Corperations</a>
+                    <a href="{{ path('corporation') }}"><i class="fa fa-gavel fa-fw"></i> Corporations</a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-industry fa-fw"></i> Industry Tools<span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li>
-                            <a href="#">Third Level <span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-third-level -->
+                            <a href="#"><i class="fa fa-eye fa-fw"></i> Market Watch </a>
                         </li>
                     </ul>
-                    <!-- /.nav-second-level -->
                 </li>
             </ul>
         </div>
-        <!-- /.sidebar-collapse -->
     </div>
-    <!-- /.navbar-static-side -->
 </nav>

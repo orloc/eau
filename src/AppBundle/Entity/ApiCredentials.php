@@ -59,7 +59,7 @@ class ApiCredentials {
     protected $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\ManyToOne(targetEntity="")
      * @JMS\Expose()
      */
     protected $created_by;
