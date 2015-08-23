@@ -55,6 +55,11 @@ class Corporation
      */
     protected $deleted_at;
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata){
+        $metadata->addPropertyConstraints('api_credentials',[
+            new Assert\Valid()
+        ]);
+    }
 
     public function __construct()
     {

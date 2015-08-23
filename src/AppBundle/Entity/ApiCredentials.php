@@ -69,7 +69,8 @@ class ApiCredentials {
             new Assert\NotBlank()
         ])
             ->addPropertyConstraints('verification_code', [
-                new Assert\NotBlank()
+                new Assert\NotBlank(),
+                new Assert\Length(['min' => 64, 'max' => 64])
             ]);
     }
 

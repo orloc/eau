@@ -40,11 +40,10 @@ class CorporationController extends AbstractController implements ApiControllerI
      */
     public function createAction(Request $request)
     {
-        $corp = new Corporation();
         $content = $request->request;
 
-        $corp->setApiKey($content->get('api_key'))
-            ->setVerificationCode($content->get('verification_code'));
+        $corp = $this->get('app.corporation.manager')
+            ->buildInstanceFromRequest($content);
 
         $validator = $this->get('validator');
 

@@ -1,7 +1,6 @@
 <?php
 
-namespace AppBundle\EventListener;
-
+namespace AppBundle\Subscriber;
 
 use AppBundle\Entity\Corporation;
 use Doctrine\Common\EventSubscriber;
@@ -9,7 +8,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class CorporationListener implements EventSubscriber {
+class CorporationSubscriber implements EventSubscriber {
 
     private $tokenManager;
     private $pheal;

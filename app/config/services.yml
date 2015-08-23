@@ -25,7 +25,10 @@ services:
               - { name: validator.constraint_validator, alias: duplicate_email_validator }
 
       app.corporation.subscriber:
-          class: AppBundle\EventListener\CorporationListener
+          class: AppBundle\Subscriber\CorporationSubscriber
           arguments: [ "@security.token_storage" , "@tarioch.pheal.factory" ]
           tags:
               - { name: doctrine.event_subscriber, connection: default }
+
+      app.corporation.manager:
+          class: AppBundle\Service\Manager\CorporationManager
