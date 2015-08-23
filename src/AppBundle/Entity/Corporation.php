@@ -45,6 +45,11 @@ class Corporation
     protected $accounts;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketOrder", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $market_orders;
+
+    /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="corporation", cascade={"persist"})
      */
     protected $api_credentials;

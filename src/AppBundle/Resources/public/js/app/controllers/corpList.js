@@ -9,7 +9,7 @@ angular.module('eveTool')
     $scope.newCorp = {};
 
     $http.get(Routing.generate('api.corps')).then(function(data){
-            $scope.corps = data.data;
+        $scope.corps = data.data;
     });
 
 

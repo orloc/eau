@@ -6,6 +6,7 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
@@ -21,7 +22,7 @@ class ApiCredentialsSubscriber implements EventSubscriber {
 
     public function getSubscribedEvents(){
         return [
-            'prePersist'
+            'prePersist',
         ];
     }
 
@@ -48,8 +49,6 @@ class ApiCredentialsSubscriber implements EventSubscriber {
 
         $entity->setAccessMask($accessMask)
             ->setType($type);
-
-        var_dump($entity);die;
 
     }
 

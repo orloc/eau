@@ -48,7 +48,7 @@ class ApiCredentials {
     protected $corporation;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     protected $invalid;
 
@@ -79,6 +79,9 @@ class ApiCredentials {
             ]);
     }
 
+    public function __construct(){
+        $this->created_at = new \DateTime();
+    }
 
     /**
      * Get id

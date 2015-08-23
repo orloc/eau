@@ -69,7 +69,6 @@ class CorporationController extends AbstractController implements ApiControllerI
             return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
         }
 
-        die;
         $em->flush();
 
         $json = $jms->serialize($corp, 'json');

@@ -9,12 +9,14 @@
             </button></h3>
         <table class="table table-hover data-table table-condensed" ng-cloak>
             <thead>
+            <th></th>
             <th>ID</th>
             <th>Name</th>
             <th>Created At</th>
             </thead>
             <tbody>
-            <tr ng-repeat="c in corporations">
+            <tr ng-repeat="c in corps">
+                <td><eve-image image-type="'Corporation'" object_id="c.id" img-width="64"></eve-image> </td>
                 <td>{{ '{{ c.id }}' }}</td>
                 <td>{{ '{{ c.name }}' }}</td>
                 <td>{{ '{{ c.created_at | date:"short" }}' }}</td>
