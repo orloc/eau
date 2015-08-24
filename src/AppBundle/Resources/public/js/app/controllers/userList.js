@@ -46,6 +46,7 @@ angular.module('eveTool')
 
             if ($scope.edit_open){
                 toggleNav('.edit');
+                $scope.closeEdit();
             }
         }).catch(function(data){
             $scope.errors = data.data;
@@ -54,27 +55,32 @@ angular.module('eveTool')
     };
 
     $scope.openNew = function(){
+        $scope.newUser = {};
         toggleNav('.new');
         $scope.nav_open = !$scope.nav_open;
     };
 
     $scope.openEdit = function(id, index){
-        if (id === $scope.edit_id){
-            toggleNav('.edit');
-            $scope.edit_open = !$scope.edit_open;
-        } else {
-            toggleNav('.edit');
-            $scope.edit_open = !$scope.edit_open;
-            $scope.edit_id = id;
-            $http.get(Routing.generate('api.user_show', { id: id })).then(function(data){
-                $scope.editUser = data.data;
-                $scope.editUser.role = data.data.roles[0];
-                $scope.edit_loaded = true;
-                $scope.current_index = index;
-            });
-        }
+        toggleNav('.edit');
+        $scope.edit_open = !$scope.edit_open;
+        $scope.edit_id = id;
+        $http.get(Routing.generate('api.user_show', { id: id })).then(function(data){
+            $scope.editUser = data.data;
+            $scope.editUser.role = data.data.roles[0];
+            $scope.edit_loaded = true;
+            $scope.current_index = index;
+        });
 
     };
+
+    $scope.closeEdit = function(){
+        $scope.edit_id = null;
+        $scope.edit_open = false;
+        $scope.edit_loaded = false;
+        $scope.current_index = null;
+        $scope.editUser = {};
+        $scope.editUser = {};
+    }
 
     $scope.delete = function(id){
         var response = window.confirm('Are you sure you wish to delete this user?');
@@ -106,13 +112,6 @@ angular.module('eveTool')
                 left: "0px"
             }, 300);
 
-            $scope.edit_id = null;
-            $scope.edit_open = false;
-            $scope.edit_loaded = false;
-            $scope.current_index = null;
-            $scope.editUser = {};
-            $scope.newUser = {};
-            $scope.editUser = {};
             $scope.errors = {};
         }
 

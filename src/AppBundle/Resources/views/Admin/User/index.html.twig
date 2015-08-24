@@ -38,10 +38,13 @@
                     <td><i ng-class="{'fa fa-check text-success': u.locked, 'fa fa-times text-danger': !u.locked}"></i> </td>
                     <td><i ng-class="{'fa fa-check text-success': u.has_valid_api_crendentials, 'fa fa-times text-danger': !u.has_valid_api_crendentials}"></i> </td>
                     <td class="text-center">
-                        <button  ng-click="openEdit(u.id, $index)" ng-disabled="nav_open == true || (edit_open == true && edit_id != u.id)" class="btn">
-                            <i ng-show="!edit_open || edit_id !=u.id" class="fa fa-chevron-right"></i>
-                            <i ng-show="edit_open && edit_id == u.id" class="fa fa-chevron-left"></i>
+                        <button ng-show="!edit_open || edit_id !=u.id"  ng-click="openEdit(u.id, $index)" ng-disabled="nav_open == true || (edit_open == true && edit_id != u.id)" class="btn">
+                            <i class="fa fa-chevron-right"></i>
                         </button>
+                        <button ng-show="edit_open && edit_id == u.id"  ng-click="openEdit(u.id, $index)" ng-disabled="nav_open == true || (edit_open == true && edit_id != u.id)" class="btn">
+                            <i class="fa fa-chevron-left"></i>
+                        </button>
+
                     </td>
                 </tr>
             </tbody>
