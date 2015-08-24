@@ -5,6 +5,7 @@ namespace AppBundle\Service\Manager;
 
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidExpirationException;
+use Doctrine\ORM\EntityManager;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class AccountManager {
@@ -31,9 +32,15 @@ class AccountManager {
             ->characters[0]
             ->characterID;
 
+        $corp = $result->key
+            ->characters[0]
+            ->corporationID;
+
+
         $entity->setAccessMask($accessMask)
             ->setType($type)
-            ->setCharacterId($char);
+            ->setCharacterId($char)
+            ->setCorporationId($corp);
 
     }
 

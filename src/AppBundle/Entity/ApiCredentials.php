@@ -27,7 +27,7 @@ class ApiCredentials {
     protected $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      */
     protected $api_key;
 
@@ -37,13 +37,18 @@ class ApiCredentials {
     protected $character_id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="integer")
+     */
+    protected $corporation_id;
+
+    /**
+     * @ORM\Column(type="string")
      * @JMS\Expose()
      */
     protected $type;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      */
     protected $verification_code;
 
@@ -360,5 +365,28 @@ class ApiCredentials {
     public function getCharacterId()
     {
         return $this->character_id;
+    }
+
+    /**
+     * Set corporation_id
+     *
+     * @param integer $corporationId
+     * @return ApiCredentials
+     */
+    public function setCorporationId($corporationId)
+    {
+        $this->corporation_id = $corporationId;
+
+        return $this;
+    }
+
+    /**
+     * Get corporation_id
+     *
+     * @return integer 
+     */
+    public function getCorporationId()
+    {
+        return $this->corporation_id;
     }
 }

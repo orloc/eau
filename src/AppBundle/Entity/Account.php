@@ -29,7 +29,7 @@ class Account
     protected $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
     protected $name;
@@ -63,6 +63,23 @@ class Account
         $this->created_at = new \DateTime();
         $this->balances = new ArrayCollection();
     }
+
+    /**
+     * Add balances
+     *
+     * @param \AppBundle\Entity\AccountBalance $balances
+     * @return Account
+     */
+    public function addBalance(\AppBundle\Entity\AccountBalance $balances)
+    {
+        if (!$this->balances->contains($balances)){
+            $this->balances[] = $balances;
+            $balances->setAccount($this);
+        }
+
+        return $this;
+    }
+
 
 
     /**
@@ -188,19 +205,6 @@ class Account
     public function getCorporation()
     {
         return $this->corporation;
-    }
-
-    /**
-     * Add balances
-     *
-     * @param \AppBundle\Entity\AccountBalance $balances
-     * @return Account
-     */
-    public function addBalance(\AppBundle\Entity\AccountBalance $balances)
-    {
-        $this->balances[] = $balances;
-
-        return $this;
     }
 
     /**

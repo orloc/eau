@@ -4,6 +4,7 @@ namespace AppBundle\Service\Manager;
 
 
 use AppBundle\Entity\Account;
+use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -47,8 +48,12 @@ class CorporationManager {
             $account = new Account();
 
             $account->setEveAccountId($a->accountID)
-                ->setDivision($a->accountKey)
-                ->setBalance($a->balance);
+                ->setDivision($a->accountKey);
+
+            $balance = new AccountBalance();
+            $balance->setBalance($a->balance);
+
+            $account->addBalance($balance);
 
             $corporation->addAccount($account);
         }

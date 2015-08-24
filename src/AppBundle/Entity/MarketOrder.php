@@ -84,12 +84,12 @@ class MarketOrder
     protected $duration;
 
     /**
-     * @ORM\Column(type="decimal", scale=2, precision=8)
+     * @ORM\Column(type="decimal", scale=2, precision=16)
      */
     protected $escrow;
 
     /**
-     * @ORM\Column(type="decimal", scale=2, precision=8)
+     * @ORM\Column(type="decimal", scale=2, precision=16)
      */
     protected $price;
 

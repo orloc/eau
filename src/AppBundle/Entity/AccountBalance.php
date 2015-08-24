@@ -26,7 +26,7 @@ class AccountBalance
     protected $id;
 
     /**
-     * @ORM\Column(type="decimal", precision=8, scale=2)
+     * @ORM\Column(type="decimal", precision=16, scale=2)
      */
     protected $balance;
 
@@ -62,7 +62,7 @@ class AccountBalance
      */
     public function setBalance($balance)
     {
-        $this->balance = $balance;
+        $this->balance = floatval($balance);
 
         return $this;
     }

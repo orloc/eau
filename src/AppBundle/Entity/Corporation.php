@@ -11,7 +11,10 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="corporations")
+ * @ORM\Table(name="corporations", uniqueConstraints={
+    @ORM\UniqueConstraint(name="name_idx", columns={"name"}),
+    @ORM\UniqueConstraint(name="eve_id_idx", columns={"eve_id"})
+ * })
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
  *
@@ -29,13 +32,14 @@ class Corporation
     protected $id;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @JMS\Expose()
      */
     protected $name;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @
      * @JMS\Expose()
      */
     protected $eve_id;

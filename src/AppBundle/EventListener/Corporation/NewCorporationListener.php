@@ -33,8 +33,6 @@ class NewCorporationListener implements EventSubscriberInterface {
             ->setEveId($result['id']);
 
         $this->manager->generateAccounts($corporation);
-        die;
-
 
         $this->em->persist($corporation);
         $this->em->flush();
