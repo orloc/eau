@@ -10,12 +10,12 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class NewCorporationListener implements EventSubscriberInterface {
 
     public static function getSubscribedEvents(){
-        return [ CorporationEvents::NEW_CORPORATION => [ 'updateDetails' => 0 ] ];
+        return [ CorporationEvents::NEW_CORPORATION =>  'updateDetails' ];
     }
 
     public function updateDetails(NewCorporationEvent $event){
 
-        var_dump($event);die;
+        var_dump($event->getCorporation());die;
 
 
     }

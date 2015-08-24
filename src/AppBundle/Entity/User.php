@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Validator\Constraints\DuplicateEmailConstraint;
+use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
@@ -33,6 +34,11 @@ class User extends BaseUser {
      * @JMS\Expose()
      */
     protected $created_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Character", mappedBy="user")
+     */
+    protected $characters;
 
     /**
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="user")
@@ -70,6 +76,7 @@ class User extends BaseUser {
         parent::__construct();
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
+        $this->characters = new ArrayCollection();
     }
 
     /**

@@ -69,7 +69,7 @@ class ApiCredentials {
     protected $created_at;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @JMS\Expose()
      */
     protected $deleted_at;

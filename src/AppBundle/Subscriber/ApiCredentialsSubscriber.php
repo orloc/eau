@@ -42,6 +42,7 @@ class ApiCredentialsSubscriber implements EventSubscriber {
         $result = $client->APIKeyInfo()->key;
         list($type, $expires, $accessMask) = [ $result->type, $result->expires, $result->accessMask ];
 
+
         if (strlen($expires) > 0) {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }

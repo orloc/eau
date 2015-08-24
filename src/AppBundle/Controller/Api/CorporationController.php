@@ -5,6 +5,8 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use AppBundle\Event\CorporationEvents;
+use AppBundle\Event\NewCorporationEvent;
 use AppBundle\Exception\InvalidExpirationException;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -70,6 +72,8 @@ class CorporationController extends AbstractController implements ApiControllerI
         }
 
         $em->flush();
+
+        $this->get('app.task.dispatcher')->addDeferred(CorporationEvents::NEW_CORPORATION, new NewCorporationEvent($corp));
 
         $json = $jms->serialize($corp, 'json');
 
