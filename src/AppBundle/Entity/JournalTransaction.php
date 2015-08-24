@@ -89,12 +89,13 @@ class JournalTransaction {
     /**
      * @ORM\Column(type="string")
      */
-    protected $tax_receiver_id;
+    protected $owner1_type_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $tax_amount;
+    protected $owner2_type_id;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="journal_transactions")
@@ -332,7 +333,7 @@ class JournalTransaction {
      */
     public function setAmount($amount)
     {
-        $this->amount = $amount;
+        $this->amount = floatval($amount);
 
         return $this;
     }
@@ -355,7 +356,7 @@ class JournalTransaction {
      */
     public function setBalance($balance)
     {
-        $this->balance = $balance;
+        $this->balance = floatval($balance);
 
         return $this;
     }
@@ -393,51 +394,6 @@ class JournalTransaction {
         return $this->reason;
     }
 
-    /**
-     * Set tax_receiver_id
-     *
-     * @param string $taxReceiverId
-     * @return JournalTransaction
-     */
-    public function setTaxReceiverId($taxReceiverId)
-    {
-        $this->tax_receiver_id = $taxReceiverId;
-
-        return $this;
-    }
-
-    /**
-     * Get tax_receiver_id
-     *
-     * @return string 
-     */
-    public function getTaxReceiverId()
-    {
-        return $this->tax_receiver_id;
-    }
-
-    /**
-     * Set tax_amount
-     *
-     * @param string $taxAmount
-     * @return JournalTransaction
-     */
-    public function setTaxAmount($taxAmount)
-    {
-        $this->tax_amount = $taxAmount;
-
-        return $this;
-    }
-
-    /**
-     * Get tax_amount
-     *
-     * @return string 
-     */
-    public function getTaxAmount()
-    {
-        return $this->tax_amount;
-    }
 
     /**
      * Set created_at
@@ -483,5 +439,51 @@ class JournalTransaction {
     public function getAccount()
     {
         return $this->account;
+    }
+
+    /**
+     * Set owner1_type_id
+     *
+     * @param string $owner1TypeId
+     * @return JournalTransaction
+     */
+    public function setOwner1TypeId($owner1TypeId)
+    {
+        $this->owner1_type_id = $owner1TypeId;
+
+        return $this;
+    }
+
+    /**
+     * Get owner1_type_id
+     *
+     * @return string 
+     */
+    public function getOwner1TypeId()
+    {
+        return $this->owner1_type_id;
+    }
+
+    /**
+     * Set owner2_type_id
+     *
+     * @param string $owner2TypeId
+     * @return JournalTransaction
+     */
+    public function setOwner2TypeId($owner2TypeId)
+    {
+        $this->owner2_type_id = $owner2TypeId;
+
+        return $this;
+    }
+
+    /**
+     * Get owner2_type_id
+     *
+     * @return string 
+     */
+    public function getOwner2TypeId()
+    {
+        return $this->owner2_type_id;
     }
 }
