@@ -187,4 +187,37 @@ class User extends BaseUser {
     {
         return $this->api_credentials;
     }
+
+    /**
+     * Add characters
+     *
+     * @param \AppBundle\Entity\Character $characters
+     * @return User
+     */
+    public function addCharacter(\AppBundle\Entity\Character $characters)
+    {
+        $this->characters[] = $characters;
+
+        return $this;
+    }
+
+    /**
+     * Remove characters
+     *
+     * @param \AppBundle\Entity\Character $characters
+     */
+    public function removeCharacter(\AppBundle\Entity\Character $characters)
+    {
+        $this->characters->removeElement($characters);
+    }
+
+    /**
+     * Get characters
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCharacters()
+    {
+        return $this->characters;
+    }
 }

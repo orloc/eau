@@ -32,6 +32,11 @@ class ApiCredentials {
     protected $api_key;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $character_id;
+
+    /**
      * @ORM\Column(type="text")
      * @JMS\Expose()
      */
@@ -332,5 +337,28 @@ class ApiCredentials {
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set character_id
+     *
+     * @param integer $characterId
+     * @return ApiCredentials
+     */
+    public function setCharacterId($characterId)
+    {
+        $this->character_id = $characterId;
+
+        return $this;
+    }
+
+    /**
+     * Get character_id
+     *
+     * @return integer 
+     */
+    public function getCharacterId()
+    {
+        return $this->character_id;
     }
 }

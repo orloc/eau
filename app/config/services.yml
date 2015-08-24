@@ -33,7 +33,7 @@ services:
 
       app.api_credentials.subscriber:
           class: AppBundle\Subscriber\ApiCredentialsSubscriber
-          arguments: [ "@security.token_storage", "@tarioch.pheal.factory" ]
+          arguments: [ "@security.token_storage", "@app.account.manager" ]
           tags:
               - { name: doctrine.event_subscriber, connection: default }
 
@@ -57,6 +57,6 @@ services:
           arguments: [ "@tarioch.pheal.factory" ]
           class: AppBundle\Service\Manager\CorporationManager
 
-      app.corporation.account_status:
+      app.account.manager:
           arguments: [ "@tarioch.pheal.factory" ]
-          class: AppBundle\Service\Manager\AccountStatusManager
+          class: AppBundle\Service\Manager\AccountManager

@@ -3,20 +3,19 @@
 namespace AppBundle\Subscriber;
 
 use AppBundle\Entity\ApiCredentials;
-use AppBundle\Exception\InvalidExpirationException;
+use AppBundle\Service\Manager\AccountManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class ApiCredentialsSubscriber implements EventSubscriber {
 
     private $tokenManager;
-    private $pheal;
+    private $manager;
 
-    public function __construct(TokenStorageInterface $storage, PhealFactory $pheal){
-        $this->pheal = $pheal;
+    public function __construct(TokenStorageInterface $storage, AccountManager $manager){
         $this->tokenManager = $storage;
+        $this->manager = $manager;
     }
 
     public function getSubscribedEvents(){
@@ -32,24 +31,9 @@ class ApiCredentialsSubscriber implements EventSubscriber {
             $user = $this->tokenManager->getToken()->getUser();
             $entity->setCreatedBy($user);
 
-            $this->updateApiData($entity);
+            $this->manager->validateAndUpdateApiKey($entity);
         }
     }
 
-    protected function updateApiData(ApiCredentials $entity){
-        $client = $this->pheal->createEveOnline($entity->getApiKey(), $entity->getVerificationCode());
-        // validate API MASK
-        $result = $client->APIKeyInfo()->key;
-        list($type, $expires, $accessMask) = [ $result->type, $result->expires, $result->accessMask ];
-
-
-        if (strlen($expires) > 0) {
-            throw new InvalidExpirationException('Expiration Date on API Key is finite.');
-        }
-
-        $entity->setAccessMask($accessMask)
-            ->setType($type);
-
-    }
 
 }
