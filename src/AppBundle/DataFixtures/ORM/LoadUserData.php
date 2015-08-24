@@ -24,13 +24,29 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $users = [
             [
-                'username' => 'admin',
+                'username' => 'orloc',
                 'email' => 'teppga52@gmail.com',
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
                 'roles' => ['ROLE_ADMIN']
-            ]
+            ],
+            [
+                'username' => 'capn',
+                'email' => 'egromaegtt@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_ADMIN']
+            ],
+            [
+                'username' => 'an0ki',
+                'email' => 'andrew.moore21@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_ADMIN']
+            ],
         ];
 
 
