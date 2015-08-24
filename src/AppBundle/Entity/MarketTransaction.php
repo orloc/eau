@@ -9,7 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="market_transactions")
+ * @ORM\Table(name="market_transactions", uniqueConstraints={
+    @ORM\UniqueConstraint(name="date_transID_jTransID_idx", columns={"date", "transaction_id", "journal_transaction_id"}),
+ * })
  * @JMS\ExclusionPolicy("all")
  *
  * @package AppBundle\Entity

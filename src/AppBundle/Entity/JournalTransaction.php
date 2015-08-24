@@ -9,7 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="journal_transactions")
+ * @ORM\Table(name="journal_transactions", uniqueConstraints={
+    @ORM\UniqueConstraint(name="refId_idx", columns={"ref_id"}),
+ * })
  * @JMS\ExclusionPolicy("all")
  *
  * @package AppBundle\Entity
@@ -32,42 +34,42 @@ class JournalTransaction {
     /**
      * @ORM\Column(type="bigint")
      */
-    protected $refId;
+    protected $ref_id;
 
     /**
      * @ORM\Column(type="integer")
      */
-    protected $refTypeId;
+    protected $ref_type_id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $ownerName1;
+    protected $owner_name1;
 
     /**
      * @ORM\Column(type="integer")
      */
-    protected $ownerId1;
+    protected $owner_id1;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $ownerName2;
+    protected $owner_name2;
 
     /**
      * @ORM\Column(type="integer")
      */
-    protected  $ownerId2;
+    protected  $owner_id2;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $argName1;
+    protected $arg_name1;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    protected $argId1;
+    protected $arg_id1;
 
     /**
      * @ORM\Column(type="decimal", precision=16, scale=2)
@@ -87,12 +89,12 @@ class JournalTransaction {
     /**
      * @ORM\Column(type="string")
      */
-    protected $taxReceiverId;
+    protected $tax_receiver_id;
 
     /**
      * @ORM\Column(type="string")
      */
-    protected $taxAmount;
+    protected $tax_amount;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="journal_transactions")
@@ -113,6 +115,7 @@ class JournalTransaction {
     {
         return $this->id;
     }
+
 
     /**
      * Set date
@@ -138,187 +141,187 @@ class JournalTransaction {
     }
 
     /**
-     * Set refId
+     * Set ref_id
      *
      * @param integer $refId
      * @return JournalTransaction
      */
     public function setRefId($refId)
     {
-        $this->refId = $refId;
+        $this->ref_id = $refId;
 
         return $this;
     }
 
     /**
-     * Get refId
+     * Get ref_id
      *
      * @return integer 
      */
     public function getRefId()
     {
-        return $this->refId;
+        return $this->ref_id;
     }
 
     /**
-     * Set refTypeId
+     * Set ref_type_id
      *
      * @param integer $refTypeId
      * @return JournalTransaction
      */
     public function setRefTypeId($refTypeId)
     {
-        $this->refTypeId = $refTypeId;
+        $this->ref_type_id = $refTypeId;
 
         return $this;
     }
 
     /**
-     * Get refTypeId
+     * Get ref_type_id
      *
      * @return integer 
      */
     public function getRefTypeId()
     {
-        return $this->refTypeId;
+        return $this->ref_type_id;
     }
 
     /**
-     * Set ownerName1
+     * Set owner_name1
      *
      * @param string $ownerName1
      * @return JournalTransaction
      */
     public function setOwnerName1($ownerName1)
     {
-        $this->ownerName1 = $ownerName1;
+        $this->owner_name1 = $ownerName1;
 
         return $this;
     }
 
     /**
-     * Get ownerName1
+     * Get owner_name1
      *
      * @return string 
      */
     public function getOwnerName1()
     {
-        return $this->ownerName1;
+        return $this->owner_name1;
     }
 
     /**
-     * Set ownerId1
+     * Set owner_id1
      *
      * @param integer $ownerId1
      * @return JournalTransaction
      */
     public function setOwnerId1($ownerId1)
     {
-        $this->ownerId1 = $ownerId1;
+        $this->owner_id1 = $ownerId1;
 
         return $this;
     }
 
     /**
-     * Get ownerId1
+     * Get owner_id1
      *
      * @return integer 
      */
     public function getOwnerId1()
     {
-        return $this->ownerId1;
+        return $this->owner_id1;
     }
 
     /**
-     * Set ownerName2
+     * Set owner_name2
      *
      * @param string $ownerName2
      * @return JournalTransaction
      */
     public function setOwnerName2($ownerName2)
     {
-        $this->ownerName2 = $ownerName2;
+        $this->owner_name2 = $ownerName2;
 
         return $this;
     }
 
     /**
-     * Get ownerName2
+     * Get owner_name2
      *
      * @return string 
      */
     public function getOwnerName2()
     {
-        return $this->ownerName2;
+        return $this->owner_name2;
     }
 
     /**
-     * Set ownerId2
+     * Set owner_id2
      *
      * @param integer $ownerId2
      * @return JournalTransaction
      */
     public function setOwnerId2($ownerId2)
     {
-        $this->ownerId2 = $ownerId2;
+        $this->owner_id2 = $ownerId2;
 
         return $this;
     }
 
     /**
-     * Get ownerId2
+     * Get owner_id2
      *
      * @return integer 
      */
     public function getOwnerId2()
     {
-        return $this->ownerId2;
+        return $this->owner_id2;
     }
 
     /**
-     * Set argName1
+     * Set arg_name1
      *
      * @param string $argName1
      * @return JournalTransaction
      */
     public function setArgName1($argName1)
     {
-        $this->argName1 = $argName1;
+        $this->arg_name1 = $argName1;
 
         return $this;
     }
 
     /**
-     * Get argName1
+     * Get arg_name1
      *
      * @return string 
      */
     public function getArgName1()
     {
-        return $this->argName1;
+        return $this->arg_name1;
     }
 
     /**
-     * Set argId1
+     * Set arg_id1
      *
      * @param string $argId1
      * @return JournalTransaction
      */
     public function setArgId1($argId1)
     {
-        $this->argId1 = $argId1;
+        $this->arg_id1 = $argId1;
 
         return $this;
     }
 
     /**
-     * Get argId1
+     * Get arg_id1
      *
      * @return string 
      */
     public function getArgId1()
     {
-        return $this->argId1;
+        return $this->arg_id1;
     }
 
     /**
@@ -391,49 +394,49 @@ class JournalTransaction {
     }
 
     /**
-     * Set taxReceiverId
+     * Set tax_receiver_id
      *
      * @param string $taxReceiverId
      * @return JournalTransaction
      */
     public function setTaxReceiverId($taxReceiverId)
     {
-        $this->taxReceiverId = $taxReceiverId;
+        $this->tax_receiver_id = $taxReceiverId;
 
         return $this;
     }
 
     /**
-     * Get taxReceiverId
+     * Get tax_receiver_id
      *
      * @return string 
      */
     public function getTaxReceiverId()
     {
-        return $this->taxReceiverId;
+        return $this->tax_receiver_id;
     }
 
     /**
-     * Set taxAmount
+     * Set tax_amount
      *
      * @param string $taxAmount
      * @return JournalTransaction
      */
     public function setTaxAmount($taxAmount)
     {
-        $this->taxAmount = $taxAmount;
+        $this->tax_amount = $taxAmount;
 
         return $this;
     }
 
     /**
-     * Get taxAmount
+     * Get tax_amount
      *
      * @return string 
      */
     public function getTaxAmount()
     {
-        return $this->taxAmount;
+        return $this->tax_amount;
     }
 
     /**
