@@ -25,7 +25,7 @@ security:
           form_login:
             provider: fos_userbundle
             csrf_provider: security.csrf.token_manager
-            default_target_path: /admin
+            default_target_path: /admin/dashboard
           logout: true
           anonymous: true
 

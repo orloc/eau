@@ -30,7 +30,23 @@ angular.module('eveTool')
 
             $scope.newUser = {};
             if ($scope.nav_open){
-                toggleNav();
+                toggleNav('.new');
+            }
+        }).catch(function(data){
+            $scope.errors = data.data;
+            $scope.submitLoading = false;
+        });
+    };
+
+    $scope.update = function(){
+        $scope.submitLoading = true;
+        $http.put(Routing.generate('api.user_update', { id: $scope.editUser.id }), $scope.editUser).then(function(data){
+            $scope.users[$scope.current_index] = data.data;
+            $scope.submitLoading = false;
+
+            $scope.editUser = {};
+            if ($scope.nav_open){
+                toggleNav('.edit');
             }
         }).catch(function(data){
             $scope.errors = data.data;

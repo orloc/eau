@@ -35,6 +35,12 @@ class User extends BaseUser {
     protected $created_at;
 
     /**
+     * @ORM\Column(type="datetime")
+     * @JMS\Expose()
+     */
+    protected $updated_at;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true, )
      * @JMS\Expose()
      */
@@ -45,10 +51,10 @@ class User extends BaseUser {
             ->addPropertyConstraints('email', [
                 new Assert\Email(),
                 new Assert\NotBlank(),
-                new DuplicateEmailConstraint()
+                new DuplicateEmailConstraint(['groups' => 'new'])
             ])
             ->addPropertyConstraints('plainPassword',[
-                new Assert\NotBlank()
+                new Assert\NotBlank(['groups' => 'new'])
             ])
             ->addPropertyConstraints('roles', [
                 new Assert\NotBlank()
@@ -58,6 +64,7 @@ class User extends BaseUser {
     public function __construct(){
         parent::__construct();
         $this->setCreatedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
     }
 
     /**
@@ -114,5 +121,28 @@ class User extends BaseUser {
     public function getDeletedAt()
     {
         return $this->deleted_at;
+    }
+
+    /**
+     * Set updated_at
+     *
+     * @param \DateTime $updatedAt
+     * @return User
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updated_at = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updated_at;
     }
 }

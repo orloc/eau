@@ -63,7 +63,7 @@
                                ng-minlength="6"
                                placeholder="Password..."
                                ng-required="true"
-                               ng-model="editUser.password"
+                               ng-model="editUser.plainPassword"
                                 />
                     </div>
                 </td>
@@ -80,7 +80,7 @@
                                ng-minlength="6"
                                placeholder="Password Confirmation..."
                                ng-required="true"
-                               compare-to="editUser.password"
+                               compare-to="editUser.plainPassword"
                                ng-model="editUser.password_confirmation"
                                 />
                     </div>
@@ -103,7 +103,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <button ladda="submitLoading" ng-disabled="!editUserForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Update</button>
+                    <button ladda="submitLoading" ng-disabled="!editUserForm.$valid " class="btn btn-block" type="submit" ng-click="update()">Update</button>
                 </td>
             </tr>
             </tbody>

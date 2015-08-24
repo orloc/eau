@@ -6,7 +6,6 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 

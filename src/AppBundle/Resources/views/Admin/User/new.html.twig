@@ -61,7 +61,7 @@
                                    ng-minlength="6"
                                    placeholder="Password..."
                                    ng-required="true"
-                                   ng-model="newUser.password"
+                                   ng-model="newUser.plainPassword"
                             />
                         </div>
                     </td>
@@ -78,7 +78,7 @@
                                    ng-minlength="6"
                                    placeholder="Password Confirmation..."
                                    ng-required="true"
-                                   compare-to="newUser.password"
+                                   compare-to="newUser.plainPassword"
                                    ng-model="newUser.password_confirmation"
                             />
                         </div>

@@ -31,7 +31,7 @@ class ApiRequestListener {
     protected function checkRequest(FilterControllerEvent $event){
         $request = $event->getRequest();
 
-        if (in_array($request->getMethod(), ['POST', 'PATCH']) && 0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+        if (in_array($request->getMethod(), ['POST', 'PATCH', 'PUT']) && 0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
             $data = $this->serializer->deserialize($request->getContent(),'array' ,'json');
             $request->request->replace(is_array($data) ? $data : []);
         }

@@ -37,4 +37,9 @@ services:
 
       # Manager
       app.corporation.manager:
+          arguments: [ "@tarioch.pheal.factory" ]
           class: AppBundle\Service\Manager\CorporationManager
+
+      app.corporation.account_status:
+          arguments: [ "@tarioch.pheal.factory" ]
+          class: AppBundle\Service\Manager\AccountStatusManager

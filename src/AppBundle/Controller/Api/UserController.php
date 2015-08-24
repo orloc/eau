@@ -64,16 +64,6 @@ class UserController extends AbstractController implements ApiControllerInterfac
         ]);
     }
 
-    private function processRequest(User $user, ParameterBag $content){
-        $user->setUsername($content->get('username'))
-            ->setEmail($content->get('email'))
-            ->setPlainPassword($content->get('password'))
-            ->addRole($content->get('role'));
-
-        $validator = $this->get('validator');
-
-        return $validator->validate($user);
-    }
 
     /**
      * Finds and displays a User entity.
@@ -96,17 +86,16 @@ class UserController extends AbstractController implements ApiControllerInterfac
      */
     public function updateAction(Request $request, User $user)
     {
-        $errors = $this->processRequest($user, $request->request);
+        $errors = $this->processRequest($user, $request->request, false);
 
         if (count($errors) > 0 ){
             return $this->getErrorResponse($errors);
         }
 
-        $userManager = $this->get('fos_user.user_manager');
         $jms = $this->get('serializer');
 
         try {
-            $userManager->updateUser($user, true);
+            $this->get('fos_user.user_manager')->updateUser($user);
         } catch (\Exception $e){
             return $this->jsonResponse($jms->serialize([ ['message' => 'There was an error with this request - likely the email OR username is already taken.']], 'json'), 409);
         }
@@ -130,5 +119,27 @@ class UserController extends AbstractController implements ApiControllerInterfac
         $em->flush();
 
         return $this->jsonResponse(null, 204);
+    }
+
+    private function processRequest(User $user, ParameterBag $content, $new = true){
+        if (strcmp($user->getUsername(), $content->get('username')) !== 0){
+            $user->setUsername($content->get('username'));
+        }
+
+        if (strcmp($user->getEmail(), $content->get('email')) !== 0){
+            $user->setEmail($content->get('email'));
+        }
+
+        if (strlen($content->get('plainPassword')) > 6){
+            $user->setPlainPassword($content->get('plainPassword'));
+        }
+
+        if ($user->getId() === null){
+            $user->addRole($content->get('role'));
+        }
+
+        $validator = $this->get('validator');
+
+        return $validator->validate($user, null, [$new ? 'new' : '']);
     }
 }
