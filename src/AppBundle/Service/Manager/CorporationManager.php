@@ -59,7 +59,32 @@ class CorporationManager {
         }
     }
 
-    public function updateMarketOrders(Corporation $corporation){
+    public function generateTransactions(Corporation $corporation){
+        $client = $this->getClient($corporation);
+
+        $accounts = $corporation->getAccounts();
+        $key = $corporation->getApiCredentials();
+
+        foreach($accounts as $acc){
+            $transactions = $client->WalletJournal([
+                'accountKey' => $acc->getDivision(),
+                'rowCount' => 2000
+            ]);
+
+            foreach ($transactions->entries as $t){
+
+                var_dump($t);
+                die;
+            }
+        }
+
+
+
+        foreach ($transactions as $key => $t){
+            var_dump( $t);
+        }
+        die;
+
     }
 
     private function getClient(Corporation $corporation, $scope = 'corp'){

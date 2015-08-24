@@ -61,17 +61,17 @@ class CorporationController extends AbstractController implements ApiControllerI
 
         try {
             $em->persist($corp);
-        } catch (InvalidExpirationException $e){
-            $this->get('logger')->warning('Invalid API creation attempt Key: %s Code %s User_Id: %s',
+            $em->flush();
+        } catch (\Exception $e){
+            $this->get('logger')->warning(sprintf('Invalid API creation attempt Key: %s Code %s User_Id: %s',
                 $content->get('api_key'),
                 $content->get('verification_code'),
                 $this->getUser()->getId()
-            );
+            ));
 
             return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
         }
 
-        $em->flush();
 
         $this->get('app.task.dispatcher')->addDeferred(CorporationEvents::NEW_CORPORATION, new NewCorporationEvent($corp));
 

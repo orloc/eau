@@ -57,5 +57,6 @@ angular.module('eveTool')
         }
 
         $scope.newCorp = {};
+        $scope.errors = [];
     }
 }]);

@@ -34,6 +34,8 @@ class NewCorporationListener implements EventSubscriberInterface {
 
         $this->manager->generateAccounts($corporation);
 
+        $this->manager->generateTransactions($corporation);
+
         $this->em->persist($corporation);
         $this->em->flush();
 

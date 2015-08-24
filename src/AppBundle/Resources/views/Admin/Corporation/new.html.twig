@@ -6,6 +6,16 @@
     <form name="newCorpForm">
         <table class="table-form">
             <tbody>
+                <tr ng-repeat="e in errors">
+                    <td></td>
+                    <td>
+                        <div class="alert alert-danger">
+                            <p class="small text-danger">
+                                <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <i ng-class="{ 'text-danger fa fa-times': newCorpForm.api_key.$invalid, 'text-success fa fa-check': newCorpForm.api_key.$valid}"></i>

@@ -60,6 +60,11 @@ class Account
     protected $transactions;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\JournalTransaction", cascade={"persist"}, mappedBy="account")
+     */
+    protected $journal_transactions;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
@@ -68,6 +73,7 @@ class Account
         $this->created_at = new \DateTime();
         $this->balances = new ArrayCollection();
         $this->transactions = new ArrayCollection();
+        $this->journal_transactions = new ArrayCollection();
     }
 
     /**
