@@ -28,7 +28,7 @@ class BelatedTaskListener implements EventSubscriberInterface {
 
     public static function getSubscribedEvents()
     {
-        return [KernelEvents::TERMINATE => 'onTerminate'];
+        return [ KernelEvents::TERMINATE => 'onTerminate'];
     }
 
 }

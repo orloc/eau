@@ -15,26 +15,25 @@ class AccountManager {
         $this->pheal = $pheal;
     }
 
-    public function finalizeApiKeyUpdate(ApiCredentials $entity){
-        $client = $this->getClient($entity);
-
-        $result = $client->APIKeyInfo()->character;
-
-        return $result;
-    }
-
     public function validateAndUpdateApiKey(ApiCredentials $entity){
         $client = $this->getClient($entity);
 
-        $result = $client->APIKeyInfo()->key;
-        list($type, $expires, $accessMask) = [ $result->type, $result->expires, $result->accessMask ];
+        $result = $client->APIKeyInfo();
+        $key = $result->key;
+
+        list($type, $expires, $accessMask) = [ $key->type, $key->expires, $key->accessMask ];
 
         if (strlen($expires) > 0) {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }
 
+        $char = $result->key
+            ->characters[0]
+            ->characterID;
+
         $entity->setAccessMask($accessMask)
-            ->setType($type);
+            ->setType($type)
+            ->setCharacterId($char);
 
     }
 

@@ -36,6 +36,7 @@ class Corporation
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @JMS\Expose()
      */
     protected $eve_id;
 
@@ -67,7 +68,6 @@ class Corporation
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @JMS\Expose()
      */
     protected $deleted_at;
 

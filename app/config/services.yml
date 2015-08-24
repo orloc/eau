@@ -44,13 +44,15 @@ services:
       # Task Events
       app.task.coporation.new:
           class: AppBundle\EventListener\Corporation\NewCorporationListener
-          arguments: [ "@tarioch.pheal.factory" ]
+          arguments: [ "@app.corporation.manager", "@doctrine.orm.entity_manager" ]
           tags:
               - { name: app.task.subscriber }
 
       app.task.belated_listener:
           class: AppBundle\EventListener\BelatedTaskListener
           arguments: [ "@app.task.dispatcher" ]
+          tags:
+            - { name: kernel.event_subscriber }
 
       # Manager
       app.corporation.manager:

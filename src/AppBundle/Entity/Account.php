@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
@@ -39,7 +40,7 @@ class Account
     protected $corporation;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $eve_account_id;
 
@@ -49,9 +50,9 @@ class Account
     protected $division;
 
     /**
-     * @ORM\Column(type="decimal", precision=8, scale=2)
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AccountBalance", cascade={"persist"}, mappedBy="account")
      */
-    protected $balance;
+    protected $balances;
 
     /**
      * @ORM\Column(type="datetime")
@@ -60,6 +61,7 @@ class Account
 
     public function __construct(){
         $this->created_at = new \DateTime();
+        $this->balances = new ArrayCollection();
     }
 
 
@@ -143,29 +145,6 @@ class Account
     }
 
     /**
-     * Set balance
-     *
-     * @param string $balance
-     * @return Account
-     */
-    public function setBalance($balance)
-    {
-        $this->balance = $balance;
-
-        return $this;
-    }
-
-    /**
-     * Get balance
-     *
-     * @return string 
-     */
-    public function getBalance()
-    {
-        return $this->balance;
-    }
-
-    /**
      * Set created_at
      *
      * @param \DateTime $createdAt
@@ -209,5 +188,38 @@ class Account
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Add balances
+     *
+     * @param \AppBundle\Entity\AccountBalance $balances
+     * @return Account
+     */
+    public function addBalance(\AppBundle\Entity\AccountBalance $balances)
+    {
+        $this->balances[] = $balances;
+
+        return $this;
+    }
+
+    /**
+     * Remove balances
+     *
+     * @param \AppBundle\Entity\AccountBalance $balances
+     */
+    public function removeBalance(\AppBundle\Entity\AccountBalance $balances)
+    {
+        $this->balances->removeElement($balances);
+    }
+
+    /**
+     * Get balances
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBalances()
+    {
+        return $this->balances;
     }
 }

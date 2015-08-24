@@ -3,6 +3,7 @@
 namespace AppBundle\Service\Manager;
 
 
+use AppBundle\Entity\Account;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -28,20 +29,36 @@ class CorporationManager {
         return $corp;
     }
 
-    public function updateDetails(Corporation $corporation){
-        $client = $this->getClient($corporation);
+    public function getCorporationDetails(Corporation $entity){
+        $client = $this->getClient($entity, 'account');
 
-        $result = $client->APIKeyInfo()->key;
+        $details = $client->APIKeyInfo()->key->characters[0];
+        $result =  [ 'name' => $details->corporationName , 'id' => $details->corporationID ];
+
+        return $result;
     }
 
-    public function updateAccounts(Corporation $corporation){
+    public function generateAccounts(Corporation $corporation){
+        $client = $this->getClient($corporation);
+
+        $accounts = $client->AccountBalance()->accounts;
+
+        foreach ($accounts as $a){
+            $account = new Account();
+
+            $account->setEveAccountId($a->accountID)
+                ->setDivision($a->accountKey)
+                ->setBalance($a->balance);
+
+            $corporation->addAccount($account);
+        }
 
     }
 
     public function updateMarketOrders(Corporation $corporation){
     }
 
-    private function getClient(Corporation $corporation){
+    private function getClient(Corporation $corporation, $scope = 'corp'){
 
         $key = $corporation->getApiCredentials();
         $client = $this->pheal->createEveOnline(
@@ -49,6 +66,8 @@ class CorporationManager {
             $key->getVerificationCode()
         );
 
-        $client->scope = 'corp';
+        $client->scope = $scope;
+
+        return $client;
     }
 }
