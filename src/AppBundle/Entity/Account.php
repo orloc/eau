@@ -109,6 +109,24 @@ class Account
     }
 
     /**
+     * Add journal_transactions
+     *
+     * @param \AppBundle\Entity\JournalTransaction $journalTransactions
+     * @return Account
+     */
+    public function addJournalTransaction(\AppBundle\Entity\JournalTransaction $journalTransactions)
+    {
+        if (!$this->journal_transactions->contains($journalTransactions)){
+            $this->journal_transactions[] = $journalTransactions;
+            $journalTransactions->setAccount($this);
+
+        }
+
+        return $this;
+    }
+
+
+    /**
      * Get id
      *
      * @return integer 
@@ -272,5 +290,25 @@ class Account
     public function getTransactions()
     {
         return $this->transactions;
+    }
+
+    /**
+     * Remove journal_transactions
+     *
+     * @param \AppBundle\Entity\JournalTransaction $journalTransactions
+     */
+    public function removeJournalTransaction(\AppBundle\Entity\JournalTransaction $journalTransactions)
+    {
+        $this->journal_transactions->removeElement($journalTransactions);
+    }
+
+    /**
+     * Get journal_transactions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getJournalTransactions()
+    {
+        return $this->journal_transactions;
     }
 }
