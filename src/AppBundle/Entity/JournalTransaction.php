@@ -82,7 +82,7 @@ class JournalTransaction {
     protected $balance;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     protected $reason;
 
@@ -106,6 +106,10 @@ class JournalTransaction {
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
+
+    public function __construct(){
+        $this->created_at = new \DateTime();
+    }
 
     /**
      * Get id
@@ -149,7 +153,7 @@ class JournalTransaction {
      */
     public function setRefId($refId)
     {
-        $this->ref_id = $refId;
+        $this->ref_id = intval($refId);
 
         return $this;
     }
@@ -172,7 +176,7 @@ class JournalTransaction {
      */
     public function setRefTypeId($refTypeId)
     {
-        $this->ref_type_id = $refTypeId;
+        $this->ref_type_id = intval($refTypeId);
 
         return $this;
     }
@@ -218,7 +222,7 @@ class JournalTransaction {
      */
     public function setOwnerId1($ownerId1)
     {
-        $this->owner_id1 = $ownerId1;
+        $this->owner_id1 = intval($ownerId1);
 
         return $this;
     }
@@ -264,7 +268,7 @@ class JournalTransaction {
      */
     public function setOwnerId2($ownerId2)
     {
-        $this->owner_id2 = $ownerId2;
+        $this->owner_id2 = intval($ownerId2);
 
         return $this;
     }
@@ -310,7 +314,7 @@ class JournalTransaction {
      */
     public function setArgId1($argId1)
     {
-        $this->arg_id1 = $argId1;
+        $this->arg_id1 = intval($argId1);
 
         return $this;
     }

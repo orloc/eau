@@ -64,7 +64,6 @@ class CorporationManager {
         $client = $this->getClient($corporation);
 
         $accounts = $corporation->getAccounts();
-        $key = $corporation->getApiCredentials();
 
         foreach($accounts as $acc){
             $transactions = $client->WalletJournal([
@@ -86,11 +85,10 @@ class CorporationManager {
                     ->setAmount($t->amount)
                     ->setBalance($t->balance)
                     ->setReason($t->reason)
-                    ->setOwner1TypeID($t->owner1TypeID)
-                    ->setOwner2TypeID($t->owner2TypeID);
+                    ->setOwner1TypeId($t->owner1TypeID)
+                    ->setOwner2TypeId($t->owner2TypeID);
 
-                var_dump($t);
-                die;
+                $acc->addJournalTransaction($jTran);
             }
         }
 
