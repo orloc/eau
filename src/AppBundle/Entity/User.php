@@ -35,6 +35,11 @@ class User extends BaseUser {
     protected $created_at;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials")
+     */
+    protected $api_credentials;
+
+    /**
      * @ORM\Column(type="datetime")
      * @JMS\Expose()
      */
@@ -65,6 +70,13 @@ class User extends BaseUser {
         parent::__construct();
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
+    }
+
+    /**
+     * @JMS\VirtualProperty()
+     */
+    public function hasValidApiCrendentials(){
+        return $this->getApiCredentials() instanceof ApiCredentials;
     }
 
     /**
@@ -144,5 +156,28 @@ class User extends BaseUser {
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Set api_credentials
+     *
+     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
+     * @return User
+     */
+    public function setApiCredentials(\AppBundle\Entity\ApiCredentials $apiCredentials = null)
+    {
+        $this->api_credentials = $apiCredentials;
+
+        return $this;
+    }
+
+    /**
+     * Get api_credentials
+     *
+     * @return \AppBundle\Entity\ApiCredentials 
+     */
+    public function getApiCredentials()
+    {
+        return $this->api_credentials;
     }
 }

@@ -44,8 +44,7 @@ angular.module('eveTool')
             $scope.users[$scope.current_index] = data.data;
             $scope.submitLoading = false;
 
-            $scope.editUser = {};
-            if ($scope.nav_open){
+            if ($scope.edit_open){
                 toggleNav('.edit');
             }
         }).catch(function(data){
@@ -60,16 +59,21 @@ angular.module('eveTool')
     };
 
     $scope.openEdit = function(id, index){
-        toggleNav('.edit');
-        $scope.edit_id = id;
-        $scope.edit_open = !$scope.edit_open;
+        if (id === $scope.edit_id){
+            toggleNav('.edit');
+            $scope.edit_open = !$scope.edit_open;
+        } else {
+            toggleNav('.edit');
+            $scope.edit_open = !$scope.edit_open;
+            $scope.edit_id = id;
+            $http.get(Routing.generate('api.user_show', { id: id })).then(function(data){
+                $scope.editUser = data.data;
+                $scope.editUser.role = data.data.roles[0];
+                $scope.edit_loaded = true;
+                $scope.current_index = index;
+            });
+        }
 
-        $http.get(Routing.generate('api.user_show', { id: id })).then(function(data){
-            $scope.editUser = data.data;
-            $scope.editUser.role = data.data.roles[0];
-            $scope.edit_loaded = true;
-            $scope.current_index = index;
-        });
     };
 
     $scope.delete = function(id){
@@ -103,6 +107,8 @@ angular.module('eveTool')
             }, 300);
 
             $scope.edit_id = null;
+            $scope.edit_open = false;
+            $scope.edit_loaded = false;
             $scope.current_index = null;
             $scope.editUser = {};
             $scope.newUser = {};

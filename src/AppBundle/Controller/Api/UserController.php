@@ -94,6 +94,8 @@ class UserController extends AbstractController implements ApiControllerInterfac
 
         $jms = $this->get('serializer');
 
+        $user->setUpdatedAt(new \DateTime());
+
         try {
             $this->get('fos_user.user_manager')->updateUser($user);
         } catch (\Exception $e){
