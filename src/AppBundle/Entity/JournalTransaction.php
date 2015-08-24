@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="journal_transactions", uniqueConstraints={
-    @ORM\UniqueConstraint(name="refId_idx", columns={"ref_id"}),
+    @ORM\UniqueConstraint(name="refId_date_acc_idx", columns={"ref_id", "date", "account_id"}),
  * })
  * @JMS\ExclusionPolicy("all")
  *

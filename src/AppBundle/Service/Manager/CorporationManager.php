@@ -91,7 +91,6 @@ class CorporationManager {
                 $acc->addJournalTransaction($jTran);
             }
         }
-
     }
 
     private function getClient(Corporation $corporation, $scope = 'corp'){

@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use AppBundle\Entity\User;
 use AppBundle\Event\CorporationEvents;
 use AppBundle\Event\NewCorporationEvent;
 use AppBundle\Exception\InvalidExpirationException;
@@ -66,7 +67,7 @@ class CorporationController extends AbstractController implements ApiControllerI
             $this->get('logger')->warning(sprintf('Invalid API creation attempt Key: %s Code %s User_Id: %s',
                 $content->get('api_key'),
                 $content->get('verification_code'),
-                $this->getUser()->getId()
+                $this->getUser() instanceof User ? $this->getUser()->getId() : '.anon'
             ));
 
             return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);

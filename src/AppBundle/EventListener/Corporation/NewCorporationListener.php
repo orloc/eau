@@ -32,6 +32,9 @@ class NewCorporationListener implements EventSubscriberInterface {
         $corporation->setName($result['name'])
             ->setEveId($result['id']);
 
+        $this->em->persist($corporation);
+        $this->em->flush();
+
         $this->manager->generateAccounts($corporation);
 
         $this->manager->generateJournalTransactions($corporation);
