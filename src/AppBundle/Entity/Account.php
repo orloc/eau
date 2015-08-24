@@ -55,6 +55,11 @@ class Account
     protected $balances;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketTransaction", cascade={"persist"}, mappedBy="account")
+     */
+    protected $transactions;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
@@ -62,6 +67,7 @@ class Account
     public function __construct(){
         $this->created_at = new \DateTime();
         $this->balances = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     /**
@@ -80,7 +86,21 @@ class Account
         return $this;
     }
 
+    /**
+     * Add transactions
+     *
+     * @param \AppBundle\Entity\MarketTransaction $transactions
+     * @return Account
+     */
+    public function addTransaction(\AppBundle\Entity\MarketTransaction $transactions)
+    {
+        if (!$this->transactions->contains($transactions)){
+            $this->transactions[] = $transactions;
+            $transactions->setAccount($this);
+        }
 
+        return $this;
+    }
 
     /**
      * Get id
@@ -225,5 +245,26 @@ class Account
     public function getBalances()
     {
         return $this->balances;
+    }
+
+
+    /**
+     * Remove transactions
+     *
+     * @param \AppBundle\Entity\MarketTransaction $transactions
+     */
+    public function removeTransaction(\AppBundle\Entity\MarketTransaction $transactions)
+    {
+        $this->transactions->removeElement($transactions);
+    }
+
+    /**
+     * Get transactions
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTransactions()
+    {
+        return $this->transactions;
     }
 }

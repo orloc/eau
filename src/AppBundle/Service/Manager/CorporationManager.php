@@ -57,7 +57,6 @@ class CorporationManager {
 
             $corporation->addAccount($account);
         }
-
     }
 
     public function updateMarketOrders(Corporation $corporation){
