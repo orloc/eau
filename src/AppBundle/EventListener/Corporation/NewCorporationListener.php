@@ -15,6 +15,8 @@ class NewCorporationListener implements EventSubscriberInterface {
 
     public function updateDetails(NewCorporationEvent $event){
 
+        var_dump($event);die;
+
 
     }
 }

@@ -28,7 +28,7 @@ class ApiCredentialsSubscriber implements EventSubscriber {
     public function prePersist(LifecycleEventArgs $args){
         $entity = $args->getObject();
 
-        if ($entity instanceof ApiCredentials){
+        if ($entity instanceof ApiCredentials && $entity->getId() === null){
             $user = $this->tokenManager->getToken()->getUser();
             $entity->setCreatedBy($user);
 

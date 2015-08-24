@@ -48,6 +48,11 @@ class ApiCredentials {
     protected $corporation;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="api_credentials")
+     */
+    protected $user;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $invalid;
@@ -62,6 +67,12 @@ class ApiCredentials {
      * @JMS\Expose()
      */
     protected $created_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @JMS\Expose()
+     */
+    protected $deleted_at;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")

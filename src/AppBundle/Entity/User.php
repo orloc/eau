@@ -35,7 +35,7 @@ class User extends BaseUser {
     protected $created_at;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="user")
      */
     protected $api_credentials;
 

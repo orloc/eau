@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\EventListener\Corporation;
+namespace AppBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
