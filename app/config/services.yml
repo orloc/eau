@@ -4,7 +4,7 @@ parameters:
 #    parameter_name: value
 
 services:
-      # Listeners
+      # Application Listeners
       app.api.request_listener:
          class: AppBundle\EventListener\ApiRequestListener
          arguments: ["@serializer"]
@@ -16,13 +16,14 @@ services:
          tags:
              - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
+      # Validators
       app.validator.duplicate_email:
          class: AppBundle\Validator\DuplicateEmailConstraintValidator
          arguments: [ "@doctrine.orm.entity_manager" ]
          tags:
               - { name: validator.constraint_validator, alias: duplicate_email_validator }
 
-      # Subscribers
+      # Doctrine Subscribers
       app.corporation.subscriber:
           class: AppBundle\Subscriber\CorporationSubscriber
           arguments: [ "@security.token_storage" ]
@@ -34,6 +35,17 @@ services:
           arguments: [ "@security.token_storage", "@tarioch.pheal.factory" ]
           tags:
               - { name: doctrine.event_subscriber, connection: default }
+
+      # Dispatchers
+      app.task.dispatcher:
+          class: AppBundle\EventListener\Dispatcher
+
+      # Task Events
+      app.task.coporation.new:
+          class: AppBundle\EventListener\Corporation\NewCorporationListener
+          arguments: [ "@tarioch.pheal.factory" ]
+          tags:
+              - { name: app.task.subscriber }
 
       # Manager
       app.corporation.manager:
