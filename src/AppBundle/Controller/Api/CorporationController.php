@@ -73,17 +73,18 @@ class CorporationController extends AbstractController implements ApiControllerI
             return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
         }
 
-
         $this->get('app.task.dispatcher')->addDeferred(CorporationEvents::NEW_CORPORATION, new NewCorporationEvent($corp));
 
         $json = $jms->serialize($corp, 'json');
 
-        return $this->jsonResponse($json);
+        return $this->jsonResponse($json, 200, [
+            'Connection' => 'close'
+        ]);
 
     }
 
     /**
-     * Finds and displays a User entity.
+     * Finds and displays a Corporation entity.
      *
      * @Route("/{id}", name="api.corp_show")
      * @Method("GET")
@@ -93,7 +94,7 @@ class CorporationController extends AbstractController implements ApiControllerI
     }
 
     /**
-     * Deletes a User entity.
+     * Deletes a Corporation entity.
      *
      * @Route("/{id}", name="api.corp_delete")
      * @Method("DELETE")
