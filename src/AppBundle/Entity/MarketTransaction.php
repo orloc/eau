@@ -70,6 +70,16 @@ class MarketTransaction
     /**
      * @ORM\Column(type="integer")
      */
+    protected $character_id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    protected $character_name;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     protected $station_id;
 
     /**
@@ -459,5 +469,51 @@ class MarketTransaction
     public function getAccount()
     {
         return $this->account;
+    }
+
+    /**
+     * Set character_id
+     *
+     * @param integer $characterId
+     * @return MarketTransaction
+     */
+    public function setCharacterId($characterId)
+    {
+        $this->character_id = $characterId;
+
+        return $this;
+    }
+
+    /**
+     * Get character_id
+     *
+     * @return integer 
+     */
+    public function getCharacterId()
+    {
+        return $this->character_id;
+    }
+
+    /**
+     * Set character_name
+     *
+     * @param string $characterName
+     * @return MarketTransaction
+     */
+    public function setCharacterName($characterName)
+    {
+        $this->character_name = $characterName;
+
+        return $this;
+    }
+
+    /**
+     * Get character_name
+     *
+     * @return string 
+     */
+    public function getCharacterName()
+    {
+        return $this->character_name;
     }
 }

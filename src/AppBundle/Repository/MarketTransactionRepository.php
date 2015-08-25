@@ -8,12 +8,13 @@ use Doctrine\ORM\EntityRepository;
 
 class MarketTransactionRepository extends EntityRepository {
 
-    public function hasTransaction(Account $acc, $refId){
+    public function hasTransaction(Account $acc, $transactionId, $jTransID){
         return $this->createQueryBuilder('jt')
             ->leftJoin('jt.account', 'acc')
             ->where('acc = :account')
-            ->andWhere('jt.ref_id = :id')
-            ->setParameters(['account' => $acc, 'id' => $refId])
+            ->andWhere('jt.transaction_id = :id')
+            ->andWhere('jt.journal_transaction_id = :jtid')
+            ->setParameters(['account' => $acc, 'id' => $transactionId, 'jtid' => $jTransID])
             ->getQuery()->getOneOrNullResult();
     }
 }

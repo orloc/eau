@@ -8,6 +8,7 @@ use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\JournalTransaction;
+use AppBundle\Entity\MarketTransaction;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -152,15 +153,26 @@ class CorporationManager {
 
             $transactions = $client->WalletTransactions($params);
 
-            foreach ($transactions->entries as $t){
-                $this->log->debug("processing {$t->refID}");
+            foreach ($transactions->transactions as $t){
+                $this->log->debug("processing {$t->transactionID}");
                 $exists = $this->registry->getRepository('AppBundle:MarketTransaction')
-                    ->hasTransaction($acc, $t->refID);
+                    ->hasTransaction($acc, $t->transactionID, $t->journalTransactionID);
 
                 if ($exists === null){
-                    $this->log->debug(sprintf('No exisiting transaction found for %s  in %s @ %s', $t->refID, $acc->getDivision(), $corporation->getName()));
+                    $this->log->debug(sprintf('No exisiting transaction found for %s  in %s @ %s', $t->transactionID, $acc->getDivision(), $corporation->getName()));
 
+                    $trans = new MarketTransaction();
+                    $trans->setDate(new \DateTime($t->transactionDateTime))
+                        ->setTransactionId($t->transactiondID)
+                        ->setQuantity($t->quantity)
+                        ->setItemName($t->typeName)
+                        ->setItemId($t->typeID)
+                        ->setPrice($t->price)
+                        ->setClientId($t->clientID)
+                        ->setClientName($t->clientName)
+                        ->set
                     var_dump($t);
+                    die;
 
                 } else  {
                     $this->log->warning(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corporation->getName()));
