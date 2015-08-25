@@ -46,8 +46,14 @@ class Account
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $division;
+
+    /**
+     * @JMS\Expose()
+     */
+    protected $current_balance;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AccountBalance", cascade={"persist"}, mappedBy="account")
@@ -123,6 +129,14 @@ class Account
         }
 
         return $this;
+    }
+
+    public function getCurrentBalance(){
+        return $this->current_balance;
+    }
+
+    public function setCurrentBalance($balance){
+        $this->current_balance = floatval($balance);
     }
 
 

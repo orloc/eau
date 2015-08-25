@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AccountBalanceRepository")
  * @ORM\Table(name="account_balances")
  * @JMS\ExclusionPolicy("all")
  *
