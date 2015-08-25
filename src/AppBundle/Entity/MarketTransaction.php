@@ -8,9 +8,9 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MarketTransactionRepository")
  * @ORM\Table(name="market_transactions", uniqueConstraints={
-    @ORM\UniqueConstraint(name="date_transID_jTransID_idx", columns={"date", "transaction_id", "journal_transaction_id"}),
+    @ORM\UniqueConstraint(name="date_transID_jTransID_acc_idx", columns={"date", "transaction_id", "account_id", "journal_transaction_id"}),
  * })
  * @JMS\ExclusionPolicy("all")
  *

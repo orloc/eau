@@ -30,16 +30,18 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                 $c->setName($result['name'])
                     ->setEveId($result['id']);
 
-                $corpManager->generateAccounts($c);
 
                 $em->persist($c);
                 $em->flush();
 
-            } else {
-                $corpManager->updateAccounts($c);
             }
 
-            $corpManager->updateJournalTransactions($c);
+            $corpManager->updateAccounts($c);
+
+            var_dump($c->getAccounts()[0]->getBalances());die;
+
+           // $corpManager->updateJournalTransactions($c);
+            //$corpManager->updateMarketTransactions($c);
 
             $em->persist($c);
             $em->flush();
