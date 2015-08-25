@@ -26,10 +26,13 @@
 {% block extra_javascript %}
     {{ parent() }}
     <script src="{{ asset('/bundles/app/js/app/app.js') }}"></script>
+    <script src="{{ asset('/bundles/app/js/app/animations/menuSlide.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/directives/compareTo.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/userList.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corpList.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/apiCredentialList.js') }}"></script>
+    <script src="{{ asset('/bundles/app/js/app/directives/sideMenuSlider.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/directives/serverStatus.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/directives/eveImage.js') }}"></script>
+    <script src="{{ asset('/bundles/app/js/app/controllers/userList.js') }}"></script>
+    <script src="{{ asset('/bundles/app/js/app/controllers/corpList.js') }}"></script>
+    <script src="{{ asset('/bundles/app/js/app/controllers/corpNew.js') }}"></script>
+    <script src="{{ asset('/bundles/app/js/app/controllers/apiCredentialList.js') }}"></script>
 {% endblock %}

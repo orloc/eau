@@ -1,62 +1,59 @@
-<div class="push-menu">
-    <div class="header">
-        <h3>New Corporation</h3>
-    </div>
+<side-menu-slider header-name="New_Corporation" open-event="new_corp_open" ng-cloak>
     <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
-    <form name="newCorpForm">
+    <form name="newCorpForm" ng-controller="corpNewController">
         <table class="table-form">
             <tbody>
-                <tr ng-repeat="e in errors">
-                    <td></td>
-                    <td>
-                        <div class="alert alert-danger">
-                            <p class="small text-danger">
-                                <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
-                            </p>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newCorpForm.api_key.$invalid, 'text-success fa fa-check': newCorpForm.api_key.$valid}"></i>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input name="api_key"
-                                   type="text"
-                                   class="form-control"
-                                   placeholder="API Key..."
-                                   ng-required="true"
-                                   ng-model="newCorp.api_key"
-                            />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <i ng-class="{ 'text-danger fa fa-times': newCorpForm.verification_code.$invalid, 'text-success fa fa-check': newCorpForm.verification_code.$valid}"></i>
-                    </td>
-                    <td>
-                        <div class="form-group">
-                            <input name="verification_code"
-                                   type="text"
-                                   ng-minlength="64"
-                                   ng-maxlength="64"
-                                   class="form-control"
-                                   placeholder="Verification Code..."
-                                   ng-required="true"
-                                   ng-model="newCorp.verification_code"
-                            />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <button ladda="submitLoading" ng-disabled="!newCorpForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
-                    </td>
-                </tr>
+            <tr ng-repeat="e in errors">
+                <td></td>
+                <td>
+                    <div class="alert alert-danger">
+                        <p class="small text-danger">
+                            <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i ng-class="{ 'text-danger fa fa-times': newCorpForm.api_key.$invalid, 'text-success fa fa-check': newCorpForm.api_key.$valid}"></i>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input name="api_key"
+                               type="text"
+                               class="form-control"
+                               placeholder="API Key..."
+                               ng-required="true"
+                               ng-model="newCorp.api_key"
+                                />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i ng-class="{ 'text-danger fa fa-times': newCorpForm.verification_code.$invalid, 'text-success fa fa-check': newCorpForm.verification_code.$valid}"></i>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input name="verification_code"
+                               type="text"
+                               ng-minlength="64"
+                               ng-maxlength="64"
+                               class="form-control"
+                               placeholder="Verification Code..."
+                               ng-required="true"
+                               ng-model="newCorp.verification_code"
+                                />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button ladda="submitLoading" ng-disabled="!newCorpForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </form>
-</div>
+</side-menu-slider>
