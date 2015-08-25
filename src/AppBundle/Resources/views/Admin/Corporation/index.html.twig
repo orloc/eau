@@ -1,14 +1,14 @@
 {% extends 'AppBundle:Admin:layout.html.twig' %}
 
 {% block content -%}
-    <div class="row" ng-controller="corpListController">
+    <div class="row" >
         <h3>Corporation <span class="muted small">LIST</span>
             <button type="button" ng-click="openNew()" class="pull-right btn btn-sm" ng-cloak>
                 <i class="fa fa-plus" ng-show="!nav_open"></i>
                 <i class="fa fa-minus" ng-show="nav_open"></i>
             </button>
         </h3>
-        <div class="col-xs-12">
+        <div class="col-xs-12" ng-controller="corpListController">
             <div class="row">
                 <div class="col-xs-5">
                     <table class="table table-hover data-table table-condensed" ng-cloak>

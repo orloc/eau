@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * User controller.
+ * Account controller.
  */
 class AccountController extends AbstractController implements ApiControllerInterface {
 

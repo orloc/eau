@@ -14,8 +14,16 @@ class TemplateController extends Controller
     /**
      * @Route("/server_status", name="template.serverstatus")
      */
-    public function indexAction(Request $request)
+    public function statusAction(Request $request)
     {
         return $this->render('AppBundle:Templates:serverStatus.html.twig');
+    }
+
+    /**
+     * @Route("/slide_menu", name="template.slidemenu")
+     */
+    public function slideAction(Request $request)
+    {
+        return $this->render('AppBundle:Templates:slideMenuWrapper.html.twig');
     }
 }

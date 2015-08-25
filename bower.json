@@ -20,6 +20,7 @@
     "angularjs": "~1.4.4",
     "font-awesome": "~4.4.0",
     "angular-messages": "~1.4.4",
-    "angular-ladda": "~0.3.1"
+    "angular-ladda": "~0.3.1",
+    "angular-animate": "~1.4.4"
   }
 }
