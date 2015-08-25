@@ -125,7 +125,7 @@ class CorporationManager {
 
                     $acc->addJournalTransaction($jTran);
                 } else  {
-                    $this->log->warning(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corporation->getName()));
+                    $this->log->info(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corporation->getName()));
                 }
             }
         }
@@ -182,7 +182,7 @@ class CorporationManager {
                     $acc->addMarketTransaction($trans);
 
                 } else  {
-                    $this->log->warning(sprintf("Conflicting Market Transaction %s for %s %s", $t->transactionID, $acc->getDivision(), $corporation->getName()));
+                    $this->log->info(sprintf("Conflicting Market Transaction %s for %s %s", $t->transactionID, $acc->getDivision(), $corporation->getName()));
                 }
             }
         }
