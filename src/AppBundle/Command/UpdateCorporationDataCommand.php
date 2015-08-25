@@ -40,6 +40,8 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $corpManager->updateJournalTransactions($c);
             $corpManager->updateMarketTransactions($c);
 
+            $c->setLastUpdatedAt(new \DateTime());
+
             $em->persist($c);
             $em->flush();
         }

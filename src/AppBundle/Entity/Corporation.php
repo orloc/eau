@@ -60,6 +60,12 @@ class Corporation
     protected $api_credentials;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $last_updated_at;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
     protected $created_by;
@@ -376,5 +382,28 @@ class Corporation
     public function getMarketOrders()
     {
         return $this->market_orders;
+    }
+
+    /**
+     * Set lasted_updated_at
+     *
+     * @param \DateTime $lastedUpdatedAt
+     * @return Corporation
+     */
+    public function setLastUpdatedAt($lastedUpdatedAt)
+    {
+        $this->last_updated_at = $lastedUpdatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get lasted_updated_at
+     *
+     * @return \DateTime 
+     */
+    public function getLastUpdatedAt()
+    {
+        return $this->last_updated_at;
     }
 }

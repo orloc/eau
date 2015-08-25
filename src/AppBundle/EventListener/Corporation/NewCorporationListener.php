@@ -41,6 +41,8 @@ class NewCorporationListener implements EventSubscriberInterface {
         $this->manager->updateJournalTransactions($corporation);
         $this->manager->updateMarketTransactions($corporation);
 
+        $corporation->setLastUpdatedAt(new \DateTime());
+
         $this->em->persist($corporation);
         $this->em->flush();
 
