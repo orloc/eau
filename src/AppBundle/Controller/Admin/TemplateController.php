@@ -26,4 +26,12 @@ class TemplateController extends Controller
     {
         return $this->render('AppBundle:Templates:slideMenuWrapper.html.twig');
     }
+
+    /**
+     * @Route("/slide_button", name="template.slidebutton")
+     */
+    public function slideButtonAction(Request $request)
+    {
+        return $this->render('AppBundle:Templates:slideButton.html.twig');
+    }
 }

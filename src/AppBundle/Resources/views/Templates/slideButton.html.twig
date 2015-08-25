@@ -1,4 +1,3 @@
-<button type="button" ng-click="openNew()" class="pull-right btn btn-sm" ng-cloak>
-    <i class="fa fa-plus" ng-show="!nav_open"></i>
-    <i class="fa fa-minus" ng-show="nav_open"></i>
+<button type="button" ng-click="toggleOpen()" class="pull-right btn btn-sm" ng-cloak>
+    <i ng-class='{ "fa fa-plus": !open, "fa fa-minus": open }'></i>
 </button>

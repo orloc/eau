@@ -7,12 +7,10 @@ angular.module('eveTool')
             transclude: true,
             scope: {
                 headerName: "=headerName",
-                openEvent: "=eventName"
+                openEvent: "=openEvent"
             },
             link : function(scope, element, attributes) {
-                scope.$on(scope.openEvent, function(event, args){
-                    attributes.open = args.open;
-                });
+                scope.headerName = attributes.headerName;
 
                 attributes.$observe('open', function(value){
                     value ? $animate.addClass(element, 'menuSlide') : $animate.addClass(element, 'menuSlide');

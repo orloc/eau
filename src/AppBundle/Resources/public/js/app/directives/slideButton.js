@@ -4,14 +4,19 @@ angular.module('eveTool')
     .directive('slideButton', [ function(){
         return {
             restrict: 'E',
+            require: '^sideMenuSlider',
             scope: {
-                imageType: "=imageType",
-                imgWidth: "=imgWidth"
+                openEvent: "=openEvent"
             },
-            link : function(scope, element, attributes) {
+            link : function(scope, element, attributes, menu) {
+                scope.open = false;
+                scope.toggleOpen = function(){
+                    scope.open = !scope.open;
+                    console.log(menu);
 
-                scope.url = [baseUrl,scope.imageType, path].join('/');
+                };
+
             },
-            template: "<img class='img img-responsive' height='50px' width='50px' src='{{ url }}' ng-cloak/>"
+            templateUrl : Routing.generate('template.slidebutton')
         };
     }]);
