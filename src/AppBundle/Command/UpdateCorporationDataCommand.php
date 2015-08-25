@@ -36,10 +36,9 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
             }
 
-            //$corpManager->updateAccounts($c);
-            //$corpManager->updateJournalTransactions($c);
+            $corpManager->updateAccounts($c);
+            $corpManager->updateJournalTransactions($c);
             $corpManager->updateMarketTransactions($c);
-            die;
 
             $em->persist($c);
             $em->flush();

@@ -163,24 +163,29 @@ class CorporationManager {
 
                     $trans = new MarketTransaction();
                     $trans->setDate(new \DateTime($t->transactionDateTime))
-                        ->setTransactionId($t->transactiondID)
+                        ->setTransactionId($t->transactionID)
                         ->setQuantity($t->quantity)
                         ->setItemName($t->typeName)
                         ->setItemId($t->typeID)
                         ->setPrice($t->price)
                         ->setClientId($t->clientID)
                         ->setClientName($t->clientName)
-                        ->set
-                    var_dump($t);
-                    die;
+                        ->setCharacterId($t->characterID)
+                        ->setCharacterName($t->characterName)
+                        ->setStationId($t->stationID)
+                        ->setStationName($t->stationName)
+                        ->setTransactionType($t->transactionType)
+                        ->setTransactionFor($t->transactionFor)
+                        ->setJournalTransactionId($t->journalTransactionID)
+                        ->setClientTypeId($t->clientTypeID);
+
+                    $acc->addMarketTransaction($trans);
 
                 } else  {
-                    $this->log->warning(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corporation->getName()));
+                    $this->log->warning(sprintf("Conflicting Market Transaction %s for %s %s", $t->transactionID, $acc->getDivision(), $corporation->getName()));
                 }
             }
         }
-        die;
-
     }
 
     private function getClient(Corporation $corporation, $scope = 'corp'){

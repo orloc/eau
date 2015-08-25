@@ -57,7 +57,7 @@ class Account
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketTransaction", cascade={"persist"}, mappedBy="account")
      */
-    protected $transactions;
+    protected $market_transactions;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\JournalTransaction", cascade={"persist"}, mappedBy="account")
@@ -72,7 +72,7 @@ class Account
     public function __construct(){
         $this->created_at = new \DateTime();
         $this->balances = new ArrayCollection();
-        $this->transactions = new ArrayCollection();
+        $this->market_transactions = new ArrayCollection();
         $this->journal_transactions = new ArrayCollection();
     }
 
@@ -98,10 +98,10 @@ class Account
      * @param \AppBundle\Entity\MarketTransaction $transactions
      * @return Account
      */
-    public function addTransaction(\AppBundle\Entity\MarketTransaction $transactions)
+    public function addMarketTransaction(\AppBundle\Entity\MarketTransaction $transactions)
     {
-        if (!$this->transactions->contains($transactions)){
-            $this->transactions[] = $transactions;
+        if (!$this->market_transactions->contains($transactions)){
+            $this->market_transactions[] = $transactions;
             $transactions->setAccount($this);
         }
 
@@ -277,9 +277,9 @@ class Account
      *
      * @param \AppBundle\Entity\MarketTransaction $transactions
      */
-    public function removeTransaction(\AppBundle\Entity\MarketTransaction $transactions)
+    public function removeMarketTransaction(\AppBundle\Entity\MarketTransaction $transactions)
     {
-        $this->transactions->removeElement($transactions);
+        $this->market_transactions->removeElement($transactions);
     }
 
     /**
@@ -287,9 +287,9 @@ class Account
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTransactions()
+    public function getMarketTransactions()
     {
-        return $this->transactions;
+        return $this->market_transactions;
     }
 
     /**
@@ -301,6 +301,7 @@ class Account
     {
         $this->journal_transactions->removeElement($journalTransactions);
     }
+
 
     /**
      * Get journal_transactions

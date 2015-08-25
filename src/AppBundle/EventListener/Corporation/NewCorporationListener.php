@@ -38,7 +38,7 @@ class NewCorporationListener implements EventSubscriberInterface {
         $this->em->persist($corporation);
         $this->em->flush();
 
-        #$this->manager->updateJournalTransactions($corporation);
+        $this->manager->updateJournalTransactions($corporation);
         $this->manager->updateMarketTransactions($corporation);
 
         $this->em->persist($corporation);

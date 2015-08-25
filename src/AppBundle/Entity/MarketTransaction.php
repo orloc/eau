@@ -33,12 +33,12 @@ class MarketTransaction
     protected $date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     protected $transaction_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     protected $quantity;
 
@@ -101,6 +101,11 @@ class MarketTransaction
      * @ORM\Column(type="bigint")
      */
     protected $journal_transaction_id;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $client_type_id;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="transactions")
@@ -515,5 +520,28 @@ class MarketTransaction
     public function getCharacterName()
     {
         return $this->character_name;
+    }
+
+    /**
+     * Set client_type_id
+     *
+     * @param integer $clientTypeId
+     * @return MarketTransaction
+     */
+    public function setClientTypeId($clientTypeId)
+    {
+        $this->client_type_id = $clientTypeId;
+
+        return $this;
+    }
+
+    /**
+     * Get client_type_id
+     *
+     * @return integer 
+     */
+    public function getClientTypeId()
+    {
+        return $this->client_type_id;
     }
 }
