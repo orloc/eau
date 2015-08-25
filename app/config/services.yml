@@ -56,7 +56,7 @@ services:
 
       # Manager
       app.corporation.manager:
-          arguments: [ "@tarioch.pheal.factory" ]
+          arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
           class: AppBundle\Service\Manager\CorporationManager
 
       app.account.manager:

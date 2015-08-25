@@ -32,12 +32,13 @@ class NewCorporationListener implements EventSubscriberInterface {
         $corporation->setName($result['name'])
             ->setEveId($result['id']);
 
+        // i dont like this but i want to save data so that if other things fail this sticks
+        $this->manager->generateAccounts($corporation);
+
         $this->em->persist($corporation);
         $this->em->flush();
 
-        $this->manager->generateAccounts($corporation);
-
-        $this->manager->generateJournalTransactions($corporation);
+        $this->manager->updateJournalTransactions($corporation);
 
         $this->em->persist($corporation);
         $this->em->flush();

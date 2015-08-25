@@ -147,7 +147,7 @@ class MarketTransaction
      */
     public function setTransactionId($transactionId)
     {
-        $this->transaction_id = $transactionId;
+        $this->transaction_id = intval($transactionId);
 
         return $this;
     }
@@ -170,7 +170,7 @@ class MarketTransaction
      */
     public function setQuantity($quantity)
     {
-        $this->quantity = $quantity;
+        $this->quantity = intval($quantity);
 
         return $this;
     }
@@ -216,7 +216,7 @@ class MarketTransaction
      */
     public function setItemId($itemId)
     {
-        $this->item_id = $itemId;
+        $this->item_id = intval($itemId);
 
         return $this;
     }
@@ -239,7 +239,7 @@ class MarketTransaction
      */
     public function setPrice($price)
     {
-        $this->price = $price;
+        $this->price = floatval($price);
 
         return $this;
     }
@@ -262,7 +262,7 @@ class MarketTransaction
      */
     public function setClientId($clientId)
     {
-        $this->client_id = $clientId;
+        $this->client_id = intval($clientId);
 
         return $this;
     }
@@ -308,7 +308,7 @@ class MarketTransaction
      */
     public function setStationId($stationId)
     {
-        $this->station_id = $stationId;
+        $this->station_id = intval($stationId);
 
         return $this;
     }
@@ -400,7 +400,7 @@ class MarketTransaction
      */
     public function setJournalTransactionId($journalTransactionId)
     {
-        $this->journal_transaction_id = $journalTransactionId;
+        $this->journal_transaction_id = intval($journalTransactionId);
 
         return $this;
     }

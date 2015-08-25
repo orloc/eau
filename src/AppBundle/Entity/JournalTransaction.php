@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\JournalTransactionRepository")
  * @ORM\Table(name="journal_transactions", uniqueConstraints={
     @ORM\UniqueConstraint(name="refId_date_acc_idx", columns={"ref_id", "date", "account_id"}),
  * })
