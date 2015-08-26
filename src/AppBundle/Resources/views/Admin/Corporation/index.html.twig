@@ -17,29 +17,22 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="c in corps" ng-if="corps.length">
-                                    <span ng-show="c.name.length">
-                                        <td width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64"></eve-image> </td>
-                                        <td>{{ '{{ c.name }}' }}</td>
-                                        <td>{{ '{{ c.last_updated_at | date:"shortDate" }}' }}<br>
-                                            <span class="small">{{ '{{ c.last_updated_at | date:"shortTime" }}' }}</span>
-                                        </td>
-                                    </span>
-                                    <span ng-show="c.name.length == 0">
-                                        <td colspan="3">
-                                            <loading-spinner></loading-spinner>
-                                        </td>
-                                    </span>
+                                    <td ng-show="!c.new" width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64" ng-show="!c.new"></eve-image> </td>
+                                    <td ng-show="!c.new">{{ '{{ c.name }}' }}</td>
+                                    <td ng-show="!c.new">{{ '{{ c.last_updated_at | date:"shortDate" }}' }}<br>
+                                        <span class="small">{{ '{{ c.last_updated_at | date:"shortTime" }}' }}</span>
+                                    </td>
+                                    <td colspan="3" ng-show="c.new">
+                                        <loading-spinner ng-show="c.new"></loading-spinner>
+                                    </td>
                                 </tr>
-
-                                <tr ng-if="!corps.length">
-                                    <td class="text-warning text-center" colspan="3">
-                                        No Corporations Found
-
+                                <tr ng-if="!corps.length" ng-cloak>
+                                    <td class="text-warning text-center" colspan="3" style="padding: 10px;" ng-cloak>
+                                        <h4 ng-cloak>No Corporations Found</h4>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
-
                     </div>
                     <div class="col-xs-7">
                         <ul class="nav nav-tabs">

@@ -40,6 +40,6 @@ class TemplateController extends Controller
      */
     public function loadingSpinnerAction(Request $request)
     {
-        return $this->render('AppBundle:Templates:slideButton.html.twig');
+        return $this->render('AppBundle:Templates:loadingSpinner.html.twig');
     }
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .directive('loading-spinner', [ function(){
+    .directive('loadingSpinner', [ function(){
         return {
             restrict: 'E',
             scope: {},

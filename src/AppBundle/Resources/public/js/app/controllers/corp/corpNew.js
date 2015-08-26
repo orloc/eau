@@ -13,6 +13,8 @@ angular.module('eveTool')
                 $scope.newCorp = {};
                 $scope.errors = [];
 
+                data.data.new = true;
+
                 dataDispatcher.addEvent('update_list', data.data);
                 dataDispatcher.addEvent('close_window', true);
             }).catch(function(data){
