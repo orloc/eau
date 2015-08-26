@@ -28,6 +28,7 @@ class MarketTransactionController extends AbstractController implements ApiContr
         $date = $request->get('date', null);
         $type = $request->get('type', 'buy');
 
+
         if ($date === null){
             $orders = $this->getDoctrine()->getRepository('AppBundle:MarketTransaction')->findBy([
                 'account' => $account
@@ -44,9 +45,35 @@ class MarketTransactionController extends AbstractController implements ApiContr
             } else {
                 $orders = [];
             }
+
+            $sorted = [];
+            foreach ($orders as $o){
+                if (!isset($sorted[$o->getItemName()])){
+                    $sorted[$o->getItemName()] = [];
+                }
+
+                $sorted[$o->getItemName()][] = $o;
+            }
+
+            $arr = array_map(function($arr) {
+                return array_reduce($arr, function ($carry, $value) {
+                    if (null === $carry) {
+
+                        return $value;
+                    }
+
+                    $q = $carry->getQuantity();
+                    $q2 = $value->getQuantity();
+
+                    $value->setQuantity($q2+$q);
+
+                    return $value;
+
+                });
+            }, $sorted);
         }
 
-        $json = $this->get('serializer')->serialize($orders, 'json');
+        $json = $this->get('serializer')->serialize($arr, 'json');
 
         return $this->jsonResponse($json);
 

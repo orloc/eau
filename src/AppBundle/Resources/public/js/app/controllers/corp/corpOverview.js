@@ -58,6 +58,16 @@ angular.module('eveTool')
 
         };
 
+        $scope.sumOrders = function(orders){
+            var sum = 0;
+
+            angular.forEach(orders, function(o){
+                sum+= o.price * o.quantity;
+            });
+
+            return sum;
+        }
+
         function updateData(acc){
 
             var date = moment($scope.current_date).format('X');

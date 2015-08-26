@@ -5,7 +5,7 @@
 </ul>
 <div ng-controller="corpOverviewController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <h4>Account Summary <span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
+        <h4>Account Summary - <span class="muted small">Total Bought / Sold By Item By Wallet By Day</span><span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
         <div class="row">
             <loading-spinner ng-show="loading" style="display: inline-block; margin-left: 50%"></loading-spinner>
             <div class="pull-right">
@@ -26,29 +26,33 @@
                 <b>Total </b>: {{ '{{ totalBalance | currency}}' }}
             </div>
             <div class="col-xs-4" ng-show="selected_account">
-                <h5 class="text-danger">Buy Orders <span class="small pull-right">({{ '{{  buy_orders.length }}' }})</span></h5>
+                <h5 class="text-danger">Buy Orders <span class="small pull-right">Total: {{ '{{  sumOrders(buy_orders) | currency }}' }}</span></h5>
                 <table class="table table-condensed">
                     <th>Item</th>
                     <th>Volume</th>
-                    <th>Net</th>
+                    <th>Price Per</th>
+                    <th>Gross</th>
                     <tr ng-repeat="b in buy_orders">
                         <td>{{ '{{ b.item_name }}' }}</td>
                         <td>{{ '{{ b.quantity }}' }}</td>
-                        <td>{{ '{{ b.price }}' }}</td>
+                        <td>{{ '{{ b.price | currency }}' }}</td>
+                        <td>{{ '{{ b.price * b.quantity | currency}}' }}</td>
                     </tr>
                 </table>
             </div>
 
             <div class="col-xs-4" ng-show="selected_account">
-                <h5 class="text-success">Sell Orders <span class="small pull-right">({{ '{{  sell_orders.length }}' }})</span></h5>
+                <h5 class="text-success">Sell Orders <span class="small pull-right">Total: {{ '{{  sumOrders(sell_orders) | currency }}' }}</span></h5>
                 <table class="table table-condensed">
                     <th>Item</th>
                     <th>Volume</th>
-                    <th>Net</th>
+                    <th>Price Per</th>
+                    <th>Gross</th>
                     <tr ng-repeat="b in sell_orders">
                         <td>{{ '{{ b.item_name }}' }}</td>
                         <td>{{ '{{ b.quantity }}' }}</td>
-                        <td>{{ '{{ b.price }}' }}</td>
+                        <td>{{ '{{ b.price | currency }}' }}</td>
+                        <td>{{ '{{ b.price * b.quantity | currency}}' }}</td>
                     </tr>
                 </table>
             </div>

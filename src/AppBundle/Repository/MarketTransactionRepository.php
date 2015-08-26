@@ -20,11 +20,17 @@ class MarketTransactionRepository extends EntityRepository {
     }
 
     public function getTotalBuyForDate(Account $acc, Carbon $date){
-        return $this->getTotalByTypeDate('buy', $acc, $date);
+        return $this->getTotalByTypeDate('buy', $acc, $date)->getQuery()->getResult();
     }
 
     public function getTotalSellForDate(Account $acc, Carbon $date){
-        return $this->getTotalByTypeDate('sell', $acc, $date);
+        return $this->getTotalByTypeDate('sell', $acc, $date)->getQuery()->getResult();
+    }
+
+    public function getGroupedBuysByDate(Account $acc, Carbon $date){
+        return $this->getTotalByTypeDate('buy', $acc, $date)
+            ->addGroupBy('mt.item_name')
+            ->select('sum(mt.price) as price, sum(mt.quantity) as volume')->getQuery()->getResult();
     }
 
     protected function getTotalByTypeDate($type, Account $acc, CArbon $date){
@@ -45,6 +51,6 @@ class MarketTransactionRepository extends EntityRepository {
                 'start' => $start,
                 'end' => $end,
                 'type' => $type
-            ])->getQuery()->getResult();
+            ]);
     }
 }
