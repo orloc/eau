@@ -16,7 +16,7 @@
                                 <th>Updated At</th>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" ng-class="{ 'warning' : c.new, 'info': selected_corp.id == c.id }">
+                                <tr ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
                                     <td ng-show="!c.new" width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64" ng-show="!c.new"></eve-image> </td>
                                     <td ng-show="!c.new">{{ '{{ c.name }}' }}</td>
                                     <td ng-show="!c.new">{{ '{{ c.last_updated_at | date:"shortDate" }}' }}<br>
