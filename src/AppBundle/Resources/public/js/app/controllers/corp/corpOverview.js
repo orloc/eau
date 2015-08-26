@@ -71,6 +71,13 @@ angular.module('eveTool')
             });
 
             return sum;
+        };
+
+        $scope.findGross = function(){
+            var buy = $scope.sumOrders($scope.buy_orders);
+            var sell = $scope.sumOrders($scope.sell_orders);
+
+            return sell - buy;
         }
 
         function updateData(acc){
