@@ -35,24 +35,7 @@
                         </table>
                     </div>
                     <div class="col-xs-7">
-                        <ul class="nav nav-tabs">
-                            <li role="presentation" class="active"><a href="#">Overview</a></li>
-                            <li role="presentation"><a href="#">Market Transactions</a></li>
-                            <li role="presentation"><a href="#">Performance</a></li>
-                        </ul>
-                        <div ng-controller="corpOverviewController" class="row">
-                            <div class="col-xs-4 well">
-                                <h4>Account Summary</h4>
-
-                                <ul class="list-unstyled">
-                                    <li ng-repeat="acc in accounts">
-                                        <b>{{ '{{ acc.division }}' }}</b>: {{ '{{ acc.current_balance | currency }}' }}
-                                    </li>
-                                </ul>
-                                Total : {{ '{{ totalBalance | currency}}' }}
-                            </div>
-
-                        </div>
+                        {% include 'AppBundle:Admin/Corporation:overview.html.twig' %}
                     </div>
                 </div>
             </div>

@@ -1,0 +1,58 @@
+<ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">Overview</a></li>
+    <li role="presentation"><a href="#">Market Transactions</a></li>
+    <li role="presentation"><a href="#">Performance</a></li>
+</ul>
+<div ng-controller="corpOverviewController" class="row">
+    <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+        <h4>Account Summary <span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
+        <div class="row">
+            <loading-spinner ng-show="loading" style="display: inline-block; margin-left: 50%"></loading-spinner>
+            <div class="pull-right">
+                <div class="btn-group-sm" ng-show="selected_account">
+                    <button  class="btn btn-sm" type="button" ng-click="back()"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn btn-sm" type="button" ng-click="forward()"><i class="fa fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-4">
+                <ul class="list-unstyled list-group">
+                    <li ng-repeat="acc in accounts" ng-class="{ 'list-group-item active': selected_account.id == acc.id, 'list-group-item': selected_account.id != acc.id}" ng-click="selectAccount(acc)">
+                        <b>{{ '{{ acc.division }}' }}</b>: {{ '{{ acc.current_balance | currency }}' }}
+                    </li>
+                </ul>
+                <b>Total </b>: {{ '{{ totalBalance | currency}}' }}
+            </div>
+            <div class="col-xs-4" ng-show="selected_account">
+                <h5 class="text-danger">Buy Orders <span class="small pull-right">({{ '{{  buy_orders.length }}' }})</span></h5>
+                <table class="table table-condensed">
+                    <th>Item</th>
+                    <th>Volume</th>
+                    <th>Net</th>
+                    <tr ng-repeat="b in buy_orders">
+                        <td>{{ '{{ b.item_name }}' }}</td>
+                        <td>{{ '{{ b.quantity }}' }}</td>
+                        <td>{{ '{{ b.price }}' }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="col-xs-4" ng-show="selected_account">
+                <h5 class="text-success">Sell Orders <span class="small pull-right">({{ '{{  sell_orders.length }}' }})</span></h5>
+                <table class="table table-condensed">
+                    <th>Item</th>
+                    <th>Volume</th>
+                    <th>Net</th>
+                    <tr ng-repeat="b in sell_orders">
+                        <td>{{ '{{ b.item_name }}' }}</td>
+                        <td>{{ '{{ b.quantity }}' }}</td>
+                        <td>{{ '{{ b.price }}' }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -38,4 +38,5 @@ class AccountController extends AbstractController implements ApiControllerInter
         return $this->jsonResponse($json);
 
     }
+
 }

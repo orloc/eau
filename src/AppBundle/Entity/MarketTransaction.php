@@ -29,6 +29,7 @@ class MarketTransaction
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $date;
 
@@ -39,56 +40,67 @@ class MarketTransaction
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $quantity;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $item_name;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $item_id;
 
     /**
      * @ORM\Column(type="decimal", precision=16, scale=2)
+     * @JMS\Expose()
      */
     protected $price;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $client_id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $client_name;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $character_id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $character_name;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $station_id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $station_name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $transaction_type;
 
