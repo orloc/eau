@@ -7,6 +7,7 @@ angular.module('eveTool')
         $scope.buy_orders = [];
         $scope.sell_orders = [];
         $scope.loading = false;
+        $scope.page = 'buy';
 
         $scope.current_date = moment().format('MM/DD/YY');
 
@@ -31,6 +32,10 @@ angular.module('eveTool')
             });
 
         });
+
+        $scope.switchPage = function(page){
+            $scope.page = page;
+        }
 
         $scope.back = function(){
             $scope.loading = true;
