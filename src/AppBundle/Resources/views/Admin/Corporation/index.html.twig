@@ -41,7 +41,14 @@
                             <li role="presentation"><a href="#">Performance</a></li>
                         </ul>
                         <div ng-controller="corpOverviewController" class="row">
-                            {{ '{{ selected_corp}}' }}
+                            <div class="col-xs-4">
+                                <h4>Account Summary</h4>
+                                <ul class="list-unstyled">
+                                    <li ng-repeat="acc in accounts">
+                                        {{ '{{ acc.division }}' }}: ${{ '{{ acc.current_balance | currency }}' }}
+                                    </li>
+                                </ul>
+                            </div>
 
                         </div>
                     </div>

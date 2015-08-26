@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class AccountController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/account", name="api.corporation.account")
+     * @Route("/corporation/{id}/account", name="api.corporation.account", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
      */
