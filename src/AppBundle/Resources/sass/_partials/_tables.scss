@@ -18,10 +18,10 @@ table.table.data-table {
       font-size: 16px;
       border: 0;
     }
+
+    tr td:hover {
+      cursor: pointer;
+    }
   }
-}
-table.table.data-table>tbody>tr:nth-child(odd)>td,
-table.data-table>tbody>tr:nth-child(odd)>th {
-  background-color: $offWhite;
 }
 
