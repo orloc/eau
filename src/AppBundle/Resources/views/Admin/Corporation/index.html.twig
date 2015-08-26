@@ -41,13 +41,15 @@
                             <li role="presentation"><a href="#">Performance</a></li>
                         </ul>
                         <div ng-controller="corpOverviewController" class="row">
-                            <div class="col-xs-4">
+                            <div class="col-xs-4 well">
                                 <h4>Account Summary</h4>
+
                                 <ul class="list-unstyled">
                                     <li ng-repeat="acc in accounts">
-                                        {{ '{{ acc.division }}' }}: ${{ '{{ acc.current_balance | currency }}' }}
+                                        <b>{{ '{{ acc.division }}' }}</b>: {{ '{{ acc.current_balance | currency }}' }}
                                     </li>
                                 </ul>
+                                Total : {{ '{{ totalBalance | currency}}' }}
                             </div>
 
                         </div>

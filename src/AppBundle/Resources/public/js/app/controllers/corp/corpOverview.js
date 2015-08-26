@@ -16,6 +16,13 @@ angular.module('eveTool')
 
             $http.get(Routing.generate('api.corporation.account', { id: val.id })).then(function(data){
                 $scope.accounts = data.data;
+
+                var total = 0;
+                angular.forEach($scope.accounts, function(a){
+                    total += parseFloat(a.current_balance);
+                });
+
+                $scope.totalBalance = total;
             });
 
         });
