@@ -1,12 +1,8 @@
-body.pushed {
-  left: -350px;
-}
-
-.push-menu {
+side-menu-slider {
   width: 350px;
-  position: fixed;
   top: 0;
-  right: -350px;
+  right:-350px;
+  position: fixed;
   height: 100%;
   background-color: $darkerBlack;
 
