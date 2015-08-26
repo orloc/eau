@@ -56,6 +56,12 @@ class Account
     protected $current_balance;
 
     /**
+     * @JMS\Expose()
+     */
+    protected $last_day_balance;
+
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AccountBalance", cascade={"persist"}, mappedBy="account")
      */
     protected $balances;
@@ -131,12 +137,22 @@ class Account
         return $this;
     }
 
+    public function getLastDayBalance(){
+        return $this->last_day_balance;
+    }
+
+    public function setLastDayBalance($balance){
+        $this->last_day_balance = floatval($balance);
+        return $this;
+    }
+
     public function getCurrentBalance(){
         return $this->current_balance;
     }
 
     public function setCurrentBalance($balance){
         $this->current_balance = floatval($balance);
+        return $this;
     }
 
 

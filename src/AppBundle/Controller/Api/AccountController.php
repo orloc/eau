@@ -30,7 +30,11 @@ class AccountController extends AbstractController implements ApiControllerInter
             $balance = $balanceRepo->getLatestBalance($acc)
                 ->getBalance();
 
-            $acc->setCurrentBalance($balance);
+            $lastDay = $balanceRepo->getLastDayBalance($acc)
+                ->getBalance();
+
+            $acc->setCurrentBalance($balance)
+                ->setLastDayBalance($lastDay);
         }
 
         $json = $this->get('serializer')->serialize($accounts, 'json');

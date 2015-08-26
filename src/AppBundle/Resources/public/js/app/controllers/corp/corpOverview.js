@@ -5,6 +5,8 @@ angular.module('eveTool')
         $scope.selected_corp = null;
         $scope.selected_account = null;
         $scope.buy_orders = [];
+        $scope.totalBalance = 0;
+        $scope.grossProfit = 0;
         $scope.sell_orders = [];
         $scope.loading = false;
         $scope.page = 'buy';
@@ -24,11 +26,14 @@ angular.module('eveTool')
                 $scope.accounts = data.data;
 
                 var total = 0;
+                var lastDay = 0;
                 angular.forEach($scope.accounts, function(a){
                     total += parseFloat(a.current_balance);
+                    lastDay += parseFloat(a.last_day_balance);
                 });
 
                 $scope.totalBalance = total;
+                $scope.percentChangeBalance = ((total - lastDay) / total) * 100;
             });
 
         });

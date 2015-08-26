@@ -5,15 +5,17 @@
 </ul>
 <div ng-controller="corpOverviewController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <h4>Account Summary - <span class="muted small">Total Bought / Sold By Item By Wallet By Day</span><span class="pull-right small" ng-show="selected_account"><span style="margin-right: 50px;">
-                    <i ng-class="{ 'fa fa-chevron-up text-success': findGross() > 0, 'fa fa-chevron-down text-danger': findGross() < 0 }"></i> {{ '{{ findGross() | currency }}' }}
-                </span><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
+        <h4>Account Summary - <span class="muted small">Total Bought / Sold By Item By Wallet By Day</span><span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
         <div class="row">
-            <loading-spinner ng-show="loading" style="display: inline-block; margin-left: 50%"></loading-spinner>
-            <div class="pull-right">
-                <div class="btn-group-sm" ng-show="selected_account">
-                    <button  class="btn btn-sm" type="button" ng-click="back()"><i class="fa fa-chevron-left"></i></button>
-                    <button class="btn btn-sm" type="button" ng-click="forward()"><i class="fa fa-chevron-right"></i></button>
+            <div class="col-xs-8">
+                <loading-spinner ng-show="loading" style="display: inline-block; margin-left: 50%"></loading-spinner>
+            </div>
+            <div class="col-xs-4">
+                <div class="pull-right">
+                    <div class="btn-group-sm" ng-show="selected_account">
+                        <button  class="btn btn-sm" type="button" ng-click="back()"><i class="fa fa-chevron-left"></i></button>
+                        <button class="btn btn-sm" type="button" ng-click="forward()"><i class="fa fa-chevron-right"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -25,7 +27,15 @@
                         <b>{{ '{{ acc.division }}' }}</b>: {{ '{{ acc.current_balance | currency }}' }}
                     </li>
                 </ul>
-                <b>Total </b>: {{ '{{ totalBalance | currency}}' }}
+                <ul class="list-unstyled" ng-show="selected_account">
+                    <li>
+                        <b>Total </b>: {{ '{{ totalBalance | currency}}' }}
+                    </li>
+                    <li>
+                       <b> Gross Transaction Summary</b>: <br><i ng-class="{ 'fa fa-chevron-up text-success': findGross() > 0, 'fa fa-chevron-down text-danger': findGross() < 0 }"></i>
+                        {{ '{{ findGross() | currency }}' }}
+                    </li>
+                </ul>
             </div>
             <div ng-show="page == 'buy'">
                 <h5 class="text-danger">Buy Orders - <span class="small">Total: {{ '{{  sumOrders(buy_orders) | currency }}' }}</span>
@@ -45,7 +55,16 @@
                     <th>Price Per</th>
                     <th>Gross</th>
                     <tr ng-repeat="b in buy_orders">
-                        <td>{{ '{{ b.item_name }}' }}</td>
+                        <td>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <eve-image image-type="'Type'" object-id="b.item_id" img-width="64"></eve-image>
+                                </div>
+                                <div class="col-xs-9">
+                                    {{ '{{ b.item_name }}' }}
+                                </div>
+                            </div>
+                        </td>
                         <td>{{ '{{ b.quantity }}' }}</td>
                         <td>{{ '{{ b.price | currency }}' }}</td>
                         <td>{{ '{{ b.price * b.quantity | currency}}' }}</td>
@@ -53,17 +72,26 @@
                 </table>
             </div>
 
-            <div class="col-xs-4" ng-show="selected_account && page == 'sell'">
+            <div class="col-xs-8" ng-show="selected_account && page == 'sell'">
                 <table class="table table-condensed">
                     <th>Item</th>
                     <th>Volume</th>
                     <th>Price Per</th>
                     <th>Gross</th>
-                    <tr ng-repeat="b in sell_orders">
-                        <td>{{ '{{ b.item_name }}' }}</td>
-                        <td>{{ '{{ b.quantity }}' }}</td>
-                        <td>{{ '{{ b.price | currency }}' }}</td>
-                        <td>{{ '{{ b.price * b.quantity | currency}}' }}</td>
+                    <tr ng-repeat="s in sell_orders">
+                        <td>
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <eve-image image-type="'Type'" object-id="s.item_id" img-width="64"></eve-image>
+                                </div>
+                                <div class="col-xs-9">
+                                    {{ '{{ s.item_name }}' }}
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ '{{ s.quantity }}' }}</td>
+                        <td>{{ '{{ s.price | currency }}' }}</td>
+                        <td>{{ '{{ s.price * s.quantity | currency}}' }}</td>
                     </tr>
                 </table>
             </div>
