@@ -8,4 +8,8 @@ angular.module('eveTool')
         $scope.corps = data.data;
     });
 
+    $scope.$on('update_list', function(event, item){
+        $scope.corps.push(item);
+    });
+
 }]);

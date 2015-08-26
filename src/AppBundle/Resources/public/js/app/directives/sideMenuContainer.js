@@ -25,9 +25,12 @@ angular.module('eveTool')
 
                 };
 
+                $scope.$on('close_window', function(){
+                    button.open = $scope.open = !$scope.open;
+                });
+
                 $scope.$watch('open', function(value){
                     if (value){
-                        console.log(sideMenu);
                         $(sideMenu).animate({
                             right: "0px"
                         }, 300);

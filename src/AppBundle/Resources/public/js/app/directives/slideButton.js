@@ -12,7 +12,6 @@ angular.module('eveTool')
                 };
 
                 container.addButton(scope);
-
             },
             templateUrl : Routing.generate('template.slidebutton')
         };

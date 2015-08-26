@@ -10,18 +10,25 @@
                 <div class="row">
                     <div class="col-xs-5">
                         <table class="table table-hover data-table table-condensed" ng-cloak>
-                            <thead>
+                            <thead width="100%">
                             <th></th>
                             <th>Name</th>
                             <th>Updated At</th>
                             </thead>
                             <tbody>
                             <tr ng-repeat="c in corps">
-                                <td width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64"></eve-image> </td>
-                                <td>{{ '{{ c.name }}' }}</td>
-                                <td>{{ '{{ c.last_updated_at | date:"shortDate" }}' }}<br>
-                                    <span class="small">{{ '{{ c.last_updated_at | date:"shortTime" }}' }}</span>
-                                </td>
+                                <span ng-show="c.name.length">
+                                    <td width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64"></eve-image> </td>
+                                    <td>{{ '{{ c.name }}' }}</td>
+                                    <td>{{ '{{ c.last_updated_at | date:"shortDate" }}' }}<br>
+                                        <span class="small">{{ '{{ c.last_updated_at | date:"shortTime" }}' }}</span>
+                                    </td>
+                                </span>
+                                <span ng-show="c.name.length == 0">
+                                    <td colspan="3">
+                                        <loading-spinner></loading-spinner>
+                                    </td>
+                                </span>
                             </tr>
                             </tbody>
                         </table>

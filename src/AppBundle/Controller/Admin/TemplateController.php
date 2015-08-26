@@ -34,4 +34,12 @@ class TemplateController extends Controller
     {
         return $this->render('AppBundle:Templates:slideButton.html.twig');
     }
+
+    /**
+     * @Route("/loading_spinner", name="template.loading.spinner")
+     */
+    public function loadingSpinnerAction(Request $request)
+    {
+        return $this->render('AppBundle:Templates:slideButton.html.twig');
+    }
 }
