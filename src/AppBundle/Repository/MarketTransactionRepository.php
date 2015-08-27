@@ -27,12 +27,6 @@ class MarketTransactionRepository extends EntityRepository {
         return $this->getTotalByTypeDate('sell', $acc, $date)->getQuery()->getResult();
     }
 
-    public function getGroupedBuysByDate(Account $acc, Carbon $date){
-        return $this->getTotalByTypeDate('buy', $acc, $date)
-            ->addGroupBy('mt.item_name')
-            ->select('sum(mt.price) as price, sum(mt.quantity) as volume')->getQuery()->getResult();
-    }
-
     protected function getTotalByTypeDate($type, Account $acc, CArbon $date){
         $start = clone($date);
         $start->setTime(0,0,0);

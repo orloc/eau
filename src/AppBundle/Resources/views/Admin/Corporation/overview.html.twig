@@ -54,7 +54,7 @@
                     <th>Volume</th>
                     <th>Price Per</th>
                     <th>Gross</th>
-                    <tr ng-repeat="b in buy_orders">
+                    <tr ng-repeat="b in buy_orders | filter:orderBy:'price * quantity'">
                         <td>
                             <div class="row">
                                 <div class="col-xs-3">
@@ -81,10 +81,10 @@
                     <tr ng-repeat="s in sell_orders">
                         <td>
                             <div class="row">
-                                <div class="col-xs-3">
+                                <div class="col-xs-5">
                                     <eve-image image-type="'Type'" object-id="s.item_id" img-width="64"></eve-image>
                                 </div>
-                                <div class="col-xs-9">
+                                <div class="col-xs-7">
                                     {{ '{{ s.item_name }}' }}
                                 </div>
                             </div>

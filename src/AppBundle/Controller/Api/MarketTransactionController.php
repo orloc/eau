@@ -30,7 +30,7 @@ class MarketTransactionController extends AbstractController implements ApiContr
 
 
         if ($date === null){
-            $orders = $this->getDoctrine()->getRepository('AppBundle:MarketTransaction')->findBy([
+            $arr = $this->getDoctrine()->getRepository('AppBundle:MarketTransaction')->findBy([
                 'account' => $account
             ]);
         } else {
@@ -52,28 +52,31 @@ class MarketTransactionController extends AbstractController implements ApiContr
                     $sorted[$o->getItemName()] = [];
                 }
 
-                $sorted[$o->getItemName()][] = $o;
+                if (!isset($sorted[$o->getItemName()][$o->getPrice()])){
+                    $sorted[$o->getItemName()][$o->getPrice()] = [];
+                }
+
+                $sorted[$o->getItemName()][$o->getPrice()][] = $o;
             }
 
-            $arr = array_map(function($arr) {
-                return array_reduce($arr, function ($carry, $value) {
-                    if (null === $carry) {
+            $reduced =  [];
 
-                        return $value;
-                    }
+            foreach ($sorted as $name => $prices){
+                foreach ($prices as $price => $objs){
+                    $obj = array_reduce($objs, function($carry, $value){
+                        if ($carry === null){
+                            return $value;
+                        }
 
-                    $q = $carry->getQuantity();
-                    $q2 = $value->getQuantity();
+                        return $value->setQuantity($carry->getQuantity()+$value->getQuantity());
+                    });
 
-                    $value->setQuantity($q2+$q);
-
-                    return $value;
-
-                });
-            }, $sorted);
+                    $reduced[] = $obj;
+                }
+            }
         }
 
-        $json = $this->get('serializer')->serialize($arr, 'json');
+        $json = $this->get('serializer')->serialize(isset($arr) ? $arr : $reduced, 'json');
 
         return $this->jsonResponse($json);
 
