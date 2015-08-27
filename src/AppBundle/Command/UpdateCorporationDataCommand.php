@@ -41,16 +41,17 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                 $corpManager->updateAccounts($c);
                 $corpManager->updateJournalTransactions($c);
                 $corpManager->updateMarketTransactions($c);
+                $c->setLastUpdatedAt(new \DateTime());
+
+                $em->persist($c);
+                $em->flush();
             } catch (\Exception $e){
-                $this->getContainer()->get('logger')->error($e->getMessage());
+                $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
             }
 
             //$assetManager->generateAssetList($c);
 
-            $c->setLastUpdatedAt(new \DateTime());
 
-            $em->persist($c);
-            $em->flush();
         }
 
     }
