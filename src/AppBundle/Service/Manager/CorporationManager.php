@@ -83,10 +83,6 @@ class CorporationManager {
 
         $accounts = $corporation->getAccounts();
 
-        // used for comparison
-        $now = new \DateTime();
-        $now->sub(new \DateInterval('P2D'));
-
         foreach($accounts as $acc){
             $this->log->debug(sprintf("Processing account %s for %s", $acc->getDivision(), $corporation->getName()));
             $params =  [
@@ -135,10 +131,6 @@ class CorporationManager {
         $client = $this->getClient($corporation);
 
         $accounts = $corporation->getAccounts();
-
-        // used for comparison
-        $now = new \DateTime();
-        $now->sub(new \DateInterval('P2D'));
 
         foreach($accounts as $acc){
             $this->log->debug(sprintf("Processing account %s for %s", $acc->getDivision(), $corporation->getName()));

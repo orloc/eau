@@ -19,6 +19,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $corpManager = $this->getContainer()->get('app.corporation.manager');
+        $assetManager = $this->getContainer()->get('app.asset.manager');
 
         $corps = $em->getRepository('AppBundle:Corporation')
             ->findAll();
@@ -39,6 +40,8 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $corpManager->updateAccounts($c);
             $corpManager->updateJournalTransactions($c);
             $corpManager->updateMarketTransactions($c);
+
+            $assetManager->getAssetList($c);
 
             $c->setLastUpdatedAt(new \DateTime());
 

@@ -62,3 +62,7 @@ services:
       app.account.manager:
           arguments: [ "@tarioch.pheal.factory" ]
           class: AppBundle\Service\Manager\AccountManager
+
+      app.asset.manager:
+          arguments: [ "@tarioch.pheal.factory" ]
+          class: AppBundle\Service\Manager\AssetManager

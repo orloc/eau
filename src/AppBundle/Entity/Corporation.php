@@ -60,6 +60,11 @@ class Corporation
     protected $api_credentials;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssetGrouping", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $asset_groupings;
+
+    /**
      * @ORM\Column(type="datetime", nullable=true)
      * @JMS\Expose()
      */
@@ -91,6 +96,7 @@ class Corporation
     {
         $this->setCreatedAt(new \DateTime());
         $this->accounts = new ArrayCollection();
+        $this->asset_groupings = new ArrayCollection();
     }
 
     /**
@@ -104,6 +110,22 @@ class Corporation
         if (!$this->accounts->contains($accounts)){
             $this->accounts[] = $accounts;
             $accounts->setCorporation($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add assets
+     *
+     * @param \AppBundle\Entity\Asset $assets
+     * @return Corporation
+     */
+    public function addAssetGrouping(\AppBundle\Entity\AssetGrouping $assets)
+    {
+        if (!$this->assets->contains($assets)){
+            $this->asset_groupings[] = $assets;
+            $assets->setCorporation($this);
         }
 
         return $this;
@@ -405,5 +427,25 @@ class Corporation
     public function getLastUpdatedAt()
     {
         return $this->last_updated_at;
+    }
+
+    /**
+     * Remove asset_groupings
+     *
+     * @param \AppBundle\Entity\AssetGrouping $assetGroupings
+     */
+    public function removeAssetGrouping(\AppBundle\Entity\AssetGrouping $assetGroupings)
+    {
+        $this->asset_groupings->removeElement($assetGroupings);
+    }
+
+    /**
+     * Get asset_groupings
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getAssetGroupings()
+    {
+        return $this->asset_groupings;
     }
 }
