@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
@@ -56,6 +57,17 @@ class Asset
     protected $flag;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Asset", mappedBy="parent", cascade={"persist"})
+     * @JMS\Expose()
+     */
+    protected $contents;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Asset", inversedBy="contents")
+     */
+    protected $parent;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      * @JMS\Expose()
      */
@@ -65,6 +77,10 @@ class Asset
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGroup", inversedBy="assets")
      */
     protected $asset_group;
+
+    public function __construct(){
+        $this->contents = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -235,5 +251,64 @@ class Asset
     public function getAssetGroup()
     {
         return $this->asset_group;
+    }
+
+    /**
+     * Add contents
+     *
+     * @param \AppBundle\Entity\Asset $contents
+     * @return Asset
+     */
+    public function addContent(\AppBundle\Entity\Asset $contents)
+    {
+        if (!$this->contents->contains($contents)){
+            $this->contents[] = $contents;
+            $contents->setParent($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove contents
+     *
+     * @param \AppBundle\Entity\Asset $contents
+     */
+    public function removeContent(\AppBundle\Entity\Asset $contents)
+    {
+        $this->contents->removeElement($contents);
+    }
+
+    /**
+     * Get contents
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \AppBundle\Entity\Asset $parent
+     * @return Asset
+     */
+    public function setParent(\AppBundle\Entity\Asset $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \AppBundle\Entity\Asset 
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

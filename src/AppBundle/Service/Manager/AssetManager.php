@@ -26,14 +26,22 @@ class AssetManager
 
         $grouping = new AssetGroup();
         foreach ($list as $i) {
-            $item = new Asset();
 
-            $item->setFlag($i->flag)
-                ->setItemId($i->itemID)
-                ->setLocationId($i->locationID)
-                ->setQuantity($i->quantity)
-                ->setSingleton($i->singleton)
-                ->setTypeId($i->typeID);
+            $item = $this->mapAsset($i);
+
+            if (isset($i->contents) && count($i->contents)){
+                foreach ($i->contents as $innerI){
+                    $it = $this->mapAsset($innerI);
+                    if (isset($innerI->contents) && count($innerI->contents)){
+                        foreach ($innerI->contents as $innerII) {
+                            $iit = $this->mapAsset($innerII);
+
+                            $it->addContent($iit);
+                        }
+                    }
+                    $item->addContent($it);
+                }
+            }
 
             $grouping->addAsset($item);
 
@@ -41,6 +49,21 @@ class AssetManager
 
         $corporation->addAssetGroup($grouping);
 
+    }
+
+    private function mapAsset($i){
+        $item = new Asset();
+
+        $item->setFlag($i->flag)
+            ->setItemId($i->itemID)
+            ->setQuantity($i->quantity)
+            ->setSingleton($i->singleton)
+            ->setTypeId($i->typeID);
+
+        if (isset($i->locationID)){
+            $item->setLocationId($i->locationID);
+        }
+        return $item;
     }
 
     private function getClient(Corporation $corporation, $scope = 'corp'){

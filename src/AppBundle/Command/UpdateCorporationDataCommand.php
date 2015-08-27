@@ -37,11 +37,15 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
             }
 
-            $corpManager->updateAccounts($c);
-            $corpManager->updateJournalTransactions($c);
-            $corpManager->updateMarketTransactions($c);
+            try {
+                $corpManager->updateAccounts($c);
+                $corpManager->updateJournalTransactions($c);
+                $corpManager->updateMarketTransactions($c);
+            } catch (\Exception $e){
+                $this->getContainer()->get('logger')->error($e->getMessage());
+            }
 
-            $assetManager->generateAssetList($c);
+            //$assetManager->generateAssetList($c);
 
             $c->setLastUpdatedAt(new \DateTime());
 
