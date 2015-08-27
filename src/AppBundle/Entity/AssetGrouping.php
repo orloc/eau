@@ -31,10 +31,14 @@ class AssetGrouping
     protected $assets;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="asset_groupings")
+     */
+    protected $corporation;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
-
 
     /**
      * Constructor
@@ -63,7 +67,10 @@ class AssetGrouping
      */
     public function addAsset(\AppBundle\Entity\Asset $assets)
     {
-        $this->assets[] = $assets;
+        if (!$this->assets->contains($assets)){
+            $this->assets[] = $assets;
+            $assets->setAssetGrouping($this);
+        }
 
         return $this;
     }
@@ -109,5 +116,28 @@ class AssetGrouping
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * Set corporation
+     *
+     * @param \AppBundle\Entity\Corporation $corporation
+     * @return AssetGrouping
+     */
+    public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
+    {
+        $this->corporation = $corporation;
+
+        return $this;
+    }
+
+    /**
+     * Get corporation
+     *
+     * @return \AppBundle\Entity\Corporation 
+     */
+    public function getCorporation()
+    {
+        return $this->corporation;
     }
 }

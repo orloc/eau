@@ -2,6 +2,8 @@
 
 namespace AppBundle\Service\Manager;
 
+use AppBundle\Entity\Asset;
+use AppBundle\Entity\AssetGrouping;
 use AppBundle\Entity\Corporation;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
@@ -22,7 +24,20 @@ class AssetManager
 
         $list = $result->assets;
 
-        foreach ($list as $item) {
+        $grouping = new AssetGrouping();
+        foreach ($list as $i) {
+
+            $item = new Asset();
+
+            $item->setFlag($i->flag)
+                ->setItemId($i->itemID)
+                ->setLocationId($i->locationID)
+                ->setQuantity($i->quantity)
+                ->setSingleton($i->singleton)
+                ->setRawQuantity($i->rawQuantity)
+                ->setTypeId($i->typeID);
+
+            var_dump($item);
 
         }
 

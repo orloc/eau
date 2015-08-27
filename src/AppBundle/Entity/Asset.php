@@ -26,13 +26,13 @@ class Asset
     protected $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      * @JMS\Expose()
      */
     protected $itemId;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      * @JMS\Expose()
      */
     protected $locationId;
@@ -56,7 +56,7 @@ class Asset
     protected $flag;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="boolean", nullable=true)
      * @JMS\Expose()
      */
     protected $singleton;
@@ -90,7 +90,7 @@ class Asset
      */
     public function setItemId($itemId)
     {
-        $this->itemId = $itemId;
+        $this->itemId = intval($itemId);
 
         return $this;
     }
@@ -113,7 +113,7 @@ class Asset
      */
     public function setLocationId($locationId)
     {
-        $this->locationId = $locationId;
+        $this->locationId = intval($locationId);
 
         return $this;
     }
@@ -136,7 +136,7 @@ class Asset
      */
     public function setTypeId($typeId)
     {
-        $this->typeId = $typeId;
+        $this->typeId = intval($typeId);
 
         return $this;
     }
@@ -159,7 +159,7 @@ class Asset
      */
     public function setQuantity($quantity)
     {
-        $this->quantity = $quantity;
+        $this->quantity = intval($quantity);
 
         return $this;
     }
@@ -182,7 +182,7 @@ class Asset
      */
     public function setFlag($flag)
     {
-        $this->flag = $flag;
+        $this->flag = intval($flag);
 
         return $this;
     }
@@ -205,7 +205,7 @@ class Asset
      */
     public function setSingleton($singleton)
     {
-        $this->singleton = $singleton;
+        $this->singleton = (bool)$singleton;
 
         return $this;
     }
