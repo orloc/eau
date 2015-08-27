@@ -8,13 +8,13 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="asset_groupings")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AssetGroupRepository")
+ * @ORM\Table(name="asset_groups")
  * @JMS\ExclusionPolicy("all")
  *
  * @package AppBundle\Entity
  */
-class AssetGrouping
+class AssetGroup
 {
 
     /**
@@ -69,7 +69,7 @@ class AssetGrouping
     {
         if (!$this->assets->contains($assets)){
             $this->assets[] = $assets;
-            $assets->setAssetGrouping($this);
+            $assets->setAssetGroup($this);
         }
 
         return $this;

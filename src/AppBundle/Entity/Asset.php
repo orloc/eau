@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AssetRepository")
  * @ORM\Table(name="assets")
  * @JMS\ExclusionPolicy("all")
  *
@@ -62,15 +62,9 @@ class Asset
     protected $singleton;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     * @JMS\Expose()
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGroup", inversedBy="assets")
      */
-    protected $rawQuantity;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGrouping", inversedBy="assets")
-     */
-    protected $asset_grouping;
+    protected $asset_group;
 
     /**
      * Get id
@@ -221,48 +215,25 @@ class Asset
     }
 
     /**
-     * Set rawQuantity
+     * Set asset_group
      *
-     * @param integer $rawQuantity
+     * @param \AppBundle\Entity\AssetGroup $assetGroup
      * @return Asset
      */
-    public function setRawQuantity($rawQuantity)
+    public function setAssetGroup(\AppBundle\Entity\AssetGroup $assetGroup = null)
     {
-        $this->rawQuantity = $rawQuantity;
+        $this->asset_group = $assetGroup;
 
         return $this;
     }
 
     /**
-     * Get rawQuantity
+     * Get asset_group
      *
-     * @return integer 
+     * @return \AppBundle\Entity\AssetGroup
      */
-    public function getRawQuantity()
+    public function getAssetGroup()
     {
-        return $this->rawQuantity;
-    }
-
-    /**
-     * Set asset_grouping
-     *
-     * @param \AppBundle\Entity\AssetGrouping $assetGrouping
-     * @return Asset
-     */
-    public function setAssetGrouping(\AppBundle\Entity\AssetGrouping $assetGrouping = null)
-    {
-        $this->asset_grouping = $assetGrouping;
-
-        return $this;
-    }
-
-    /**
-     * Get asset_grouping
-     *
-     * @return \AppBundle\Entity\AssetGrouping 
-     */
-    public function getAssetGrouping()
-    {
-        return $this->asset_grouping;
+        return $this->asset_group;
     }
 }

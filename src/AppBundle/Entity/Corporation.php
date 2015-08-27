@@ -60,9 +60,9 @@ class Corporation
     protected $api_credentials;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssetGrouping", mappedBy="corporation", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssetGroup", mappedBy="corporation", cascade={"persist"})
      */
-    protected $asset_groupings;
+    protected $asset_groups;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -121,10 +121,10 @@ class Corporation
      * @param \AppBundle\Entity\Asset $assets
      * @return Corporation
      */
-    public function addAssetGrouping(\AppBundle\Entity\AssetGrouping $assets)
+    public function addAssetGroup(\AppBundle\Entity\AssetGroup $assets)
     {
-        if (!$this->assets->contains($assets)){
-            $this->asset_groupings[] = $assets;
+        if (!$this->asset_groups->contains($assets)){
+            $this->asset_groups[] = $assets;
             $assets->setCorporation($this);
         }
 
@@ -434,9 +434,9 @@ class Corporation
      *
      * @param \AppBundle\Entity\AssetGrouping $assetGroupings
      */
-    public function removeAssetGrouping(\AppBundle\Entity\AssetGrouping $assetGroupings)
+    public function removeAssetGroup(\AppBundle\Entity\AssetGroup $assetGroupings)
     {
-        $this->asset_groupings->removeElement($assetGroupings);
+        $this->asset_groups->removeElement($assetGroupings);
     }
 
     /**
@@ -444,8 +444,8 @@ class Corporation
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getAssetGroupings()
+    public function getAssetGroups()
     {
-        return $this->asset_groupings;
+        return $this->asset_groups;
     }
 }

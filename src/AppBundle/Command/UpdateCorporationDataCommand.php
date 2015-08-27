@@ -41,7 +41,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $corpManager->updateJournalTransactions($c);
             $corpManager->updateMarketTransactions($c);
 
-            $assetManager->getAssetList($c);
+            $assetManager->generateAssetList($c);
 
             $c->setLastUpdatedAt(new \DateTime());
 

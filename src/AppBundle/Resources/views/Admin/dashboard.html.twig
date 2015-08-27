@@ -1,4 +1,17 @@
 {% extends 'AppBundle:Admin:layout.html.twig' %}
 
 {% block content -%}
+
+    <div ng-controller="dashboardController">
+        <table class="table table-condensed">
+            <th></th>
+            <th>quantity</th>
+            <tbody>
+                <tr ng-repeat="item in assets">
+                    <td><eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image></td>
+                    <td>{{ '{{ item.quantity }}' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
