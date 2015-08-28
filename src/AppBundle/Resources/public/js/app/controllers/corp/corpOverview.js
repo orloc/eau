@@ -33,7 +33,7 @@ angular.module('eveTool')
                 });
 
                 $scope.totalBalance = total;
-                $scope.percentChangeBalance = ((total - lastDay) / total) * 100;
+                $scope.percentChangeBalance = { percent: ((total - lastDay) / lastDay) * 100, diff: total - lastDay }
             });
 
         });
