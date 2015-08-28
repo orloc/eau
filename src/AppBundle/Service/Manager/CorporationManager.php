@@ -50,7 +50,9 @@ class CorporationManager {
     public function updateAccounts(Corporation $corporation){
         $client = $this->getClient($corporation);
 
-        $accounts = $client->AccountBalance()->accounts;
+        $accounts = $client->AccountBalance([
+            'characterID' => $corporation->getApiCredentials()->getCharacterId()
+        ])->accounts;
         $repo = $this->registry->getRepository('AppBundle:Account');
 
         foreach ($accounts as $a){
