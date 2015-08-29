@@ -8,8 +8,15 @@ angular.module('eveTool')
             $scope.users = data.data;
     });
 
+    $scope.populateEdit = function(user){
+
+    };
+
     $scope.$on('update_list', function(event, item){
-        $scope.users.push(item);
+        $http.get(Routing.generate('api.users')).then(function(data){
+            $scope.users = data.data;
+        });
+
     });
 
 }]);

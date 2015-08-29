@@ -34,8 +34,10 @@ angular.module('eveTool')
                 };
 
                 $scope.$on('close_window', function(){
-
-                    button.open = $scope.open = !$scope.open;
+                    $scope.open = !$scope.open;
+                    angular.forEach(buttons, function (b){
+                        b.open = $scope.open;
+                    });
                 });
 
                 $scope.$watch('open', function(value){
@@ -45,7 +47,7 @@ angular.module('eveTool')
 
                     if (typeof sideMenu != 'undefined'){
                         if (value){
-                            $(sideMenu).animate({
+                            $(sideMenu.menu).animate({
                                 right: "0px"
                             }, 300);
 
@@ -53,7 +55,7 @@ angular.module('eveTool')
                                 left: "-350px"
                             }, 300);
                         } else {
-                            $(sideMenu).animate({
+                            $(sideMenu.menu).animate({
                                 right: "-350px"
                             }, 300);
 
