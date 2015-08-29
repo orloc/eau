@@ -42,4 +42,20 @@ class TemplateController extends Controller
     {
         return $this->render('AppBundle:Templates:loadingSpinner.html.twig');
     }
+
+    /**
+     * @Route("/evetabs", name="template.evetabs")
+     */
+    public function evetabAction(Request $request)
+    {
+        return $this->render('AppBundle:Templates:eveTabs.html.twig');
+    }
+
+    /**
+     * @Route("/evepane", name="template.evepanes")
+     */
+    public function evepaneAction(Request $request)
+    {
+        return $this->render('AppBundle:Templates:evePane.html.twig');
+    }
 }
