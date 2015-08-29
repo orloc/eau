@@ -7,8 +7,14 @@ angular.module('eveTool')
             require: '^sideMenuContainer',
             scope: {},
             link : function(scope, element, attributes, container) {
+                var openType = typeof attributes.openType  != 'undefined'
+                    ? attributes.openType
+                    : false;
+
+                scope.openType = openType;
+
                 scope.toggleOpen = function(){
-                    scope.open = container.toggleOpen();
+                    scope.open = container.toggleOpen(scope.openType);
                 };
 
                 container.addButton(scope);

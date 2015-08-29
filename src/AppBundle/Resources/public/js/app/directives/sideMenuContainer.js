@@ -6,24 +6,26 @@ angular.module('eveTool')
             restrict: 'E',
             scope: {},
             controller: function($scope){
-                var button = $scope.button;
-                var sideMenu = $scope.sideMenu;
+                var buttons = [];
+                var sideMenus = [];
+
 
                 $scope.open = false;
 
                 this.addSideMenu = function(menu){
-                    sideMenu = menu;
+                    sideMenu.push(menu);
                 };
 
                 this.addButton = function(btn){
-                    button = btn;
+                    buttons.push(btn);
                 };
 
-                this.toggleOpen = function(){
+                this.toggleOpen = function(window){
                     $scope.open = !$scope.open;
                     return $scope.open;
-
                 };
+
+
 
                 $scope.$on('close_window', function(){
                     button.open = $scope.open = !$scope.open;

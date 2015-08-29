@@ -7,7 +7,7 @@
 </ul>
 <div ng-controller="corpOverviewController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <h4>Account Summary - <span class="muted small">Total Bought / Sold By Item By Wallet By Day</span><span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
+        <h4> Summary - <span class="muted small">Total Bought / Sold By Item By Wallet By Day</span><span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
         <div class="row">
             <div class="col-xs-12">
                 <ul class="list-unstyled">
@@ -15,7 +15,6 @@
                         <i>Aggregate Balance </i>: {{ '{{ totalBalance | currency}}' }}
                     </li>
                     <li>
-
                         <i> Percent Change </i>:<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
                         {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
                     </li>
@@ -43,7 +42,7 @@
                 </ul>
                 <ul class="list-unstyled" ng-show="selected_account">
                     <li>
-                       <b> Gross Account Balance </b>: <br><i ng-class="{ 'fa fa-chevron-up text-success': findgross() > 0, 'fa fa-chevron-down text-danger': findgross() < 0 }"></i>
+                       <b> Gross Account Balance </b>: <br><i ng-class="{ 'fa fa-chevron-up text-success': findGross() > 0, 'fa fa-chevron-down text-danger': findGross() < 0 }"></i>
                         {{ '{{ findGross() | currency }}' }}
                     </li>
                 </ul>

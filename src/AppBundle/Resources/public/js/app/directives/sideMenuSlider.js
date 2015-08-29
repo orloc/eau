@@ -9,6 +9,10 @@ angular.module('eveTool')
             scope: {},
             link : function(scope, element, attributes, container) {
                 container.addSideMenu(element);
+                scope.type = null;
+                scope.setType = function(type){
+                    scope.type = type;
+                };
             },
             templateUrl: Routing.generate('template.slidemenu')
         };

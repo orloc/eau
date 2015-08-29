@@ -1,11 +1,12 @@
-<div class="push-menu new">
+<side-menu-slider ng-cloak >
     <div class="header">
         <h3>New User</h3>
     </div>
     <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
-    <form name="newUserForm">
-        <table class="table-form">
-            <tbody>
+    <div ng-controller="userNewController">
+        <form name="newUserForm">
+            <table class="table-form">
+                <tbody>
                 <tr ng-repeat="e in errors">
                     <td></td>
                     <td>
@@ -29,7 +30,7 @@
                                    placeholder="Username..."
                                    ng-required="true"
                                    ng-model="newUser.username"
-                            />
+                                    />
                         </div>
                     </td>
                 </tr>
@@ -45,7 +46,7 @@
                                    placeholder="Email..."
                                    ng-required="true"
                                    ng-model="newUser.email"
-                            />
+                                    />
                         </div>
                     </td>
                 </tr>
@@ -62,7 +63,7 @@
                                    placeholder="Password..."
                                    ng-required="true"
                                    ng-model="newUser.plainPassword"
-                            />
+                                    />
                         </div>
                     </td>
                 </tr>
@@ -80,7 +81,7 @@
                                    ng-required="true"
                                    compare-to="newUser.plainPassword"
                                    ng-model="newUser.password_confirmation"
-                            />
+                                    />
                         </div>
                     </td>
                 </tr>
@@ -104,7 +105,8 @@
                         <button ladda="submitLoading" ng-disabled="!newUserForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-    </form>
-</div>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</side-menu-slider>

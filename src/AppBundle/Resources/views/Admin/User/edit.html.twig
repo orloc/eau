@@ -1,112 +1,114 @@
-<div class="push-menu edit">
+<side-menu-slider ng-cloak>
     <div class="header">
         <h3>Edit User</h3>
     </div>
     <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
 
-    <button style="position: absolute; bottom: 0; right: 0; margin: 10px;" class="btn btn-sm btn-danger" ng-click="delete(editUser.id)">Delete</button>
-    <form name="editUserForm">
-        <table class="table-form" ng-show="edit_loaded">
-            <tbody>
-            <tr ng-repeat="e in errors">
-                <td></td>
-                <td>
-                    <div class="alert alert-danger">
-                        <p class="small text-danger">
-                            <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
-                        </p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i ng-class="{ 'text-danger fa fa-times': editUserForm.username.$invalid, 'text-success fa fa-check': editUserForm.username.$valid}"></i>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input name="username"
-                               type="text"
-                               ng-minlength="4"
-                               class="form-control"
-                               placeholder="Username..."
-                               ng-required="true"
-                               ng-model="editUser.username"
-                                />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i ng-class="{ 'text-danger fa fa-times': editUserForm.email.$invalid, 'text-success fa fa-check': editUserForm.email.$valid}"></i>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input name="email"
-                               type="email"
-                               class="form-control"
-                               placeholder="Email..."
-                               ng-required="true"
-                               ng-model="editUser.email"
-                                />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i ng-class="{ 'text-danger fa fa-times': editUserForm.password.$invalid, 'text-success fa fa-check': editUserForm.password.$valid}"></i>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input name="password"
-                               type="password"
-                               class="form-control"
-                               ng-minlength="6"
-                               placeholder="Password..."
-                               ng-required="true"
-                               ng-model="editUser.plainPassword"
-                                />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i ng-class="{ 'text-danger fa fa-times': editUserForm.password_confirmation.$invalid, 'text-success fa fa-check': editUserForm.password_confirmation.$valid}"></i>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input name="password_confirmation"
-                               type="password"
-                               class="form-control"
-                               ng-minlength="6"
-                               placeholder="Password Confirmation..."
-                               ng-required="true"
-                               compare-to="editUser.plainPassword"
-                               ng-model="editUser.password_confirmation"
-                                />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i ng-class="{ 'text-danger fa fa-times': editUserForm.role.$invalid, 'text-success fa fa-check': editUserForm.role.$valid}"></i>
-                </td>
-                <td>
-                    <select class="form-control"
-                            name="role"
-                            ng-required="true"
-                            ng-model="editUser.role"
-                            ng-options="item.role as item.name for item in roles">
-                        <option value="">Select a Role</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button ladda="submitLoading" ng-disabled="!editUserForm.$valid " class="btn btn-block" type="submit" ng-click="update()">Update</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </form>
-</div>
+    <div ng-controller="userEditController">
+        <button style="position: absolute; bottom: 0; right: 0; margin: 10px;" class="btn btn-sm btn-danger" ng-click="delete(editUser.id)">Delete</button>
+        <form name="editUserForm">
+            <table class="table-form">
+                <tbody>
+                <tr ng-repeat="e in errors">
+                    <td></td>
+                    <td>
+                        <div class="alert alert-danger">
+                            <p class="small text-danger">
+                                <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i ng-class="{ 'text-danger fa fa-times': editUserForm.username.$invalid, 'text-success fa fa-check': editUserForm.username.$valid}"></i>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input name="username"
+                                   type="text"
+                                   ng-minlength="4"
+                                   class="form-control"
+                                   placeholder="Username..."
+                                   ng-required="true"
+                                   ng-model="editUser.username"
+                                    />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i ng-class="{ 'text-danger fa fa-times': editUserForm.email.$invalid, 'text-success fa fa-check': editUserForm.email.$valid}"></i>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input name="email"
+                                   type="email"
+                                   class="form-control"
+                                   placeholder="Email..."
+                                   ng-required="true"
+                                   ng-model="editUser.email"
+                                    />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i ng-class="{ 'text-danger fa fa-times': editUserForm.password.$invalid, 'text-success fa fa-check': editUserForm.password.$valid}"></i>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input name="password"
+                                   type="password"
+                                   class="form-control"
+                                   ng-minlength="6"
+                                   placeholder="Password..."
+                                   ng-required="true"
+                                   ng-model="editUser.plainPassword"
+                                    />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i ng-class="{ 'text-danger fa fa-times': editUserForm.password_confirmation.$invalid, 'text-success fa fa-check': editUserForm.password_confirmation.$valid}"></i>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input name="password_confirmation"
+                                   type="password"
+                                   class="form-control"
+                                   ng-minlength="6"
+                                   placeholder="Password Confirmation..."
+                                   ng-required="true"
+                                   compare-to="editUser.plainPassword"
+                                   ng-model="editUser.password_confirmation"
+                                    />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i ng-class="{ 'text-danger fa fa-times': editUserForm.role.$invalid, 'text-success fa fa-check': editUserForm.role.$valid}"></i>
+                    </td>
+                    <td>
+                        <select class="form-control"
+                                name="role"
+                                ng-required="true"
+                                ng-model="editUser.role"
+                                ng-options="item.role as item.name for item in roles">
+                            <option value="">Select a Role</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button ladda="submitLoading" ng-disabled="!editUserForm.$valid " class="btn btn-block" type="submit" ng-click="update()">Update</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+</side-menu-slider>
