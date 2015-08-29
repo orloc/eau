@@ -25,6 +25,15 @@ class AssetManager
         $list = $result->assets;
 
         $grouping = new AssetGroup();
+
+        $this->mapList($list, $grouping);
+
+        $corporation->addAssetGroup($grouping);
+
+    }
+
+    private function mapList(array $list, AssetGroup $grouping){
+        /*
         foreach ($list as $i) {
 
             $item = $this->mapAsset($i);
@@ -42,12 +51,9 @@ class AssetManager
                     $item->addContent($it);
                 }
             }
-
             $grouping->addAsset($item);
-
         }
-
-        $corporation->addAssetGroup($grouping);
+        */
 
     }
 

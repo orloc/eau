@@ -87,15 +87,8 @@ class CorporationManager {
 
         foreach($accounts as $acc){
             $this->log->debug(sprintf("Processing account %s for %s", $acc->getDivision(), $corporation->getName()));
-            $params =  [
-                'accountKey' => $acc->getDivision(),
-                'rowCount' => 2000
-            ];
 
-            if ($fromID){
-                $params = array_merge($params, [ 'fromID' => $fromID]);
-            }
-
+            $params = $this->buildParams($acc, $fromID);
             $transactions = $client->WalletJournal($params);
 
             foreach ($transactions->entries as $t){
@@ -136,14 +129,8 @@ class CorporationManager {
 
         foreach($accounts as $acc){
             $this->log->debug(sprintf("Processing account %s for %s", $acc->getDivision(), $corporation->getName()));
-            $params =  [
-                'accountKey' => $acc->getDivision(),
-                'rowCount' => 2000
-            ];
 
-            if ($fromID){
-                $params = array_merge($params, [ 'fromID' => $fromID]);
-            }
+            $params = $this->buildParams($acc, $fromID);
 
             $transactions = $client->WalletTransactions($params);
 
@@ -193,5 +180,18 @@ class CorporationManager {
         $client->scope = $scope;
 
         return $client;
+    }
+
+    private function buildParams(Account $acc, $fromID = null){
+        $params =  [
+            'accountKey' => $acc->getDivision(),
+            'rowCount' => 2000
+        ];
+
+        if ($fromID){
+            $params = array_merge($params, [ 'fromID' => $fromID]);
+        }
+
+        return $params;
     }
 }

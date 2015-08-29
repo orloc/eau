@@ -10,7 +10,7 @@ angular.module('eveTool')
                 imgWidth: "=imgWidth"
             },
             link : function(scope, element, attributes) {
-                var baseUrl = 'https://image.eveonline.com';
+                var baseUrl = 'https://imageserver.eveonline.com';
                 var path = scope.object_id+'_'+scope.imgWidth+'.png';
 
                 scope.url = [baseUrl,scope.imageType, path].join('/');

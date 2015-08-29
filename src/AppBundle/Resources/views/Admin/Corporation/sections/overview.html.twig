@@ -4,18 +4,16 @@
             <h5 class="text-center">Select a Corporation</h5>
         </div>
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-            <h4> Summary - <span class="muted small">Total Bought / Sold By Item By Wallet By Day</span><span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span></h4>
             <div class="row">
                 <div class="col-xs-12">
-                    <ul class="list-unstyled">
-                        <li>
-                            <i>Aggregate Balance </i>: {{ '{{ totalBalance | currency}}' }}
-                        </li>
-                        <li>
-                            <i> Percent Change </i>:<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
-                            {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
-                        </li>
-                    </ul>
+                    <h4 class="text-info pull-left">Wallet Summary</h4>
+                    <span class="pull-right small" ng-show="selected_account"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span>
+
+                    <div class="summary-stats" ng-cloak>
+                        <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency}}' }}<br>
+                        <i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
+                        {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
+                    </div>
                 </div>
                 <div class="col-xs-8">
                     <loading-spinner ng-show="loading" style="display: inline-block; margin-left: 50%"></loading-spinner>
