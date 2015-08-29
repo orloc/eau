@@ -29,8 +29,15 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $assets = $this->getDoctrine()->getRepository('AppBundle:Asset')
             ->findBy(['asset_group' => $group->getId()]);
 
+        $flattended = [];
+        array_walk_recursive($assets, function($x, $k) use (&$flattended) {
+            $flattended[] = $x;
+        });
 
-        $json = $this->get('serializer')->serialize($assets, 'json');
+        var_dump($flattended);die;
+
+
+        $json = $this->get('serializer')->serialize($flattended, 'json');
 
         return $this->jsonResponse($json);
 

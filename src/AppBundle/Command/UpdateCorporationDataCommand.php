@@ -49,7 +49,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                 $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
             }
 
-            //$assetManager->generateAssetList($c);
+            $assetManager->generateAssetList($c);
 
 
         }
