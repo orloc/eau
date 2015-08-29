@@ -6,13 +6,17 @@ angular.module('eveTool')
             restrict: 'E',
             transclude: true,
             require: '^sideMenuContainer',
-            scope: {},
+            scope: {
+                formContext: "=formContext"
+            },
             link : function(scope, element, attributes, container) {
-                container.addSideMenu(element);
-                scope.type = null;
-                scope.setType = function(type){
-                    scope.type = type;
-                };
+                scope.formContext = typeof attributes.formContext != 'undefined'
+                    ? attributes.formContext
+                    :  false;
+
+                scope.active = false;
+
+                container.addSideMenu(scope, element);
             },
             templateUrl: Routing.generate('template.slidemenu')
         };

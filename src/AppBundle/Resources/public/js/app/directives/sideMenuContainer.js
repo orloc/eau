@@ -9,45 +9,58 @@ angular.module('eveTool')
                 var buttons = [];
                 var sideMenus = [];
 
-
                 $scope.open = false;
 
-                this.addSideMenu = function(menu){
-                    sideMenu.push(menu);
+                this.addSideMenu = function(scope, menu){
+                    sideMenus.push({ scope: scope, menu: menu });
                 };
 
                 this.addButton = function(btn){
                     buttons.push(btn);
                 };
 
-                this.toggleOpen = function(window){
+                this.toggleOpen = function(openType){
+                    if (!openType){
+                        return;
+                    }
+
+                    var m = _.find(sideMenus, function(menu){
+                        return openType === menu.scope.formContext;
+                    });
+
+                    m.scope.active = true;
                     $scope.open = !$scope.open;
                     return $scope.open;
                 };
 
-
-
                 $scope.$on('close_window', function(){
+
                     button.open = $scope.open = !$scope.open;
                 });
 
                 $scope.$watch('open', function(value){
-                    if (value){
-                        $(sideMenu).animate({
-                            right: "0px"
-                        }, 300);
+                    var sideMenu = _.find(sideMenus, function(menu){
+                        return menu.scope.active === true;
+                    });
 
-                        $('body').animate({
-                            left: "-350px"
-                        }, 300);
-                    } else {
-                        $(sideMenu).animate({
-                            right: "-350px"
-                        }, 300);
+                    if (typeof sideMenu != 'undefined'){
+                        if (value){
+                            $(sideMenu).animate({
+                                right: "0px"
+                            }, 300);
 
-                        $('body').animate({
-                            left: "0px"
-                        }, 300);
+                            $('body').animate({
+                                left: "-350px"
+                            }, 300);
+                        } else {
+                            $(sideMenu).animate({
+                                right: "-350px"
+                            }, 300);
+
+                            $('body').animate({
+                                left: "0px"
+                            }, 300);
+                        }
                     }
 
                 });

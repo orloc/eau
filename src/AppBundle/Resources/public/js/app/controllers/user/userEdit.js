@@ -12,6 +12,10 @@ angular.module('eveTool')
             }
         ];
 
+        $scope.populateEdit = function(user){
+
+        };
+
         $scope.update = function(){
             $scope.submitLoading = true;
             $http.put(Routing.generate('api.user_update', { id: $scope.editUser.id }), $scope.editUser).then(function(data){

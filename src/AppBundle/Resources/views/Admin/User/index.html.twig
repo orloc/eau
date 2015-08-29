@@ -4,7 +4,7 @@
     <div class="row" ng-controller="userListController">
         <h3>User <span class="muted small">LIST</span></h3>
         <side-menu-container ng-transclude>
-            <slide-button></slide-button>
+            <slide-button open-type="new"></slide-button>
             <table class="table data-table table-hover table-condensed" ng-cloak>
                 <thead>
                     <th>ID</th>
@@ -36,7 +36,7 @@
                         <td><i ng-class="{'fa fa-check text-success': u.locked, 'fa fa-times text-danger': !u.locked}"></i> </td>
                         <td><i ng-class="{'fa fa-check text-success': u.has_valid_api_crendentials, 'fa fa-times text-danger': !u.has_valid_api_crendentials}"></i> </td>
                         <td class="text-center">
-                            <slide-button open-type="edit"></slide-button>
+                            <slide-button open-type="edit" ng-click="populateEdit(u)"></slide-button>
                         </td>
                     </tr>
                 </tbody>
