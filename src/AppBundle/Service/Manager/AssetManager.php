@@ -32,28 +32,23 @@ class AssetManager
 
     }
 
-    private function mapList(array $list, AssetGroup $grouping){
-        /*
-        foreach ($list as $i) {
+    private function mapList($list, AssetGroup $grouping, Asset $parent = null){
 
+        foreach($list as $i){
             $item = $this->mapAsset($i);
 
-            if (isset($i->contents) && count($i->contents)){
-                foreach ($i->contents as $innerI){
-                    $it = $this->mapAsset($innerI);
-                    if (isset($innerI->contents) && count($innerI->contents)){
-                        foreach ($innerI->contents as $innerII) {
-                            $iit = $this->mapAsset($innerII);
-
-                            $it->addContent($iit);
-                        }
-                    }
-                    $item->addContent($it);
-                }
-            }
             $grouping->addAsset($item);
+
+            if ($parent !== null) {
+                $parent->addContent($item);
+            }
+
+            if (isset($i->contents) && count($i->contents)){
+                return $this->mapList($i->contents, $grouping, $item);
+            }
         }
-        */
+
+        return;
 
     }
 

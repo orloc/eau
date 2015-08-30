@@ -37,12 +37,17 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
             }
 
+            // get the cachec timers
+
             try {
+
+                // check timer based on command
+                // short
                 $corpManager->updateAccounts($c);
                 $corpManager->updateJournalTransactions($c);
                 $corpManager->updateMarketTransactions($c);
-                $c->setLastUpdatedAt(new \DateTime());
 
+                // long
                 $assetManager->generateAssetList($c);
 
                 $em->persist($c);

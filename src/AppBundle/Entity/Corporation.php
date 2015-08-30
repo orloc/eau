@@ -60,15 +60,14 @@ class Corporation
     protected $api_credentials;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiUpdate", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $api_updates;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssetGroup", mappedBy="corporation", cascade={"persist"})
      */
     protected $asset_groups;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @JMS\Expose()
-     */
-    protected $last_updated_at;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
@@ -96,7 +95,8 @@ class Corporation
     {
         $this->setCreatedAt(new \DateTime());
         $this->accounts = new ArrayCollection();
-        $this->asset_groupings = new ArrayCollection();
+        $this->api_updates = new ArrayCollection();
+        $this->asset_groups = new ArrayCollection();
     }
 
     /**
@@ -142,6 +142,22 @@ class Corporation
         if (!$this->accounts->contains($marketOrders)){
             $this->market_orders[] = $marketOrders;
             $marketOrders->setCorporation($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add api_updates
+     *
+     * @param \AppBundle\Entity\ApiUpdate $apiUpdates
+     * @return Corporation
+     */
+    public function addApiUpdate(\AppBundle\Entity\ApiUpdate $apiUpdates)
+    {
+        if (!$this->api_updates->contains($apiUpdates)){
+            $this->api_updates[] = $apiUpdates;
+            $apiUpdates->setCorporation($this);
         }
 
         return $this;
@@ -447,5 +463,25 @@ class Corporation
     public function getAssetGroups()
     {
         return $this->asset_groups;
+    }
+
+    /**
+     * Remove api_updates
+     *
+     * @param \AppBundle\Entity\ApiUpdate $apiUpdates
+     */
+    public function removeApiUpdate(\AppBundle\Entity\ApiUpdate $apiUpdates)
+    {
+        $this->api_updates->removeElement($apiUpdates);
+    }
+
+    /**
+     * Get api_updates
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApiUpdates()
+    {
+        return $this->api_updates;
     }
 }
