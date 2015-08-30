@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\ApiUpdate;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateCorporationDataCommand extends ContainerAwareCommand
@@ -13,6 +14,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
     {
         $this
             ->setName('evetool:update_corp')
+            ->addOption('force', InputOption::VALUE_OPTIONAL)
             ->setDescription('Updates Corporations in the database with the most recent data based on individual cache timers.');
     }
 
@@ -25,6 +27,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
         $corps = $em->getRepository('AppBundle:Corporation')
             ->findAll();
 
+        $force = $input->getOption('force');
 
         foreach ($corps as $c){
             if ($c->getEveId() === null){
@@ -47,7 +50,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
             try {
 
-                if (count($short) != 0 ) {
+                if (count($short) != 0 || $force === true) {
                     $corpManager->updateAccounts($c);
                     $corpManager->updateJournalTransactions($c);
                     $corpManager->updateMarketTransactions($c);
@@ -56,7 +59,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                         $this->createAccess(ApiUpdate::CACHE_STYLE_SHORT));
                 }
 
-                if (count($long) != 0){
+                if (count($long) != 0 || $force === true){
                     $assetManager->generateAssetList($c);
 
                     $c->addApiUpdate(
