@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\ApiUpdate;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,6 +25,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
         $corps = $em->getRepository('AppBundle:Corporation')
             ->findAll();
 
+
         foreach ($corps as $c){
             if ($c->getEveId() === null){
                 $result = $corpManager->getCorporationDetails($c);
@@ -36,19 +38,30 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                 $em->flush();
 
             }
+            $short = $em->getRepository('AppBundle:ApiUpdate')
+                ->getShortTimerExpired($c);
 
-            // get the cachec timers
+            $long = $em->getRepository('AppBundle:ApiUpdate')
+                ->getLongTimerExpired($c);
+
 
             try {
 
-                // check timer based on command
-                // short
-                $corpManager->updateAccounts($c);
-                $corpManager->updateJournalTransactions($c);
-                $corpManager->updateMarketTransactions($c);
+                if (count($short) != 0 ) {
+                    $corpManager->updateAccounts($c);
+                    $corpManager->updateJournalTransactions($c);
+                    $corpManager->updateMarketTransactions($c);
 
-                // long
-                $assetManager->generateAssetList($c);
+                    $c->addApiUpdate(
+                        $this->createAccess(ApiUpdate::CACHE_STYLE_SHORT));
+                }
+
+                if (count($long) != 0){
+                    $assetManager->generateAssetList($c);
+
+                    $c->addApiUpdate(
+                        $this->createAccess(ApiUpdate::CACHE_STYLE_LONG));
+                }
 
                 $em->persist($c);
                 $em->flush();
@@ -60,5 +73,13 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
         }
 
+    }
+
+    protected function createAccess($type){
+        $access = new ApiUpdate();
+
+        $access->setType($type);
+
+        return $access;
     }
 }
