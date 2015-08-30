@@ -1,0 +1,51 @@
+
+services:
+  # Validators
+  app.validator.duplicate_email:
+     class: AppBundle\Validator\DuplicateEmailConstraintValidator
+     arguments: [ "@doctrine.orm.entity_manager" ]
+     tags:
+          - { name: validator.constraint_validator, alias: duplicate_email_validator }
+
+  # Doctrine Subscribers
+  app.corporation.subscriber:
+      class: AppBundle\Subscriber\CorporationSubscriber
+      arguments: [ "@security.token_storage" ]
+      tags:
+          - { name: doctrine.event_subscriber, connection: default }
+
+  app.api_credentials.subscriber:
+      class: AppBundle\Subscriber\ApiCredentialsSubscriber
+      arguments: [ "@security.token_storage", "@app.account.manager" ]
+      tags:
+          - { name: doctrine.event_subscriber, connection: default }
+
+  # Dispatchers
+  app.task.dispatcher:
+      class: AppBundle\EventListener\Dispatcher
+
+  # Task Events
+  app.task.coporation.new:
+      class: AppBundle\EventListener\Corporation\NewCorporationListener
+      arguments: [ "@app.corporation.manager", "@doctrine.orm.entity_manager" ]
+      tags:
+          - { name: app.task.subscriber }
+
+  app.task.belated_listener:
+      class: AppBundle\EventListener\BelatedTaskListener
+      arguments: [ "@app.task.dispatcher" ]
+      tags:
+        - { name: kernel.event_subscriber }
+
+  # Manager
+  app.corporation.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      class: AppBundle\Service\Manager\CorporationManager
+
+  app.account.manager:
+      arguments: [ "@tarioch.pheal.factory" ]
+      class: AppBundle\Service\Manager\AccountManager
+
+  app.asset.manager:
+      arguments: [ "@tarioch.pheal.factory" ]
+      class: AppBundle\Service\Manager\AssetManager
