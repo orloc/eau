@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new \JMS\AopBundle\JMSAopBundle(),
             new \Tarioch\PhealBundle\TariochPhealBundle(),
             new AppBundle\AppBundle(),
+            new EveBundle\EveBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

@@ -47,9 +47,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $long = $em->getRepository('AppBundle:ApiUpdate')
                 ->getLongTimerExpired($c);
 
-
             try {
-                /*
                 if (count($short) != 0 || $force === true) {
                     $corpManager->updateAccounts($c);
                     $corpManager->updateJournalTransactions($c);
@@ -61,7 +59,6 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                     $em->persist($c);
                     $em->flush();
                 }
-                */
 
                 if (count($long) != 0 || $force === true){
                     $assetManager->generateAssetList($c);
@@ -76,8 +73,6 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             } catch (\Exception $e){
                 $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
             }
-
-
 
         }
 
