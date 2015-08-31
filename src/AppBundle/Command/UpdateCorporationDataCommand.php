@@ -49,7 +49,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
 
             try {
-
+                /*
                 if (count($short) != 0 || $force === true) {
                     $corpManager->updateAccounts($c);
                     $corpManager->updateJournalTransactions($c);
@@ -57,17 +57,22 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
                     $c->addApiUpdate(
                         $this->createAccess(ApiUpdate::CACHE_STYLE_SHORT));
+
+                    $em->persist($c);
+                    $em->flush();
                 }
+                */
 
                 if (count($long) != 0 || $force === true){
                     $assetManager->generateAssetList($c);
 
                     $c->addApiUpdate(
                         $this->createAccess(ApiUpdate::CACHE_STYLE_LONG));
+
+                    $em->persist($c);
+                    $em->flush();
                 }
 
-                $em->persist($c);
-                $em->flush();
             } catch (\Exception $e){
                 $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
             }

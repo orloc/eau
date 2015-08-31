@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
+use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\Corporation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -30,8 +31,9 @@ class AccountController extends AbstractController implements ApiControllerInter
             $balance = $balanceRepo->getLatestBalance($acc)
                 ->getBalance();
 
-            $lastDay = $balanceRepo->getLastDayBalance($acc)
-                ->getBalance();
+            $lastDay = ($b = $balanceRepo->getLastDayBalance($acc)) instanceof AccountBalance
+                ? $b->getBalance()
+                : 0;
 
             $acc->setCurrentBalance($balance)
                 ->setLastDayBalance($lastDay);

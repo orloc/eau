@@ -27,8 +27,10 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
 
         $assets = $this->getDoctrine()->getRepository('AppBundle:Asset')
-            ->findBy(['asset_group' => $group->getId()]);
+            ->getTopLevelAssetsByGroup($group);
 
+
+        var_dump($assets);die;
         $json = $this->get('serializer')->serialize($assets, 'json');
 
         return $this->jsonResponse($json);

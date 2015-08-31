@@ -23,35 +23,28 @@ class AssetManager
         $result = $client->AssetList();
 
         $list = $result->assets;
-
         $grouping = new AssetGroup();
-
         $this->mapList($list, $grouping);
-
         $corporation->addAssetGroup($grouping);
 
     }
 
-    private function mapList($list, AssetGroup $grouping, Asset $parent = null){
+    private function mapList($assets, AssetGroup $grouping, Asset $parent = null){
 
-        foreach($list as $i){
-            $item = $this->mapAsset($i);
+        foreach ($assets as $asset){
+            $newAsset = $this->mapAsset($asset);
+            $grouping->addAsset($newAsset);
 
-            $grouping->addAsset($item);
-
-            if ($parent !== null) {
-                $parent->addContent($item);
+            if ($parent) {
+                $parent->addContent($newAsset);
             }
 
-            if (isset($i->contents) && count($i->contents)){
-                return $this->mapList($i->contents, $grouping, $item);
+            if (isset($asset->contents)){
+                $this->mapList($asset->contents, $grouping, $newAsset) ;
             }
         }
 
-        return;
-
     }
-
     private function mapAsset($i){
         $item = new Asset();
 

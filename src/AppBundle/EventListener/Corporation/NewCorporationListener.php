@@ -3,9 +3,11 @@
 namespace AppBundle\EventListener\Corporation;
 
 
+use AppBundle\Entity\ApiUpdate;
 use AppBundle\Event\CorporationEvents;
 use AppBundle\Event\NewCorporationEvent;
 use AppBundle\Service\Manager\CorporationManager;
+use AppBundle\Service\Manager\AssetManager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -13,11 +15,14 @@ class NewCorporationListener implements EventSubscriberInterface {
 
     protected $manager;
 
+    protected $asset_manager;
+
     protected $em;
 
-    public function __construct(CorporationManager $manager, EntityManager $em){
+    public function __construct(CorporationManager $manager, AssetManager $aManager, EntityManager $em){
         $this->em = $em;
         $this->manager = $manager;
+        $this->asset_manager = $aManager;
     }
 
     public static function getSubscribedEvents(){
@@ -41,10 +46,29 @@ class NewCorporationListener implements EventSubscriberInterface {
         $this->manager->updateJournalTransactions($corporation);
         $this->manager->updateMarketTransactions($corporation);
 
-        $corporation->setLastUpdatedAt(new \DateTime());
+        $corporation->addApiUpdate(
+            $this->createAccess(ApiUpdate::CACHE_STYLE_SHORT)
+        );
 
         $this->em->persist($corporation);
         $this->em->flush();
 
+        $this->asset_manager->generateAssetList($corporation);
+
+        $corporation->addApiUpdate(
+            $this->createAccess(ApiUpdate::CACHE_STYLE_LONG)
+        );
+
+        $this->em->persist($corporation);
+        $this->em->flush();
+
+    }
+
+    protected function createAccess($type){
+        $access = new ApiUpdate();
+
+        $access->setType($type);
+
+        return $access;
     }
 }

@@ -27,7 +27,7 @@ services:
   # Task Events
   app.task.coporation.new:
       class: AppBundle\EventListener\Corporation\NewCorporationListener
-      arguments: [ "@app.corporation.manager", "@doctrine.orm.entity_manager" ]
+      arguments: [ "@app.corporation.manager", "@app.asset.manager", "@doctrine.orm.entity_manager" ]
       tags:
           - { name: app.task.subscriber }
 
