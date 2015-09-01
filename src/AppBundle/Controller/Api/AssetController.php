@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -19,14 +20,21 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
      */
-    public function indexAction(Corporation $corp)
+    public function indexAction(Request $request, Corporation $corp)
     {
 
         $group = $this->getDoctrine()->getRepository('AppBundle:AssetGroup')
             ->getLatestAssetGroup($corp);
 
-        $assets = $this->getDoctrine()->getRepository('AppBundle:Asset')
+        $query = $this->getDoctrine()->getRepository('AppBundle:Asset')
             ->getTopLevelAssetsByGroup($group);
+
+        $paginator = $this->get('knp_paginator');
+
+        $assets = $paginator->paginate($query,
+            $request->query->get('page',1),
+            $request->query->get('per_page', 20)
+        );
 
         $json = $this->get('serializer')->serialize($assets, 'json');
 

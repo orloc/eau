@@ -15,7 +15,7 @@ class AssetRepository extends EntityRepository {
             ->where('a.asset_group = :group')
             ->andWhere('a.parent IS NULL')
             ->setParameter('group', $group)
-            ->getQuery()->getResult();
+            ->getQuery();
     }
 
 }

@@ -14,7 +14,7 @@ angular.module('eveTool')
             }
 
             $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
-                $scope.assets = _.flattenDeep(data.data);
+                $scope.assets = data.data.items;
             });
 
         });

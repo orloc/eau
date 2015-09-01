@@ -25,7 +25,9 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "friendsofsymfony/jsrouting-bundle": "^1.5",
         "jms/serializer-bundle": "^1.0",
-        "nesbot/carbon": "^1.20"
+        "nesbot/carbon": "^1.20",
+        "guzzlehttp/guzzle": "^6.0",
+        "knplabs/knp-paginator-bundle": "^2.4"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

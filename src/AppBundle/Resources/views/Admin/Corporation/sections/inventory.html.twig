@@ -1,14 +1,41 @@
 <eve-pane title="Inventory">
     <div ng-controller="inventoryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-            <div class="row">
-                <ul class="list-unstyled list-group">
-                    <li ng-repeat="item in assets" class="list-group-item col-xs-1">
-                        <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                        {{ '{{ item.quantity }}' }}
-                    </li>
-                </ul>
-            </div>
+            <table class="table data-table table-condensed">
+                <thead>
+                    <th>
+                    </th>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Location
+                    </th>
+                    <th>
+                        Market Buy
+                    </th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in assets">
+                        <td>
+                            <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                        </td>
+                        <td>
+                            {{ '{{ item.id }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.quantity }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.location }}' }}
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="col-xs-12 well" ng-show="!selected_corp"><h5 class="text-center">Select a Corporation</h5></div>
     </div>

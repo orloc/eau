@@ -30,7 +30,6 @@ class AssetManager
     }
 
     private function mapList($assets, AssetGroup $grouping, Asset $parent = null){
-
         foreach ($assets as $asset){
             $newAsset = $this->mapAsset($asset);
             $grouping->addAsset($newAsset);
@@ -43,8 +42,8 @@ class AssetManager
                 $this->mapList($asset->contents, $grouping, $newAsset) ;
             }
         }
-
     }
+
     private function mapAsset($i){
         $item = new Asset();
 
