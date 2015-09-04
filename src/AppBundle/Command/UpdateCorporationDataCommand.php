@@ -48,7 +48,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                 ->getLongTimerExpired($c);
 
             try {
-                if (count($short) != 0 || $force === true) {
+                if (!$short || $force === true) {
                     $corpManager->updateAccounts($c);
                     $corpManager->updateJournalTransactions($c);
                     $corpManager->updateMarketTransactions($c);
@@ -60,7 +60,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                     $em->flush();
                 }
 
-                if (count($long) != 0 || $force === true){
+                if (!$long || $force === true){
                     $assetManager->generateAssetList($c);
 
                     $c->addApiUpdate(
