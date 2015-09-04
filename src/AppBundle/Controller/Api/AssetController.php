@@ -36,6 +36,10 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             $request->query->get('per_page', 20)
         );
 
+
+        $items = $assets->getItems();
+        var_dump($items);die;
+
         $json = $this->get('serializer')->serialize($assets, 'json');
 
         return $this->jsonResponse($json);
