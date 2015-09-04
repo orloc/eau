@@ -1,7 +1,7 @@
 <eve-pane title="Inventory">
     <div ng-controller="inventoryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-            <table class="table data-table table-condensed">
+            <table class="table data-table table-stripped table-condensed">
                 <thead>
                     <th>
                     </th>
@@ -24,7 +24,7 @@
                             <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         </td>
                         <td>
-                            {{ '{{ item.id }}' }}
+                            {{ '{{ item.name }}' }}
                         </td>
                         <td>
                             {{ '{{ item.quantity }}' }}

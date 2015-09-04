@@ -58,7 +58,6 @@ class Asset
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Asset", mappedBy="parent", cascade={"persist"})
-     * @JMS\Expose()
      */
     protected $contents;
 
@@ -72,6 +71,16 @@ class Asset
      * @JMS\Expose()
      */
     protected $singleton;
+
+    /**
+     * @JMS\Expose()
+     */
+    protected $description;
+
+    /**
+     * @JMS\Expose()
+     */
+    protected $name;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGroup", inversedBy="assets")
@@ -90,6 +99,25 @@ class Asset
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setDescription($desc){
+        $this->description = $desc;
+
+        return $this;
+    }
+
+    public function getDescription(){
+        return $this->description;
+    }
+
+    public function setName($name){
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getName(){
+        return $this->name;
     }
 
     /**

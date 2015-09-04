@@ -33,12 +33,17 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $assets = $paginator->paginate($query,
             $request->query->get('page',1),
-            $request->query->get('per_page', 20)
+            $request->query->get('per_page', 50)
         );
 
-
         $items = $assets->getItems();
-        var_dump($items);die;
+
+        $itemTypes = $this->get('doctrine')->getRepository('EveBundle:ItemType');
+        foreach ($items as $i){
+            $itemTypes->updateItemTypeData($i);
+        }
+
+        $assets->setItems($items);
 
         $json = $this->get('serializer')->serialize($assets, 'json');
 
