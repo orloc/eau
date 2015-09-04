@@ -33,7 +33,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $assets = $paginator->paginate($query,
             $request->query->get('page',1),
-            $request->query->get('per_page', 50)
+            $request->query->get('per_page', 2000)
         );
 
         $items = $assets->getItems();
