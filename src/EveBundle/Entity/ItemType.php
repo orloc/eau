@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="EveBundle\Repository\ItemTypeRepository")
  * @ORM\Table(name="item_types")
- *
  * @package AppBundle\Entity
  */
 class ItemType
