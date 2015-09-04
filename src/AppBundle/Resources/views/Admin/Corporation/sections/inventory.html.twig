@@ -1,7 +1,7 @@
 <eve-pane title="Inventory">
     <div ng-controller="inventoryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-            <table class="table data-table table-stripped table-condensed">
+            <table class="table data-table table-striped table-condensed">
                 <thead>
                     <th>
                     </th>
@@ -10,6 +10,12 @@
                     </th>
                     <th>
                         Quantity
+                    </th>
+                    <th>
+                        Market Group
+                    </th>
+                    <th>
+                        Type
                     </th>
                     <th>
                         Location
@@ -29,6 +35,8 @@
                         <td>
                             {{ '{{ item.quantity }}' }}
                         </td>
+                        <td></td>
+                        <td></td>
                         <td>
                             {{ '{{ item.location }}' }}
                         </td>
