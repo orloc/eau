@@ -5,7 +5,7 @@ namespace EveBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="EveBundle\Repository\AveragePriceRepository")
  * @ORM\Table(name="average_prices")
  * @package AppBundle\Entity
  */
@@ -20,12 +20,12 @@ class AveragePrice
     protected $id;
 
     /**
-     * @ORM\Column(type="decimal", scale=2, precision=16)
+     * @ORM\Column(type="decimal", scale=2, precision=16, nullable=true)
      */
     protected $adjusted_price;
 
     /**
-     * @ORM\Column(type="decimal", scale=2, precision=16)
+     * @ORM\Column(type="decimal", scale=2, precision=16, nullable=true)
      */
     protected $average_price;
 
