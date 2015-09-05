@@ -5,7 +5,7 @@ namespace EveBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="EveBundle\Repository\RegionRepository")
  * @ORM\Table(name="regions")
  * @package AppBundle\Entity
  */
