@@ -3,8 +3,8 @@
 namespace AppBundle\Repository;
 
 
+use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
-use AppBundle\Entity\AssetGrouping;
 use Doctrine\ORM\EntityRepository;
 
 class AssetRepository extends EntityRepository {
@@ -17,6 +17,18 @@ class AssetRepository extends EntityRepository {
             ->andWhere('a.flag_id != :flag')
             ->andWhere('a.flag_id != :flag2')
             ->setParameter('group', $group)
+            ->setParameter('flag', 62) // does not equal deliveries
+            ->setParameter('flag2', 0) // anchored structures
+            ->getQuery();
+    }
+
+    public function getNestedAssets(Asset $asset){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.parent = :id')
+            ->andWhere('a.flag_id != :flag')
+            ->andWhere('a.flag_id != :flag2')
+            ->setParameter('id', $asset->getId())
             ->setParameter('flag', 62) // does not equal deliveries
             ->setParameter('flag2', 0) // anchored structures
             ->getQuery();
