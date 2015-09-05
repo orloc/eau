@@ -1,6 +1,7 @@
 <eve-pane title="Deliveries">
     <div ng-controller="deliveryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+            <b class="text-info">Total In Deliveries:</b> {{ '{{ sumDeliveries() | currency }}' }}
             <table class="table data-table table-striped table-condensed">
                 <thead>
                 <th>
@@ -15,10 +16,10 @@
                     Market Group
                 </th>
                 <th>
-                    Location
+                    Unit Price
                 </th>
                 <th>
-                    Market Buy
+                    Total Price
                 </th>
                 </thead>
                 <tbody>
@@ -34,9 +35,12 @@
                     </td>
                     <td></td>
                     <td>
-                        {{ '{{ item.location }}' }}
+                        {{ '{{ getPrice(item).average_price | currency }}' }}
                     </td>
-                    <td></td>
+                    <td>
+
+                        {{ '{{ getPrice(item).average_price * item.quantity | currency }}' }}
+                    </td>
                 </tr>
                 </tbody>
             </table>
