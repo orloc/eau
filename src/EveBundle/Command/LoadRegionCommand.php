@@ -35,25 +35,30 @@ class LoadRegionCommand extends ContainerAwareCommand
 
             $regions = $data['items'];
 
+            $em = $this->getContainer()->get('doctrine')->getManager('eve_data');
+
             foreach ($regions as $r){
-                $this->createRegion($r);
+                $regionEntity = $this->createRegion($r);
+
+                $em->persist($regionEntity);
             }
 
-
-
+            $em->flush();
 
         }
-
-
-
     }
 
     private function createRegion(array $data){
 
-        var_dump($data);die;
-
         $item = new Region();
 
+        $urlPieces = preg_split('/\//', $data['href']);
+
+        $regionId = intval($urlPieces[count($urlPieces)-2]);
+
+        $item->setName($data['name'])
+            ->setRegionUrl($data['href'])
+        ->setRegionId($regionId);
 
         return $item;
     }
