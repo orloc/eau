@@ -83,6 +83,11 @@ class Asset
     protected $name;
 
     /**
+     * @JMS\Expose()
+     */
+    protected $flag_name;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGroup", inversedBy="assets")
      */
     protected $asset_group;
@@ -118,6 +123,14 @@ class Asset
 
     public function getName(){
         return $this->name;
+    }
+
+    public function getFlagName(){
+        return $this->flag_name;
+    }
+
+    public function setFlagName($name){
+        $this->flag_name = $name;
     }
 
     /**

@@ -33,9 +33,9 @@ class YamlLoaderCommand extends ContainerAwareCommand
         }
 
         $registry = $this->getContainer()->get('doctrine');
+        $em = $registry->getManager('eve_data');
 
         $value = yaml_parse_file($filePath);
-        $em = $registry->getManager();
 
         foreach ($value as $k => $v){
             $i = $this->createItemType($v, $k);

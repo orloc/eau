@@ -49,3 +49,6 @@ services:
   app.asset.manager:
       arguments: [ "@tarioch.pheal.factory" ]
       class: AppBundle\Service\Manager\AssetManager
+
+  app.datamapper.service:
+      class: AppBundle\Service\EBSDataMapper

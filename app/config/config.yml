@@ -52,13 +52,23 @@ assetic:
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:   pdo_mysql
-        host:     "%database_host%"
-        port:     "%database_port%"
-        dbname:   "%database_name%"
-        user:     "%database_user%"
-        password: "%database_password%"
-        charset:  UTF8
+        default_connection: default
+        connections:
+          default:
+            driver:   pdo_mysql
+            host:     "%database_host%"
+            port:     "%database_port%"
+            dbname:   "%database_name%"
+            user:     "%database_user%"
+            password: "%database_password%"
+            charset:  UTF8
+          eve_data:
+            driver:   pdo_mysql
+            host:     "%database_host%"
+            port:     "%database_port%"
+            dbname:   "%eve_database_name%"
+            user:     "%database_user%"
+            password: "%database_password%"
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
@@ -68,8 +78,24 @@ doctrine:
 
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
+        default_entity_manager: default
+        entity_managers:
+            default:
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                connection: default
+                mappings:
+                    AppBundle:
+                        type: annotation
+                        dir: Entity
+
+
+            eve_data:
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                connection: eve_data
+                mappings:
+                    EveBundle:
+                        type: annotation
+                        dir: Entity
 
 # Swiftmailer Configuration
 swiftmailer:

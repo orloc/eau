@@ -23,10 +23,10 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     public function indexAction(Request $request, Corporation $corp)
     {
 
-        $group = $this->getDoctrine()->getRepository('AppBundle:AssetGroup')
+        $group = $this->getRepository('AppBundle:AssetGroup')
             ->getLatestAssetGroup($corp);
 
-        $query = $this->getDoctrine()->getRepository('AppBundle:Asset')
+        $query = $this->getRepository('AppBundle:Asset')
             ->getTopLevelAssetsByGroup($group);
 
         $paginator = $this->get('knp_paginator');
@@ -38,9 +38,12 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $items = $assets->getItems();
 
-        $itemTypes = $this->get('doctrine')->getRepository('EveBundle:ItemType');
+        $itemTypes = $this->getRepository('EveBundle:ItemType', 'eve_data');
+        $dataMapper = $this->get('app.datamapper.service');
+
         foreach ($items as $i){
-            $itemTypes->updateItemTypeData($i);
+            $updateData = $itemTypes->getItemTypeData($i->getTypeId());
+            $dataMapper->updateObject($i, $updateData);
         }
 
         $assets->setItems($items);
