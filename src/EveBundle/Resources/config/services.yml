@@ -1,0 +1,9 @@
+services:
+  evedata.registry:
+    class: EveBundle\Repository\Registry
+
+  evedata.repo.invflags:
+    class: EveBundle\Repository\InvFlagRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }

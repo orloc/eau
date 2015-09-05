@@ -40,10 +40,13 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $itemTypes = $this->getRepository('EveBundle:ItemType', 'eve_data');
         $dataMapper = $this->get('app.datamapper.service');
+        $eveDataRegistry = $this->get('evedata.registry');
 
         foreach ($items as $i){
             $updateData = $itemTypes->getItemTypeData($i->getTypeId());
-            $dataMapper->updateObject($i, $updateData);
+            $flag = $eveDataRegistry->get('EveData:InvFlag')->getFlagName($i->getFlagId());
+
+            $dataMapper->updateObject($i, array_merge($updateData, $flag));
         }
 
         $assets->setItems($items);

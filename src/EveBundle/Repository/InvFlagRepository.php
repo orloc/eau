@@ -13,13 +13,12 @@ class InvFlagRepository extends AbstractDbalRepository implements RepositoryInte
     }
 
     public function getFlagName($flagId){
-        $sql = "SELECT flagName, flagText FROM {$this->getTableName()} WHERE flagID = :id";
+        $sql = "SELECT flagText as flag_text FROM {$this->getTableName()} WHERE flagID = :id ";
 
         $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $flagId]);
 
-        $result = $stmt->execute(['id' => $flagId]);
-
-        var_dump($result);die;
+        return $stmt->fetch();
 
     }
 

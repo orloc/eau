@@ -11,15 +11,15 @@ class RepositoryRegistryCompilerPass implements CompilerPassInterface {
 
     public function process(ContainerBuilder $container){
 
-        if (!$container->hasDefinition('app.task.dispatcher')){
+        if (!$container->hasDefinition('evedata.registry')){
             return;
         }
 
-        $definition = $container->getDefinition('app.task.dispatcher');
-        $subscribers = $container->findTaggedServiceIds('app.task.subscriber');
+        $definition = $container->getDefinition('evedata.registry');
+        $subscribers = $container->findTaggedServiceIds('evedata.repository');
 
         foreach ($subscribers as $id => $attr){
-            $definition->addMethodCall('addSubscriber', [new Reference($id)] );
+            $definition->addMethodCall('set', [new Reference($id)] );
         }
     }
 }

@@ -47,7 +47,7 @@ class AssetManager
     private function mapAsset($i){
         $item = new Asset();
 
-        $item->setFlag($i->flag)
+        $item->setFlagId($i->flag)
             ->setItemId($i->itemID)
             ->setQuantity($i->quantity)
             ->setSingleton($i->singleton)

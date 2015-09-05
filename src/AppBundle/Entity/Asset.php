@@ -54,7 +54,7 @@ class Asset
      * @ORM\Column(type="integer", nullable=true)
      * @JMS\Expose()
      */
-    protected $flag;
+    protected $flag_id;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Asset", mappedBy="parent", cascade={"persist"})
@@ -85,7 +85,8 @@ class Asset
     /**
      * @JMS\Expose()
      */
-    protected $flag_name;
+    protected $flag_text;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGroup", inversedBy="assets")
@@ -125,12 +126,12 @@ class Asset
         return $this->name;
     }
 
-    public function getFlagName(){
-        return $this->flag_name;
+    public function getFlagText(){
+        return $this->flag_text;
     }
 
-    public function setFlagName($name){
-        $this->flag_name = $name;
+    public function setFlagText($name){
+        $this->flag_text = $name;
     }
 
     /**
@@ -231,9 +232,9 @@ class Asset
      * @param integer $flag
      * @return Asset
      */
-    public function setFlag($flag)
+    public function setFlagId($flag)
     {
-        $this->flag = intval($flag);
+        $this->flag_id = intval($flag);
 
         return $this;
     }
@@ -243,9 +244,9 @@ class Asset
      *
      * @return integer 
      */
-    public function getFlag()
+    public function getFlagId()
     {
-        return $this->flag;
+        return $this->flag_id;
     }
 
     /**
