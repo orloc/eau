@@ -29,7 +29,7 @@ abstract class AbstractController extends Controller {
 
         $pagination = $paginator->paginate($result,
             $request->query->get('page',1),
-            $request->query->get('per_page', 10)
+            $request->query->get('per_page', 1000)
         );
 
         return $pagination;

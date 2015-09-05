@@ -1,2 +1,50 @@
 <eve-pane title="Deliveries">
+    <div ng-controller="deliveryController" class="row">
+        <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+            <table class="table data-table table-striped table-condensed">
+                <thead>
+                <th>
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Market Group
+                </th>
+                <th>
+                    Type
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Market Buy
+                </th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in assets">
+                    <td>
+                        <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                    </td>
+                    <td>
+                        {{ '{{ item.name }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.quantity }}' }}
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        {{ '{{ item.location }}' }}
+                    </td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 well" ng-show="!selected_corp"><h5 class="text-center">Select a Corporation</h5></div>
+    </div>
 </eve-pane>
