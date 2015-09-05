@@ -21,6 +21,6 @@ class Registry {
             return $this->repositories[$name];
         }
 
-        throw new ClassNotFoundException(sprintf("%s repository ws not found", $name));
+        throw new ClassNotFoundException(sprintf("%s repository ws not found", $name), null);
     }
 }

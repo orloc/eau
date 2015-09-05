@@ -29,25 +29,8 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $query = $this->getRepository('AppBundle:Asset')
             ->getTopLevelAssetsByGroup($group);
 
-        $paginator = $this->get('knp_paginator');
-
-        $assets = $paginator->paginate($query,
-            $request->query->get('page',1),
-            $request->query->get('per_page', 2000)
-        );
-
-        $items = $assets->getItems();
-
-        $itemTypes = $this->getRepository('EveBundle:ItemType', 'eve_data');
-        $dataMapper = $this->get('app.datamapper.service');
-        $eveDataRegistry = $this->get('evedata.registry');
-
-        foreach ($items as $i){
-            $updateData = $itemTypes->getItemTypeData($i->getTypeId());
-            $flag = $eveDataRegistry->get('EveData:InvFlag')->getFlagName($i->getFlagId());
-
-            $dataMapper->updateObject($i, array_merge($updateData, $flag));
-        }
+        $assets = $this->paginateResult($request, $query);
+        $items = $this->updateResultSet($assets->getItems());
 
         $assets->setItems($items);
 
@@ -57,4 +40,28 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
     }
 
+    /**
+     * @Route("/corporation/{id}/deliveries", name="api.corporation.deliveries", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Method("GET")
+     */
+    public function deliveriesAction(Request $request, Corporation $corp)
+    {
+
+        $group = $this->getRepository('AppBundle:AssetGroup')
+            ->getLatestAssetGroup($corp);
+
+        $query = $this->getRepository('AppBundle:Asset')
+            ->getDeliveriesByGroup($group);
+
+        $assets = $this->paginateResult($request, $query);
+        $items = $this->updateResultSet($assets->getItems());
+
+        $assets->setItems($items);
+
+        $json = $this->get('serializer')->serialize($assets, 'json');
+
+        return $this->jsonResponse($json);
+
+    }
 }
