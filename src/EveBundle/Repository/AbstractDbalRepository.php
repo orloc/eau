@@ -5,7 +5,7 @@ namespace EveBundle\Repository;
 
 use Doctrine\DBAL\Connection;
 
-abstract class AbstractRepository {
+abstract class AbstractDbalRepository {
 
     protected $conn;
 
