@@ -5,7 +5,7 @@ namespace EveBundle\Repository;
 class InvFlagRepository extends AbstractDbalRepository implements RepositoryInterface {
 
     public function getName(){
-        return 'EveData:InvFlag';
+        return 'EveBundle:InvFlag';
     }
 
     public function getTableName(){

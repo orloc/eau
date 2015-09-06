@@ -7,6 +7,7 @@ use AppBundle\Entity\AssetGroup;
 use AppBundle\Entity\Corporation;
 use AppBundle\Service\EBSDataMapper;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use \EveBundle\Repository\Registry as EveRegistry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class AssetManager
@@ -16,13 +17,16 @@ class AssetManager
 
     private $doctrine;
 
+    private $registry;
+
     private $mapper;
 
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EBSDataMapper $dataMapper)
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EBSDataMapper $dataMapper, EveRegistry $registry)
     {
         $this->pheal = $pheal;
         $this->doctrine = $doctrine;
         $this->mapper = $dataMapper;
+        $this->registry = $registry;
     }
 
     public function generateAssetList(Corporation $corporation){
@@ -39,9 +43,16 @@ class AssetManager
 
     public function updateResultSet($items){
         $itemTypes = $this->doctrine->getRepository('EveBundle:ItemType', 'eve_data');
+        $locations = $this->registry->get('EveBundle:StaStations');
 
         foreach ($items as $i){
-            $updateData = $itemTypes->getItemTypeData($i->getTypeId());
+            $updateData = array_merge(
+                $itemTypes->getItemTypeData($i->getTypeId()),
+                $locations->getLocationInfo($i->getLocationId())
+            );
+
+            var_dump($updateData);
+
             $this->mapper->updateObject($i, $updateData);
         }
 
