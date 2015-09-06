@@ -72,41 +72,10 @@ class Asset
      */
     protected $singleton;
 
-    /**
+    /*
      * @JMS\Expose()
      */
-    protected $description;
-
-    /**
-     * @JMS\Expose()
-     */
-    protected $name;
-
-    /**
-     * @JMS\Expose()
-     */
-    protected $flag_text;
-
-    /**
-     * @JMS\Expose()
-     */
-    protected $region;
-
-    /**
-     * @JMS\Expose()
-     */
-    protected $station_name;
-
-    /**
-     * @JMS\Expose()
-     */
-    protected $solar_system;
-
-    /**
-     * @JMS\Expose()
-     */
-    protected $constellation;
-
+    public $descriptors;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGroup", inversedBy="assets")
@@ -117,6 +86,7 @@ class Asset
         $this->contents = new ArrayCollection();
     }
 
+
     /**
      * Get id
      *
@@ -125,70 +95,6 @@ class Asset
     public function getId()
     {
         return $this->id;
-    }
-
-    public function setDescription($desc){
-        $this->description = $desc;
-
-        return $this;
-    }
-
-    public function getDescription(){
-        return $this->description;
-    }
-
-    public function setName($name){
-        $this->name = $name;
-        return $this;
-    }
-
-    public function getName(){
-        return $this->name;
-    }
-
-    public function getFlagText(){
-        return $this->flag_text;
-    }
-
-    public function setFlagText($name){
-        $this->flag_text = $name;
-    }
-
-    public function getRegion(){
-        return $this->region;
-    }
-
-    public function setRegion($region){
-        $this->region = $region;
-
-        return $this;
-    }
-
-    public function getConstellation(){
-        return $this->constellation;
-    }
-
-    public function setConstellation($con){
-        $this->constellation = $con;
-        return $this;
-    }
-
-    public function setSolarSystem($system){
-        $this->solar_system = $system;
-        return $this;
-    }
-
-    public function getSolarSystem(){
-        return $this->solar_system;
-    }
-
-    public function getStationName(){
-        return $this->station_name;
-    }
-
-    public function setStationName($stationName){
-        $this->station_name = $stationName;
-        return $this;
     }
 
     /**

@@ -47,7 +47,7 @@ services:
       class: AppBundle\Service\Manager\AccountManager
 
   app.asset.manager:
-      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@app.datamapper.service", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory", "@app.datamapper.service", "@evedata.registry" ]
       class: AppBundle\Service\Manager\AssetManager
 
   app.datamapper.service:

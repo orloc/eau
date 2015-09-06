@@ -2,18 +2,25 @@
 
 namespace EveBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+class ItemTypeRepository extends AbstractDbalRepository implements RepositoryInterface {
 
-class ItemTypeRepository extends EntityRepository {
+    public function getName(){
+        return 'EveBundle:ItemType';
+    }
+
+    public function getTableName(){
+        return 'invTypes';
+    }
 
     public function getItemTypeData($typeId){
-        $result = $this->createQueryBuilder('it')
-            ->select('it.name as name, it.description as description')
-            ->where('it.type_id = :type')
-            ->setParameter('type', $typeId)
-            ->getQuery()->getOneOrNullResult();
 
-        return $result;
+        $sql = "SELECT typeName as name, description as description FROM {$this->getTableName()} WHERE typeID = :id ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $typeId]);
+
+        return $stmt->fetch();
+
     }
 
 }

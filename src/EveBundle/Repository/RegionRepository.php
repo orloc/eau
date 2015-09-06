@@ -2,18 +2,25 @@
 
 namespace EveBundle\Repository;
 
-use Doctrine\ORM\EntityRepository;
+class RegionRepository extends AbstractDbalRepository implements RepositoryInterface {
 
-class RegionRepository extends EntityRepository {
+    public function getName(){
+        return 'EveBundle:Region';
+    }
+
+    public function getTableName(){
+        return 'mapRegions';
+    }
 
     public function getRegionById($regionId){
-        $result = $this->createQueryBuilder('r')
-            ->select('r.name as name')
-            ->where('r.region_id = :id')
-            ->setParameter('id', $regionId)
-            ->getQuery()->getOneOrNullResult();
 
-        return $result;
+        $sql = "SELECT regionName as region FROM {$this->getTableName()} WHERE regionID = :id ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $regionId]);
+
+        return $stmt->fetch();
+
     }
 
 }

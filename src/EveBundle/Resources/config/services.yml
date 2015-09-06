@@ -13,3 +13,27 @@ services:
     arguments: [ "@doctrine.dbal.eve_data_connection" ]
     tags:
         - { name: evedata.repository }
+
+  evedata.repo.itemtypes:
+    class: EveBundle\Repository\ItemTypeRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }
+
+  evedata.repo.regions:
+    class: EveBundle\Repository\RegionRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }
+
+  evedata.repo.constellations:
+    class: EveBundle\Repository\ConstellationRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }
+
+  evedata.repo.solarsystem:
+    class: EveBundle\Repository\SolarSystemRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }

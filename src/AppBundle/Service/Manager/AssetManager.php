@@ -15,16 +15,13 @@ class AssetManager
 
     private $pheal;
 
-    private $doctrine;
-
     private $registry;
 
     private $mapper;
 
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EBSDataMapper $dataMapper, EveRegistry $registry)
+    public function __construct(PhealFactory $pheal, EBSDataMapper $dataMapper, EveRegistry $registry)
     {
         $this->pheal = $pheal;
-        $this->doctrine = $doctrine;
         $this->mapper = $dataMapper;
         $this->registry = $registry;
     }
@@ -42,18 +39,25 @@ class AssetManager
     }
 
     public function updateResultSet($items){
-        $itemTypes = $this->doctrine->getRepository('EveBundle:ItemType', 'eve_data');
+        $itemTypes = $this->registry->get('EveBundle:ItemType');
+        $regions = $this->registry->get('EveBundle:Region');
+        $constellations = $this->registry->get('EveBundle:Constellation');
+        $solarsystems = $this->registry->get('EveBundle:SolarSystem');
         $locations = $this->registry->get('EveBundle:StaStations');
 
         foreach ($items as $i){
+            $locationData = $locations->getLocationInfo($i->getLocationId());
+
             $updateData = array_merge(
                 $itemTypes->getItemTypeData($i->getTypeId()),
-                $locations->getLocationInfo($i->getLocationId())
+                $solarsystems->getSolarSystemById($locationData['solar_system']),
+                $constellations->getConstellationById($locationData['constellation']),
+                $regions->getRegionById($locationData['region']),
+                ['station' => $locationData['station_name']]
             );
 
-            var_dump($updateData);
+            $i->descriptors = $updateData;
 
-            $this->mapper->updateObject($i, $updateData);
         }
 
         return $items;
