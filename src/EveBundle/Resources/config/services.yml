@@ -7,3 +7,9 @@ services:
     arguments: [ "@doctrine.dbal.eve_data_connection" ]
     tags:
         - { name: evedata.repository }
+
+  evedata.repo.stastations:
+    class: EveBundle\Repository\StaStationsRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }

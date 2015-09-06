@@ -2,20 +2,21 @@
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
-    # You should uncomment this if you want use pdo_sqlite
-    # database_path: "%kernel.root_dir%/data.db3"
+    app_data.database_host: 127.0.0.1
+    app_data.database_port: null
+    app_data.database_name: eve_platform
+    app_data.database_user: root
+    app_data.database_password: null
 
-    mailer_transport:  smtp
-    mailer_host:       127.0.0.1
-    mailer_user:       ~
-    mailer_password:   ~
+    eve_data.database_host: 127.0.0.1
+    eve_data.database_port: null
+    eve_data.database_name: ebs_datadump
+    eve_data.database_user: root
+    eve_data.database_password: null
 
-    # A secret key that's used to generate certain security-related tokens
-    secret:            ThisTokenIsNotSoSecretChangeIt
-
-    eve_api_keys: { }
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: xxxxxxx
+    eve_api_keys: {}

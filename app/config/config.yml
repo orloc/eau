@@ -56,19 +56,19 @@ doctrine:
         connections:
           default:
             driver:   pdo_mysql
-            host:     "%database_host%"
-            port:     "%database_port%"
-            dbname:   "%database_name%"
-            user:     "%database_user%"
-            password: "%database_password%"
+            host:     "%app_data.database_host%"
+            port:     "%app_data.database_port%"
+            dbname:   "%app_data.database_name%"
+            user:     "%app_data.database_user%"
+            password: "%app_data.database_password%"
             charset:  UTF8
           eve_data:
             driver:   pdo_mysql
-            host:     "%database_host%"
-            port:     "%database_port%"
-            dbname:   "%eve_database_name%"
-            user:     "%database_user%"
-            password: "%database_password%"
+            host:     "%eve_data.database_host%"
+            port:     "%eve_data.database_port%"
+            dbname:   "%eve_data.database_name%"
+            user:     "%eve_data.database_user%"
+            password: "%eve_data.database_password%"
         # if using pdo_sqlite as your database driver:
         #   1. add the path in parameters.yml
         #     e.g. database_path: "%kernel.root_dir%/data/data.db3"

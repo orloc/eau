@@ -2,21 +2,21 @@
 
 namespace EveBundle\Repository;
 
-class InvFlagRepository extends AbstractDbalRepository implements RepositoryInterface {
+class StaStationsRepository extends AbstractDbalRepository implements RepositoryInterface {
 
     public function getName(){
-        return 'EveData:InvFlag';
+        return 'EveData:StaStations';
     }
 
     public function getTableName(){
-        return 'invflags';
+        return 'stastations';
     }
 
-    public function getFlagName($flagId){
-        $sql = "SELECT flagText as flag_text FROM {$this->getTableName()} WHERE flagID = :id ";
+    public function getLocationInfo($locationID){
+        $sql = "SELECT  regionID as region, solarSystemID as solar_system, security as security, stationName as station_name FROM {$this->getTableName()} WHERE stationID = :id ";
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute(['id' => $flagId]);
+        $stmt->execute(['id' => $locationID]);
 
         return $stmt->fetch();
 

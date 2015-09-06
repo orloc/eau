@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use EveBundle\Repository\RepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,7 +11,12 @@ use Symfony\Component\Validator\ConstraintViolationList;
 abstract class AbstractController extends Controller {
 
     public function getRepository($name, $manager = 'default'){
-        // check ours
+        $repo = $this->get('evedata.registry')
+            ->get($name);
+
+        if ($repo instanceof RepositoryInterface){
+            return $repo;
+        }
 
         return $this->getDoctrine()->getRepository($name, $manager);
     }
@@ -33,18 +39,6 @@ abstract class AbstractController extends Controller {
         );
 
         return $pagination;
-    }
-
-    public function updateResultSet($items){
-        $itemTypes = $this->getRepository('EveBundle:ItemType', 'eve_data');
-        $dataMapper = $this->get('app.datamapper.service');
-
-        foreach ($items as $i){
-            $updateData = $itemTypes->getItemTypeData($i->getTypeId());
-            $dataMapper->updateObject($i, $updateData);
-        }
-
-        return $items;
     }
 
     protected function getErrorResponse(ConstraintViolationList $errors){

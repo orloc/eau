@@ -5,6 +5,8 @@ namespace AppBundle\Service\Manager;
 use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
 use AppBundle\Entity\Corporation;
+use AppBundle\Service\EBSDataMapper;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class AssetManager
@@ -12,9 +14,15 @@ class AssetManager
 
     private $pheal;
 
-    public function __construct(PhealFactory $pheal)
+    private $doctrine;
+
+    private $mapper;
+
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EBSDataMapper $dataMapper)
     {
         $this->pheal = $pheal;
+        $this->doctrine = $doctrine;
+        $this->mapper = $dataMapper;
     }
 
     public function generateAssetList(Corporation $corporation){
@@ -28,6 +36,18 @@ class AssetManager
         $corporation->addAssetGroup($grouping);
 
     }
+
+    public function updateResultSet($items){
+        $itemTypes = $this->doctrine->getRepository('EveBundle:ItemType', 'eve_data');
+
+        foreach ($items as $i){
+            $updateData = $itemTypes->getItemTypeData($i->getTypeId());
+            $this->mapper->updateObject($i, $updateData);
+        }
+
+        return $items;
+    }
+
 
     private function mapList($assets, AssetGroup $grouping, Asset $parent = null){
         foreach ($assets as $asset){

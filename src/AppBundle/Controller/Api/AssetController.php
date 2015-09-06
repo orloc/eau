@@ -30,7 +30,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getTopLevelAssetsByGroup($group);
 
         $assets = $this->paginateResult($request, $query);
-        $items = $this->updateResultSet($assets->getItems());
+        $items = $this->get('app.asset.manager')->updateResultSet($assets->getItems());
 
         $assets->setItems($items);
 
@@ -55,7 +55,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getDeliveriesByGroup($group);
 
         $assets = $this->paginateResult($request, $query);
-        $items = $this->updateResultSet($assets->getItems());
+        $items = $this->get('app.asset.manager')->updateResultSet($assets->getItems());
 
         $assets->setItems($items);
 
