@@ -56,7 +56,8 @@ class AssetManager
                 ['station' => $locationData['station_name']]
             );
 
-            $i->descriptors = $updateData;
+            $i->setDescriptors($updateData);
+
 
         }
 

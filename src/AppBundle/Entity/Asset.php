@@ -28,13 +28,11 @@ class Asset
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
-     * @JMS\Expose()
      */
     protected $itemId;
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
-     * @JMS\Expose()
      */
     protected $locationId;
 
@@ -52,7 +50,6 @@ class Asset
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @JMS\Expose()
      */
     protected $flag_id;
 
@@ -68,14 +65,13 @@ class Asset
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
-     * @JMS\Expose()
      */
     protected $singleton;
 
-    /*
+    /**
      * @JMS\Expose()
      */
-    public $descriptors;
+    protected $descriptors;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\AssetGroup", inversedBy="assets")
@@ -84,6 +80,16 @@ class Asset
 
     public function __construct(){
         $this->contents = new ArrayCollection();
+    }
+
+    public function getDescriptors(){
+        return $this->descriptors;
+    }
+
+    public function setDescriptors($desc) {
+        $this->descriptors = $desc;
+
+        return $this;
     }
 
 
