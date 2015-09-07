@@ -7,6 +7,7 @@ use AppBundle\Entity\AssetGroup;
 use AppBundle\Entity\Corporation;
 use AppBundle\Service\EBSDataMapper;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use EveBundle\Entity\AveragePrice;
 use \EveBundle\Repository\Registry as EveRegistry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
@@ -19,10 +20,13 @@ class AssetManager
 
     private $mapper;
 
-    public function __construct(PhealFactory $pheal, EBSDataMapper $dataMapper, EveRegistry $registry)
+    private $doctrine;
+
+    public function __construct(PhealFactory $pheal, EBSDataMapper $dataMapper, EveRegistry $registry, Registry $doctrine)
     {
         $this->pheal = $pheal;
         $this->mapper = $dataMapper;
+        $this->doctrine = $doctrine;
         $this->registry = $registry;
     }
 
@@ -57,11 +61,87 @@ class AssetManager
             );
 
             $i->setDescriptors($updateData);
-
-
         }
 
         return $items;
+    }
+
+    public function updatePrices(array $items){
+        $prices = $this->doctrine->getManager('eve_data')
+            ->getRepository('EveBundle:AveragePrice');
+
+        $types = [];
+        foreach ($items as $i){
+            $descriptors = $i->getDescriptors();
+
+            if (!isset($types[$i->getTypeId()])){
+                $price = $prices->getAveragePriceByType($i->getTypeId());
+                $types[$i->getTypeId()] = $descriptors['price'] = $price instanceof AveragePrice
+                    ? floatval($price->getAveragePrice())
+                    : 0;
+
+                $descriptors['total_price'] = floatval($descriptors['price'] * $i->getQuantity());
+
+            } else {
+                $descriptors['price'] = floatval($types[$i->getTypeId()]);
+                $descriptors['total_price'] = floatval($descriptors['price']) * $i->getQuantity();
+            }
+
+            $i->setDescriptors($descriptors);
+        }
+    }
+
+    public function findTopLevelPriceTotals(array $list ){
+        $flattened = $this->flattenArray($list);
+
+        $price = array_reduce($flattened, function ($carry, $data){
+            if ($carry === null){
+                return $data->getDescriptors()['total_price'];
+            }
+
+           return $data->getDescriptors()['total_price'] + $carry;
+        });
+
+        return $price;
+
+    }
+
+    private function flattenArray(array $arr){
+        $return = [];
+        foreach ($arr as $key => $val){
+            if (is_array($val)) {
+                $return = array_merge($return, $this->flattenArray($val));
+            } else {
+                $return[$key] = $val;
+            }
+        }
+        return $return;
+    }
+
+    public function formatItemByLocation(array $items){
+        $tmp = [];
+
+        $checkSet = function(&$arr, $key, $is_arr = true){
+            if (!isset($arr[$key])){
+                $arr[$key] = $is_arr ? [] : null;
+            }
+        };
+
+        foreach ($items as $i){
+            $descriptors = $i->getDescriptors();
+
+            $r = $descriptors['region'];
+            $c = $descriptors['constellation'];
+            $ss = $descriptors['solar_system'];
+            $station = $descriptors['station'];
+            $checkSet($tmp, $r);
+            $checkSet($tmp[$r], $c);
+            $checkSet($tmp[$r][$c], $ss);
+            $checkSet($tmp[$r][$c][$ss], $station);
+            $tmp[$r][$c][$ss][$station][] = $i;
+        }
+
+        return $tmp;
     }
 
 

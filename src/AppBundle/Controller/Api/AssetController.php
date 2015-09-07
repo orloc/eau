@@ -30,9 +30,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getTopLevelAssetsByGroup($group);
 
         $assets = $this->paginateResult($request, $query);
-
         $items = $this->get('app.asset.manager')->updateResultSet($assets->getItems());
-
         $assets->setItems($items);
 
         $json = $this->get('serializer')->serialize($assets, 'json');
@@ -56,7 +54,15 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getDeliveriesByGroup($group);
 
         $assets = $this->paginateResult($request, $query);
-        $items = $this->get('app.asset.manager')->updateResultSet($assets->getItems());
+
+        $assetManager = $this->get('app.asset.manager');
+
+        $items = $assets->getItems();
+
+
+        $assetManager->updatePrices(
+            $assetManager->updateResultSet($items)
+        );
 
         $assets->setItems($items);
 
@@ -65,4 +71,5 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         return $this->jsonResponse($json);
 
     }
+
 }
