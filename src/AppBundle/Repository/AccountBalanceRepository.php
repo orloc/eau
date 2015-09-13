@@ -33,4 +33,14 @@ class AccountBalanceRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
 
     }
+
+    public function getOrderedBalances(Account $acc){
+        return $this->createQueryBuilder('ab')
+            ->leftJoin('ab.account', 'acc')
+            ->where('acc = :account')
+            ->addOrderBy('ab.created_at', 'DESC')
+            ->setParameters(['account' => $acc])
+            ->getQuery()->getResult();
+
+    }
 }

@@ -5,8 +5,8 @@
         </div>
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
             <div class="row">
-                <div class="col-xs-12" ng-show="!loading" ng-cloak>
-                    <div class="summary-stats pull-left" ng-cloak>
+                <div class="col-xs-12" ng-cloak>
+                    <div class="summary-stats pull-left"  ng-show="!loading" ng-cloak>
                         <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency}}' }}<br>
                         <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
                         {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
@@ -15,12 +15,15 @@
                 </div>
                 <div class="col-xs-12">
                     <div class="pull-right">
-                        <div class="btn-group-sm" ng-show="selected_account">
-                            <button  class="btn btn-sm" type="button" ng-click="back()"><i class="fa fa-chevron-left"></i></button>
-                            <button class="btn btn-sm" type="button" ng-click="forward()"><i class="fa fa-chevron-right"></i></button>
+                        <div class="btn-group-sm">
+                            <button  class="btn btn-sm" type="button" ng-click="back()" ng-disabled="!selected_account"><i class="fa fa-chevron-left"></i></button>
+                            <button class="btn btn-sm" type="button" ng-click="forward()" ng-disabled="!selected_account"><i class="fa fa-chevron-right"></i></button>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="account-graphs" >
+                <svg id="account-graphs" ng-non-bindable></svg>
             </div>
 
             <div class="row">
@@ -32,7 +35,7 @@
                                 <loading-spinner class="spinner-inline" style="color: #c7ddef" ng-show="loading && selected_account.id == acc.id"></loading-spinner>
                             </p>
                             <p ng-show="selected_account.id == acc.id">
-                                <b>Gross Change:</b>&nbsp;&nbsp;&nbsp; <i ng-class="{ 'fa fa-chevron-up text-success': findGross() > 0, 'fa fa-chevron-down text-danger': findGross() < 0 }"></i>
+                                <b>Division Change:</b>&nbsp;&nbsp;&nbsp; <i ng-class="{ 'fa fa-chevron-up text-success': findGross() > 0, 'fa fa-chevron-down text-danger': findGross() < 0 }"></i>
                                 {{ '{{ findGross() | currency }}' }}
                             </p>
                         </li>

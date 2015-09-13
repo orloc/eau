@@ -45,4 +45,37 @@ class AccountController extends AbstractController implements ApiControllerInter
 
     }
 
+    /**
+     * @Route("/corporation/{id}/account/data", name="api.corporation.account_data", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Method("GET")
+     */
+    public function dataAllAction(Corporation $corp){
+
+        $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
+            ->findBy(['corporation' => $corp]);
+
+        $balanceRepo = $this->getDoctrine()->getRepository('AppBundle:AccountBalance');
+
+        $accountData = [];
+        foreach($accounts as $acc){
+            $balances = $balanceRepo->getOrderedBalances($acc);
+
+            foreach ($balances as $b){
+                $accountData[] = [
+                    'division' => $acc->getDivision(),
+                    'date' => $b->getCreatedAt()->setTimezone(new \DateTimeZone('UTC'))
+                        ->format("Y-m-d\Th:i:s\Z"),
+                    'balance' => floatval($b->getBalance())
+                ];
+            }
+        }
+
+        $json = $this->get('serializer')->serialize($accountData, 'json');
+
+        return $this->jsonResponse($json);
+
+    }
+
+
 }

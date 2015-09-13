@@ -25,6 +25,7 @@
 {% endblock %}
 {% block extra_javascript %}
     {{ parent() }}
+    <script src="{{ asset('/bower_components/d3/d3.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/app.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/directives/loadingSpinner.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/directives/compareTo.js') }}"></script>

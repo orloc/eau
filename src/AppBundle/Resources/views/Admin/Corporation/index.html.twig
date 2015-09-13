@@ -8,20 +8,16 @@
             <slide-button open-type="new"></slide-button>
             <div class="col-xs-12" ng-controller="corpListController">
                 <div class="row">
-                    <div class="col-xs-4">
+                    <div class="col-md-4">
                         <table class="table table-hover data-table table-condensed" ng-cloak>
                             <thead width="100%">
                                 <th></th>
                                 <th>Name</th>
-                                <th>Updated At</th>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
                                     <td ng-show="!c.new" width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64" ng-show="!c.new"></eve-image> </td>
                                     <td ng-show="!c.new">{{ '{{ c.name }}' }}</td>
-                                    <td ng-show="!c.new">{{ '{{ c.last_updated_at | date:"shortDate" }}' }}<br>
-                                        <span class="small">{{ '{{ c.last_updated_at | date:"shortTime" }}' }}</span>
-                                    </td>
                                     <td colspan="3" ng-show="c.new">
                                         <loading-spinner ng-show="c.new"></loading-spinner>
                                     </td>
@@ -34,7 +30,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-xs-8">
+                    <div class="col-md-8">
                         {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
                     </div>
                 </div>
