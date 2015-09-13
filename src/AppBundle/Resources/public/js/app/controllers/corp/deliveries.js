@@ -21,8 +21,6 @@ angular.module('eveTool')
             $http.get(Routing.generate('api.corporation.deliveries', { id: val.id})).then(function(data){
                 return data.data.items;
             }).then(function(items){
-                console.log(_.flatten(items), items);
-
                 var ids = _.pluck(items, 'type_id').unique();
 
                 $http.get(Routing.generate('api.price.averagelist', { typeId: ids })).then(function(data){

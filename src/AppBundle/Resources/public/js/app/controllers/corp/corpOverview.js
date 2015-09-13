@@ -2,6 +2,7 @@
 
 angular.module('eveTool')
     .controller('corpOverviewController', ['$scope', '$http', function($scope, $http){
+
         $scope.selected_corp = null;
         $scope.selected_account = null;
         $scope.buy_orders = [];
@@ -40,7 +41,7 @@ angular.module('eveTool')
 
         $scope.switchPage = function(page){
             $scope.page = page;
-        }
+        };
 
         $scope.back = function(){
             $scope.loading = true;
@@ -59,13 +60,16 @@ angular.module('eveTool')
         };
 
         $scope.selectAccount = function(acc){
-            $scope.loading = true;
-            $scope.buy_orders = [];
-            $scope.sell_orders = [];
-            $scope.selected_account = acc;
 
-            updateData();
+            if ($scope.selected_account === null
+                || $scope.selected_account.id !== acc.id){
+                $scope.loading = true;
+                $scope.buy_orders = [];
+                $scope.sell_orders = [];
+                $scope.selected_account = acc;
 
+                updateData();
+            }
         };
 
         $scope.sumOrders = function(orders){
@@ -83,7 +87,7 @@ angular.module('eveTool')
             var sell = $scope.sumOrders($scope.sell_orders);
 
             return sell - buy;
-        }
+        };
 
         function updateData(acc){
 
