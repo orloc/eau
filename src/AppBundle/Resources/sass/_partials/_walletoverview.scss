@@ -4,6 +4,17 @@
   padding: 20px;
 }
 
+.graphs {
+  margin-top: 20px;
+  background-color: #ffffff;
+
+  .line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1px;
+  }
+}
+
 .wallet-divisions{
 
   li.active, li:hover, li:focus, li.active:hover, li.active:focus {

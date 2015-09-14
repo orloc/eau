@@ -10,6 +10,7 @@ angular.module('eveTool')
         $scope.grossProfit = 0;
         $scope.sell_orders = [];
         $scope.loading = false;
+        $scope.show_graphs = true;
         $scope.page = 'buy';
 
         $scope.current_date = moment().format('MM/DD/YY');
@@ -38,24 +39,28 @@ angular.module('eveTool')
             });
 
 
-            $('svg path').remove();
+            $('svg').remove();
 
             var wallets, balances;
+            var margins = {
+                top: 10,
+                right: 50,
+                bottom: 20,
+                left: 50
+            };
+            var height = 900 - margins.top - margins.bottom;
 
-            var vis = d3.select('#account-graphs')
-                    .attr('width', '100%')
-                    .attr('height', '300px'),
-                margins = {
-                    top: 20,
-                    right: 20,
-                    bottom: 20,
-                    left: 20
-                };
+
+            var vis = d3.select('.graphs').append('svg')
+                .attr('width', "100%")
+                .attr('height', height+margins.top+margins.bottom)
+                .append("g")
+                .attr("transform", "translate("+ margins.bottom+"," + margins.top +")");
 
 
             d3.json(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id }), function(data){
                 var parse = d3.time.format("%Y-%m-%dT%H:%M:%LZ").parse;
-
+                var color = d3.scale.category10();
 
                 wallets = d3.nest()
                     .key(function(d){ return d.division })
@@ -73,49 +78,82 @@ angular.module('eveTool')
                     });
                 });
 
-                var getColor = function(w){
-                    var colors = {
-                        1000: "blue",
-                        1001: "red",
-                        1002: 'green',
-                        1003: 'purple',
-                        1004: 'brown',
-                        1005: 'black',
-                        1006: 'orange',
-                        1007: 'yellow'
-                    };
+                var g = vis.selectAll("g")
+                    .data(wallets)
+                    .enter().append("g")
+                    .attr("class", "wallet");
 
-                    return colors[w.key];
-                };
+                lines();
 
-                var width = $('#account-graphs')[0].clientWidth;
-                var height = $('#account-graphs')[0].clientHeight;
-                var xScale = d3.time.scale().range([0,  width - margins.right]);
-                var yScale = d3.scale.linear().range([ height - margins.top, margins.bottom]);
+                function lines(){
+                    // begin lines
+                    var width = $('.graphs')[0].clientWidth - margins.left;
+                    var xScale = d3.time.scale().range([0,  width - margins.right]);
+                    var yScale = d3.scale.linear().range([ height / 7 - 30, 0]);
 
-                var line = d3.svg.line()
-                    .interpolate('basis')
-                    .x(function(d){ return xScale(d.date); })
-                    .y(function(d){ return yScale(d.balance); });
+                    var line = d3.svg.line()
+                        .interpolate('basis')
+                        .x(function(d){ return xScale(d.date); })
+                        .y(function(d){ return yScale(d.balance); });
 
-                xScale.domain([
-                    d3.min(wallets, function(d){ return d.values[0].date; }),
-                    d3.max(wallets, function(d){ return d.values[d.values.length - 1].date; })
-                ]);
+                    xScale.domain([
+                        d3.min(wallets, function(d){ return d.values[0].date; }),
+                        d3.max(wallets, function(d){ return d.values[d.values.length - 1].date; })
+                    ]);
 
-                yScale.domain([
-                    d3.min(wallets, function(w){ return w.minPrice; }),
-                    d3.max(wallets, function(w){ return w.maxPrice; })
-                ]);
+                    var g = vis.selectAll('.wallet')
+                        .attr("transform", function(d, i){
+                            return "translate(0,"+(i * height/7+10)+")";
+                        });
 
-                wallets.forEach(function(w){
-                    vis.append('svg:path')
-                        .attr('d', line(w.values))
-                        .attr('stroke-width', 2)
-                        .attr('stroke', getColor(w))
-                        .attr('fill', 'none');
+                    g.each(function(d){
+                        var e = d3.select(this);
 
-                });
+                        e.append("path").attr("class", "line");
+
+                        e.append("circle")
+                            .attr("r", 10)
+                            .style("fill", function(d) { return color(d.key); })
+                            .style("stroke", "#000")
+                            .style("stroke-width", "2px");
+
+                        e.append("text")
+                            .attr("x", 12)
+                            .attr("dy", ".31em")
+                            .text(d.key);
+                    });
+
+                    function draw(k){
+                        g.each(function(d){
+                            var e = d3.select(this);
+                            yScale.domain([0, d.maxPrice]);
+
+                            e.select("path")
+                                .attr("d", function(d) { return line(d.values.slice(0, k+1)); });
+
+                            e.selectAll("circle, text")
+                                .data(function(d){
+                                    return [d.values[k], d.values[k]];
+
+                                }).attr("transform", function(d){
+                                    return "translate(" + xScale(d.date) +"," + yScale(d.balance)+")";
+                                });
+
+
+                        });
+
+                    }
+
+                    var k = 1, n  = wallets[0].values.length;
+
+                    d3.timer(function(){
+                        draw(k);
+                        if ((k +=2) >= n - 1){
+                            draw(n-1);
+                            return true;
+                        }
+                    });
+                }
             });
         });
 

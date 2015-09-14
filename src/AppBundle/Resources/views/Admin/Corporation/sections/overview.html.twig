@@ -14,6 +14,7 @@
                     <span class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span>
                 </div>
                 <div class="col-xs-12">
+                    <div class="pull-left"><button type="button" class="btn btn-sm btn-default" ng-click="show_graphs = !show_graphs">Toggle Graphs</button><span class="small muted">&nbsp;&nbsp;**Graph will eventually show a more granular breakdown</span></div>
                     <div class="pull-right">
                         <div class="btn-group-sm">
                             <button  class="btn btn-sm" type="button" ng-click="back()" ng-disabled="!selected_account"><i class="fa fa-chevron-left"></i></button>
@@ -22,8 +23,8 @@
                     </div>
                 </div>
             </div>
-            <div class="account-graphs" >
-                <svg id="account-graphs" ng-non-bindable></svg>
+            <br>
+            <div class="graphs" ng-show="show_graphs">
             </div>
 
             <div class="row">
