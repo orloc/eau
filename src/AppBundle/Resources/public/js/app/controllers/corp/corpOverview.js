@@ -38,6 +38,8 @@ angular.module('eveTool')
             });
 
 
+            $('svg path').remove();
+
             var wallets, balances;
 
             var vis = d3.select('#account-graphs')
@@ -51,7 +53,7 @@ angular.module('eveTool')
                 };
 
 
-            d3.json('http://eve.dev/app_dev.php/api/corporation/4/account/data', function(data){
+            d3.json(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id }), function(data){
                 var parse = d3.time.format("%Y-%m-%dT%H:%M:%LZ").parse;
 
 
@@ -80,7 +82,7 @@ angular.module('eveTool')
                         1004: 'brown',
                         1005: 'black',
                         1006: 'orange',
-                        1007: 'pink'
+                        1007: 'yellow'
                     };
 
                     return colors[w.key];
