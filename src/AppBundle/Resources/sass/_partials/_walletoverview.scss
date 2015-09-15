@@ -8,6 +8,20 @@
 .graphs {
   background-color: #ffffff;
 
+  .axis {
+    path, line {
+      fill: none;
+      stroke: black;
+      shape-rendering: crispEdges;
+    }
+
+    text {
+      font-family: sans-serif;
+      font-size: 10px;
+      color: $offWhite;
+    }
+  }
+
   .line {
     fill: none;
     stroke: #000;

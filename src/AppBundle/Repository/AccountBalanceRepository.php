@@ -53,7 +53,7 @@ class AccountBalanceRepository extends EntityRepository {
             ->where('acc = :account')
             ->andWhere('ab.created_at >= :start')
             ->andWhere('ab.created_at <= :end')
-            ->addOrderBy('ab.created_at', 'DESC')
+            ->addOrderBy('ab.created_at', 'ASC')
             ->setParameters([
                 'account' => $acc,
                 'start' => $start,

@@ -49,33 +49,39 @@ class AccountController extends AbstractController implements ApiControllerInter
     }
 
     /**
-     * @Route("/corporation/account/{id}/data", name="api.corporation.account_data", options={"expose"=true})
-     * @ParamConverter(name="corp", class="AppBundle:Account")
+     * @Route("/corporation/{id}/account/data", name="api.corporation.account_data", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
      */
-    public function dataAllAction(Request $request, Account $account){
+    public function dataAllAction(Request $request, Corporation $corp){
 
         $date = $request->get('date', null);
+
+        $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
+            ->findBy(['corporation' => $corp]);
 
         $balanceRepo = $this->getDoctrine()->getRepository('AppBundle:AccountBalance');
 
         $accountData = [];
 
-        if (null === $date){
-            $balances = $balanceRepo->getOrderedBalances($account);
-        } else {
-            $dateTime = Carbon::createFromTimestamp($date);
+        foreach ($accounts as $acc){
 
-            $balances = $balanceRepo->getOrderedBalancesByDate($account, $dateTime);
-        }
+            if (null === $date){
+                $balances = $balanceRepo->getOrderedBalances($acc);
+            } else {
+                $dateTime = Carbon::createFromTimestamp($date);
 
-        foreach ($balances as $b){
-            $accountData[] = [
-                'division' => $account->getDivision(),
-                'date' => $b->getCreatedAt()->setTimezone(new \DateTimeZone('UTC'))
-                    ->format("Y-m-d\Th:i:s\Z"),
-                'balance' => floatval($b->getBalance())
-            ];
+                $balances = $balanceRepo->getOrderedBalancesByDate($acc, $dateTime);
+            }
+
+            foreach ($balances as $b){
+                $accountData[] = [
+                    'division' => $acc->getDivision(),
+                    'date' => $b->getCreatedAt()->setTimezone(new \DateTimeZone('UTC'))
+                        ->format("Y-m-d\Th:i:s\Z"),
+                    'balance' => floatval($b->getBalance())
+                ];
+            }
         }
 
         $json = $this->get('serializer')->serialize($accountData, 'json');
