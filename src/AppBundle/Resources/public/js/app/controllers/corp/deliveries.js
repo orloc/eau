@@ -79,16 +79,21 @@ angular.module('eveTool')
                     var m3 = $scope.getM3(value);
 
 
-                    if (typeof total.actual_total == 'undefined') {
+                    if (typeof total.actual_total == 'undefined' || typeof total.actual_total == null) {
                         total.actual_total = 0;
                     }
 
-                    if (typeof total.total_m3 == 'undefined'){
+                    if (typeof total.total_m3 == 'undefined'|| typeof total.total_m3 == null){
                         total.total_m3 = 0;
+                    }
+
+                    if (typeof total.total_quantity == 'undefined'|| typeof total.total_quantity == null){
+                        total.total_quantity = 0;
                     }
 
                     total.actual_total += value.descriptors.total_price;
                     total.total_m3 += m3;
+                    total.total_quantity += value.quantity;
 
                     return total;
                 }));
@@ -101,6 +106,7 @@ angular.module('eveTool')
             angular.forEach(array, function(item){
                 item.total_m3 = null;
                 item.actual_total = null;
+                item.total_quantity = null;
             });
         }
 
@@ -181,6 +187,8 @@ angular.module('eveTool')
                     return f != 'region' && f != 'constellation';
                 case 'station':
                     return f != 'region' && f != 'constellation' && f != 'system';
+                case 'quantity':
+                    return f != '*';
             }
 
             return true;

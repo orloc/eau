@@ -62,10 +62,12 @@
                             <span ng-if="filter != '*'">N/A</span>
                         </td>
                         <td>
-                            <span ng-if="filter =='*'">
-                            {{ '{{ item.quantity }}' }}
+                            <span ng-if="getShowColumn('quantity')">
+                                {{ '{{ item.total_quantity }}' }}
                             </span>
-                            <span ng-if="filter != '*'">N/A</span>
+                            <span ng-if="!getShowColumn('quantity')">
+                                {{ '{{ item.quantity }}' }}
+                            </span>
                         </td>
                         <td>
                             <span ng-if="filter =='*'">
