@@ -40,12 +40,22 @@ angular.module('eveTool')
 
                 var ids = _.pluck(items, 'type_id').unique();
 
-                $http.get(Routing.generate('api.price.averagelist', { typeId: ids })).then(function(data){
-                    $scope.price_reference = data.data;
-                    $scope.assets = items;
+                var groups = _.chunk(ids, 50);
 
-                    $scope.loading = false;
+                var tmp = [];
+
+                angular.forEach(groups, function(i){
+                    $http.get(Routing.generate('api.price.averagelist', { typeId: i })).then(function(data){
+                        tmp = tmp.concat(data.data);
+                    }).then(function(){
+                        $scope.price_reference = tmp.unique();
+                        $scope.loading = false;
+
+                    });
                 });
+
+                $scope.assets = items;
+
             });
 
         });
@@ -63,21 +73,4 @@ angular.module('eveTool')
 
         };
 
-        $scope.sumItems = function(){
-            if (!$scope.price_reference.length){
-                return 0;
-            }
-
-            var total = 0;
-            angular.forEach($scope.assets, function(item){
-                var price = $scope.getPrice(item);
-
-                if (typeof price != 'undefined'){
-                    total += price.average_price * item.quantity;
-                }
-            });
-
-            return total;
-
-        }
     }]);
