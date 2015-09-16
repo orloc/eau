@@ -53,31 +53,54 @@
                 <tbody>
                     <tr ng-repeat="item in filtered_assets">
                         <td width="75px">
-                            <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                            <eve-image ng-if="filter == '*'" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         </td>
                         <td>
+                            <span ng-if="filter =='*'">
                             {{ '{{ item.descriptors.name }}' }}
+                            </span>
+                            <span ng-if="filter !='*'">N/A</span>
                         </td>
                         <td>
+                            <span ng-if="filter =='*'">
                             {{ '{{ item.quantity }}' }}
+                            </span>
+                            <span ng-if="filter !='*'">N/A</span>
                         </td>
                         <td>
+                            <span ng-if="filter =='*'">
                             {{ '{{ getM3(item) | number:2 }}' }}
+                            </span>
+                            <span ng-if="filter !='*'">
+                            {{ '{{ item.total_m3 | number:2 }}' }}
+                            </span>
                         </td>
                         <td>
                             {{ '{{ item.descriptors.region }}' }}
                         </td>
                         <td>
+                            <span ng-if="filter =='*'">
                             {{ '{{ item.descriptors.constellation }}' }}
+                            </span>
+                            <span ng-if="filter !='*'">N/A</span>
                         </td>
                         <td>
+                            <span ng-if="filter =='*'">
                             {{ '{{  item.descriptors.solar_system }}' }}
+                            </span>
+                            <span ng-if="filter !='*'">N/A</span>
                         </td>
                         <td>
+                            <span ng-if="filter =='*'">
                             {{ '{{  item.descriptors.station }}' }}
+                            </span>
+                            <span ng-if="filter !='*'">N/A</span>
                         </td>
                         <td>
+                            <span ng-if="filter =='*'">
                             {{ '{{  item.descriptors.price | currency }}' }}
+                            </span>
+                            <span ng-if="filter !='*'">N/A</span>
                         </td>
                         <td>
                             {{ ' {{  item.descriptors.total_price | currency }}' }}
