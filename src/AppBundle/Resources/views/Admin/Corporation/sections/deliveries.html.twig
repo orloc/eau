@@ -10,26 +10,27 @@
             <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
 
             <ul class="list-inline list-unstyled pull-right">
+                <li ng-show="loading"><loading-spinner ></loading-spinner></li>
                 <li>
-                    <button class="btn btn-sm btn-success">Region</button>
+                    <button ng-click="doFilter('region')" class="btn btn-sm btn-success">Region</button>
                 </li>
                 <li>
-                    <button class="btn btn-sm btn-info">
+                    <button ng-click="doFilter('constellation')" class="btn btn-sm btn-info">
                         Constellation
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn-sm btn-warning">
+                    <button ng-click="doFilter('system')" class="btn btn-sm btn-warning">
                         System
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn-sm btn-danger">
+                    <button ng-click="doFilter('station')" class="btn btn-sm btn-danger">
                         Station
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn-sm btn-link">
+                    <button ng-click="doFilter('*')" class="btn btn-sm btn-link">
                         All
                     </button>
                 </li>
@@ -50,7 +51,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in assets">
+                    <tr ng-repeat="item in filtered_assets">
                         <td width="75px">
                             <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         </td>

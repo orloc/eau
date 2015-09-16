@@ -1,16 +1,21 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('deliveryController', ['$scope', '$http', function($scope, $http){
+    .controller('deliveryController', ['$scope', '$http','$filter', function($scope, $http, $filter){
         $scope.selected_corp = null;
         $scope.selected_region = null;
+        $scope.loading = true;
         $scope.price_reference = [];
         $scope.assets = [];
+
+        $scope.filtered_assets = [];
 
         $scope.$on('select_corporation', function(event, data){
             $scope.selected_corp = data;
             $scope.price_reference = [];
+            $scope.loading = true;
             $scope.assets = [];
+            $scope.filtered_assets = [];
         });
 
         $scope.$watch('selected_corp', function(val){
@@ -26,11 +31,37 @@ angular.module('eveTool')
                 $http.get(Routing.generate('api.price.averagelist', { typeId: ids })).then(function(data){
                     $scope.price_reference = data.data;
                     $scope.assets = items;
+
+                    $scope.filtered_assets = $scope.filterBy("*");
+                    $scope.loading = false;
                 });
 
             });
 
         });
+
+        $scope.filterBy = function(search){
+            $scope.loading = true;
+            if (search == "*"){
+                return $scope.assets;
+            }
+
+            var tmp = {};
+            switch (search){
+                case 'region':
+                    angular.forEach($scope.assets, function(a){
+                        tmp[a.descriptors.region].push(a);
+                    });
+
+                    console.log(tmp);
+
+            }
+        };
+
+        $scope.doFilter = function(search){
+            $scope.filtered_assets = $scope.filterBy(search);
+            $scope.loading = false;
+        };
 
         $scope.totalM3 = function(){
             var total = 0;
