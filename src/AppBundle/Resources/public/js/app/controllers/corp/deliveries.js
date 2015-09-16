@@ -112,8 +112,10 @@ angular.module('eveTool')
 
             switch ($scope.filter){
                 case '*':
+                    $scope.order_by_value = 'descriptors.total_price';
                     return $scope.assets;
                 case 'region':
+                    $scope.order_by_value = 'actual_total';
                     angular.forEach($scope.assets, function(a){
                         if (typeof(tmp[a.descriptors.region]) != 'object'){
                             tmp[a.descriptors.region] = [];
@@ -128,6 +130,7 @@ angular.module('eveTool')
                     return flattenMap(tmp);
 
                 case 'constellation':
+                    $scope.order_by_value = 'actual_total';
                     angular.forEach($scope.assets, function(a){
                         if (typeof(tmp[a.descriptors.constellation]) != 'object'){
                             tmp[a.descriptors.constellation] = [];
@@ -140,6 +143,7 @@ angular.module('eveTool')
                     return flattenMap(tmp);
 
                 case 'system':
+                    $scope.order_by_value = 'actual_total';
                     angular.forEach($scope.assets, function(a){
                         if (typeof(tmp[a.descriptors.solar_system]) != 'object'){
                             tmp[a.descriptors.solar_system] = [];
@@ -153,6 +157,7 @@ angular.module('eveTool')
 
 
                 case 'station':
+                    $scope.order_by_value = 'actual_total';
                     angular.forEach($scope.assets, function(a){
                         if (typeof(tmp[a.descriptors.station]) != 'object'){
                             tmp[a.descriptors.station] = [];
