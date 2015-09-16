@@ -9,7 +9,6 @@ set :keep_releases, 5
 
 set :bower_flags, '--quiet --config.interactive=false'
 set :bower_roles, :web
-set :bower_target_path, "#{release_path}/web"
 
 set :symfony_env,  "prod"
 set :app_path,              "app"
