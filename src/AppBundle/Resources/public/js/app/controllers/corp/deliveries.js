@@ -65,53 +65,54 @@ angular.module('eveTool')
             }
         };
 
+        var flattenMap = function(temp){
+            var newTmp = _.values(temp);
+            var tmpV = [];
+
+
+            angular.forEach(newTmp, function(v){
+                tmpV.push(_.reduce(v, function(total, value){
+
+                    if (typeof total === 'undefined'){
+                        return value;
+                    }
+                    var m3 = $scope.getM3(value);
+
+
+                    if (typeof total.actual_total == 'undefined') {
+                        total.actual_total = 0;
+                    }
+
+                    if (typeof total.total_m3 == 'undefined'){
+                        total.total_m3 = 0;
+                    }
+
+                    total.actual_total += value.descriptors.total_price;
+                    total.total_m3 += m3;
+
+                    return total;
+                }));
+            });
+
+            return tmpV;
+        };
+
+        function resetInternalArray(array){
+            angular.forEach(array, function(item){
+                item.total_m3 = null;
+                item.actual_total = null;
+            });
+        }
+
         $scope.filterBy = function(){
             $scope.loading = true;
-            if ($scope.filter == "*"){
-                return $scope.assets;
-            }
-
             var tmp = [];
 
-            var flattenMap = function(temp){
-                var newTmp = _.values(temp);
-                var tmpV = [];
-
-                angular.forEach(newTmp, function(v){
-                    angular.forEach(v, function(item){
-                        item.total_m3 = 0;
-                        item.actual_total = 0;
-                    });
-                });
-
-                angular.forEach(newTmp, function(v){
-                    tmpV.push(_.reduce(v, function(total, value){
-
-                        if (typeof total === 'undefined'){
-                            return value;
-                        }
-                        var m3 = $scope.getM3(value);
-
-
-                        if (typeof total.actual_total == 'undefined') {
-                            total.actual_total = 0;
-                        }
-
-                        if (typeof total.total_m3 == 'undefined'){
-                            total.total_m3 = 0;
-                        }
-
-                        total.actual_total += value.descriptors.total_price;
-                        total.total_m3 += m3;
-
-                        return total;
-                    }));
-                });
-
-                return tmpV;
-            };
+            resetInternalArray($scope.assets);
 
             switch ($scope.filter){
+                case '*':
+                    return $scope.assets;
                 case 'region':
                     angular.forEach($scope.assets, function(a){
                         if (typeof(tmp[a.descriptors.region]) != 'object'){
@@ -121,6 +122,8 @@ angular.module('eveTool')
                         tmp[a.descriptors.region].push(a);
 
                     });
+
+                    resetInternalArray(tmp);
 
                     return flattenMap(tmp);
 
@@ -133,6 +136,7 @@ angular.module('eveTool')
                         tmp[a.descriptors.constellation].push(a);
                     });
 
+                    resetInternalArray(tmp);
                     return flattenMap(tmp);
 
                 case 'system':
@@ -143,6 +147,7 @@ angular.module('eveTool')
 
                         tmp[a.descriptors.solar_system].push(a);
                     });
+                    resetInternalArray(tmp);
 
                     return flattenMap(tmp);
 
@@ -156,6 +161,7 @@ angular.module('eveTool')
                         tmp[a.descriptors.station].push(a);
                     });
 
+                    resetInternalArray(tmp);
                     return flattenMap(tmp);
             }
         };
