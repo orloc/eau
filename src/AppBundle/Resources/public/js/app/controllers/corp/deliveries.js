@@ -32,6 +32,10 @@ angular.module('eveTool')
 
         });
 
+        $scope.getM3 = function(item){
+            return parseFloat(item.descriptors.volume) * item.quantity;
+        };
+
         $scope.getPrice = function(type){
             if (typeof type === 'undefined'){
                return;

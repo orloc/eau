@@ -4,6 +4,56 @@
             <p>
                 <b class="text-info">Total In Deliveries:</b> {{ '{{ sumDeliveries() | currency }}' }}
             </p>
+            <table class="table data-table table-condensed table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>m<sup>3</sup></th>
+                    <th>Region</th>
+                    <th>Constellation</th>
+                    <th>System</th>
+                    <th>Station</th>
+                    <th>Avg Market Price</th>
+                    <th>Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in assets">
+                        <td width="75px">
+                            <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.name }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.quantity }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ getM3(item) }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.region }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.constellation }}' }}
+                        </td>
+                        <td>
+                            {{ '{{  item.descriptors.solar_system }}' }}
+                        </td>
+                        <td>
+                            {{ '{{  item.descriptors.station }}' }}
+                        </td>
+                        <td>
+                            {{ '{{  item.descriptors.price | currency }}' }}
+                        </td>
+                        <td>
+                            {{ ' {{  item.descriptors.total_price | currency }}' }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
         <div class="col-xs-12 well" ng-show="!selected_corp"><h5 class="text-center">Select a Corporation</h5></div>
