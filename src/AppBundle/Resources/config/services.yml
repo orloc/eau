@@ -43,7 +43,7 @@ services:
       class: AppBundle\Service\Manager\CorporationManager
 
   app.account.manager:
-      arguments: [ "@tarioch.pheal.factory" ]
+      arguments: [ "@tarioch.pheal.factory", "@doctrine" ]
       class: AppBundle\Service\Manager\AccountManager
 
   app.asset.manager:
