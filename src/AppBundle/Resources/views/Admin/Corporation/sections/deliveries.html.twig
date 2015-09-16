@@ -35,7 +35,7 @@
                     </button>
                 </li>
             </ul>
-            <table class="table data-table table-condensed table-striped">
+            <table class="table data-table table-condensed table-striped table-hover">
                 <thead>
                 <tr>
                     <th></th>
@@ -51,7 +51,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in filtered_assets">
+                    <tr ng-repeat="item in filtered_assets | orderBy:order_by_value:order_by_reverse" ng-class="{'warning': getRowClass(item) == 1, 'danger': getRowClass(item) == 2 }">
                         <td width="75px">
                             <eve-image ng-if="filter == '*'" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         </td>
@@ -59,13 +59,13 @@
                             <span ng-if="filter =='*'">
                             {{ '{{ item.descriptors.name }}' }}
                             </span>
-                            <span ng-if="filter !='*'">N/A</span>
+                            <span ng-if="filter != '*'">N/A</span>
                         </td>
                         <td>
                             <span ng-if="filter =='*'">
                             {{ '{{ item.quantity }}' }}
                             </span>
-                            <span ng-if="filter !='*'">N/A</span>
+                            <span ng-if="filter != '*'">N/A</span>
                         </td>
                         <td>
                             <span ng-if="filter =='*'">
@@ -79,31 +79,36 @@
                             {{ '{{ item.descriptors.region }}' }}
                         </td>
                         <td>
-                            <span ng-if="filter =='*'">
+                            <span ng-if="getShowColumn('constellation')">
                             {{ '{{ item.descriptors.constellation }}' }}
                             </span>
-                            <span ng-if="filter !='*'">N/A</span>
+                            <span ng-if="!getShowColumn('constellation')">N/A</span>
                         </td>
                         <td>
-                            <span ng-if="filter =='*'">
+                            <span ng-if="getShowColumn('system')">
                             {{ '{{  item.descriptors.solar_system }}' }}
                             </span>
-                            <span ng-if="filter !='*'">N/A</span>
+                            <span ng-if="!getShowColumn('system')">N/A</span>
                         </td>
                         <td>
-                            <span ng-if="filter =='*'">
+                            <span ng-if="getShowColumn('station')">
                             {{ '{{  item.descriptors.station }}' }}
                             </span>
-                            <span ng-if="filter !='*'">N/A</span>
+                            <span ng-if="!getShowColumn('station')">N/A</span>
+                        </td>
+                        <td>
+                            <span ng-if="getShowColumn()">
+                            {{ '{{  item.descriptors.price | currency }}' }}
+                            </span>
+                            <span ng-if="!getShowColumn()">N/A</span>
                         </td>
                         <td>
                             <span ng-if="filter =='*'">
-                            {{ '{{  item.descriptors.price | currency }}' }}
+                                {{ ' {{  item.descriptors.total_price | currency }}' }}
                             </span>
-                            <span ng-if="filter !='*'">N/A</span>
-                        </td>
-                        <td>
-                            {{ ' {{  item.descriptors.total_price | currency }}' }}
+                            <span ng-if="filter !='*'">
+                                {{ ' {{  item.actual_total | currency }}' }}
+                            </span>
                         </td>
                     </tr>
                 </tbody>

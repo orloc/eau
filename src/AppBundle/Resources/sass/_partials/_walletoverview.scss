@@ -5,6 +5,20 @@
   padding-top: 0;
 }
 
+.controls {
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  right: 10;
+  .btn {
+    padding: 2.5px 5px;
+  }
+}
+
+.viewing-details {
+  height: 100px;
+}
+
 .graphs {
   background-color: #ffffff;
 
