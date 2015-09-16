@@ -43,6 +43,24 @@ angular.module('eveTool')
 
         });
 
+        $scope.getRowClass = function(item){
+            if (typeof item.total_m3 !== 'undefined'){
+
+                var tm3 = item.total_m3;
+                if (tm3 >= 100000 && tm3 <= 249999){
+                    return 0;
+                }
+
+                if (tm3 >= 250000 && tm3 <= 499999){
+                    return 1;
+                }
+
+                if (tm3 >= 500000){
+                    return 2;
+                }
+            }
+        };
+
         $scope.filterBy = function(){
             $scope.loading = true;
             if ($scope.filter == "*"){
