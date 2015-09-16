@@ -27,11 +27,28 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getLatestAssetGroup($corp);
 
         $query = $this->getRepository('AppBundle:Asset')
-            ->getTopLevelAssetsByGroup($group);
+            ->getAllByGroup($group);
 
         $assets = $this->paginateResult($request, $query);
-        $items = $this->get('app.asset.manager')->updateResultSet($assets->getItems());
-        $assets->setItems($items);
+
+        $assetManager = $this->get('app.asset.manager');
+
+        $items = $assets->getItems();
+
+
+        $assetManager->updatePrices(
+            $assetManager->updateResultSet($items)
+        );
+
+        $filteredList = array_filter($items, function($i) {
+            $name = $i->getDescriptors()['name'];
+            $t = strstr($name, 'Blueprint');
+
+            return $t === false;
+
+        });
+
+        $assets->setItems($filteredList);
 
         $json = $this->get('serializer')->serialize($assets, 'json');
 

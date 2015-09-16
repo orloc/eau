@@ -9,7 +9,7 @@ angular.module('eveTool')
     });
 
     $scope.populateEdit = function(user){
-j
+
         dataDispatcher.addEvent('update_user', user);
     };
 

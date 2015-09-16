@@ -9,6 +9,16 @@ use Doctrine\ORM\EntityRepository;
 
 class AssetRepository extends EntityRepository {
 
+    public function getAllByGroup(AssetGroup $group){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.asset_group = :group')
+            ->andWhere('a.flag_id != :flag')
+            ->setParameter('group', $group)
+            ->setParameter('flag', 62) // does not equal deliveries
+            ->getQuery();
+    }
+
     public function getTopLevelAssetsByGroup(AssetGroup $group){
         return $this->createQueryBuilder('a')
             ->select('a')

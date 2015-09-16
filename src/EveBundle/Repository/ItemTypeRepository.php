@@ -14,7 +14,7 @@ class ItemTypeRepository extends AbstractDbalRepository implements RepositoryInt
 
     public function getItemTypeData($typeId){
 
-        $sql = "SELECT typeName as name, description as description, volume as volume FROM {$this->getTableName()} WHERE typeID = :id ";
+        $sql = "SELECT typeName as name, description as description, volume as volume, marketGroupID as market_group, groupID as group_id FROM {$this->getTableName()} WHERE typeID = :id ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $typeId]);

@@ -1,6 +1,8 @@
 <eve-pane title="Inventory">
     <div ng-controller="inventoryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+            <b class="text-info">Total Value:</b> {{ '{{ sumItems() | currency }}' }}
+            <br>
             <table class="table data-table table-striped table-condensed">
                 <thead>
                     <th>
@@ -11,36 +13,41 @@
                     <th>
                         Quantity
                     </th>
-                    <th>
-                        Market Group
-                    </th>
-                    <th>
-                        Type
-                    </th>
-                    <th>
-                        Location
-                    </th>
-                    <th>
-                        Market Buy
-                    </th>
+                    <th>m<sup>3</sup></th>
+                    <th>Region</th>
+                    <th>Constellation</th>
+                    <th>System</th>
+                    <th>Station</th>
+                    <th>Avg Market Price</th>
+                    <th>Total Price</th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in assets">
-                        <td>
+                    <tr ng-repeat="item in assets | orderBy:'descriptors.total_price':true" ng-show="!loading">
+                        <td width="75px">
                             <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         </td>
                         <td>
-                            {{ '{{ item.name }}' }}
+                            {{ '{{ item.descriptors.name }}' }}
                         </td>
                         <td>
                             {{ '{{ item.quantity }}' }}
                         </td>
+                        <td> {{ '{{ getM3(item) }}' }}</td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td>
-                            {{ '{{ item.location }}' }}
+                            {{ '{{ item.descriptors.price | currency }}' }}
                         </td>
-                        <td></td>
+                        <td>
+                            {{ '{{ item.descriptors.total_price | currency }}' }}
+                        </td>
+                    </tr>
+                    <tr ng-show="loading">
+                        <td colspan="10" class="text-center">
+                            <loading-spinner></loading-spinner>
+                        </td>
                     </tr>
                 </tbody>
             </table>
