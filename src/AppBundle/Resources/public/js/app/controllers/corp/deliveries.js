@@ -48,14 +48,18 @@ angular.module('eveTool')
 
                 var tm3 = item.total_m3;
                 if (tm3 >= 100000 && tm3 <= 249999){
-                    return 0;
+                    return -1;
                 }
 
                 if (tm3 >= 250000 && tm3 <= 499999){
+                    return 0;
+                }
+
+                if (tm3 >= 500000 && tm3 <= 799999){
                     return 1;
                 }
 
-                if (tm3 >= 500000){
+                if (tm3 >= 800000){
                     return 2;
                 }
             }

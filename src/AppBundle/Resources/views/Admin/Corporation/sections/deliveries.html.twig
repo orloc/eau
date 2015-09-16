@@ -51,7 +51,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in filtered_assets | orderBy:order_by_value:order_by_reverse" ng-class="{'warning': getRowClass(item) == 1, 'danger': getRowClass(item) == 2, 'info': getRowClass(item) == 0 }">
+                    <tr ng-repeat="item in filtered_assets | orderBy:order_by_value:order_by_reverse" ng-class="{'warning': getRowClass(item) == 1, 'danger': getRowClass(item) == 2, 'info': getRowClass(item) == 0, 'success' : getRowClass(item) == -1 }">
                         <td width="75px">
                             <eve-image ng-if="filter == '*'" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         </td>
