@@ -1,0 +1,27 @@
+.corporation-list {
+  position: relative;
+  margin-bottom: 10px;
+  eve-image img {
+    display: inline-block;
+  }
+
+  .corp-name {
+    margin-left: 10px;
+    font-size: 14px;
+    color: $offWhite;
+  }
+
+  .corp-item {
+    display: inline-block;
+    width: 20%;
+    padding: 10px;
+
+    &:hover, &.success {
+      .corp-name {
+        color: $darkerBlack;
+      }
+      background-color: $offWhite;
+    }
+  }
+
+}

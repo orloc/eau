@@ -19,6 +19,7 @@ class AccountBalanceRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
+
     public function getLastDayBalance(Account $acc){
         $date = Carbon::create()
             ->subDay();

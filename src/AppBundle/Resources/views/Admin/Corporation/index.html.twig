@@ -5,36 +5,16 @@
         <h3>Corporation <span class="muted small">LIST</span>
         </h3>
         <side-menu-container ng-transclude>
-            <slide-button open-type="new"></slide-button>
-            <div class="col-xs-12" ng-controller="corpListController">
-                <div class="row">
-                    <div class="col-md-3">
-                        <table class="table table-hover data-table table-condensed" ng-cloak>
-                            <thead width="100%">
-                                <th></th>
-                                <th>Name</th>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
-                                    <td ng-show="!c.new" width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64" ng-show="!c.new"></eve-image> </td>
-                                    <td ng-show="!c.new">{{ '{{ c.name }}' }}</td>
-                                    <td colspan="3" ng-show="c.new">
-                                        <loading-spinner ng-show="c.new"></loading-spinner>
-                                    </td>
-                                </tr>
-                                <tr ng-if="!corps.length" ng-cloak>
-                                    <td class="text-warning text-center" colspan="3" style="padding: 10px;" ng-cloak>
-                                        <h4 ng-cloak>No Corporations Found</h4>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-9">
-                        {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
-                    </div>
+            <div class="col-xs-12 corporation-list" ng-controller="corpListController">
+                <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" class="corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
+                    <span ng-show="!c.new" width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64" ng-show="!c.new"></eve-image> </span>
+                    <span class="corp-name" ng-show="!c.new">{{ '{{ c.name }}' }}</span>
+                    <loading-spinner ng-show="c.new"></loading-spinner>
                 </div>
             </div>
+            <slide-button open-type="new"></slide-button>
+            {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
+
             {% include 'AppBundle:Admin/Corporation:new.html.twig' %}
         </side-menu-container>
     </div>

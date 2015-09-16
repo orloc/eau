@@ -25,25 +25,14 @@ angular.module('eveTool')
                 return;
             }
 
-            $http.get(Routing.generate('api.corporation.account', { id: val.id })).then(function(data){
-                $scope.accounts = data.data;
-
-                var total = 0;
-                var lastDay = 0;
-                angular.forEach($scope.accounts, function(a){
-                    total += parseFloat(a.current_balance);
-                    lastDay += parseFloat(a.last_day_balance);
-                });
-
-                $scope.totalBalance = total;
-                $scope.percentChangeBalance = { percent: ((total - lastDay) / lastDay) * 100, diff: total - lastDay }
+            updateAccountBalances(val).then(function(){
+                $scope.selectAccount($scope.accounts[0]);
             });
 
 
             $('svg').remove();
 
         });
-
 
         $scope.switchPage = function(page){
             $scope.page = page;
@@ -114,6 +103,22 @@ angular.module('eveTool')
 
         }
 
+        function updateAccountBalances(val){
+            return $http.get(Routing.generate('api.corporation.account', { id: val.id , date: $scope.current_date})).then(function(data){
+                $scope.accounts = data.data;
+
+                var total = 0;
+                var lastDay = 0;
+                angular.forEach($scope.accounts, function(a){
+                    total += parseFloat(a.current_balance);
+                    lastDay += parseFloat(a.last_day_balance);
+                });
+
+                $scope.totalBalance = total;
+                $scope.percentChangeBalance = { percent: ((total - lastDay) / lastDay) * 100, diff: total - lastDay }
+            });
+        }
+
         function updateSVG(){
             $('svg').remove();
             var wallets, balances;
@@ -136,7 +141,7 @@ angular.module('eveTool')
             var color = d3.scale.category10();
             var width = $('.graphs')[0].clientWidth - margins.left;
             var xScale = d3.time.scale().range([0,  width - margins.right]);
-            var yScale = d3.scale.linear().range([ height / 7 - 10, 0]);
+            var yScale = d3.scale.linear().range([ height - 10, 0]);
 
             var xAxis = d3.svg.axis()
                 .scale(xScale)
@@ -153,8 +158,8 @@ angular.module('eveTool')
             var area = d3.svg.area()
                 .interpolate("basis")
                 .x(function (d) { return xScale(d.date); })
-                .y0(function (d) { return yScale(d.balance); })
-                .y1(function (d) { return yScale(d.balance0 + d.balance); });
+                .y0(function (d) { return console.log(d,'hi'); yScale(d.balance); })
+                .y1(function (d) { return console.log(d); yScale(d.balance0 + d.balance); });
 
             var stack = d3.layout.stack()
                 .offset("zero")
@@ -216,7 +221,7 @@ angular.module('eveTool')
 
                 g.append("path")
                     .attr("class", "streamPath")
-                    .attr("d", function (d) { console.log(area(d.values)); return area(d.values); })
+                    .attr("d", function (d) { return area(d.values); })
                     .style("fill", function (d) { return color(d.key); })
                     .style("stroke", "grey");
 
