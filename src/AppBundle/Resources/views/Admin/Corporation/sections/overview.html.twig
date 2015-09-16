@@ -57,12 +57,15 @@
                     </h5>
                 </div>
                 <div class="col-xs-8" ng-show="selected_account && page == 'buy'">
-                    <table class="table table-condensed">
+                    <table class="table table-striped data-table table-condensed table-hover">
+                        <thead>
                         <th>Item</th>
                         <th>Volume</th>
                         <th>Price Per</th>
                         <th>Gross</th>
-                        <tr ng-repeat="b in buy_orders | filter:orderBy:'price * quantity'">
+                        </thead>
+                        <tbody>
+                        <tr ng-show="buy_orders.length > 0 " ng-repeat="b in buy_orders | filter:orderBy:'price * quantity'">
                             <td>
                                 <div class="row">
                                     <div class="col-xs-3">
@@ -77,16 +80,26 @@
                             <td>{{ '{{ b.price | currency }}' }}</td>
                             <td>{{ '{{ b.price * b.quantity | currency}}' }}</td>
                         </tr>
+                        <tr ng-show="buy_orders.length == 0">
+                            <td colspan="4" class="text-center text-danger">
+                                No Buy Orders Found.
+                            </td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
 
                 <div class="col-xs-8" ng-show="selected_account && page == 'sell'">
-                    <table class="table table-condensed">
+                    <table class="table table-striped data-table table-condensed table-hover">
+                        <thead>
                         <th>Item</th>
                         <th>Volume</th>
                         <th>Price Per</th>
                         <th>Gross</th>
-                        <tr ng-repeat="s in sell_orders">
+                        </thead>
+                        <tbody>
+
+                        <tr ng-show="sell_orders.length> 0 " ng-repeat="s in sell_orders">
                             <td>
                                 <div class="row">
                                     <div class="col-xs-5">
@@ -101,6 +114,12 @@
                             <td>{{ '{{ s.price | currency }}' }}</td>
                             <td>{{ '{{ s.price * s.quantity | currency}}' }}</td>
                         </tr>
+                        <tr ng-show="sell_orders.length == 0">
+                            <td colspan="4" class="text-center text-danger">
+                                No Sell Orders Found.
+                            </td>
+                        </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

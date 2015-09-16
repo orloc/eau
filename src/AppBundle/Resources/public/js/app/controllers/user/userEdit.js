@@ -12,6 +12,11 @@ angular.module('eveTool')
             }
         ];
 
+        $scope.$on('update_user', function(event, item){
+            console.log(item);
+            $scope.editUser = item;
+        });
+
         $scope.update = function(){
             $scope.submitLoading = true;
             $http.put(Routing.generate('api.user_update', { id: $scope.editUser.id }), $scope.editUser).then(function(data){

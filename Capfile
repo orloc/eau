@@ -5,6 +5,7 @@ require 'capistrano/setup'
 require 'capistrano/deploy'
 require 'capistrano/symfony'
 require 'capistrano/composer'
+require 'capistrano/bower'
 
 # Include tasks from other gems included in your Gemfile
 #

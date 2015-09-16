@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-.controller('userListController', ['$scope', '$http','$document', function($scope, $http){
+.controller('userListController', ['$scope', '$http','dataDispatcher',  function($scope, $http, dataDispatcher){
     $scope.users = [];
 
     $http.get(Routing.generate('api.users')).then(function(data){
@@ -9,7 +9,8 @@ angular.module('eveTool')
     });
 
     $scope.populateEdit = function(user){
-
+j
+        dataDispatcher.addEvent('update_user', user);
     };
 
     $scope.$on('update_list', function(event, item){

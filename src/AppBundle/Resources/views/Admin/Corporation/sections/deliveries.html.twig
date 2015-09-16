@@ -1,3 +1,10 @@
+<style>
+    #header-fixed {
+        position: fixed;
+        top: 0px; display:none;
+    }
+
+</style>
 <eve-pane title="Deliveries">
     <div ng-controller="deliveryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
@@ -115,8 +122,10 @@
                     </tr>
                 </tbody>
             </table>
+            <table id="header-fixed"></table>
 
         </div>
-        <div class="col-xs-12 well" ng-show="!selected_corp"><h5 class="text-center">Select a Corporation</h5></div>
+        <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>
     </div>
 </eve-pane>
+

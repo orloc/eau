@@ -7,6 +7,10 @@ set :pty, true
 
 set :keep_releases, 5
 
+set :bower_flags, '--quiet --config.interactive=false'
+set :bower_roles, :web
+set :bower_target_path, "#{release_path}/web"
+
 set :symfony_env,  "prod"
 set :app_path,              "app"
 set :web_path,              "web"
@@ -48,4 +52,3 @@ namespace :deploy do
   end
 
 end
-F7z2KDcxjRynMxfXsa49Wr7J
