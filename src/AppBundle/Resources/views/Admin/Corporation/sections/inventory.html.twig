@@ -1,7 +1,7 @@
 <eve-pane title="Inventory">
     <div ng-controller="inventoryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-            <b class="text-info">Total Value:</b> {{ '{{ total_value | currency }}' }}
+            <b class="text-info">Total Value:</b> {{ '{{ sumItems() | currency }}' }}
             <br>
             <table class="table data-table table-striped table-condensed">
                 <thead>

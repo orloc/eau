@@ -17,7 +17,6 @@
             <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
 
             <ul class="list-inline list-unstyled pull-right">
-                <li ng-show="loading"><loading-spinner ></loading-spinner></li>
                 <li>
                     <button ng-click="doFilter('region')" class="btn btn-sm btn-success">Region</button>
                 </li>
@@ -118,6 +117,14 @@
                             <span ng-if="filter !='*'">
                                 {{ ' {{  item.actual_total | currency }}' }}
                             </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="10" class="text-center" ng-show="!loading && assets.length === 0">
+                            No Deliveries Found
+                        </td>
+                        <td colspan="10" class="text-center" ng-show="loading">
+                            <loading-spinner ></loading-spinner>
                         </td>
                     </tr>
                 </tbody>

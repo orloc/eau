@@ -55,7 +55,7 @@ class AssetManager
             $updateData = array_merge(
                 $itemTypes->getItemTypeData($i->getTypeId()),
                 is_array(($ss = $solarsystems->getSolarSystemById($locationData['solar_system']))) ? $ss : [],
-                is_array(($con = $constellations->getConstellationById($locationData['constellation'])))? $ss: [],
+                is_array(($con = $constellations->getConstellationById($locationData['constellation'])))? $con: [],
                 is_array(($reg = $regions->getRegionById($locationData['region']))) ? $reg : [],
                 ['station' => $locationData['station_name']]
             );

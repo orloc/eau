@@ -70,7 +70,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $query = $this->getRepository('AppBundle:Asset')
             ->getDeliveriesByGroup($group);
 
-        $assets = $this->paginateResult($request, $query);
+        $assets = $this->paginateResult($request, $query, true);
 
         $assetManager = $this->get('app.asset.manager');
 

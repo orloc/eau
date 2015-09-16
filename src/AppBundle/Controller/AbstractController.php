@@ -29,13 +29,13 @@ abstract class AbstractController extends Controller {
 
     }
 
-    public function paginateResult(Request $request, $result){
+    public function paginateResult(Request $request, $result, $noLimit = false){
 
         $paginator = $this->get('knp_paginator');
 
         $pagination = $paginator->paginate($result,
             $request->query->get('page',1),
-            $request->query->get('per_page', 5000)
+            $request->query->get('per_page', $request->get('per_page', $noLimit ? 1000000 : 50))
         );
 
         return $pagination;

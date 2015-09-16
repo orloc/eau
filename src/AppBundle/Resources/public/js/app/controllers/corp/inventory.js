@@ -5,6 +5,7 @@ angular.module('eveTool')
         $scope.selected_corp = null;
         $scope.loading = true;
         $scope.price_reference = [];
+        $scope.total_value = 0;
 
         $scope.$on('select_corporation', function(event, data){
             $scope.selected_corp = data;
@@ -26,13 +27,12 @@ angular.module('eveTool')
                 return parseFloat(item.descriptors.volume) * item.quantity;
         };
 
-        $scope.tryAccess = function (item, key){
-        }
-
         $scope.$watch('selected_corp', function(val){
             if (val === null || typeof val === 'undefined'){
                 return;
             }
+
+            $scope.loading = true;
 
             $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
                 return data.data.items;
@@ -40,25 +40,34 @@ angular.module('eveTool')
 
                 var ids = _.pluck(items, 'type_id').unique();
 
-                var groups = _.chunk(ids, 50);
-
-                var tmp = [];
-
-                angular.forEach(groups, function(i){
-                    $http.get(Routing.generate('api.price.averagelist', { typeId: i })).then(function(data){
-                        tmp = tmp.concat(data.data);
-                    }).then(function(){
-                        $scope.price_reference = tmp.unique();
-                        $scope.loading = false;
-
-                    });
+                $http.get(Routing.generate('api.price.averagelist', { typeId: ids })).then(function(data){
+                    $scope.price_reference = data.data;
+                    $scope.assets = items;
+                    $scope.loading = false;
                 });
-
-                $scope.assets = items;
 
             });
 
         });
+
+        $scope.sumItems = function(){
+            if (!$scope.price_reference.length){
+                return 0;
+            }
+
+            var total = 0;
+            angular.forEach($scope.assets, function(item){
+                var price = $scope.getPrice(item);
+
+                if (typeof price != 'undefined'){
+                    total += price.average_price * item.quantity;
+                }
+            });
+
+            return total;
+
+        };
+
 
         $scope.getPrice = function(type){
             if (typeof type === 'undefined'){
