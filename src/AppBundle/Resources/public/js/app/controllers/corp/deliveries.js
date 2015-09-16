@@ -32,6 +32,15 @@ angular.module('eveTool')
 
         });
 
+        $scope.totalM3 = function(){
+            var total = 0;
+            angular.forEach($scope.assets, function(item){
+                total += $scope.getM3(item);
+            });
+
+            return total;
+        };
+
         $scope.getM3 = function(item){
             return parseFloat(item.descriptors.volume) * item.quantity;
         };
