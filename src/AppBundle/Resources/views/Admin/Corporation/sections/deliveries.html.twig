@@ -8,7 +8,7 @@
 <eve-pane title="Deliveries">
     <div ng-controller="deliveryController" class="row">
         <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-            <b class="text-info">Total Value:</b> {{ '{{ sumDeliveries() | currency }}' }}
+            <b class="text-info">Total Value:</b> {{ '{{ total_price | currency }}' }}
 
             &nbsp;
             &nbsp;

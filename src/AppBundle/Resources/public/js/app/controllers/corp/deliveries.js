@@ -5,7 +5,6 @@ angular.module('eveTool')
         $scope.selected_corp = null;
         $scope.selected_region = null;
         $scope.loading = true;
-        $scope.price_reference = [];
         $scope.assets = [];
         $scope.filter = '*';
         $scope.order_by_value = 'quantity';
@@ -27,18 +26,12 @@ angular.module('eveTool')
             }
 
             $http.get(Routing.generate('api.corporation.deliveries', { id: val.id})).then(function(data){
-                return data.data.items;
+                return data.data;
             }).then(function(items){
-                var ids = _.pluck(items, 'type_id').unique();
-
-                $http.get(Routing.generate('api.price.averagelist', { typeId: ids })).then(function(data){
-                    $scope.price_reference = data.data;
-                    $scope.assets = items;
-
-                    $scope.filtered_assets = $scope.filterBy("*");
-                    $scope.loading = false;
-                });
-
+                $scope.assets = items.items;
+                $scope.total_price = items.total_price;
+                $scope.filtered_assets = $scope.filterBy("*");
+                $scope.loading = false;
             });
 
         });
@@ -222,30 +215,7 @@ angular.module('eveTool')
                return;
             }
 
-            var price = _.find($scope.price_reference, function(p){
-                return parseInt(p.type_id) === parseInt(type.type_id);
-            });
-
-            return price;
+            return $scope.total_price;
 
         };
-
-        $scope.sumDeliveries = function(){
-            if (!$scope.price_reference.length){
-                return 0;
-            }
-
-            var total = 0;
-            angular.forEach($scope.assets, function(item){
-                var price = $scope.getPrice(item);
-
-                if (typeof price != 'undefined'){
-                    total += price.average_price * item.quantity;
-                }
-            });
-
-            return total;
-
-        }
-
     }]);
