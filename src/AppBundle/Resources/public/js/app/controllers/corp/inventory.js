@@ -4,8 +4,8 @@ angular.module('eveTool')
     .controller('inventoryController', ['$scope', '$http', function($scope, $http){
         $scope.selected_corp = null;
         $scope.loading = true;
-        $scope.price_reference = [];
-        $scope.total_value = 0;
+        $scope.predicate = 'total_price';
+        $scope.reverse = true;
 
         $scope.$on('select_corporation', function(event, data){
             $scope.selected_corp = data;
@@ -37,15 +37,9 @@ angular.module('eveTool')
             $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
                 return data.data.items;
             }).then(function(items){
-
-                var ids = _.pluck(items, 'type_id').unique();
-
-                $http.get(Routing.generate('api.price.averagelist', { typeId: ids })).then(function(data){
-                    $scope.price_reference = data.data;
-                    $scope.assets = items;
-                    $scope.loading = false;
-                });
-
+                $scope.assets = items.items;
+                $scope.total_price = items.total_price;
+                $scope.loading = false;
             });
 
         });
@@ -74,12 +68,13 @@ angular.module('eveTool')
                 return;
             }
 
-            var price = _.find($scope.price_reference, function(p){
-                return parseInt(p.type_id) === parseInt(type.type_id);
-            });
+            return type.descriptors.total_price;
 
-            return price;
+        };
 
+        $scope.order = function(predicate){
+            $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+            $scope.predicate = predicate;
         };
 
     }]);
