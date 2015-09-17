@@ -138,8 +138,6 @@ angular.module('eveTool')
                         tmp[a.descriptors.constellation].push(a);
                     });
 
-                    console.log(tmp);
-
                     resetInternalArray(tmp);
                     return flattenMap(tmp);
 
