@@ -23,6 +23,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $corpManager = $this->getContainer()->get('app.corporation.manager');
+        $marketOrderManager = $this->getContainer()->get('app.marketorder.manager');
         $assetManager = $this->getContainer()->get('app.asset.manager');
 
         $corps = $em->getRepository('AppBundle:Corporation')
@@ -63,6 +64,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
                 if (!$long || $force === true){
                     $assetManager->generateAssetList($c);
+                    $marketOrderManager->getMarketOrders($c);
 
                     $c->addApiUpdate(
                         $this->createAccess(ApiUpdate::CACHE_STYLE_LONG));

@@ -46,6 +46,10 @@ services:
       arguments: [ "@tarioch.pheal.factory", "@doctrine" ]
       class: AppBundle\Service\Manager\AccountManager
 
+  app.marketorder.manager:
+      arguments: [ "@tarioch.pheal.factory", "@app.datamapper.service", "@evedata.registry", "@doctrine" ]
+      class: AppBundle\Service\Manager\MarketOrderManager
+
   app.asset.manager:
       arguments: [ "@tarioch.pheal.factory", "@app.datamapper.service", "@evedata.registry", "@doctrine" ]
       class: AppBundle\Service\Manager\AssetManager

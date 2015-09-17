@@ -9,8 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
-* @ORM\Entity
-* @ORM\Table(name="market_orders")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\MarketOrderRepository")
+ * @ORM\Table(name="market_orders", uniqueConstraints={
+ *  @ORM\UniqueConstraint(name="datePlacedAt_indx", columns={"placed_by_id", "issued", "type_id", "placed_at_id"})
+ * })
 * @JMS\ExclusionPolicy("all")
 *
 * @package AppBundle\Entity
@@ -39,17 +41,17 @@ class MarketOrder
     protected $corporation;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     protected $placed_by_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     protected $placed_at_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     protected $type_id;
 
@@ -59,19 +61,19 @@ class MarketOrder
     protected $state;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     protected $total_volume;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint")
      */
     protected $volume_remaining;
 
     /**
      * @ORM\Column(type="integer")
      */
-    protected $range;
+    protected $order_range;
 
     /**
      * @ORM\Column(type="integer")
@@ -131,7 +133,7 @@ class MarketOrder
      */
     public function setPlacedById($placedById)
     {
-        $this->placed_by_id = $placedById;
+        $this->placed_by_id = intval($placedById);
 
         return $this;
     }
@@ -154,7 +156,7 @@ class MarketOrder
      */
     public function setPlacedAtId($placedAtId)
     {
-        $this->placed_at_id = $placedAtId;
+        $this->placed_at_id = intval($placedAtId);
 
         return $this;
     }
@@ -177,7 +179,7 @@ class MarketOrder
      */
     public function setTypeId($typeId)
     {
-        $this->type_id = $typeId;
+        $this->type_id = intval($typeId);
 
         return $this;
     }
@@ -200,7 +202,7 @@ class MarketOrder
      */
     public function setState($state)
     {
-        $this->state = $state;
+        $this->state = intval($state);
 
         return $this;
     }
@@ -223,7 +225,7 @@ class MarketOrder
      */
     public function setTotalVolume($totalVolume)
     {
-        $this->total_volume = $totalVolume;
+        $this->total_volume = intval($totalVolume);
 
         return $this;
     }
@@ -246,7 +248,7 @@ class MarketOrder
      */
     public function setVolumeRemaining($volumeRemaining)
     {
-        $this->volume_remaining = $volumeRemaining;
+        $this->volume_remaining = intval($volumeRemaining);
 
         return $this;
     }
@@ -267,9 +269,9 @@ class MarketOrder
      * @param integer $range
      * @return MarketOrder
      */
-    public function setRange($range)
+    public function setOrderRange($range)
     {
-        $this->range = $range;
+        $this->order_range = intval($range);
 
         return $this;
     }
@@ -279,9 +281,9 @@ class MarketOrder
      *
      * @return integer 
      */
-    public function getRange()
+    public function getOrderRange()
     {
-        return $this->range;
+        return $this->order_range;
     }
 
     /**
@@ -292,7 +294,7 @@ class MarketOrder
      */
     public function setAccountKey($accountKey)
     {
-        $this->account_key = $accountKey;
+        $this->account_key = intval($accountKey);
 
         return $this;
     }
@@ -315,7 +317,7 @@ class MarketOrder
      */
     public function setDuration($duration)
     {
-        $this->duration = $duration;
+        $this->duration = intval($duration);
 
         return $this;
     }
@@ -338,7 +340,7 @@ class MarketOrder
      */
     public function setEscrow($escrow)
     {
-        $this->escrow = $escrow;
+        $this->escrow = floatval($escrow);
 
         return $this;
     }
@@ -361,7 +363,7 @@ class MarketOrder
      */
     public function setPrice($price)
     {
-        $this->price = $price;
+        $this->price = floatval($price);
 
         return $this;
     }
@@ -384,7 +386,7 @@ class MarketOrder
      */
     public function setBid($bid)
     {
-        $this->bid = $bid;
+        $this->bid = boolval($bid);
 
         return $this;
     }
@@ -405,7 +407,7 @@ class MarketOrder
      * @param \DateTime $issued
      * @return MarketOrder
      */
-    public function setIssued($issued)
+    public function setIssued(\DateTime $issued)
     {
         $this->issued = $issued;
 

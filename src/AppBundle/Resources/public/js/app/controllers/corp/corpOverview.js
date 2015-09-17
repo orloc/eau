@@ -158,8 +158,8 @@ angular.module('eveTool')
             var area = d3.svg.area()
                 .interpolate("basis")
                 .x(function (d) { return xScale(d.date); })
-                .y0(function (d) { return console.log(d,'hi'); yScale(d.balance); })
-                .y1(function (d) { return console.log(d); yScale(d.balance0 + d.balance); });
+                .y0(function (d) { return yScale(d.balance); })
+                .y1(function (d) { return yScale(d.balance0 + d.balance); });
 
             var stack = d3.layout.stack()
                 .offset("zero")
