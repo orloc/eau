@@ -1,2 +1,75 @@
 <eve-pane title="Market Orders">
+    <div ng-controller="marketOrderController" class="row">
+        <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+            <b class="text-info">Total Escrow:</b> {{ '{{ total_escrow | currency }}' }}
+            <b class="text-info">Total On Market:</b> {{ '{{ total_sales | currency }}' }}
+            <br>
+            <table class="table data-table table-striped table-condensed">
+                <thead>
+                <th>
+                </th>
+                <th >
+                    Name
+                </th>
+                <th>
+                    #
+                </th>
+                <th>
+                    m<sup>3</sup>
+                </th>
+                <th>Region
+                </th>
+                <th>Constellation
+                </th>
+                <th>System
+                </th>
+                <th>Station
+                </th>
+                <th>Avg Market Price
+                </th>
+                <th>
+                    Total Price
+                </th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in orders | orderBy:'descriptors.total_price':true" ng-show="!loading">
+                    <td width="75px">
+                        <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.name }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.quantity }}' }}
+                    </td>
+                    <td> {{ '{{ }}' }}</td>
+                    <td>
+                        {{ '{{ item.descriptors.region  }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.constellation  }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.system  }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.station  }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.price | currency }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.total_price | currency }}' }}
+                    </td>
+                </tr>
+                <tr ng-show="loading">
+                    <td colspan="10" class="text-center">
+                        <loading-spinner></loading-spinner>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>
+    </div>
 </eve-pane>

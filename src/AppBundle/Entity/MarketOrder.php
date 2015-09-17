@@ -42,71 +42,85 @@ class MarketOrder
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $placed_by_id;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $placed_at_id;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $type_id;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $state;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $total_volume;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $volume_remaining;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $order_range;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $account_key;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $duration;
 
     /**
      * @ORM\Column(type="decimal", scale=2, precision=16)
+     * @JMS\Expose()
      */
     protected $escrow;
 
     /**
      * @ORM\Column(type="decimal", scale=2, precision=16)
+     * @JMS\Expose()
      */
     protected $price;
 
     /**
      * @ORM\Column(type="boolean")
+     * @JMS\Expose()
      */
     protected $bid;
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $issued;
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $created_at;
 

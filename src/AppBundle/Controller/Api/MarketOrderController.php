@@ -23,8 +23,35 @@ class MarketOrderController extends AbstractController implements ApiControllerI
      */
     public function indexAction(Corporation $corp)
     {
+        $repo = $this->getDoctrine()->getRepository('AppBundle:MarketOrder');
 
-        $json = $this->get('jms_serializer')->serialize($corp, 'json');
+        $orders = $repo->getOpenBuyOrders($corp);
+
+        $sellorders = $repo->getOpenSellOrders($corp);
+
+        $total_onMarket = array_reduce($sellorders, function($carry, $data){
+            if ($carry === null){
+                return ($data->getVolumeRemaining() * $data->getPrice());
+            }
+
+            return $carry + ($data->getVolumeRemaining() * $data->getPrice());
+        });
+
+        $total_escrow = array_reduce($orders, function($carry, $data){
+            if($carry === null){
+                return $data->getEscrow();
+            }
+
+            return $carry + $data->getEscrow();
+        });
+
+        $items = [
+            'items' => $orders,
+            'total_escrow' => $total_escrow,
+            'total_on_market' => $total_onMarket
+        ];
+
+        $json = $this->get('jms_serializer')->serialize($items, 'json');
 
         return $this->jsonResponse($json);
 
