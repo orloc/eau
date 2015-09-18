@@ -22,10 +22,10 @@ class AccountManager {
     }
 
     public function updateAccounts(Corporation $corporation){
-        $client = $this->getClient($corporation);
+        $client = $this->getClient($corporation->getApiCredentials()[0]);
 
         $accounts = $client->AccountBalance([
-            'characterID' => $corporation->getApiCredentials()->getCharacterId()
+            'characterID' => $corporation->getApiCredentials()[0]->getCharacterId()
         ])->accounts;
         $repo = $this->registry->getRepository('AppBundle:Account');
 

@@ -139,7 +139,7 @@ class CorporationManager {
 
     private function getClient(Corporation $corporation, $scope = 'corp'){
 
-        $key = $corporation->getApiCredentials();
+        $key = $corporation->getApiCredentials()[0];
         $client = $this->pheal->createEveOnline(
             $key->getApiKey(),
             $key->getVerificationCode()
