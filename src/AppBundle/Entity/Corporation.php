@@ -55,7 +55,7 @@ class Corporation
     protected $market_orders;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="corporation", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="corporation", cascade={"persist"})
      */
     protected $api_credentials;
 
@@ -96,6 +96,7 @@ class Corporation
         $this->setCreatedAt(new \DateTime());
         $this->accounts = new ArrayCollection();
         $this->api_updates = new ArrayCollection();
+        $this->api_credentials = new ArrayCollection();
         $this->asset_groups = new ArrayCollection();
     }
 
@@ -197,74 +198,6 @@ class Corporation
         return $this->name;
     }
 
-    /**
-     * Set api_key
-     *
-     * @param string $apiKey
-     * @return Corporation
-     */
-    public function setApiKey($apiKey)
-    {
-        $this->api_key = $apiKey;
-
-        return $this;
-    }
-
-    /**
-     * Get api_key
-     *
-     * @return string 
-     */
-    public function getApiKey()
-    {
-        return $this->api_key;
-    }
-
-    /**
-     * Set verification_code
-     *
-     * @param string $verificationCode
-     * @return Corporation
-     */
-    public function setVerificationCode($verificationCode)
-    {
-        $this->verification_code = $verificationCode;
-
-        return $this;
-    }
-
-    /**
-     * Get verification_code
-     *
-     * @return string 
-     */
-    public function getVerificationCode()
-    {
-        return $this->verification_code;
-    }
-
-    /**
-     * Set access_mask
-     *
-     * @param integer $accessMask
-     * @return Corporation
-     */
-    public function setAccessMask($accessMask)
-    {
-        $this->access_mask = $accessMask;
-
-        return $this;
-    }
-
-    /**
-     * Get access_mask
-     *
-     * @return integer 
-     */
-    public function getAccessMask()
-    {
-        return $this->access_mask;
-    }
 
     /**
      * Set created_at
@@ -333,30 +266,6 @@ class Corporation
     public function getCreatedBy()
     {
         return $this->created_by;
-    }
-
-    /**
-     * Set api_credentials
-     *
-     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
-     * @return Corporation
-     */
-    public function setApiCredentials(\AppBundle\Entity\ApiCredentials $apiCredentials = null)
-    {
-        $this->api_credentials = $apiCredentials;
-        $apiCredentials->setCorporation($this);
-
-        return $this;
-    }
-
-    /**
-     * Get api_credentials
-     *
-     * @return \AppBundle\Entity\ApiCredentials 
-     */
-    public function getApiCredentials()
-    {
-        return $this->api_credentials;
     }
 
     /**
@@ -483,5 +392,41 @@ class Corporation
     public function getApiUpdates()
     {
         return $this->api_updates;
+    }
+
+    /**
+     * Add api_credentials
+     *
+     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
+     * @return Corporation
+     */
+    public function addApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
+    {
+        if (!$apiCredentials->contains($apiCredentials)){
+            $this->api_credentials[] = $apiCredentials;
+            $apiCredentials->setCorporation($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove api_credentials
+     *
+     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
+     */
+    public function removeApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
+    {
+        $this->api_credentials->removeElement($apiCredentials);
+    }
+
+    /**
+     * Get api_credentials
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApiCredentials()
+    {
+        return $this->api_credentials;
     }
 }

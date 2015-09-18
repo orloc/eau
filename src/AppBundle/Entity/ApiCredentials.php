@@ -59,7 +59,7 @@ class ApiCredentials {
     protected $verification_code;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="api_credentials")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="api_credentials")
      */
     protected $corporation;
 
