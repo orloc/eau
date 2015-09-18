@@ -8,7 +8,7 @@ interface DataManagerInterface {
 
     public function updateResultSet(array $items);
 
-    public function mapList(array $items, Corporation $corp);
+    public function mapList($items, Corporation $corp);
 
     public function mapItem($item);
 

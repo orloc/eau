@@ -72,5 +72,5 @@ class AccountManager {
 
     protected function getClient(ApiCredentials $entity){
         return $this->pheal->createEveOnline($entity->getApiKey(), $entity->getVerificationCode());
-    }
+
 }

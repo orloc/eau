@@ -63,7 +63,7 @@ class MarketOrderManager implements DataManagerInterface {
     }
 
 
-    public function mapList(array $orders, Corporation $corp){
+    public function mapList($orders, Corporation $corp){
         $mappedOrders = [];
 
         $repo = $this->doctrine->getRepository('AppBundle:MarketOrder');

@@ -81,7 +81,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                     $em->flush();
 
                 } catch (\Exception $e){
-                    $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
+                    $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()[0]->getId(), $e->getMessage()));
                 }
 
             }
