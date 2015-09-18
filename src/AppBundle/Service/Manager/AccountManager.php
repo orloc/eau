@@ -5,7 +5,6 @@ namespace AppBundle\Service\Manager;
 
 use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\ApiCredentials;
-use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 

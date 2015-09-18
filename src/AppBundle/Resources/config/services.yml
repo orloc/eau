@@ -16,7 +16,7 @@ services:
 
   app.api_credentials.subscriber:
       class: AppBundle\Subscriber\ApiCredentialsSubscriber
-      arguments: [ "@security.token_storage", "@app.account.manager" ]
+      arguments: [ "@security.token_storage", "@app.apikey.manager", "@app.account.manager" ]
       tags:
           - { name: doctrine.event_subscriber, connection: default }
 
@@ -41,6 +41,10 @@ services:
   app.corporation.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
       class: AppBundle\Service\Manager\CorporationManager
+
+  app.apikey.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      class: AppBundle\Service\Manager\ApiKeyManager
 
   app.account.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine" ]

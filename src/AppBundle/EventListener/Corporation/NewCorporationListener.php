@@ -18,13 +18,10 @@ class NewCorporationListener implements EventSubscriberInterface {
 
     protected $asset_manager;
 
-    protected $api_manager;
-
     protected $em;
 
-    public function __construct(CorporationManager $manager, AssetManager $aManager, ApiKeyManager $apiManager, EntityManager $em){
+    public function __construct(CorporationManager $manager, AssetManager $aManager, EntityManager $em){
         $this->em = $em;
-        $this->api_manager = $apiManager;
         $this->manager = $manager;
         $this->asset_manager = $aManager;
     }
