@@ -1,0 +1,32 @@
+<eve-pane title="Api Keys">
+    <div ng-controller="corpApiKeyController" class="row">
+        <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+            <table class="table data-table table-striped table-condensed">
+                <thead>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Key
+                </th>
+                <th>
+                    Verification Code
+                </th>
+                <th>
+                    Active
+                </th>
+                <th>
+                    Created At
+                </th>
+                <th>
+                    Created By
+                </th>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>
+    </div>
+</eve-pane>

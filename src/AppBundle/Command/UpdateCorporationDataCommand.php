@@ -49,8 +49,8 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $long = $em->getRepository('AppBundle:ApiUpdate')
                 ->getLongTimerExpired($c);
 
-            try {
-                if (!$short || $force === true) {
+            if (!$short || $force === true) {
+                try {
                     $corpManager->updateAccounts($c);
                     $corpManager->updateJournalTransactions($c);
                     $corpManager->updateMarketTransactions($c);
@@ -60,9 +60,16 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
                     $em->persist($c);
                     $em->flush();
+
+                } catch (\Exception $e){
+                    $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
+
                 }
 
-                if (!$long || $force === true){
+            }
+
+            if (!$long || $force === true){
+                try {
                     $assetManager->generateAssetList($c);
                     $marketOrderManager->getMarketOrders($c);
 
@@ -71,15 +78,17 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
                     $em->persist($c);
                     $em->flush();
+
+                } catch (\Exception $e){
+                    $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
                 }
 
-            } catch (\Exception $e){
-                $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()->getId(), $e->getMessage()));
             }
 
         }
 
     }
+
 
     protected function createAccess($type){
         $access = new ApiUpdate();

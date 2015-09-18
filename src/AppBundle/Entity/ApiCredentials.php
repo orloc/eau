@@ -48,6 +48,12 @@ class ApiCredentials {
     protected $type;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @JMS\Expose()
+     */
+    protected $is_active;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $verification_code;
@@ -388,5 +394,28 @@ class ApiCredentials {
     public function getCorporationId()
     {
         return $this->corporation_id;
+    }
+
+    /**
+     * Set is_active
+     *
+     * @param boolean $isActive
+     * @return ApiCredentials
+     */
+    public function setIsActive($isActive)
+    {
+        $this->is_active = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get is_active
+     *
+     * @return boolean 
+     */
+    public function getIsActive()
+    {
+        return $this->is_active;
     }
 }
