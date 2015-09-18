@@ -124,10 +124,37 @@ class MarketOrder
      */
     protected $created_at;
 
+    /**
+     * @JMS\Expose()
+     */
+    protected $descriptors;
+
     public function __construct(){
         $this->created_at = new \DateTime();
     }
 
+    public function getDescriptors(){
+        return $this->descriptors;
+    }
+
+    public function setDescriptors(array $val){
+        $this->descriptors = $val;
+        return $this;
+    }
+
+    /**
+     * @JMS\VirtualProperty()
+     */
+    public function getNiceState(){
+        switch($this->getState()) {
+            case self::OPEN: return 'Open';
+            case self::ENDED: return 'Ended';
+            case self::CANCELED: return 'Canceled';
+            case self::CLOSED: return 'Closed';
+            case self::PENDING: return 'Pending';
+            case self::DELETED: return 'Deleted';
+        }
+    }
 
     /**
      * Get id

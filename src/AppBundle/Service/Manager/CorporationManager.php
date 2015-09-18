@@ -47,38 +47,6 @@ class CorporationManager {
         return $result;
     }
 
-    public function updateAccounts(Corporation $corporation){
-        $client = $this->getClient($corporation);
-
-        $accounts = $client->AccountBalance([
-            'characterID' => $corporation->getApiCredentials()->getCharacterId()
-        ])->accounts;
-        $repo = $this->registry->getRepository('AppBundle:Account');
-
-        foreach ($accounts as $a){
-            $exists = $repo->findOneBy([
-                'corporation' => $corporation,
-                'division' => $a->accountKey
-            ]);
-
-            if (!$exists instanceof Account){
-                $account = new Account();
-                $account->setEveAccountId($a->accountID)
-                    ->setDivision($a->accountKey);
-            } else {
-                $account = $exists;
-            }
-
-            $balance = new AccountBalance();
-            $balance->setBalance($a->balance);
-
-            $account->addBalance($balance);
-
-            if (!$exists instanceof Account){
-                $corporation->addAccount($account);
-            }
-        }
-    }
 
     public function updateJournalTransactions(Corporation $corporation, $fromID = null){
         $client = $this->getClient($corporation);

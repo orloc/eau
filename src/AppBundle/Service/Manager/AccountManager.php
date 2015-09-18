@@ -20,32 +20,37 @@ class AccountManager {
         $this->doctrine = $doctrine;
     }
 
-    public function validateAndUpdateApiKey(ApiCredentials $entity){
-        $client = $this->getClient($entity);
+    public function updateAccounts(Corporation $corporation){
+        $client = $this->getClient($corporation);
 
-        $result = $client->APIKeyInfo();
-        $key = $result->key;
+        $accounts = $client->AccountBalance([
+            'characterID' => $corporation->getApiCredentials()->getCharacterId()
+        ])->accounts;
+        $repo = $this->registry->getRepository('AppBundle:Account');
 
-        list($type, $expires, $accessMask) = [ $key->type, $key->expires, $key->accessMask ];
+        foreach ($accounts as $a){
+            $exists = $repo->findOneBy([
+                'corporation' => $corporation,
+                'division' => $a->accountKey
+            ]);
 
-        if (strlen($expires) > 0) {
-            throw new InvalidExpirationException('Expiration Date on API Key is finite.');
+            if (!$exists instanceof Account){
+                $account = new Account();
+                $account->setEveAccountId($a->accountID)
+                    ->setDivision($a->accountKey);
+            } else {
+                $account = $exists;
+            }
+
+            $balance = new AccountBalance();
+            $balance->setBalance($a->balance);
+
+            $account->addBalance($balance);
+
+            if (!$exists instanceof Account){
+                $corporation->addAccount($account);
+            }
         }
-
-        $char = $result->key
-            ->characters[0]
-            ->characterID;
-
-        $corp = $result->key
-            ->characters[0]
-            ->corporationID;
-
-
-        $entity->setAccessMask($accessMask)
-            ->setType($type)
-            ->setCharacterId($char)
-            ->setCorporationId($corp);
-
     }
 
     public function updateLatestBalances(array $accounts){

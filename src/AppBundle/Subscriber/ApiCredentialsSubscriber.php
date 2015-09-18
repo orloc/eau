@@ -3,9 +3,7 @@
 namespace AppBundle\Subscriber;
 
 use AppBundle\Entity\ApiCredentials;
-use AppBundle\Entity\Corporation;
-use AppBundle\Exception\DuplicateResourceException;
-use AppBundle\Service\Manager\AccountManager;
+use AppBundle\Service\Manager\ApiKeyManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -15,7 +13,7 @@ class ApiCredentialsSubscriber implements EventSubscriber {
     private $tokenManager;
     private $manager;
 
-    public function __construct(TokenStorageInterface $storage, AccountManager $manager){
+    public function __construct(TokenStorageInterface $storage, ApiKeyManager $manager){
         $this->tokenManager = $storage;
         $this->manager = $manager;
     }
@@ -35,14 +33,6 @@ class ApiCredentialsSubscriber implements EventSubscriber {
             $entity->setCreatedBy($user);
 
             $this->manager->validateAndUpdateApiKey($entity);
-
-            if (($corpId = $entity->getCorporationId()) !== null){
-                $exists = $em->getRepository('AppBundle:Corporation')->findOneBy(['eve_id' => $corpId]);
-
-                if ($exists instanceof Corporation){
-                    throw new DuplicateResourceException(sprintf("Corporation %s already exists in the database", $exists->getName()));
-                }
-            }
         }
     }
 

@@ -9,6 +9,8 @@ angular.module('eveTool')
         $scope.$on('select_corporation', function(event, data){
             $scope.selected_corp = data;
             $scope.loading = true;
+            $scope.total_escrow = 0;
+            $scope.total_sales = 0;
             $scope.orders = [];
         });
 

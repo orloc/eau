@@ -26,7 +26,6 @@ class MarketOrderController extends AbstractController implements ApiControllerI
         $repo = $this->getDoctrine()->getRepository('AppBundle:MarketOrder');
 
         $orders = $repo->getOpenBuyOrders($corp);
-
         $sellorders = $repo->getOpenSellOrders($corp);
 
         $total_onMarket = array_reduce($sellorders, function($carry, $data){
@@ -45,8 +44,11 @@ class MarketOrderController extends AbstractController implements ApiControllerI
             return $carry + $data->getEscrow();
         });
 
+        $merged_orders = array_values(array_merge($orders, $sellorders));
+        $updated_orders = $this->get('app.marketorder.manager')->updateResultSet($merged_orders);
+
         $items = [
-            'items' => $orders,
+            'items' => $updated_orders,
             'total_escrow' => $total_escrow,
             'total_on_market' => $total_onMarket
         ];

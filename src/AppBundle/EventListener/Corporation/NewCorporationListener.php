@@ -6,6 +6,7 @@ namespace AppBundle\EventListener\Corporation;
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Event\CorporationEvents;
 use AppBundle\Event\NewCorporationEvent;
+use AppBundle\Service\Manager\ApiKeyManager;
 use AppBundle\Service\Manager\CorporationManager;
 use AppBundle\Service\Manager\AssetManager;
 use Doctrine\ORM\EntityManager;
@@ -17,10 +18,13 @@ class NewCorporationListener implements EventSubscriberInterface {
 
     protected $asset_manager;
 
+    protected $api_manager;
+
     protected $em;
 
-    public function __construct(CorporationManager $manager, AssetManager $aManager, EntityManager $em){
+    public function __construct(CorporationManager $manager, AssetManager $aManager, ApiKeyManager $apiManager, EntityManager $em){
         $this->em = $em;
+        $this->api_manager = $apiManager;
         $this->manager = $manager;
         $this->asset_manager = $aManager;
     }
