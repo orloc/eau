@@ -130,13 +130,8 @@ angular.module('eveTool')
                 left: 10
             };
 
-            var height = 100 - margins.top - margins.bottom;
+            var height = 500 - margins.top - margins.bottom;
 
-            var vis = d3.select('.graphs').append('svg')
-                .attr('width', "100%")
-                .attr('height', height+margins.top+margins.bottom)
-                .append("g")
-                .attr("transform", "translate("+ margins.bottom+"," + margins.top +")");
 
             var color = d3.scale.category10();
             var width = $('.graphs')[0].clientWidth - margins.left;
@@ -162,140 +157,43 @@ angular.module('eveTool')
                 .y1(function (d) { return yScale(d.balance0 + d.balance); });
 
             var stack = d3.layout.stack()
-                .offset("zero")
-                .values(function(d){ return d.values; })
-                .x(function(d){ return d.date; })
-                .y(function(d){ return d.balance; });
+                .values(function(d){ return d.values; });
 
             var parse = d3.time.format("%Y-%m-%dT%H:%M:%LZ").parse;
 
+            var vis = d3.select('.graphs').append('svg')
+                .attr('width', "100%")
+                .attr('height', height+margins.top+margins.bottom)
+                .append("g")
+                .attr("transform", "translate("+ margins.bottom+"," + margins.top +")");
+
             d3.json(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id , date: moment($scope.current_date).format('X') }), function(data){
 
-                wallets = d3.nest()
-                    .key(function(d){ return d.division })
-                    .entries(balances = data);
+                color.domain(d3.keys(data[0]).filter(function(key){
+                    return key !== 'date';
+                }));
 
-
-                wallets.forEach(function(w){
-                    w.values.forEach(function(b){
-                        b.date = parse(b.date);
-                    });
-                    /*
-                    w.maxPrice = d3.max(w.values, function(b){ return b.balance; });
-                    w.minPrice = d3.min(w.values, function(b){ return b.balance; });
-                    */
-                    w.values.sort(function(a, b){
-                        return a.date - b.date;
-                    });
+                data.forEach(function(w){
+                    w.date = parse(w.date);
                 });
 
-                stackedArea();
+                stackedArea(data);
 
             });
 
-            function stackedArea(){
+            function stackedArea(data){
+                var wallets = stack(color.domain().map(function(name){
+                    return {
+                        name: name,
+                        values: data.map(function(d){
+                            return { date: d.date, y: d[name] / 100};
+                        })
+                    };
+                }));
 
-                stack(wallets);
-
-                yScale.domain([
-                    0,
-                    d3.max(wallets, function(b){
-                        return d3.max(b.values, function(d){ return d.balance0 + d.balance; })
-                    })
-                ]).range([height, 0]);
-
-                line.y(function(d){ return yScale(d.balance0); });
-
-                area.y0(function(d){
-                    return yScale(d.balance0);
-                }).y1(function(d){
-                    return yScale(d.balance0 + d.balance);
-                });
-
-                var g = vis.selectAll(".wallet")
-                    .data(wallets)
-                    .enter().append('g')
-                    .attr('class', 'wallet');
-
-
-
-                g.append("path")
-                    .attr("class", "streamPath")
-                    .attr("d", function (d) { return area(d.values); })
-                    .style("fill", function (d) { return color(d.key); })
-                    .style("stroke", "grey");
-
-            }
-
-            function lines(){
-                // begin lines
-
-                xScale.domain([
-                    d3.min(wallets, function(d){ return d.values[0].date; }),
-                    d3.max(wallets, function(d){ return d.values[d.values.length - 1].date; })
-                ]);
-
-                var g = vis.selectAll('.wallet')
-                    .attr("transform", function(d, i){
-                        return "translate(0,"+(i * height / wallets.length +10)+")";
-                    });
-
-                /*
-                 vis.append("g")
-                 .attr("class", "axis")
-                 .attr("transform", "translate(0," + (height - margins.bottom) +")")
-                 .call(xAxis);
-                 */
-
-                g.each(function(d){
-                    var e = d3.select(this);
-
-                    e.append("path").attr("class", "line");
-
-                    e.append("circle")
-                        .attr("r", 5)
-                        .style("fill", function(d) { return color(d.key); })
-                        .style("stroke", "#000")
-                        .style("stroke-width", "2px");
-
-                    e.append("text")
-                        .attr("x", 10)
-                        .attr("dy", ".31em")
-                        .text(d.key);
-                });
-
-                function draw(k){
-                    g.each(function(d){
-                        var e = d3.select(this);
-                        yScale.domain([0, d.maxPrice]);
-
-                        e.select("path")
-                            .attr("d", function(d) { return line(d.values.slice(0, k+1)); });
-
-                        e.selectAll("circle, text")
-                            .data(function(d){
-                                return [d.values[k], d.values[k]];
-
-                            }).attr("transform", function(d){
-                                return "translate(" + xScale(d.date) +"," + yScale(d.balance)+")";
-                            });
-
-
-                    });
-
-                }
-
-                if (typeof wallets[0] == "object" && typeof wallets[0].values != 'undefined' && wallets[0].values.length > 5){
-                    var k = 1, n  = wallets[0].values.length;
-
-                    d3.timer(function(){
-                        draw(k);
-                        if ((k +=2) >= n - 1){
-                            draw(n-1);
-                            return true;
-                        }
-                    });
-                }
+                xScale.domain(d3.extent(data, function(d){
+                    return d.date;
+                }));
             }
         }
 
