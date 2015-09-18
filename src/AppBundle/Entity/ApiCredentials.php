@@ -28,16 +28,19 @@ class ApiCredentials {
 
     /**
      * @ORM\Column(type="string")
+     * @JMS\Expose()
      */
     protected $api_key;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $character_id;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $corporation_id;
 
@@ -55,6 +58,7 @@ class ApiCredentials {
 
     /**
      * @ORM\Column(type="string")
+     * @JMS\Expose()
      */
     protected $verification_code;
 
@@ -70,11 +74,13 @@ class ApiCredentials {
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @JMS\Expose()
      */
     protected $invalid;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @JMS\Expose()
      */
     protected $access_mask;
 
