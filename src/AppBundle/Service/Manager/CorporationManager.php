@@ -94,7 +94,7 @@ class CorporationManager {
             foreach ($transactions->entries as $t){
                 $this->log->debug("processing {$t->refID}");
                 $exists = $this->registry->getRepository('AppBundle:JournalTransaction')
-                    ->hasTransaction($acc, $t->refID);
+                    ->hasTransaction($acc, $t->refID, $t->amount);
 
                 if ($exists === null){
                     $this->log->debug(sprintf('No exisiting transaction found for %s  in %s @ %s', $t->refID, $acc->getDivision(), $corporation->getName()));

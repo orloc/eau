@@ -19,12 +19,13 @@ class JournalTransactionRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function hasTransaction(Account $acc, $refId){
+    public function hasTransaction(Account $acc, $refId, $amount){
         return $this->createQueryBuilder('jt')
             ->leftJoin('jt.account', 'acc')
             ->where('acc = :account')
             ->andWhere('jt.ref_id = :id')
-            ->setParameters(['account' => $acc, 'id' => $refId])
+            ->andWhere('jt.amount = :amount')
+            ->setParameters(['account' => $acc, 'id' => $refId, 'amount' => $amount])
             ->getQuery()->getOneOrNullResult();
     }
 }
