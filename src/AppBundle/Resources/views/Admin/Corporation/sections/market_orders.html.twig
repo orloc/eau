@@ -12,11 +12,10 @@
                     Name
                 </th>
                 <th>
-                    #
+                    Type
                 </th>
-                <th>
-                    m<sup>3</sup>
-                </th>
+                <th width="150px">Filled / Total</th>
+                <th>Value Remaining</th>
                 <th>Region
                 </th>
                 <th>Constellation
@@ -25,10 +24,8 @@
                 </th>
                 <th>Station
                 </th>
-                <th>Avg Market Price
-                </th>
                 <th>
-                    Total Price
+                    Placed By
                 </th>
                 </thead>
                 <tbody>
@@ -40,9 +37,18 @@
                         {{ '{{ item.descriptors.name }}' }}
                     </td>
                     <td>
-                        {{ '{{ item.quantity }}' }}
+                        <label class="label" ng-class="{ 'label-danger': item.bid, 'label-success': !item.bid}">
+                            <span ng-if="item.bid">Buy</span>
+                            <span ng-if="!item.bid">Sell</span>
+                        </label>
                     </td>
-                    <td> {{ '{{ }}' }}</td>
+                    <td>
+                        <span class="small muted">{{ '{{ item.volume_remaining }}' }} / {{ '{{  item.total_volume }}' }}</span><br>
+                        {{ '{{ percentFinished(item) | number:2}}%' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.volume_remaining  * item.price | currency }}' }}
+                    </td>
                     <td>
                         {{ '{{ item.descriptors.region  }}' }}
                     </td>
@@ -50,14 +56,12 @@
                         {{ '{{ item.descriptors.constellation  }}' }}
                     </td>
                     <td>
-                        {{ '{{ item.descriptors.system  }}' }}
+                        {{ '{{ item.descriptors.solar_system  }}' }}
                     </td>
                     <td>
                         {{ '{{ item.descriptors.station  }}' }}
                     </td>
-                    <td>
-                        {{ '{{ item.descriptors.price | currency }}' }}
-                    </td>
+                    <td><eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="64"></eve-image></td>
                     <td>
                         {{ '{{ item.descriptors.total_price | currency }}' }}
                     </td>

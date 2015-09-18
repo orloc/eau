@@ -14,6 +14,10 @@ angular.module('eveTool')
             $scope.orders = [];
         });
 
+        $scope.percentFinished = function(item){
+            return Math.abs((item.volume_remaining - item.total_volume)) / ((item.total_volume + item.volume_remaining) / 2) * 100;
+        };
+
         $scope.$watch('selected_corp', function(val){
             if (val === null || typeof val === 'undefined'){
                 return;
