@@ -21,26 +21,24 @@
 
 .graphs {
   background-color: #ffffff;
-
-  .axis {
-    path, line {
-      fill: none;
-      stroke: black;
-      shape-rendering: crispEdges;
-    }
-
-    text {
-      font-family: sans-serif;
-      font-size: 10px;
-      color: $offWhite;
-    }
-  }
-
-  .line {
+  .x-axis path,
+  .x-axis line {
     fill: none;
     stroke: #000;
-    stroke-width: 1px;
+    shape-rendering: crispEdges;
   }
+
+  .x-axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+  }
+
+
+
+  .wallet text {
+    text-anchor: end;
+  }
+
 }
 
 .wallet-divisions{

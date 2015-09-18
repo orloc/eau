@@ -46,8 +46,8 @@ class AccountBalanceRepository extends EntityRepository {
     }
 
     public function getOrderedBalancesByDate(Account $acc, Carbon $date){
-        $start = $date->startOfDay();
-        $end = $date->copy()->endOfDay();
+        $start = $date->startOfWeek();
+        $end = $date->copy()->endOfWeek();
 
         return $this->createQueryBuilder('ab')
             ->leftJoin('ab.account', 'acc')

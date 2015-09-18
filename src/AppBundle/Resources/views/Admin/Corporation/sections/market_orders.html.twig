@@ -14,7 +14,7 @@
                 <th>
                     Type
                 </th>
-                <th width="150px">Filled / Total</th>
+                <th >Filled / Total</th>
                 <th>Value Remaining</th>
                 <th>Region
                 </th>
@@ -29,7 +29,7 @@
                 </th>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in orders | orderBy:'descriptors.total_price':true" ng-show="!loading">
+                <tr ng-repeat="item in orders | orderBy:'price':true" ng-show="!loading">
                     <td width="75px">
                         <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                     </td>
@@ -42,7 +42,7 @@
                             <span ng-if="!item.bid">Sell</span>
                         </label>
                     </td>
-                    <td>
+                    <td width="175px">
                         <span class="small muted">{{ '{{ item.volume_remaining }}' }} / {{ '{{  item.total_volume }}' }}
                             <br>
                             {{ '{{ percentFinished(item) | number:2}}% Completed' }}

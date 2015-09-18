@@ -66,8 +66,6 @@ angular.module('eveTool')
                 $scope.selected_account = acc;
 
                 updateData();
-                updateSVG();
-
             }
         };
 
@@ -98,6 +96,7 @@ angular.module('eveTool')
                 $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'sell'})).then(function(data){
                     $scope.sell_orders = data.data;
                     $scope.loading = false;
+                    updateSVG();
                 });
             });
 
@@ -121,40 +120,32 @@ angular.module('eveTool')
 
         function updateSVG(){
             $('svg').remove();
-            var wallets, balances;
-
             var margins = {
-                top: 5,
-                right: 20,
-                bottom: 10,
-                left: 10
+                top: 10,
+                right: 5,
+                bottom: 20,
+                left: 5
             };
 
-            var height = 500 - margins.top - margins.bottom;
-
+            var height = 100 - margins.top ;
+            var width = $('.graphs')[0].clientWidth - margins.left;
 
             var color = d3.scale.category10();
-            var width = $('.graphs')[0].clientWidth - margins.left;
+
             var xScale = d3.time.scale().range([0,  width - margins.right]);
             var yScale = d3.scale.linear().range([ height - 10, 0]);
 
             var xAxis = d3.svg.axis()
                 .scale(xScale)
+                .ticks(d3.time.hour, 3)
+                .tickSize(-height)
                 .orient("bottom");
-
-            var yAxis = d3.svg.axis()
-                .scale(yScale).ticks(4).orient('right');
-
-            var line = d3.svg.line()
-                .interpolate('basis')
-                .x(function(d){ return xScale(d.date); })
-                .y(function(d){ return yScale(d.balance); });
 
             var area = d3.svg.area()
                 .interpolate("basis")
                 .x(function (d) { return xScale(d.date); })
-                .y0(function (d) { return yScale(d.balance); })
-                .y1(function (d) { return yScale(d.balance0 + d.balance); });
+                .y0(function (d) { return yScale(d.y0); })
+                .y1(function (d) { return yScale(d.y0 + d.y); });
 
             var stack = d3.layout.stack()
                 .values(function(d){ return d.values; });
@@ -169,24 +160,36 @@ angular.module('eveTool')
 
             d3.json(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id , date: moment($scope.current_date).format('X') }), function(data){
 
-                color.domain(d3.keys(data[0]).filter(function(key){
-                    return key !== 'date';
-                }));
+                // Nest stock values by symbol.
+                var wallets  = d3.nest()
+                      .key(function(d) { return d.division; })
+                      .entries(data);
 
-                data.forEach(function(w){
-                    w.date = parse(w.date);
+                var cDomain = [];
+
+                var maxTotal = 0;
+                wallets.forEach(function(w) {
+                    w.values.forEach(function(d) { d.date = parse(d.date); d.balance = +d.balance; });
+
+                    maxTotal += d3.max(w.values, function(d) { return d.balance; });
+                    cDomain.push(w.key);
+
+                    w.values.sort(function(a,b){
+                        return a.date - b.date;
+                    });
+
                 });
 
-                stackedArea(data);
+                color.domain(cDomain);
 
-            });
-
-            function stackedArea(data){
-                var wallets = stack(color.domain().map(function(name){
+                var wStack = stack(color.domain().map(function(name){
                     return {
                         name: name,
-                        values: data.map(function(d){
-                            return { date: d.date, y: d[name] / 100};
+                        values: _.find(wallets, function(w){ return w.key == name; }).values.map(function(d){
+                            return {
+                                date: d.date,
+                                y: d.balance
+                            };
                         })
                     };
                 }));
@@ -194,6 +197,39 @@ angular.module('eveTool')
                 xScale.domain(d3.extent(data, function(d){
                     return d.date;
                 }));
+
+
+                yScale.domain(d3.extent([0, maxTotal], function(d){
+                    return d;
+                }));
+
+                var svgWallets = vis.selectAll('.wallet')
+                    .data(wStack)
+                    .enter().append("g")
+                    .attr("class", "wallet");
+
+                svgWallets.append("path")
+                    .attr("class", "area")
+                    .attr("d", function(d){ return area(d.values); })
+                    .style("fill", function(d){ return color(d.name); });
+
+                svgWallets.append("text")
+                    .datum(function(d){
+                        return { name: d.name, value:d.values[d.values.length -1]};
+                    }).attr("transform", function(d){ return "translate("+ xScale(d.value.date) +","+ yScale(d.value.y)+")"; })
+                    .attr("x", -6)
+                    .attr("dy", ".35em")
+                    .text(function(d){ return d.name});
+
+                vis.append("g")
+                    .attr("class", "x-axis")
+                    .attr("transform", "translate(0,"+height+")")
+                    .call(xAxis);
+
+
+            });
+
+            function stackedArea(data){
             }
         }
 
