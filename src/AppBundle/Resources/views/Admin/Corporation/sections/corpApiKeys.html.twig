@@ -42,7 +42,12 @@
                         <td>{{ '{{ i.id }}' }}</td>
                         <td>{{ '{{ i.api_key }}' }}</td>
                         <td>{{ '{{ i.verification_code }}' }}</td>
-                        <td>{{ '{{ i.is_active }}' }}</td>
+                        <td>
+                            <label class="label" ng-class="{ 'label-success': i.is_active, 'label-danger': !i.is_active }">
+                                <span ng-if="i.is_active">Yes</span>
+                                <span ng-if="!i.is_active">No</span>
+                            </label>
+                        </td>
                         <td>{{ '{{ i.created_at | date:"shortDate"}}' }} <br> <span class="small muted">{{ '{{ i.created_at | date:"shortTime"}}' }}</span></td>
                         <td><eve-image image-type="'Character'" object-id="i.character_id" img-width="256"></eve-image></td>
                         <td>
