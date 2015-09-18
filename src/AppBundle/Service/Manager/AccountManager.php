@@ -3,8 +3,10 @@
 namespace AppBundle\Service\Manager;
 
 
+use AppBundle\Entity\Account;
 use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\ApiCredentials;
+use AppBundle\Entity\Corporation;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 

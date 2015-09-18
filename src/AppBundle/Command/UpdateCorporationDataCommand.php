@@ -23,6 +23,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
     {
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $corpManager = $this->getContainer()->get('app.corporation.manager');
+        $accountManager = $this->getContainer()->get('app.account.manager');
         $marketOrderManager = $this->getContainer()->get('app.marketorder.manager');
         $assetManager = $this->getContainer()->get('app.asset.manager');
 
@@ -51,7 +52,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
             if (!$short || $force === true) {
                 try {
-                    $corpManager->updateAccounts($c);
+                    $accountManager->updateAccounts($c);
                     $corpManager->updateJournalTransactions($c);
                     $corpManager->updateMarketTransactions($c);
 
