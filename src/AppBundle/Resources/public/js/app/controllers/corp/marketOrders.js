@@ -15,7 +15,7 @@ angular.module('eveTool')
         });
 
         $scope.percentFinished = function(item){
-            return  (item.volume_remaining / item.total_volume)   * 100;
+            return  100 - ((item.volume_remaining / item.total_volume)  * 100);
         };
 
         $scope.$watch('selected_corp', function(val){

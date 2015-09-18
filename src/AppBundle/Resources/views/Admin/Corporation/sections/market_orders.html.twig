@@ -43,8 +43,10 @@
                         </label>
                     </td>
                     <td>
-                        <span class="small muted">{{ '{{ item.volume_remaining }}' }} / {{ '{{  item.total_volume }}' }}</span><br>
-                        {{ '{{ percentFinished(item) | number:2}}%' }}
+                        <span class="small muted">{{ '{{ item.volume_remaining }}' }} / {{ '{{  item.total_volume }}' }}
+                            <br>
+                            {{ '{{ percentFinished(item) | number:2}}% Completed' }}
+                        </span>
                     </td>
                     <td>
                         {{ '{{ item.volume_remaining  * item.price | currency }}' }}
