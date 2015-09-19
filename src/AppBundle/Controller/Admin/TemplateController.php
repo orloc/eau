@@ -79,4 +79,28 @@ class TemplateController extends Controller
     public function corpDeliveryAction(){
         return $this->render('AppBundle:Templates:corp/corpDeliveries.html.twig');
     }
+
+    /**
+     * @Route("/corp_market_orders", name="template.marketorders")
+     */
+    public function corpMarketOrdersAction()
+    {
+        return $this->render('AppBundle:Templates:corp/corpMarketOrders.html.twig');
+    }
+
+    /**
+     * @Route("/api_keys", name="template.apikeys")
+     */
+    public function corpApiKeyAction()
+    {
+        return $this->render('AppBundle:Templates:corp/corpApiKeys.html.twig');
+    }
+
+    /**
+     * @Route("/corp_towers", name="template.corptowers")
+     */
+    public function corpTowerAction()
+    {
+        return $this->render('AppBundle:Templates:corp/corpStructures.html.twig');
+    }
 }

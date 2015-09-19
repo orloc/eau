@@ -32,19 +32,15 @@ angular.module('eveTool')
                 return;
             }
 
-            var q = $q.defer();
-
             $scope.loading = true;
 
-            $http.get(Routing.generate('api.corporation.assets', { id: val.id}), { timeout: q.promise }).then(function(data){
+            $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
                 return data.data.items;
             }).then(function(items){
                 $scope.assets = items.items;
                 $scope.total_price = items.total_price;
                 $scope.loading = false;
             });
-
-            q.resolve();
 
         });
 

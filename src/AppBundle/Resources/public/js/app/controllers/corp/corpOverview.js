@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('corpOverviewController', ['$scope', '$http', function($scope, $http){
+    .controller('corpOverviewController', ['$scope', '$http', '$q', function($scope, $http, $q){
         $scope.selected_corp = null;
         $scope.selected_account = null;
         $scope.buy_orders = [];
@@ -104,7 +104,7 @@ angular.module('eveTool')
             $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date})).then(function(data){
                 $scope.buy_orders = data.data;
 
-                $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'sell'})).then(function(data){
+                $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'sell'}), { timeout: q.promise }).then(function(data){
                     if (typeof draw !== 'undefined' && draw == true){
                         updateSVG();
                     }

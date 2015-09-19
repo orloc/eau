@@ -1,6 +1,6 @@
 'use strict';
 angular.module('eveTool')
-    .directive('eveTabs', ['dataDispatcher', function(dataDispatcher) {
+    .directive('eveTabs', ['dataDispatcher', '$q', function(dataDispatcher, $q) {
         return {
             restrict: 'E',
             transclude: true,
