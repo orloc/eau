@@ -26,6 +26,7 @@ angular.module('eveTool')
             }
 
             updateAccountBalances(val).then(function(){
+                updateSVG();
                 $scope.selectAccount($scope.accounts[0]);
             });
 
@@ -44,7 +45,13 @@ angular.module('eveTool')
             $scope.sell_orders = [];
             $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
             updateData();
-            updateSVG();
+
+            var start = moment().startOf('week');
+
+            console.log(start);
+            if (false){
+                updateSVG();
+            }
         };
 
         $scope.forward = function(){
@@ -53,7 +60,9 @@ angular.module('eveTool')
             $scope.sell_orders = [];
             $scope.current_date = moment($scope.current_date).add(1,'day').format('MM/DD/YY');
             updateData();
-            updateSVG();
+            if (false) {
+                updateSVG();
+            }
         };
 
         $scope.selectAccount = function(acc){
@@ -86,7 +95,7 @@ angular.module('eveTool')
             return sell - buy;
         };
 
-        function updateData(acc){
+        function updateData(draw){
 
             var date = moment($scope.current_date).format('X');
 
@@ -94,9 +103,11 @@ angular.module('eveTool')
                 $scope.buy_orders = data.data;
 
                 $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'sell'})).then(function(data){
+                    if (typeof draw !== 'undefined' && draw == true){
+                        updateSVG();
+                    }
                     $scope.sell_orders = data.data;
                     $scope.loading = false;
-                    updateSVG();
                 });
             });
 
@@ -122,17 +133,17 @@ angular.module('eveTool')
             $('svg').remove();
             var margins = {
                 top: 10,
-                right: 10,
-                bottom: 20,
-                left: 100
+                right: 20,
+                bottom: 15,
+                left: 20
             };
 
-            var height = 125 - margins.top ;
-            var width = $('.graphs')[0].clientWidth - margins.left;
+            var height = 100 - margins.top ;
+            var width = $('.graphs')[0].clientWidth - margins.right;
 
             var color = d3.scale.category10();
 
-            var xScale = d3.time.scale().range([0,  width - margins.right]);
+            var xScale = d3.time.scale().range([0,  width - margins.left]);
             var yScale = d3.scale.linear().range([ height, 0]);
 
             var xAxis = d3.svg.axis()
@@ -184,7 +195,7 @@ angular.module('eveTool')
                 var yAxis = d3.svg.axis()
                     .scale(yScale)
                     .tickSize(-width)
-                    .ticks((maxTotal / 100000000) / 2)
+                    .ticks((maxTotal / 100000000) / 3)
                     .tickFormat(d3.format('$s'))
                     .orient("right");
 
@@ -221,23 +232,6 @@ angular.module('eveTool')
                     .attr("d", function(d){ return area(d.values); })
                     .style("fill", function(d){ return color(d.name); });
 
-                svgWallets.append("circle")
-                    .attr("r", 5)
-                    .style("fill", function(d){return color(d.name);})
-                    .style("stroke", "#c3c3c3")
-                    .style("stroke-width", "1px")
-                    .attr("transform", function(d){ return "translate("+ 0+","+ height +")";});
-                /*
-                svgWallets.append("cirlce")
-                    .datum(function(d){
-                        return { name: d.name, value:d.values[d.values.length -1]};
-                    }).attr("transform", function(d){ return "translate("+ xScale(d.value.date) +","+ yScale(d.value.y)+")"; })
-                    .attr("x", -6)
-                    .attr("dy", ".35em")
-
-                    .text(function(d){ return d.name});
-                    */
-
                 vis.append("g")
                     .attr("class", "x-axis")
                     .attr("transform", "translate(0,"+height+")")
@@ -246,6 +240,9 @@ angular.module('eveTool')
                 vis.append("g")
                     .attr("class", "x-axis")
                     .call(yAxis);
+
+                vis.append("circle")
+
 
 
             });
