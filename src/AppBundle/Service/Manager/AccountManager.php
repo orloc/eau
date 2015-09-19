@@ -26,7 +26,10 @@ class AccountManager {
 
         $accounts = $client->AccountBalance([
             'characterID' => $corporation->getApiCredentials()[0]->getCharacterId()
-        ])->accounts;
+        ]);
+
+        var_dump($accounts);die;
+
         $repo = $this->registry->getRepository('AppBundle:Account');
 
         foreach ($accounts as $a){

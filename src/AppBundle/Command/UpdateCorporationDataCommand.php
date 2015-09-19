@@ -53,6 +53,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             if (!$short || $force === true) {
                 try {
                     $accountManager->updateAccounts($c);
+                    die;
                     $corpManager->updateJournalTransactions($c);
                     $corpManager->updateMarketTransactions($c);
 
@@ -63,6 +64,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
                     $em->flush();
 
                 } catch (\Exception $e){
+                    throw $e;
                     $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()[0]->getId(), $e->getMessage()));
 
                 }

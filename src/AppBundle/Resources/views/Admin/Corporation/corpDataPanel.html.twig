@@ -1,8 +1,13 @@
 <eve-tabs>
+    <eve-pane title="Account Overview" template-url="{{ path('template.corpoverview') }}"></eve-pane>
+    <eve-pane title="Inventory" template-url="{{ path('template.corpinventory') }}"></eve-pane>
+    <eve-pane title="Deliveries" template-url="{{ path('template.corpdeliveries') }}"></eve-pane>
+    {#
     {% include 'AppBundle:Admin/Corporation/sections:overview.html.twig' %}
     {% include 'AppBundle:Admin/Corporation/sections:inventory.html.twig' %}
     {% include 'AppBundle:Admin/Corporation/sections:deliveries.html.twig' %}
     {% include 'AppBundle:Admin/Corporation/sections:market_orders.html.twig' %}
     {% include 'AppBundle:Admin/Corporation/sections:structures.html.twig' %}
     {% include 'AppBundle:Admin/Corporation/sections:corpApiKeys.html.twig' %}
+    #}
 </eve-tabs>

@@ -20,10 +20,15 @@ angular.module('eveTool')
             $scope.filtered_assets = [];
         });
 
-        $scope.$watch('selected_corp', function(val){
+        var refreshView = function(val){
             if (val === null || typeof val === 'undefined'){
                 return;
             }
+
+            $scope.price_reference = [];
+            $scope.loading = true;
+            $scope.assets = [];
+            $scope.filtered_assets = [];
 
             $http.get(Routing.generate('api.corporation.deliveries', { id: val.id})).then(function(data){
                 return data.data;
@@ -33,6 +38,15 @@ angular.module('eveTool')
                 $scope.filtered_assets = $scope.filterBy("*");
                 $scope.loading = false;
             });
+        };
+
+        $scope.$watch('selected_corp', refreshView);
+
+        $scope.$on('tab_changed', function(event, data){
+            if (!$scope.loading && $scope.selected_corp !== null){
+                console.log('changed', event, data);
+                refreshView($scope.selected_corp);
+            }
 
         });
 

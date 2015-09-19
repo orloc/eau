@@ -2,8 +2,6 @@
 
 angular.module('eveTool')
     .controller('corpOverviewController', ['$scope', '$http', function($scope, $http){
-
-
         $scope.selected_corp = null;
         $scope.selected_account = null;
         $scope.buy_orders = [];
@@ -13,6 +11,7 @@ angular.module('eveTool')
         $scope.loading = false;
         $scope.show_graphs = true;
         $scope.page = 'buy';
+        var title = "Account Overview";
 
         $scope.current_date = moment().format('MM/DD/YY');
 
@@ -20,10 +19,13 @@ angular.module('eveTool')
             $scope.selected_corp = data;
         });
 
-        $scope.$watch('selected_corp', function(val){
+        var refreshView = function(val){
             if (val === null || val === undefined){
                 return;
             }
+
+            $scope.loading = true;
+            $('svg').remove();
 
             updateAccountBalances(val).then(function(){
                 updateSVG();
@@ -31,9 +33,19 @@ angular.module('eveTool')
             });
 
 
-            $('svg').remove();
+            $scope.loading = false;
+
+        };
+
+        $scope.$on('tab_changed', function(event, data){
+            if (!$scope.loading && $scope.selected_corp !== null && data === title){
+                console.log('changed', event, data);
+                refreshView($scope.selected_corp);
+            }
 
         });
+
+        $scope.$watch('selected_corp', refreshView);
 
         $scope.switchPage = function(page){
             $scope.page = page;
@@ -264,13 +276,8 @@ angular.module('eveTool')
                     .text(function (d) {
                         return d;
                     });
-
-
-
             });
 
-            function stackedArea(data){
-            }
         }
 
     }]);

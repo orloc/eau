@@ -4,5 +4,8 @@
       <a href="" ng-click="select(pane)">{{  '{{pane.title}}' }}</a>
     </li>
   </ul>
-  <div class="tab-content" ng-transclude></div>
+  <div class="tab-content" ng-transclude>
+  </div>
+
+  <div ng-include="templateUrl"></div>
 </div>

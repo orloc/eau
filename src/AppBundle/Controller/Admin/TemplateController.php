@@ -58,4 +58,25 @@ class TemplateController extends Controller
     {
         return $this->render('AppBundle:Templates:evePane.html.twig');
     }
+
+    /**
+     * @Route("/corpoverview", name="template.corpoverview")
+     */
+    public function corpOverViewAction(){
+        return $this->render('AppBundle:Templates:corp/corpOverview.html.twig');
+    }
+
+    /**
+     * @Route("/corpinventory", name="template.corpinventory")
+     */
+    public function corpInventoryAction(){
+        return $this->render('AppBundle:Templates:corp/corpInventory.html.twig');
+    }
+
+    /**
+     * @Route("/corpdeliveries", name="template.corpdeliveries")
+     */
+    public function corpDeliveryAction(){
+        return $this->render('AppBundle:Templates:corp/corpDeliveries.html.twig');
+    }
 }
