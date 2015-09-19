@@ -48,6 +48,7 @@ angular.module('eveTool')
             $scope.sell_orders = [];
             $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
             updateData();
+            updateAccountBalances($scope.selected_corp);
 
             var start = moment($scope.svg_start_date);
 
@@ -63,6 +64,7 @@ angular.module('eveTool')
             $scope.sell_orders = [];
             $scope.current_date = moment($scope.current_date).add(1,'day').format('MM/DD/YY');
             updateData();
+            updateAccountBalances($scope.selected_corp);
 
             updateSVG();
         };
@@ -104,7 +106,7 @@ angular.module('eveTool')
             $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date})).then(function(data){
                 $scope.buy_orders = data.data;
 
-                $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'sell'}), { timeout: q.promise }).then(function(data){
+                $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'sell'})).then(function(data){
                     if (typeof draw !== 'undefined' && draw == true){
                         updateSVG();
                     }

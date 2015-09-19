@@ -23,13 +23,19 @@ class AccountController extends AbstractController implements ApiControllerInter
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
      */
-    public function indexAction(Corporation $corp)
+    public function indexAction(Request $request, Corporation $corp)
     {
+
+        $date = $request->query->get('date', false);
 
         $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
             ->findBy(['corporation' => $corp]);
 
-        $this->get('app.account.manager')->updateLatestBalances($accounts);
+        if ($date){
+            $date = new \DateTime($date);
+        }
+
+        $this->get('app.account.manager')->updateLatestBalances($accounts, $date);
 
         $json = $this->get('serializer')->serialize($accounts, 'json');
 

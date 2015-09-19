@@ -9,14 +9,23 @@ use Doctrine\ORM\EntityRepository;
 
 class AccountBalanceRepository extends EntityRepository {
 
-    public function getLatestBalance(Account $acc){
-        return $this->createQueryBuilder('ab')
+    public function getLatestBalance(Account $acc, \DateTime $date = null){
+        $dt = Carbon::instance($date)->endOfDay();
+
+        $builder = $this->createQueryBuilder('ab')
             ->leftJoin('ab.account', 'acc')
             ->where('acc = :account')
             ->addOrderBy('ab.created_at', 'DESC')
             ->setMaxResults(1)
-            ->setParameters(['account' => $acc])
-            ->getQuery()->getOneOrNullResult();
+            ->setParameters(['account' => $acc]);
+
+        if ($date){
+            $builder->andWhere('ab.created_at <= :end_of_day')
+                ->setParameter('end_of_day',$dt);
+        }
+
+
+        return $builder->getQuery()->getOneOrNullResult();
     }
 
 

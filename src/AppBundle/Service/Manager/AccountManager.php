@@ -28,8 +28,6 @@ class AccountManager {
             'characterID' => $corporation->getApiCredentials()[0]->getCharacterId()
         ]);
 
-        var_dump($accounts);die;
-
         $repo = $this->registry->getRepository('AppBundle:Account');
 
         foreach ($accounts as $a){
@@ -57,11 +55,16 @@ class AccountManager {
         }
     }
 
-    public function updateLatestBalances(array $accounts){
+    public function updateLatestBalances(array $accounts, $date = false){
         $balanceRepo = $this->doctrine->getRepository('AppBundle:AccountBalance');
         foreach($accounts as $acc){
-            $balance = $balanceRepo->getLatestBalance($acc)
-                ->getBalance();
+            if ($date){
+                $balance = $balanceRepo->getLatestBalance($acc, $date)
+                    ->getBalance();
+            } else {
+                $balance = $balanceRepo->getLatestBalance($acc)
+                    ->getBalance();
+            }
 
             $lastDay = ($b = $balanceRepo->getLastDayBalance($acc)) instanceof AccountBalance
                 ? $b->getBalance()
