@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('deliveryController', ['$scope', '$http','$filter', function($scope, $http, $filter){
+    .controller('deliveryController', ['$scope', '$http','$q', function($scope, $http, $q){
         $scope.selected_corp = null;
         $scope.selected_region = null;
         $scope.loading = true;
@@ -30,7 +30,8 @@ angular.module('eveTool')
             $scope.assets = [];
             $scope.filtered_assets = [];
 
-            $http.get(Routing.generate('api.corporation.deliveries', { id: val.id})).then(function(data){
+            var q = $q.defer();
+            $http.get(Routing.generate('api.corporation.deliveries', { id: val.id}), { timeout: $q.promise }).then(function(data){
                 return data.data;
             }).then(function(items){
                 $scope.assets = items.items;
@@ -38,17 +39,11 @@ angular.module('eveTool')
                 $scope.filtered_assets = $scope.filterBy("*");
                 $scope.loading = false;
             });
+
+            q.resolve();
         };
 
         $scope.$watch('selected_corp', refreshView);
-
-        $scope.$on('tab_changed', function(event, data){
-            if (!$scope.loading && $scope.selected_corp !== null){
-                console.log('changed', event, data);
-                refreshView($scope.selected_corp);
-            }
-
-        });
 
         $scope.getRowClass = function(item){
             if (typeof item.total_m3 !== 'undefined'){

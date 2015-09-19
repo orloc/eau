@@ -11,7 +11,6 @@ angular.module('eveTool')
         $scope.loading = false;
         $scope.show_graphs = true;
         $scope.page = 'buy';
-        var title = "Account Overview";
 
         $scope.current_date = moment().format('MM/DD/YY');
 
@@ -37,14 +36,6 @@ angular.module('eveTool')
 
         };
 
-        $scope.$on('tab_changed', function(event, data){
-            if (!$scope.loading && $scope.selected_corp !== null && data === title){
-                console.log('changed', event, data);
-                refreshView($scope.selected_corp);
-            }
-
-        });
-
         $scope.$watch('selected_corp', refreshView);
 
         $scope.switchPage = function(page){
@@ -58,10 +49,10 @@ angular.module('eveTool')
             $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
             updateData();
 
-            var start = moment().startOf('week');
+            var start = moment($scope.svg_start_date);
 
-            console.log(start);
-            if (false){
+            if (start.diff($scope.current_date, 'days') == 5){
+                console.log('hi');
                 updateSVG();
             }
         };
@@ -72,9 +63,8 @@ angular.module('eveTool')
             $scope.sell_orders = [];
             $scope.current_date = moment($scope.current_date).add(1,'day').format('MM/DD/YY');
             updateData();
-            if (false) {
-                updateSVG();
-            }
+
+            updateSVG();
         };
 
         $scope.selectAccount = function(acc){
@@ -143,6 +133,8 @@ angular.module('eveTool')
 
         function updateSVG(){
             $('svg').remove();
+
+            $scope.svg_start_date = $scope.current_date;
             var margins = {
                 top: 10,
                 right: 20,

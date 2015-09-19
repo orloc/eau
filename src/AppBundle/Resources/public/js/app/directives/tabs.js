@@ -16,6 +16,8 @@ angular.module('eveTool')
                     pane.selected = true;
 
                     $scope.selected_pane = pane.title;
+
+                    dataDispatcher.addEvent('tab_changed', pane.title);
                 };
 
                 this.setTabTemplate = function(templateUrl){
@@ -29,9 +31,6 @@ angular.module('eveTool')
                     panes.push(pane);
                 };
 
-                $scope.$watch('templateUrl', function(){
-                    dataDispatcher.addEvent('tab_changed', $scope.selected_pane);
-                });
             },
             templateUrl: Routing.generate('template.evetabs')
         };

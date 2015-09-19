@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('inventoryController', ['$scope', '$http', function($scope, $http){
+    .controller('inventoryController', ['$scope', '$http', '$q', function($scope, $http, $q){
         $scope.selected_corp = null;
         $scope.loading = true;
         $scope.predicate = 'total_price';
@@ -32,15 +32,19 @@ angular.module('eveTool')
                 return;
             }
 
+            var q = $q.defer();
+
             $scope.loading = true;
 
-            $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
+            $http.get(Routing.generate('api.corporation.assets', { id: val.id}), { timeout: q.promise }).then(function(data){
                 return data.data.items;
             }).then(function(items){
                 $scope.assets = items.items;
                 $scope.total_price = items.total_price;
                 $scope.loading = false;
             });
+
+            q.resolve();
 
         });
 

@@ -10,9 +10,11 @@ angular.module('eveTool')
     });
 
     $scope.selectCorporation = function(c){
-        $scope.selected_corp = c;
+        if ($scope.selected_corp === null || $scope.selected_corp.id !== c.id) {
+            $scope.selected_corp = c;
 
-        dataDispatcher.addEvent('select_corporation', c);
+            dataDispatcher.addEvent('select_corporation', c);
+        }
     };
 
     $scope.$on('update_list', function(event, item){
