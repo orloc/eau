@@ -133,7 +133,6 @@ angular.module('eveTool')
         }
 
         function updateSVG(){
-            $scope.generated = false;
             $('svg').remove();
 
             $scope.svg_start_date = $scope.current_date;
@@ -145,7 +144,7 @@ angular.module('eveTool')
             };
 
             var height = 100 - margins.top ;
-            var width = $('.graphs')[0].clientWidth - margins.right;
+            var width = $('.graph-width')[0].clientWidth - margins.right;
 
             var color = d3.scale.category10();
 
@@ -271,7 +270,6 @@ angular.module('eveTool')
                         return d;
                     });
 
-                $scope.generated = true;
             });
 
         }
