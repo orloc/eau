@@ -135,7 +135,7 @@ angular.module('eveTool')
                 top: 10,
                 right: 20,
                 bottom: 15,
-                left: 20
+                left: 65
             };
 
             var height = 100 - margins.top ;
@@ -151,7 +151,6 @@ angular.module('eveTool')
                 .ticks(d3.time.hour, 12)
                 .tickSize(-height)
                 .orient("bottom");
-
 
             var area = d3.svg.area()
                 .interpolate("basis")
@@ -242,6 +241,29 @@ angular.module('eveTool')
                     .call(yAxis);
 
                 vis.append("circle")
+
+                var legend = vis.selectAll(".legend")
+                    .data(color.domain().slice().reverse())
+                    .enter().append("g")
+                    .attr("class", "legend")
+                    .attr("transform", function (d, i) {
+                        return "translate(0," + i * 15 + ")";
+                    });
+
+                legend.append("rect")
+                    .attr("x", width - 18)
+                    .attr("width", 10)
+                    .attr("height", 10)
+                    .style("fill", color);
+
+                legend.append("text")
+                    .attr("x", width - 24)
+                    .attr("y", 9)
+                    .attr("dy", ".35em")
+                    .style("text-anchor", "end")
+                    .text(function (d) {
+                        return d;
+                    });
 
 
 
