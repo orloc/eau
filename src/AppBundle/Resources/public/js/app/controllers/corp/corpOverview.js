@@ -122,24 +122,25 @@ angular.module('eveTool')
             $('svg').remove();
             var margins = {
                 top: 10,
-                right: 5,
+                right: 10,
                 bottom: 20,
-                left: 5
+                left: 100
             };
 
-            var height = 100 - margins.top ;
+            var height = 125 - margins.top ;
             var width = $('.graphs')[0].clientWidth - margins.left;
 
             var color = d3.scale.category10();
 
             var xScale = d3.time.scale().range([0,  width - margins.right]);
-            var yScale = d3.scale.linear().range([ height - 10, 0]);
+            var yScale = d3.scale.linear().range([ height, 0]);
 
             var xAxis = d3.svg.axis()
                 .scale(xScale)
-                .ticks(d3.time.hour, 3)
+                .ticks(d3.time.hour, 12)
                 .tickSize(-height)
                 .orient("bottom");
+
 
             var area = d3.svg.area()
                 .interpolate("basis")
@@ -180,6 +181,13 @@ angular.module('eveTool')
 
                 });
 
+                var yAxis = d3.svg.axis()
+                    .scale(yScale)
+                    .tickSize(-width)
+                    .ticks((maxTotal / 100000000) / 2)
+                    .tickFormat(d3.format('$s'))
+                    .orient("right");
+
                 color.domain(cDomain);
 
                 var wStack = stack(color.domain().map(function(name){
@@ -213,18 +221,31 @@ angular.module('eveTool')
                     .attr("d", function(d){ return area(d.values); })
                     .style("fill", function(d){ return color(d.name); });
 
-                svgWallets.append("text")
+                svgWallets.append("circle")
+                    .attr("r", 5)
+                    .style("fill", function(d){return color(d.name);})
+                    .style("stroke", "#c3c3c3")
+                    .style("stroke-width", "1px")
+                    .attr("transform", function(d){ return "translate("+ 0+","+ height +")";});
+                /*
+                svgWallets.append("cirlce")
                     .datum(function(d){
                         return { name: d.name, value:d.values[d.values.length -1]};
                     }).attr("transform", function(d){ return "translate("+ xScale(d.value.date) +","+ yScale(d.value.y)+")"; })
                     .attr("x", -6)
                     .attr("dy", ".35em")
+
                     .text(function(d){ return d.name});
+                    */
 
                 vis.append("g")
                     .attr("class", "x-axis")
                     .attr("transform", "translate(0,"+height+")")
                     .call(xAxis);
+
+                vis.append("g")
+                    .attr("class", "x-axis")
+                    .call(yAxis);
 
 
             });

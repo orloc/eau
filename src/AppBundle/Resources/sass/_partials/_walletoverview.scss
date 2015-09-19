@@ -20,11 +20,11 @@
 }
 
 .graphs {
-  background-color: #ffffff;
+  background-color: $offWhite;
   .x-axis path,
   .x-axis line {
     fill: none;
-    stroke: #000;
+    stroke: $offWhite;
     shape-rendering: crispEdges;
   }
 
