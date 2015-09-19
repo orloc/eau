@@ -11,11 +11,15 @@ angular.module('eveTool')
             },
             link : function(scope, element, attributes) {
                 var baseUrl = 'https://imageserver.eveonline.com';
-                var path = scope.object_id+'_'+scope.imgWidth+'.png';
+                var path = scope.object_id+'_'+scope.imgWidth;
+                var ending = scope.imageType == 'Character' ? '.jpg' : '.png';
 
-                scope.url = [baseUrl,scope.imageType, path].join('/');
+                console.log(ending);
+
+
+                scope.url = [baseUrl,scope.imageType, path+ending].join('/');
             },
 
-            template: "<img class='img img-responsive' height='50px' width='50px' ng-if='url' src='{{ url }}' ng-cloak/>"
+            template: "<img class='img img-responsive' height='50px' width='50px' src='{{ url }}' ng-cloak/>"
         };
     }]);

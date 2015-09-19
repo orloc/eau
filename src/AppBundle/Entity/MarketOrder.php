@@ -44,6 +44,12 @@ class MarketOrder
      * @ORM\Column(type="bigint")
      * @JMS\Expose()
      */
+    protected $order_id;
+
+    /**
+     * @ORM\Column(type="bigint")
+     * @JMS\Expose()
+     */
     protected $placed_by_id;
 
     /**
@@ -509,5 +515,28 @@ class MarketOrder
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Set order_id
+     *
+     * @param integer $orderId
+     * @return MarketOrder
+     */
+    public function setOrderId($orderId)
+    {
+        $this->order_id = $orderId;
+
+        return $this;
+    }
+
+    /**
+     * Get order_id
+     *
+     * @return integer 
+     */
+    public function getOrderId()
+    {
+        return $this->order_id;
     }
 }

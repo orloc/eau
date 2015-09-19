@@ -91,7 +91,8 @@ class MarketOrderManager implements DataManagerInterface {
     public function mapItem($order){
         $marketOrder = new MarketOrder();
 
-        $marketOrder->setPlacedById($order->orderID)
+        $marketOrder->setOrderId($order->orderID)
+            ->setPlacedById($order->charID)
             ->setPlacedAtId($order->stationID)
             ->setTotalVolume($order->volEntered)
             ->setVolumeRemaining($order->volRemaining)

@@ -53,7 +53,6 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             if (!$short || $force === true) {
                 try {
                     $accountManager->updateAccounts($c);
-                    die;
                     $corpManager->updateJournalTransactions($c);
                     $corpManager->updateMarketTransactions($c);
 
