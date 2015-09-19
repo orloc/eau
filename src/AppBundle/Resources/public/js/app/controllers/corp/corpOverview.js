@@ -144,7 +144,7 @@ angular.module('eveTool')
             };
 
             var height = 100 - margins.top ;
-            var width = $('.graph-width')[0].clientWidth - margins.right;
+            var width = $('.graphs')[0].clientWidth - margins.right;
 
             var color = d3.scale.category10();
 
