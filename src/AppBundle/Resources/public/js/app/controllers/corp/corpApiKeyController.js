@@ -1,20 +1,17 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('corpApiKeyController', ['$scope', '$http','$filter', function($scope, $http, $filter){
-        $scope.selected_corp = null;
-        $scope.loading = true;
+    .controller('corpApiKeyController', ['$scope', '$http','selectedCorpManager', function($scope, $http, selectedCorpManager){
 
-        $scope.$on('select_corporation', function(event, data){
-            $scope.selected_corp = data;
-            $scope.loading = true;
-            $scope.api_keys = [];
-        });
-
-        $scope.$watch('selected_corp', function(val){
-            if (val === null || typeof val === 'undefined'){
+        $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
+            if (typeof val.id === 'undefined') {
                 return;
             }
+
+            $scope.selected_corp = val;
+            $scope.loading = true;
+            $scope.api_keys = [];
+
 
             $http.get(Routing.generate('api.corporation.apicredentials', { id: val.id})).then(function(data){
                 return data.data;

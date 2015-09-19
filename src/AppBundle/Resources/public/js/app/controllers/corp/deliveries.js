@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('deliveryController', ['$scope', '$http','$q', function($scope, $http, $q){
-        $scope.selected_corp = null;
-        $scope.selected_region = null;
+    .controller('deliveryController', ['$scope', '$http','$q','selectedCorpManager', function($scope, $http, $q, selectedCorpManager){
         $scope.loading = true;
         $scope.assets = [];
         $scope.filter = '*';
@@ -11,14 +9,6 @@ angular.module('eveTool')
         $scope.order_by_reverse = true;
 
         $scope.filtered_assets = [];
-
-        $scope.$on('select_corporation', function(event, data){
-            $scope.selected_corp = data;
-            $scope.price_reference = [];
-            $scope.loading = true;
-            $scope.assets = [];
-            $scope.filtered_assets = [];
-        });
 
         var refreshView = function(val){
             if (val === null || typeof val === 'undefined'){
@@ -30,8 +20,7 @@ angular.module('eveTool')
             $scope.assets = [];
             $scope.filtered_assets = [];
 
-            var q = $q.defer();
-            $http.get(Routing.generate('api.corporation.deliveries', { id: val.id}), { timeout: $q.promise }).then(function(data){
+            $http.get(Routing.generate('api.corporation.deliveries', { id: val.id})).then(function(data){
                 return data.data;
             }).then(function(items){
                 $scope.assets = items.items;
@@ -40,10 +29,17 @@ angular.module('eveTool')
                 $scope.loading = false;
             });
 
-            q.resolve();
         };
 
-        $scope.$watch('selected_corp', refreshView);
+        $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
+            if (typeof val.id === 'undefined') {
+                return;
+            }
+
+            $scope.selected_corp = val;
+
+            refreshView(val);
+        });
 
         $scope.getRowClass = function(item){
             if (typeof item.total_m3 !== 'undefined'){

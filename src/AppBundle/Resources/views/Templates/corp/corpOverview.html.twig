@@ -13,7 +13,8 @@
                                 <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
                                 {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
                             </div>
-                            <div class="graphs col-xs-9"></div>
+                            <div ng-show="generated" class="graphs col-xs-9"></div>
+                            <div ng-show="!generated" class="col-xs-9 text-center"><loading-spinner></loading-spinner></div>
                         </div>
                     </div>
                     <div class="col-xs-1 viewing-details" >

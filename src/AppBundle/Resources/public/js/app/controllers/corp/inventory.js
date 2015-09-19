@@ -1,16 +1,27 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('inventoryController', ['$scope', '$http', '$q', function($scope, $http, $q){
-        $scope.selected_corp = null;
+    .controller('inventoryController', ['$scope', '$http', '$q', 'selectedCorpManager', function($scope, $http, $q, selectedCorpManager){
         $scope.loading = true;
         $scope.predicate = 'total_price';
         $scope.reverse = true;
 
-        $scope.$on('select_corporation', function(event, data){
-            $scope.selected_corp = data;
+        $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
+            if (typeof val.id === 'undefined'){
+                return;
+            }
+
+            $scope.selected_corp = val;
             $scope.assets = [];
             $scope.loading = true;
+
+            $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
+                return data.data.items;
+            }).then(function(items){
+                $scope.assets = items.items;
+                $scope.total_price = items.total_price;
+                $scope.loading = false;
+            });
         });
 
         $scope.totalM3 = function(){
@@ -26,23 +37,6 @@ angular.module('eveTool')
             if (item && typeof item.descriptors != 'undefined' && typeof item.descriptors.volume !== 'undefined')
                 return parseFloat(item.descriptors.volume) * item.quantity;
         };
-
-        $scope.$watch('selected_corp', function(val){
-            if (val === null || typeof val === 'undefined'){
-                return;
-            }
-
-            $scope.loading = true;
-
-            $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
-                return data.data.items;
-            }).then(function(items){
-                $scope.assets = items.items;
-                $scope.total_price = items.total_price;
-                $scope.loading = false;
-            });
-
-        });
 
         $scope.sumItems = function(){
             if (!$scope.price_reference.length){

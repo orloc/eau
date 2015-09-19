@@ -16,6 +16,6 @@ angular.module('eveTool')
                 scope.url = [baseUrl,scope.imageType, path].join('/');
             },
 
-            template: "<img class='img img-responsive' height='50px' width='50px' src='{{ url }}' ng-cloak/>"
+            template: "<img class='img img-responsive' height='50px' width='50px' ng-if='url' src='{{ url }}' ng-cloak/>"
         };
     }]);

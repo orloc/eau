@@ -52,12 +52,15 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             return $carry + $data->getDescriptors()['total_price'];
         });
 
+
+        $assets = $this->paginateResult($request, array_values($filteredList));
+
         $newList = [
             'total_price' => $total_price,
-            'items' => array_values($filteredList)
+            'items' => $assets->getItems()
         ];
 
-        $assets = $this->paginateResult($request, $newList);
+        $assets->setItems($newList);
 
         $json = $this->get('serializer')->serialize($assets, 'json');
 

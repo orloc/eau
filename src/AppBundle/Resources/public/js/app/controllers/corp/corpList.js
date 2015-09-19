@@ -1,19 +1,17 @@
 'use strict';
 
 angular.module('eveTool')
-.controller('corpListController', ['$scope', '$http', 'dataDispatcher', function($scope, $http, dataDispatcher){
+.controller('corpListController', ['$scope', '$http', 'dataDispatcher','selectedCorpManager', function($scope, $http, dataDispatcher, selectedCorpManager){
     $scope.corps = [];
-    $scope.selected_corp = null;
 
     $http.get(Routing.generate('api.corps')).then(function(data){
         $scope.corps = data.data;
     });
 
     $scope.selectCorporation = function(c){
-        if ($scope.selected_corp === null || $scope.selected_corp.id !== c.id) {
+        if (c !== null){
+            selectedCorpManager.set(c);
             $scope.selected_corp = c;
-
-            dataDispatcher.addEvent('select_corporation', c);
         }
     };
 

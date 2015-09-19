@@ -1,22 +1,16 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('corpOverviewController', ['$scope', '$http', '$q', function($scope, $http, $q){
-        $scope.selected_corp = null;
+    .controller('corpOverviewController', ['$scope', '$http', '$q', 'selectedCorpManager', function($scope, $http, $q, selectedCorpManager){
         $scope.selected_account = null;
         $scope.buy_orders = [];
         $scope.totalBalance = 0;
         $scope.grossProfit = 0;
         $scope.sell_orders = [];
         $scope.loading = false;
-        $scope.show_graphs = true;
         $scope.page = 'buy';
 
         $scope.current_date = moment().format('MM/DD/YY');
-
-        $scope.$on('select_corporation', function(event, data){
-            $scope.selected_corp = data;
-        });
 
         var refreshView = function(val){
             if (val === null || val === undefined){
@@ -31,12 +25,18 @@ angular.module('eveTool')
                 $scope.selectAccount($scope.accounts[0]);
             });
 
-
             $scope.loading = false;
 
         };
 
-        $scope.$watch('selected_corp', refreshView);
+        $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
+            if (typeof val.id === 'undefined'){
+                return;
+            }
+
+            $scope.selected_corp = val;
+            refreshView(val);
+        });
 
         $scope.switchPage = function(page){
             $scope.page = page;
@@ -53,7 +53,6 @@ angular.module('eveTool')
             var start = moment($scope.svg_start_date);
 
             if (start.diff($scope.current_date, 'days') == 5){
-                console.log('hi');
                 updateSVG();
             }
         };
@@ -134,6 +133,7 @@ angular.module('eveTool')
         }
 
         function updateSVG(){
+            $scope.generated = false;
             $('svg').remove();
 
             $scope.svg_start_date = $scope.current_date;
@@ -270,6 +270,8 @@ angular.module('eveTool')
                     .text(function (d) {
                         return d;
                     });
+
+                $scope.generated = true;
             });
 
         }
