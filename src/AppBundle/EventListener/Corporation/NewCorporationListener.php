@@ -6,6 +6,7 @@ namespace AppBundle\EventListener\Corporation;
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Event\CorporationEvents;
 use AppBundle\Event\NewCorporationEvent;
+use AppBundle\Service\EveDataUpdateService;
 use AppBundle\Service\Manager\ApiKeyManager;
 use AppBundle\Service\Manager\CorporationManager;
 use AppBundle\Service\Manager\AssetManager;
@@ -16,14 +17,11 @@ class NewCorporationListener implements EventSubscriberInterface {
 
     protected $manager;
 
-    protected $asset_manager;
-
     protected $em;
 
-    public function __construct(CorporationManager $manager, AssetManager $aManager, EntityManager $em){
+    public function __construct(EveDataUpdateService $updateService, EntityManager $em){
         $this->em = $em;
-        $this->manager = $manager;
-        $this->asset_manager = $aManager;
+        $this->manager = $updateService;
     }
 
     public static function getSubscribedEvents(){
@@ -33,43 +31,11 @@ class NewCorporationListener implements EventSubscriberInterface {
     public function updateDetails(NewCorporationEvent $event){
         $corporation = $event->getCorporation();
 
-        $result = $this->manager->getCorporationDetails($corporation);
+        $this->manager->checkCorporationDetails($corporation);
 
-        $corporation->setName($result['name'])
-            ->setEveId($result['id']);
+        $this->manager->updateShortTimerCalls($corporation);
+        $this->manager->updateLongTimerCalls($corporation);
 
-        // i dont like this but i want to save data so that if other things fail this sticks
-        $this->manager->updateAccounts($corporation);
 
-        $this->em->persist($corporation);
-        $this->em->flush();
-
-        $this->manager->updateJournalTransactions($corporation);
-        $this->manager->updateMarketTransactions($corporation);
-
-        $corporation->addApiUpdate(
-            $this->createAccess(ApiUpdate::CACHE_STYLE_SHORT)
-        );
-
-        $this->em->persist($corporation);
-        $this->em->flush();
-
-        $this->asset_manager->generateAssetList($corporation);
-
-        $corporation->addApiUpdate(
-            $this->createAccess(ApiUpdate::CACHE_STYLE_LONG)
-        );
-
-        $this->em->persist($corporation);
-        $this->em->flush();
-
-    }
-
-    protected function createAccess($type){
-        $access = new ApiUpdate();
-
-        $access->setType($type);
-
-        return $access;
     }
 }

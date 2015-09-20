@@ -27,7 +27,7 @@ services:
   # Task Events
   app.task.coporation.new:
       class: AppBundle\EventListener\Corporation\NewCorporationListener
-      arguments: [ "@app.corporation.manager", "@app.asset.manager", "@doctrine.orm.entity_manager" ]
+      arguments: [ "@app.evedataupdate.service", "@doctrine.orm.entity_manager" ]
       tags:
           - { name: app.task.subscriber }
 
@@ -65,4 +65,9 @@ services:
   app.asset.manager:
       arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
       class: AppBundle\Service\Manager\AssetManager
+
+  app.evedataupdate.service:
+      arguments: [ "@app.corporation.manager", "@app.account.manager", "@app.marketorder.manager", "@app.asset.manager", "@app.journaltransaction.manager", "@app.markettransaction.manager", "@doctrine", "@logger"]
+      class: AppBundle\Service\EveDataUpdateService
+
 

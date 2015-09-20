@@ -21,82 +21,23 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $force = $input->getOption('force');
+
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $corpManager = $this->getContainer()->get('app.corporation.manager');
-        $accountManager = $this->getContainer()->get('app.account.manager');
-        $marketOrderManager = $this->getContainer()->get('app.marketorder.manager');
-        $assetManager = $this->getContainer()->get('app.asset.manager');
+        $dataUpdateService = $this->getContainer()->get('app.evedataupdate.service');
 
         $corps = $em->getRepository('AppBundle:Corporation')
             ->findAll();
 
-        $force = $input->getOption('force');
-
         foreach ($corps as $c){
-            if ($c->getEveId() === null){
-                $result = $corpManager->getCorporationDetails($c);
 
-                $c->setName($result['name'])
-                    ->setEveId($result['id']);
+            $dataUpdateService->checkCorporationDetails($c);
 
-
-                $em->persist($c);
-                $em->flush();
-
-            }
-            $short = $em->getRepository('AppBundle:ApiUpdate')
-                ->getShortTimerExpired($c);
-
-            $long = $em->getRepository('AppBundle:ApiUpdate')
-                ->getLongTimerExpired($c);
-
-            if (!$short || $force === true) {
-                try {
-                    $accountManager->updateAccounts($c);
-                    $corpManager->updateJournalTransactions($c);
-                    $corpManager->updateMarketTransactions($c);
-
-                    $c->addApiUpdate(
-                        $this->createAccess(ApiUpdate::CACHE_STYLE_SHORT));
-
-                    $em->persist($c);
-                    $em->flush();
-
-                } catch (\Exception $e){
-                    throw $e;
-                    $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()[0]->getId(), $e->getMessage()));
-
-                }
-
-            }
-
-            if (!$long || $force === true){
-                try {
-                    $assetManager->generateAssetList($c);
-                    $marketOrderManager->getMarketOrders($c);
-
-                    $c->addApiUpdate(
-                        $this->createAccess(ApiUpdate::CACHE_STYLE_LONG));
-
-                    $em->persist($c);
-                    $em->flush();
-
-                } catch (\Exception $e){
-                    $this->getContainer()->get('logger')->error(sprintf("Error syncing data for %s with API KEY %s and messages: %s", $c->getName(), $c->getApiCredentials()[0]->getId(), $e->getMessage()));
-                }
-
-            }
+            $dataUpdateService->updateShortTimerCalls($c, $force);
+            $dataUpdateService->updateLongTimerCalls($c, $force);
 
         }
 
-    }
-
-
-    protected function createAccess($type){
-        $access = new ApiUpdate();
-
-        $access->setType($type);
-
-        return $access;
     }
 }
