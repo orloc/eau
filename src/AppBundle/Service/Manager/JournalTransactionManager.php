@@ -13,11 +13,11 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class JournalTransactionManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    private $registry;
+    protected $pheal;
 
-    private $doctrine;
+    protected $doctrine;
 
-    private $log;
+    protected $log;
 
     public function __construct(PhealFactory $pheal, Registry $doctrine, Logger $log)
     {

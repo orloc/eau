@@ -42,7 +42,7 @@ class AccountManager implements DataManagerInterface, MappableDataManagerInterfa
     }
 
     public function mapList($items, array $params){
-        $repo = $this->registry->getRepository('AppBundle:Account');
+        $repo = $this->doctrine->getRepository('AppBundle:Account');
 
         if (!isset($options['corp']) && ($corp = $options['corp']) instanceof Corporation){
             throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));

@@ -14,19 +14,17 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class AssetManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    private $pheal;
+    protected $pheal;
 
-    private $registry;
 
-    private $mapper;
+    protected $mapper;
 
 
     public function __construct(PhealFactory $pheal, EBSDataMapper $dataMapper, EveRegistry $registry, Registry $doctrine)
     {
-        parent::construct($doctrine);
+        parent::construct($doctrine, $registry);
         $this->pheal = $pheal;
         $this->mapper = $dataMapper;
-        $this->registry = $registry;
     }
 
     public function generateAssetList(Corporation $corporation){
