@@ -42,6 +42,14 @@ services:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
       class: AppBundle\Service\Manager\CorporationManager
 
+  app.markettransaction.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      class: AppBundle\Service\Manager\MarketTransactionManager
+
+  app.journaltransaction.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      class: AppBundle\Service\Manager\JournalTransactionManager
+
   app.apikey.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
       class: AppBundle\Service\Manager\ApiKeyManager

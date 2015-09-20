@@ -54,12 +54,12 @@ class MarketTransactionManager implements DataManagerInterface, MappableDataMana
         $corp = isset($options['corp']) ? $options['corp'] : false;
         $acc = isset($options['acc']) ? $options['acc']: false;
 
-        if ((!$corp instanceof Corporation) || !$acc instanceof Account) {
+        if (!$corp instanceof Corporation || !$acc instanceof Account) {
             throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
 
         foreach ($items->transactions as $t){
-            $exists = $this->registry->getRepository('AppBundle:MarketTransaction')
+            $exists = $this->doctrine->getRepository('AppBundle:MarketTransaction')
                 ->hasTransaction($acc, $t->transactionID, $t->journalTransactionID);
 
             if ($exists === null){
