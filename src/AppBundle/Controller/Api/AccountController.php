@@ -71,7 +71,7 @@ class AccountController extends AbstractController implements ApiControllerInter
 
             foreach ($balances as $b){
                 $accountData[] = [
-                    'division' => $acc->getDivision(),
+                    'name' => $acc->getName(),
                     'date' => $b->getCreatedAt()->setTimezone(new \DateTimeZone('UTC'))
                         ->format("Y-m-d\Th:i:s\Z"),
                     'balance' => floatval($b->getBalance())

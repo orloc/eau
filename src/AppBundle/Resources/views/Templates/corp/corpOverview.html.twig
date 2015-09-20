@@ -8,12 +8,12 @@
                 <div class="row">
                     <div class="summary-stats col-xs-11" ng-cloak>
                         <div class="row">
-                            <div class="col-xs-3">
+                            <div class="col-xs-2">
                                 <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency}}' }}<br>
                                 <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
                                 {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
                             </div>
-                            <div class="graphs col-xs-9"></div>
+                            <div class="graphs col-xs-10"></div>
                         </div>
                     </div>
                     <div class="col-xs-1 viewing-details" >
@@ -34,7 +34,7 @@
                 <ul class="list-unstyled list-group wallet-divisions">
                     <li ng-repeat="acc in accounts" ng-class="{ 'list-group-item active': selected_account.id == acc.id, 'list-group-item': selected_account.id != acc.id}" ng-click="selectAccount(acc)">
                         <p>
-                            <b>{{ '{{ acc.division }}' }}</b>: {{ '{{ acc.current_balance | currency }}' }}
+                            <b>{{ '{{ acc.name }}' }}</b>: {{ '{{ acc.current_balance | currency }}' }}
                             <loading-spinner class="spinner-inline" style="color: #c7ddef" ng-show="loading && selected_account.id == acc.id"></loading-spinner>
                         </p>
                         <p ng-show="selected_account.id == acc.id">

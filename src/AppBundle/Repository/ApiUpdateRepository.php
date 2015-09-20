@@ -8,6 +8,17 @@ use Doctrine\ORM\EntityRepository;
 
 class ApiUpdateRepository extends EntityRepository {
 
+    public function getLatestUpdate(Corporation $corp, $type){
+        return $this->createQueryBuilder('au')
+            ->select('au')
+            ->where('au.corporation = :corp')
+            ->andWhere('au.api_call = :type')
+            ->orderBy('au.created_at', 'DESC')
+            ->setParameters(['corp' => $corp, 'type' => $type])
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+    }
+
     public function getShortTimerExpired(Corporation $entity, $call){
         $now = Carbon::create()->subMinutes(35);
 

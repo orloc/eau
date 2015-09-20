@@ -140,7 +140,7 @@ angular.module('eveTool')
                 top: 10,
                 right: 20,
                 bottom: 15,
-                left: 65
+                left: 115
             };
 
             var height = 100 - margins.top ;
@@ -178,7 +178,7 @@ angular.module('eveTool')
 
                 // Nest stock values by symbol.
                 var wallets  = d3.nest()
-                      .key(function(d) { return d.division; })
+                      .key(function(d) { return d.name; })
                       .entries(data);
 
                 var cDomain = [];

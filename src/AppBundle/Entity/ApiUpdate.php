@@ -40,6 +40,7 @@ class ApiUpdate
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $type;
 
@@ -55,11 +56,13 @@ class ApiUpdate
 
     /**
      * @ORM\Column(type="boolean")
+     * @JMS\Expose()
      */
     protected $succeeded;
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $created_at;
 
