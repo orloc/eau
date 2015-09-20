@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Entity\Corporation;
+use AppBundle\Entity\CorporationDetail;
 use AppBundle\Service\Manager\AccountManager;
 use AppBundle\Service\Manager\AssetManager;
 use AppBundle\Service\Manager\CorporationManager;
@@ -43,17 +44,21 @@ class EveDataUpdateService {
     }
 
     public function checkCorporationDetails(Corporation $c){
+        $em = $this->doctrine->getManager();
         if ($c->getEveId() === null){
             $result = $this->corp_manager->getCorporationDetails($c);
 
-            $c->setName($result['name'])
-                ->setEveId($result['id']);
-
-            $em = $this->doctrine->getManager();
-
-            $em->persist($c);
-            $em->flush();
+            $c->setEveId($result['id']);
         }
+
+        if (!$c->getCorporationDetails() instanceof CorporationDetail) {
+            $result = $this->corp_manager->getCorporationSheet($c);
+
+            $c->setCorporationDetails($result);
+        }
+
+        $em->persist($c);
+        $em->flush();
     }
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
@@ -128,7 +133,11 @@ class EveDataUpdateService {
 
             return true;
         } catch (\Exception $e){
-            $this->log->error(sprintf("Error syncing data for %s with: %s", $arg->getName(), $e->getMessage()));
+            $this->log->error(sprintf("Error syncing data for %s  on call %s with: %s",
+                $arg->getCorporationDetails()->getName(),
+                $function,
+                $e->getMessage()
+            ));
 
             throw $e;
 

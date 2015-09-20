@@ -12,7 +12,6 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * @ORM\Entity
  * @ORM\Table(name="corporations", uniqueConstraints={
-    @ORM\UniqueConstraint(name="name_idx", columns={"name"}),
     @ORM\UniqueConstraint(name="eve_id_idx", columns={"eve_id"})
  * })
  * @ORM\HasLifecycleCallbacks()
@@ -32,13 +31,8 @@ class Corporation
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
      * @JMS\Expose()
-     */
-    protected $name;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CorporationDetail", mappedBy="corporation")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CorporationDetail", mappedBy="corporation", cascade={"persist"})
      */
     protected $corporation_details;
 
@@ -178,30 +172,6 @@ class Corporation
     {
         return $this->id;
     }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     * @return Corporation
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
 
     /**
      * Set created_at
@@ -443,6 +413,7 @@ class Corporation
     public function setCorporationDetails(\AppBundle\Entity\CorporationDetail $corporationDetails = null)
     {
         $this->corporation_details = $corporationDetails;
+        $corporationDetails->setCorporation($this);
 
         return $this;
     }

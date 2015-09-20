@@ -7,9 +7,19 @@
         <side-menu-container ng-transclude>
             <div class="col-xs-12 corporation-list" ng-controller="corpListController">
                 <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" class="corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
-                    <span ng-show="!c.new" width="75px"><eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64" ng-show="!c.new"></eve-image> </span>
-                    <span class="corp-name" ng-show="!c.new">{{ '{{ c.name }}' }}</span>
-                    <loading-spinner ng-show="c.new"></loading-spinner>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="64" ng-show="!c.new"></eve-image>
+                            <loading-spinner ng-show="c.new"></loading-spinner>
+                        </div>
+                        <div class="col-xs-8 description">
+                            <span class="corp-name" ng-show="!c.new">{{ '{{ c.corporation_details.name }}' }} </span>
+                            <br>
+                            <span class="small muted"><b>{{ '<{{ c.corporation_details.ticker }}>' }}</b><br> {{ '{{ c.corporation_details.alliance_name }}' }}</span>
+                            <br>
+                            <span class="small muted"><b>CEO:</b> {{ '{{ c.corporation_details.ceo_name }}' }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <slide-button open-type="new"></slide-button>

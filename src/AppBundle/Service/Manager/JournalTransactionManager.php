@@ -64,7 +64,7 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
                 $acc->addJournalTransaction($jTran);
 
             } else  {
-                $this->log->info(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corp->getName()));
+                $this->log->info(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corp->getCorporationDetails()->getName()));
             }
         }
     }

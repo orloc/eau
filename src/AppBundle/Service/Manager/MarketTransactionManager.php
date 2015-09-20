@@ -38,8 +38,6 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
         $accounts = $corporation->getAccounts();
 
         foreach($accounts as $acc){
-            $this->log->debug(sprintf("Processing account %s for %s", $acc->getDivision(), $corporation->getName()));
-
             $params = $this->buildTransactionParams($acc, $fromID);
 
             $transactions = $client->WalletTransactions($params);
@@ -66,7 +64,7 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
                 $acc->addMarketTransaction($trans);
 
             } else  {
-                $this->log->info(sprintf("Conflicting Market Transaction %s for %s %s", $t->transactionID, $acc->getDivision(), $corp->getName()));
+                $this->log->info(sprintf("Conflicting Market Transaction %s for %s %s", $t->transactionID, $acc->getDivision(), $corp->getCorporationDetails()->getName()));
             }
         }
     }
