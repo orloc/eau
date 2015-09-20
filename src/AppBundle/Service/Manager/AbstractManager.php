@@ -3,7 +3,9 @@
 namespace AppBundle\Service\Manager;
 
 use AppBundle\Entity\Account;
+use AppBundle\Entity\Asset;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use EveBundle\Entity\AveragePrice;
 use EveBundle\Repository\Registry as EveRegistry;
 
 abstract class AbstractManager {
@@ -28,6 +30,7 @@ abstract class AbstractManager {
 
             if (!isset($types[$i->getTypeId()])){
                 $price = $prices->getAveragePriceByType($i->getTypeId());
+
                 $types[$i->getTypeId()] = $descriptors['price'] = $price instanceof AveragePrice
                     ? floatval($price->getAveragePrice())
                     : 0;
@@ -51,7 +54,9 @@ abstract class AbstractManager {
         $locations = $this->registry->get('EveBundle:StaStations');
 
         foreach ($items as $i){
-            $locationData = $locations->getLocationInfo($i->getPlacedAtId());
+            $locationData = $locations->getLocationInfo(
+                $i instanceof Asset ? $i->getLocationId() : $i->getPlacedAtId()
+            );
 
             $updateData = array_merge(
                 $itemTypes->getItemTypeData($i->getTypeId()),

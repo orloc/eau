@@ -10,18 +10,13 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class MarketOrderManager implements DataManagerInterface, MappableDataManagerInterface {
+class MarketOrderManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    private $pheal;
-
-    private $registry;
-
-    private $doctrine;
+    protected $pheal;
 
     public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine){
+        parent::__construct($doctrine, $registry);
         $this->pheal = $pheal;
-        $this->registry = $registry;
-        $this->doctrine = $doctrine;
     }
 
     public function getMarketOrders(Corporation $corporation){
