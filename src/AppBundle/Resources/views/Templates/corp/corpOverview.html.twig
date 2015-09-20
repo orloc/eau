@@ -10,8 +10,13 @@
                         <div class="row">
                             <div class="col-xs-2">
                                 <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency}}' }}<br>
-                                <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
+                                <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i><br>
                                 {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
+                                <br>
+                                <span class="small muted" ng-show="updated_at">
+                                    <b>Updated At:</b> {{ '{{ updated_at | date:"shortTime" }}' }}<br>
+                                    <b>Next Update:</b> {{ '{{ next_update | date:"shortTime" }}' }}<br>
+                                </span>
                             </div>
                             <div class="graphs col-xs-10"></div>
                         </div>
