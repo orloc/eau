@@ -20,6 +20,17 @@ class ApiUpdateRepository extends EntityRepository {
         return (bool)$this->getTimeExpiredBuilder($entity, $now, $call);
     }
 
+    public function getLastUpdateByCorpType(Corporation $entity, $type){
+        return $this->createQueryBuilder('au')
+            ->select('au')
+            ->where('au.corporation = :corp')
+            ->andWhere('au.type = :type')
+            ->orderBy('au.created_at', 'DESC')
+            ->setMaxResults(1)
+            ->setParameters(['corp' => $entity, 'type' => $type])
+            ->getQuery()->getOneOrNullResult();
+    }
+
     private function getTimeExpiredBuilder(Corporation $entity, Carbon $now, $call){
         $is_cached = $this->createQueryBuilder('au')
             ->select('count(au) as is_cached')

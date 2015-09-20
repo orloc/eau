@@ -73,7 +73,7 @@ class EveDataUpdateService {
     public function updateLongTimerCalls(Corporation $c, $force = false){
         $calls = [
             'asset_manager' => 'generateAssetList',
-            'marketorder_manager' => ''
+            'marketorder_manager' => 'getMarketOrders'
         ];
 
         foreach ($calls as $manager => $call){
@@ -144,6 +144,10 @@ class EveDataUpdateService {
                 return ApiUpdate::CORP_WALLET_JOURNAL;
             case 'updateMarketTransactions':
                 return ApiUpdate::CORP_WALLET_TRANSACTION;
+            case 'generateAssetList':
+                return ApiUpdate::CORP_ASSET_LIST;
+            case 'getMarketOrders':
+                return ApiUpdate::CORP_MARKET_ORDERS;
         }
     }
 }
