@@ -1,6 +1,6 @@
 <div ng-controller="corpApiKeyController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <form class="form-inline">
+        <form class="form-inline" ng-submit="submit()">
             <div class="form-group">
                 <label>Api Key</label>
                 <input ng-model="new_key.api_key" ng-required="true" type="number" class="form-control">
@@ -11,7 +11,7 @@
                 <input ng-model="new_key.verification_code" ng-required="true" type="text" class="form-control">
             </div>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <button class="btn  btn-sm btn-default"><i class="fa fa-info"></i>&nbsp;&nbsp;&nbsp;Add New Key</button>
+            <button class="btn  btn-sm btn-default" type="submit"><i class="fa fa-info"></i>&nbsp;&nbsp;&nbsp;Add New Key</button>
         </form>
         <table class="table data-table table-striped table-condensed">
             <thead>

@@ -14,9 +14,6 @@ angular.module('eveTool')
                 var path = scope.object_id+'_'+scope.imgWidth;
                 var ending = scope.imageType == 'Character' ? '.jpg' : '.png';
 
-                console.log(ending);
-
-
                 scope.url = [baseUrl,scope.imageType, path+ending].join('/');
             },
 

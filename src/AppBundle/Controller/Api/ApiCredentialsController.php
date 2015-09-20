@@ -35,6 +35,21 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     }
 
     /**
+     * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.post", options={"expose"=true})
+     * @ParamConverter(name="corporation", class="AppBundle:Corporation")
+     * @Method("POST")
+     */
+    public function newAction(Request $request,  Corporation $corporation){
+
+        $content = $request->request;
+
+        $newKey = $this->get('app.apikey.manager')
+            ->buildInstanceFromRequest($content);
+
+
+    }
+
+    /**
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.update", options={"expose"=true})
      * @ParamConverter(name="credentials", class="AppBundle:ApiCredentials")
      * @Method("PATCH")

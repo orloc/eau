@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ApiCredentialRepository")
  * @ORM\Table(name="api_credentials")
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")

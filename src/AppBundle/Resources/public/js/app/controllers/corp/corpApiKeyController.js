@@ -12,7 +12,6 @@ angular.module('eveTool')
             $scope.loading = true;
             $scope.api_keys = [];
 
-
             $http.get(Routing.generate('api.corporation.apicredentials', { id: val.id})).then(function(data){
                 return data.data;
             }).then(function(items){
@@ -21,6 +20,16 @@ angular.module('eveTool')
             });
 
         });
+
+        $scope.submit = function(){
+            $http.post(Routing.generate('api.corporation.apicredentials.post', {
+                id: selectedCorpManager.get().id
+            }), $scope.new_key).then(function(data){
+
+
+            });
+            console.log($scope.new_key);
+        }
 
         $scope.enable = function(api_key){
             angular.forEach($scope.api_keys, function(i){
