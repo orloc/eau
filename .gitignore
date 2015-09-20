@@ -4,7 +4,8 @@
 .sass-cache
 /web/bower_components*
 .idea
-/app/bootstrap.php.cache
+/app/bootstrap.php.cache 
+/src/AppBundle/Resources/public/css/
 /app/cache/*
 !app/cache/.gitkeep
 /app/config/parameters.yml

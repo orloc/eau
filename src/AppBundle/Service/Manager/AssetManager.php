@@ -2,17 +2,16 @@
 
 namespace AppBundle\Service\Manager;
 
+use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
 use AppBundle\Entity\Corporation;
 use AppBundle\Service\EBSDataMapper;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use EveBundle\Entity\AveragePrice;
 use \EveBundle\Repository\Registry as EveRegistry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class AssetManager
-{
+class AssetManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
     private $pheal;
 
@@ -20,147 +19,57 @@ class AssetManager
 
     private $mapper;
 
-    private $doctrine;
 
     public function __construct(PhealFactory $pheal, EBSDataMapper $dataMapper, EveRegistry $registry, Registry $doctrine)
     {
+        parent::construct($doctrine);
         $this->pheal = $pheal;
         $this->mapper = $dataMapper;
-        $this->doctrine = $doctrine;
         $this->registry = $registry;
     }
 
     public function generateAssetList(Corporation $corporation){
-        $client = $this->getClient($corporation);
+
+        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
+            ->getActiveKey($corporation);
+
+        if ($apiKey === null){
+            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
+        }
+
+        $client = $this->getClient($apiKey);
 
         $result = $client->AssetList();
 
         $list = $result->assets;
         $grouping = new AssetGroup();
-        $this->mapList($list, $grouping);
+        $this->mapList($list, [ 'group' => $grouping ]);
         $corporation->addAssetGroup($grouping);
 
     }
 
-    public function updateResultSet($items){
-        $itemTypes = $this->registry->get('EveBundle:ItemType');
-        $regions = $this->registry->get('EveBundle:Region');
-        $constellations = $this->registry->get('EveBundle:Constellation');
-        $solarsystems = $this->registry->get('EveBundle:SolarSystem');
-        $locations = $this->registry->get('EveBundle:StaStations');
+    public function mapList($assets, array $options){
 
-        foreach ($items as $i){
-            $locationData = $locations->getLocationInfo($i->getLocationId());
-
-            $updateData = array_merge(
-                $itemTypes->getItemTypeData($i->getTypeId()),
-                is_array(($ss = $solarsystems->getSolarSystemById($locationData['solar_system']))) ? $ss : [],
-                is_array(($con = $constellations->getConstellationById($locationData['constellation'])))? $con: [],
-                is_array(($reg = $regions->getRegionById($locationData['region']))) ? $reg : [],
-                ['station' => $locationData['station_name']]
-            );
-
-            $i->setDescriptors($updateData);
+        if (!isset($options['group']) && ($grouping = $options['group']) instanceof AssetGroup){
+            throw new \OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new AssetGroup())));
         }
 
-        return $items;
-    }
-
-    public function updatePrices(array $items){
-        $prices = $this->doctrine->getManager('eve_data')
-            ->getRepository('EveBundle:AveragePrice');
-
-        $types = [];
-        foreach ($items as $i){
-            $descriptors = $i->getDescriptors();
-
-            if (!isset($types[$i->getTypeId()])){
-                $price = $prices->getAveragePriceByType($i->getTypeId());
-                $types[$i->getTypeId()] = $descriptors['price'] = $price instanceof AveragePrice
-                    ? floatval($price->getAveragePrice())
-                    : 0;
-
-                $descriptors['total_price'] = floatval($descriptors['price'] * $i->getQuantity());
-
-            } else {
-                $descriptors['price'] = floatval($types[$i->getTypeId()]);
-                $descriptors['total_price'] = floatval($descriptors['price']) * $i->getQuantity();
-            }
-
-            $i->setDescriptors($descriptors);
-        }
-    }
-
-    public function findTopLevelPriceTotals(array $list ){
-        $flattened = $this->flattenArray($list);
-
-        $price = array_reduce($flattened, function ($carry, $data){
-            if ($carry === null){
-                return $data->getDescriptors()['total_price'];
-            }
-
-           return $data->getDescriptors()['total_price'] + $carry;
-        });
-
-        return $price;
-
-    }
-
-    private function flattenArray(array $arr){
-        $return = [];
-        foreach ($arr as $key => $val){
-            if (is_array($val)) {
-                $return = array_merge($return, $this->flattenArray($val));
-            } else {
-                $return[$key] = $val;
-            }
-        }
-        return $return;
-    }
-
-    public function formatItemByLocation(array $items){
-        $tmp = [];
-
-        $checkSet = function(&$arr, $key, $is_arr = true){
-            if (!isset($arr[$key])){
-                $arr[$key] = $is_arr ? [] : null;
-            }
-        };
-
-        foreach ($items as $i){
-            $descriptors = $i->getDescriptors();
-
-            $r = $descriptors['region'];
-            $c = $descriptors['constellation'];
-            $ss = $descriptors['solar_system'];
-            $station = $descriptors['station'];
-            $checkSet($tmp, $r);
-            $checkSet($tmp[$r], $c);
-            $checkSet($tmp[$r][$c], $ss);
-            $checkSet($tmp[$r][$c][$ss], $station);
-            $tmp[$r][$c][$ss][$station][] = $i;
-        }
-
-        return $tmp;
-    }
-
-
-    private function mapList($assets, AssetGroup $grouping, Asset $parent = null){
         foreach ($assets as $asset){
-            $newAsset = $this->mapAsset($asset);
+            $newAsset = $this->mapItem($asset);
             $grouping->addAsset($newAsset);
 
-            if ($parent) {
-                $parent->addContent($newAsset);
+            if (isset($options['parent'])) {
+                $options['parent']->addContent($newAsset);
             }
 
             if (isset($asset->contents)){
-                $this->mapList($asset->contents, $grouping, $newAsset) ;
+                $this->mapList($asset->contents, [ 'group' => $grouping, 'parent' =>  $newAsset]) ;
             }
         }
     }
 
-    private function mapAsset($i){
+
+    public function mapItem($i){
         $item = new Asset();
 
         $item->setFlagId($i->flag)
@@ -175,9 +84,8 @@ class AssetManager
         return $item;
     }
 
-    private function getClient(Corporation $corporation, $scope = 'corp'){
+    public function getClient(ApiCredentials $key, $scope = 'corp'){
 
-        $key = $corporation->getApiCredentials()[0];
         $client = $this->pheal->createEveOnline(
             $key->getApiKey(),
             $key->getVerificationCode()

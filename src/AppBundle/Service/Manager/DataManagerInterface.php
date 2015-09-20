@@ -2,15 +2,9 @@
 
 namespace AppBundle\Service\Manager;
 
-use AppBundle\Entity\Corporation;
+use AppBundle\Entity\ApiCredentials;
 
 interface DataManagerInterface {
 
-    public function updateResultSet(array $items);
-
-    public function mapList($items, Corporation $corp);
-
-    public function mapItem($item);
-
-    public function getClient(Corporation $corporation, $scope = null);
+    public function getClient(ApiCredentials $corporation, $scope = null);
 }

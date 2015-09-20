@@ -22,7 +22,15 @@ class AccountManager {
     }
 
     public function updateAccounts(Corporation $corporation){
-        $client = $this->getClient($corporation->getApiCredentials()[0]);
+
+        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
+            ->getActiveKey($corporation);
+
+        if ($apiKey === null){
+            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
+        }
+
+        $client = $this->getClient($apiKey);
 
         $accounts = $client->AccountBalance([
             'characterID' => $corporation->getApiCredentials()[0]->getCharacterId()

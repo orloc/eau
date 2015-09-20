@@ -3,11 +3,14 @@
 namespace AppBundle\Service\Manager;
 
 use AppBundle\Entity\ApiCredentials;
+use AppBundle\Entity\Corporation;
 use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class ApiKeyManager {
+class ApiKeyManager implements DataManagerInterface {
+
     private $pheal;
 
     private $doctrine;
@@ -43,6 +46,19 @@ class ApiKeyManager {
             ->setCharacterId($char)
             ->setCorporationId($corp);
 
+    }
+
+    public function updateActiveKey(Corporation $corporation, ApiCredentials $key){
+
+    }
+
+    public function buildInstanceFromRequest(ParameterBag $content){
+        $creds = new ApiCredentials();
+
+        $creds->setVerificationCode($content->get('verification_code'))
+            ->setApiKey($content->get('api_key'));
+
+        return $creds;
     }
 
     public function getClient(ApiCredentials $credentials, $scope = 'corp'){

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Manager;
 
+use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrder;
 use AppBundle\Service\EBSDataMapper;
@@ -9,7 +10,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class MarketOrderManager implements DataManagerInterface {
+class MarketOrderManager implements DataManagerInterface, MappableDataManagerInterface {
 
     private $pheal;
 
@@ -28,7 +29,14 @@ class MarketOrderManager implements DataManagerInterface {
 
     public function getMarketOrders(Corporation $corporation){
 
-        $client = $this->getClient($corporation);
+        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
+            ->getActiveKey($corporation);
+
+        if ($apiKey === null){
+            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
+        }
+
+        $client = $this->getClient($apiKey);
 
         $orders = $client->MarketOrders();
 
@@ -38,33 +46,12 @@ class MarketOrderManager implements DataManagerInterface {
 
     }
 
-    public function updateResultSet(array $items){
-        $itemTypes = $this->registry->get('EveBundle:ItemType');
-        $regions = $this->registry->get('EveBundle:Region');
-        $constellations = $this->registry->get('EveBundle:Constellation');
-        $solarsystems = $this->registry->get('EveBundle:SolarSystem');
-        $locations = $this->registry->get('EveBundle:StaStations');
-
-        foreach ($items as $i){
-            $locationData = $locations->getLocationInfo($i->getPlacedAtId());
-
-            $updateData = array_merge(
-                $itemTypes->getItemTypeData($i->getTypeId()),
-                is_array(($ss = $solarsystems->getSolarSystemById($locationData['solar_system']))) ? $ss : [],
-                is_array(($con = $constellations->getConstellationById($locationData['constellation'])))? $con: [],
-                is_array(($reg = $regions->getRegionById($locationData['region']))) ? $reg : [],
-                ['station' => $locationData['station_name']]
-            );
-
-            $i->setDescriptors($updateData);
-        }
-
-        return $items;
-    }
-
-
-    public function mapList($orders, Corporation $corp){
+    public function mapList($orders, array $options){
         $mappedOrders = [];
+
+        if (!isset($options['corp']) && ($corp = $options['corp']) instanceof Corporation){
+            throw new \OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
+        }
 
         $repo = $this->doctrine->getRepository('AppBundle:MarketOrder');
         foreach ($orders as $o){
@@ -110,8 +97,7 @@ class MarketOrderManager implements DataManagerInterface {
 
     }
 
-    public function getClient(Corporation $corporation, $scope = 'corp'){
-        $key = $corporation->getApiCredentials()[0];
+    public function getClient(ApiCredentials $key, $scope = 'corp'){
         $client = $this->pheal->createEveOnline(
             $key->getApiKey(),
             $key->getVerificationCode()
