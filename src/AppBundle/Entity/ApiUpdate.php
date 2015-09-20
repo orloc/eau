@@ -21,6 +21,15 @@ class ApiUpdate
     const CACHE_STYLE_SHORT = 1,
           CACHE_STYLE_LONG = 2;
 
+    const CORP_ACC_BALANCES = 1,
+          CORP_ASSET_LIST = 2,
+          CORP_CONTACT_LIST = 3,
+          CORP_CONTAINER_LOG = 4,
+          CORP_CONTRACTS = 5,
+          CORP_MARKET_ORDERS = 6,
+          CORP_WALLET_JOURNAL = 7,
+          CORP_WALLET_TRANSACTION = 8;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -30,14 +39,24 @@ class ApiUpdate
     protected $id;
 
     /**
-    * @ORM\Column(type="integer")
-    */
+     * @ORM\Column(type="integer")
+     */
     protected $type;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $api_call;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="api_updates")
      */
     protected $corporation;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $succeeded;
 
     /**
      * @ORM\Column(type="datetime")
@@ -127,5 +146,51 @@ class ApiUpdate
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Set api_call
+     *
+     * @param integer $apiCall
+     * @return ApiUpdate
+     */
+    public function setApiCall($apiCall)
+    {
+        $this->api_call = $apiCall;
+
+        return $this;
+    }
+
+    /**
+     * Get api_call
+     *
+     * @return integer 
+     */
+    public function getApiCall()
+    {
+        return $this->api_call;
+    }
+
+    /**
+     * Set succeeded
+     *
+     * @param boolean $succeeded
+     * @return ApiUpdate
+     */
+    public function setSucceeded($succeeded)
+    {
+        $this->succeeded = $succeeded;
+
+        return $this;
+    }
+
+    /**
+     * Get succeeded
+     *
+     * @return boolean 
+     */
+    public function getSucceeded()
+    {
+        return $this->succeeded;
     }
 }
