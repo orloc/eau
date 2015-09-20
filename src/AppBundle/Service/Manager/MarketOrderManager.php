@@ -48,8 +48,9 @@ class MarketOrderManager implements DataManagerInterface, MappableDataManagerInt
 
     public function mapList($orders, array $options){
         $mappedOrders = [];
+        $corp = $options['corp'] ? $options['corp'] : false;
 
-        if (!isset($options['corp']) && ($corp = $options['corp']) instanceof Corporation){
+        if ($corp instanceof Corporation){
             throw new \OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
 
@@ -69,7 +70,7 @@ class MarketOrderManager implements DataManagerInterface, MappableDataManagerInt
                 $corp->addMarketOrder($order);
             }
 
-            $mappedOrders[]=$order;
+            $mappedOrders[] = $order;
         }
 
         return $mappedOrders;

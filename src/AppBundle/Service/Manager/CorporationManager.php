@@ -2,13 +2,9 @@
 
 namespace AppBundle\Service\Manager;
 
-
-use AppBundle\Entity\Account;
-use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\JournalTransaction;
-use AppBundle\Entity\MarketTransaction;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -90,53 +86,6 @@ class CorporationManager {
         }
     }
 
-    public function updateMarketTransactions(Corporation $corporation, $fromID = null){
-        $client = $this->getClient($corporation);
-
-        $accounts = $corporation->getAccounts();
-
-        foreach($accounts as $acc){
-            $this->log->debug(sprintf("Processing account %s for %s", $acc->getDivision(), $corporation->getName()));
-
-            $params = $this->buildParams($acc, $fromID);
-
-            $transactions = $client->WalletTransactions($params);
-
-            foreach ($transactions->transactions as $t){
-                $this->log->debug("processing {$t->transactionID}");
-                $exists = $this->registry->getRepository('AppBundle:MarketTransaction')
-                    ->hasTransaction($acc, $t->transactionID, $t->journalTransactionID);
-
-                if ($exists === null){
-                    $this->log->debug(sprintf('No exisiting transaction found for %s  in %s @ %s', $t->transactionID, $acc->getDivision(), $corporation->getName()));
-
-                    $trans = new MarketTransaction();
-                    $trans->setDate(new \DateTime($t->transactionDateTime))
-                        ->setTransactionId($t->transactionID)
-                        ->setQuantity($t->quantity)
-                        ->setItemName($t->typeName)
-                        ->setItemId($t->typeID)
-                        ->setPrice($t->price)
-                        ->setClientId($t->clientID)
-                        ->setClientName($t->clientName)
-                        ->setCharacterId($t->characterID)
-                        ->setCharacterName($t->characterName)
-                        ->setStationId($t->stationID)
-                        ->setStationName($t->stationName)
-                        ->setTransactionType($t->transactionType)
-                        ->setTransactionFor($t->transactionFor)
-                        ->setJournalTransactionId($t->journalTransactionID)
-                        ->setClientTypeId($t->clientTypeID);
-
-                    $acc->addMarketTransaction($trans);
-
-                } else  {
-                    $this->log->info(sprintf("Conflicting Market Transaction %s for %s %s", $t->transactionID, $acc->getDivision(), $corporation->getName()));
-                }
-            }
-        }
-    }
-
     private function getClient(Corporation $corporation, $scope = 'corp'){
 
         $key = $corporation->getApiCredentials()[0];
@@ -150,16 +99,4 @@ class CorporationManager {
         return $client;
     }
 
-    private function buildParams(Account $acc, $fromID = null){
-        $params =  [
-            'accountKey' => $acc->getDivision(),
-            'rowCount' => 2000
-        ];
-
-        if ($fromID){
-            $params = array_merge($params, [ 'fromID' => $fromID]);
-        }
-
-        return $params;
-    }
 }

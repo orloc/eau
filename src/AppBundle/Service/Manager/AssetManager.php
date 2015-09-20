@@ -9,6 +9,7 @@ use AppBundle\Entity\Corporation;
 use AppBundle\Service\EBSDataMapper;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class AssetManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
@@ -49,9 +50,10 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
     }
 
     public function mapList($assets, array $options){
+        $grouping = isset($options['group']) ? $options['group'] : false;
 
-        if (!isset($options['group']) && ($grouping = $options['group']) instanceof AssetGroup){
-            throw new \OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new AssetGroup())));
+        if ($grouping instanceof AssetGroup){
+            throw new OptionDefinitionException(sprintf('Option group required and must by of type %s', get_class(new AssetGroup())));
         }
 
         foreach ($assets as $asset){
@@ -67,7 +69,6 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
             }
         }
     }
-
 
     public function mapItem($i){
         $item = new Asset();

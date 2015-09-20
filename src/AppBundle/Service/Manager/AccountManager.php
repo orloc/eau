@@ -8,9 +8,10 @@ use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class AccountManager {
+class AccountManager implements DataManagerInterface, MappableDataManagerInterface {
 
     private $pheal;
 
@@ -36,11 +37,20 @@ class AccountManager {
             'characterID' => $corporation->getApiCredentials()[0]->getCharacterId()
         ]);
 
+        $this->mapList($accounts, ['corp' => $corporation]);
+
+    }
+
+    public function mapList($items, array $params){
         $repo = $this->registry->getRepository('AppBundle:Account');
 
-        foreach ($accounts as $a){
+        if (!isset($options['corp']) && ($corp = $options['corp']) instanceof Corporation){
+            throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
+        }
+
+        foreach ($items as $a){
             $exists = $repo->findOneBy([
-                'corporation' => $corporation,
+                'corporation' => $corp,
                 'division' => $a->accountKey
             ]);
 
@@ -52,15 +62,23 @@ class AccountManager {
                 $account = $exists;
             }
 
-            $balance = new AccountBalance();
-            $balance->setBalance($a->balance);
+            $balance = $this->mapItem($a);
 
             $account->addBalance($balance);
 
             if (!$exists instanceof Account){
-                $corporation->addAccount($account);
+                $params['corp']->addAccount($account);
             }
         }
+
+    }
+
+    public function mapItem($item){
+        $balance = new AccountBalance();
+        $balance->setBalance($item->balance);
+
+        return $balance;
+
     }
 
     public function updateLatestBalances(array $accounts, $date = false){
@@ -83,10 +101,16 @@ class AccountManager {
         }
     }
 
+    public function getClient(ApiCredentials $key, $scope = 'corp'){
 
-    protected function getClient(ApiCredentials $entity)
-    {
-        return $this->pheal->createEveOnline($entity->getApiKey(), $entity->getVerificationCode());
+        $client = $this->pheal->createEveOnline(
+            $key->getApiKey(),
+            $key->getVerificationCode()
+        );
+
+        $client->scope = $scope;
+
+        return $client;
     }
 
 }
