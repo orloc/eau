@@ -402,7 +402,7 @@ class Corporation
      */
     public function addApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
     {
-        if (!$apiCredentials->contains($apiCredentials)){
+        if (!$this->api_credentials->contains($apiCredentials)){
             $this->api_credentials[] = $apiCredentials;
             $apiCredentials->setCorporation($this);
         }

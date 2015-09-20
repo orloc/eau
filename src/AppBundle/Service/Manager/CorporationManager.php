@@ -13,20 +13,21 @@ class CorporationManager implements DataManagerInterface {
 
     private $pheal;
     private $doctrine;
+    private $api_manager;
     private $log;
 
-    public function __construct(PhealFactory $pheal, Registry $registry, Logger $logger){
+    public function __construct(PhealFactory $pheal, Registry $registry, ApiKeyManager $apiManager, Logger $logger){
         $this->pheal = $pheal;
         $this->doctrine = $registry;
+        $this->api_manager = $apiManager;
         $this->log = $logger;
     }
 
     public function buildInstanceFromRequest(ParameterBag $content){
         $corp = new Corporation();
-        $creds = new ApiCredentials();
 
-        $creds->setVerificationCode($content->get('verification_code'))
-            ->setApiKey($content->get('api_key'));
+        $creds = $this->api_manager->buildInstanceFromRequest($content);
+        $creds->setIsActive(true);
 
         $corp->setApiCredentials($creds);
 

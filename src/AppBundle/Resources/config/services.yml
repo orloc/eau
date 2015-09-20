@@ -39,15 +39,15 @@ services:
 
   # Manager
   app.corporation.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@app.apikey.manager", "@logger" ]
       class: AppBundle\Service\Manager\CorporationManager
 
   app.markettransaction.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@evedata.registry","@doctrine",  "@logger" ]
       class: AppBundle\Service\Manager\MarketTransactionManager
 
   app.journaltransaction.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@evedata.registry", "@doctrine", "@logger" ]
       class: AppBundle\Service\Manager\JournalTransactionManager
 
   app.apikey.manager:

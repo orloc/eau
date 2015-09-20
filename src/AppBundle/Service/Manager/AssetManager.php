@@ -49,7 +49,7 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
     public function mapList($assets, array $options){
         $grouping = isset($options['group']) ? $options['group'] : false;
 
-        if ($grouping instanceof AssetGroup){
+        if (!$grouping instanceof AssetGroup){
             throw new OptionDefinitionException(sprintf('Option group required and must by of type %s', get_class(new AssetGroup())));
         }
 

@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
+use Doctrine\DBAL\DBALException;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -45,6 +46,27 @@ class ApiCredentialsController extends AbstractController implements ApiControll
 
         $newKey = $this->get('app.apikey.manager')
             ->buildInstanceFromRequest($content);
+
+        $validator = $this->get('validator');
+
+        $errors = $validator->validate($newKey);
+
+        if (count($errors) > 0){
+            return $this->getErrorResponse($errors);
+        }
+
+        $corporation->addApiCredential($newKey);
+
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($newKey);
+        try {
+            $em->flush();
+        } catch (DBALException $e) {
+            return $this->jsonResponse(json_encode(['message' => $e->getMessage()]), 409);
+        }
+
+        return $this->jsonResponse($this->get('serializer')->serialize($newKey, 'json'));
 
 
     }

@@ -11,7 +11,7 @@ class ApiCredentialRepository extends EntityRepository {
 
         return $this->createQueryBuilder('api')
             ->select('api')
-            ->where('api.active = :active')
+            ->where('api.is_active = :active')
             ->andWhere('api.corporation = :corp')
             ->setParameters(['corp' => $corp, 'active' => true])
             ->getQuery()->getOneOrNullResult();

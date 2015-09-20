@@ -5,12 +5,15 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ApiCredentialRepository")
- * @ORM\Table(name="api_credentials")
+ * @ORM\Table(name="api_credentials", uniqueConstraints={
+@ORM\UniqueConstraint(name="key_val_corpIdx", columns={"api_key", "verification_code", "corporation_id"}),
+ * })
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
  *
@@ -114,6 +117,7 @@ class ApiCredentials {
 
     public function __construct(){
         $this->created_at = new \DateTime();
+        $this->is_active = false;
     }
 
     /**

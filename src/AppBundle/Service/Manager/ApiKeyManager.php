@@ -21,9 +21,10 @@ class ApiKeyManager implements DataManagerInterface {
     }
 
     public function validateAndUpdateApiKey(ApiCredentials $entity) {
-        $client = $this->getClient($entity);
+        $client = $this->getClient($entity, 'account');
 
         $result = $client->APIKeyInfo();
+
         $key = $result->key;
 
         list($type, $expires, $accessMask) = [$key->type, $key->expires, $key->accessMask];

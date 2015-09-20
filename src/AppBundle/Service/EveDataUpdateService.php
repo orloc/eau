@@ -31,12 +31,12 @@ class EveDataUpdateService {
 
     protected $log;
 
-    public function __construct(CorporationManager $cMan, AccountManager $aMan, MarketOrderManager $moMan, AssetManager $aMan, JournalTransactionManager $jMan, MarketTransactionManager $mtMan, Registry $doctrine, Logger $log){
+    public function __construct(CorporationManager $cMan, AccountManager $aMan, MarketOrderManager $moMan, AssetManager $assMan, JournalTransactionManager $jMan, MarketTransactionManager $mtMan, Registry $doctrine, Logger $log){
         $this->doctrine = $doctrine;
         $this->corp_manager = $cMan;
         $this->acc_manager = $aMan;
         $this->marketorder_manager = $moMan;
-        $this->asset_manager =  $aMan;
+        $this->asset_manager =  $assMan;
         $this->journal_manager = $jMan;
         $this->transaction_manager = $mtMan;
         $this->log = $log;
@@ -129,6 +129,8 @@ class EveDataUpdateService {
             return true;
         } catch (\Exception $e){
             $this->log->error(sprintf("Error syncing data for %s with: %s", $arg->getName(), $e->getMessage()));
+
+            throw $e;
 
             return false;
         }

@@ -41,11 +41,12 @@ class AccountManager implements DataManagerInterface, MappableDataManagerInterfa
 
     }
 
-    public function mapList($items, array $params){
+    public function mapList($items, array $options){
         $repo = $this->doctrine->getRepository('AppBundle:Account');
+        $corp = isset($options['corp']) ? $options['corp'] : false;
 
-        if (!isset($options['corp']) && ($corp = $options['corp']) instanceof Corporation){
-            throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
+        if (!$corp instanceof Corporation){
+            throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s, got %s', get_class(new Corporation())));
         }
 
         foreach ($items as $a){
@@ -67,7 +68,7 @@ class AccountManager implements DataManagerInterface, MappableDataManagerInterfa
             $account->addBalance($balance);
 
             if (!$exists instanceof Account){
-                $params['corp']->addAccount($account);
+                $options['corp']->addAccount($account);
             }
         }
 

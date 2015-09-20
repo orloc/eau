@@ -32,7 +32,7 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
 
         $orders = $client->MarketOrders();
 
-        $marketOrders = $this->mapList($orders->orders, $corporation);
+        $marketOrders = $this->mapList($orders->orders, [ 'corp' => $corporation ]);
 
         return $marketOrders;
 
@@ -42,7 +42,7 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
         $mappedOrders = [];
         $corp = $options['corp'] ? $options['corp'] : false;
 
-        if ($corp instanceof Corporation){
+        if (!$corp instanceof Corporation){
             throw new \OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
 
