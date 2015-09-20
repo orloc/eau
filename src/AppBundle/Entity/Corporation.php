@@ -38,8 +38,12 @@ class Corporation
     protected $name;
 
     /**
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\CorporationDetail", mappedBy="corporation")
+     */
+    protected $corporation_details;
+
+    /**
      * @ORM\Column(type="integer", nullable=true)
-     * @
      * @JMS\Expose()
      */
     protected $eve_id;
@@ -428,5 +432,28 @@ class Corporation
     public function getApiCredentials()
     {
         return $this->api_credentials;
+    }
+
+    /**
+     * Set corporation_details
+     *
+     * @param \AppBundle\Entity\CorporationDetail $corporationDetails
+     * @return Corporation
+     */
+    public function setCorporationDetails(\AppBundle\Entity\CorporationDetail $corporationDetails = null)
+    {
+        $this->corporation_details = $corporationDetails;
+
+        return $this;
+    }
+
+    /**
+     * Get corporation_details
+     *
+     * @return \AppBundle\Entity\CorporationDetail 
+     */
+    public function getCorporationDetails()
+    {
+        return $this->corporation_details;
     }
 }

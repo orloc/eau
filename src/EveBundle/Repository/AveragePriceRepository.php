@@ -10,6 +10,8 @@ class AveragePriceRepository extends EntityRepository {
         return $this->createQueryBuilder('ap')
             ->select('ap')
             ->where('ap.type_id = :id')
+            ->addOrderBy('ap.created_at', 'DESC')
+            ->setMaxResults(1)
             ->setParameter('id', $typeId)
             ->getQuery()->getOneOrNullResult();
 

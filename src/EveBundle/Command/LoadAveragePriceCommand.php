@@ -39,12 +39,6 @@ class LoadAveragePriceCommand extends ContainerAwareCommand
 
             $em = $this->getContainer()->get('doctrine')->getManager('eve_data');
 
-            $old = $em->getRepository('EveBundle:AveragePrice')->findAll();
-
-            foreach ($old as $o){
-                $em->remove($o);
-            }
-
             foreach ($prices as $p){
                 $e = $this->createAvgPrice($p);
                 $em->persist($e);
