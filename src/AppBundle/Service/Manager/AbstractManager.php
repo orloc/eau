@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Manager;
 
+use AppBundle\Entity\Account;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use EveBundle\Repository\Registry as EveRegistry;
 
@@ -64,6 +65,19 @@ abstract class AbstractManager {
         }
 
         return $items;
+    }
+
+    public function buildTransactionParams(Account $acc, $fromID = null){
+        $params =  [
+            'accountKey' => $acc->getDivision(),
+            'rowCount' => 2000
+        ];
+
+        if ($fromID){
+            $params = array_merge($params, [ 'fromID' => $fromID]);
+        }
+
+        return $params;
     }
 
 }

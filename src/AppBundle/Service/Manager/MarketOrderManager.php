@@ -14,15 +14,12 @@ class MarketOrderManager implements DataManagerInterface, MappableDataManagerInt
 
     private $pheal;
 
-    private $mapper;
-
     private $registry;
 
     private $doctrine;
 
-    public function __construct(PhealFactory $pheal, EBSDataMapper $dataMapper, EveRegistry $registry, Registry $doctrine){
+    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine){
         $this->pheal = $pheal;
-        $this->mapper = $dataMapper;
         $this->registry = $registry;
         $this->doctrine = $doctrine;
     }

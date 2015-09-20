@@ -43,7 +43,7 @@ services:
       class: AppBundle\Service\Manager\CorporationManager
 
   app.markettransaction.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\Manager\MarketTransactionManager
 
   app.journaltransaction.manager:
@@ -51,7 +51,7 @@ services:
       class: AppBundle\Service\Manager\JournalTransactionManager
 
   app.apikey.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine" ]
       class: AppBundle\Service\Manager\ApiKeyManager
 
   app.account.manager:
@@ -59,12 +59,10 @@ services:
       class: AppBundle\Service\Manager\AccountManager
 
   app.marketorder.manager:
-      arguments: [ "@tarioch.pheal.factory", "@app.datamapper.service", "@evedata.registry", "@doctrine" ]
+      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
       class: AppBundle\Service\Manager\MarketOrderManager
 
   app.asset.manager:
-      arguments: [ "@tarioch.pheal.factory", "@app.datamapper.service", "@evedata.registry", "@doctrine" ]
+      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
       class: AppBundle\Service\Manager\AssetManager
 
-  app.datamapper.service:
-      class: AppBundle\Service\EBSDataMapper

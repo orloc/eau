@@ -8,21 +8,20 @@ use AppBundle\Entity\Corporation;
 use AppBundle\Entity\JournalTransaction;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Bridge\Monolog\Logger;
+use EveBundle\Repository\Registry as EveRegistry;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class JournalTransactionManager implements DataManagerInterface, MappableDataManagerInterface {
+class JournalTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
     protected $pheal;
 
-    protected $doctrine;
-
     protected $log;
 
-    public function __construct(PhealFactory $pheal, Registry $doctrine, Logger $log)
+    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine, Logger $log)
     {
+        parent::__construct($doctrine, $registry);
         $this->pheal = $pheal;
-        $this->doctrine = $doctrine;
         $this->log = $log;
     }
 
@@ -40,7 +39,7 @@ class JournalTransactionManager implements DataManagerInterface, MappableDataMan
         $accounts = $corporation->getAccounts();
 
         foreach($accounts as $acc){
-            $params = $this->buildParams($acc, $fromID);
+            $params = $this->buildTransactionParams($acc, $fromID);
             $transactions = $client->WalletJournal($params);
 
             $this->mapList($transactions, [ 'corp' => $corporation, 'acc' => $acc]);
@@ -101,18 +100,5 @@ class JournalTransactionManager implements DataManagerInterface, MappableDataMan
         $client->scope = $scope;
 
         return $client;
-    }
-
-    private function buildParams(Account $acc, $fromID = null){
-        $params =  [
-            'accountKey' => $acc->getDivision(),
-            'rowCount' => 2000
-        ];
-
-        if ($fromID){
-            $params = array_merge($params, [ 'fromID' => $fromID]);
-        }
-
-        return $params;
     }
 }

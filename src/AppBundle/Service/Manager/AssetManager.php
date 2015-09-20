@@ -20,11 +20,10 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
     protected $mapper;
 
 
-    public function __construct(PhealFactory $pheal, EBSDataMapper $dataMapper, EveRegistry $registry, Registry $doctrine)
+    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine)
     {
-        parent::construct($doctrine, $registry);
+        parent::__construct($doctrine, $registry);
         $this->pheal = $pheal;
-        $this->mapper = $dataMapper;
     }
 
     public function generateAssetList(Corporation $corporation){

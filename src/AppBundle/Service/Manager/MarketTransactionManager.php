@@ -7,22 +7,21 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketTransaction;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use EveBundle\Repository\Registry as EveRegistry;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class MarketTransactionManager implements DataManagerInterface, MappableDataManagerInterface {
+class MarketTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    private $registry;
+    protected $pheal;
 
-    private $doctrine;
+    protected $log;
 
-    private $log;
-
-    public function __construct(PhealFactory $pheal, Registry $doctrine, Logger $log)
+    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine, Logger $log)
     {
+        parent::__construct($doctrine, $registry);
         $this->pheal = $pheal;
-        $this->doctrine = $doctrine;
         $this->log = $log;
     }
 
@@ -41,7 +40,7 @@ class MarketTransactionManager implements DataManagerInterface, MappableDataMana
         foreach($accounts as $acc){
             $this->log->debug(sprintf("Processing account %s for %s", $acc->getDivision(), $corporation->getName()));
 
-            $params = $this->buildParams($acc, $fromID);
+            $params = $this->buildTransactionParams($acc, $fromID);
 
             $transactions = $client->WalletTransactions($params);
 
@@ -107,16 +106,4 @@ class MarketTransactionManager implements DataManagerInterface, MappableDataMana
         return $client;
     }
 
-    private function buildParams(Account $acc, $fromID = null){
-        $params =  [
-            'accountKey' => $acc->getDivision(),
-            'rowCount' => 2000
-        ];
-
-        if ($fromID){
-            $params = array_merge($params, [ 'fromID' => $fromID]);
-        }
-
-        return $params;
-    }
 }
