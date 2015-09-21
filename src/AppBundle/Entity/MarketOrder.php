@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MarketOrderRepository")
  * @ORM\Table(name="market_orders", uniqueConstraints={
- *  @ORM\UniqueConstraint(name="datePlacedAt_indx", columns={"placed_by_id", "issued", "order_id", "type_id", "placed_at_id"})
+ *  @ORM\UniqueConstraint(name="datePlacedAt_indx", columns={"placed_by_id", "issued", "corporation_id", "type_id", "placed_at_id"})
  * })
 * @JMS\ExclusionPolicy("all")
 *
