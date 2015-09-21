@@ -55,7 +55,8 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
                 $order->getPlacedById(),
                 $order->getPlacedAtId(),
                 $order->getIssued(),
-                $order->getTypeId()
+                $order->getTypeId(),
+                $order->getOrderId()
             );
 
             if ($entity === null){
