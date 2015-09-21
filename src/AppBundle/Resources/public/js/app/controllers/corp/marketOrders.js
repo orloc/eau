@@ -23,7 +23,15 @@ angular.module('eveTool')
                 $scope.total_sales = items.total_on_market;
                 $scope.loading = false;
             });
+
+            $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 2 })).then(function(data){
+                var data = data.data;
+
+                $scope.updated_at = moment(data.created_at).format('x');
+                $scope.next_update = moment(data.created_at).add(10, 'hours').format('x');
+            });
         });
+
 
         $scope.percentFinished = function(item){
             return  100 - ((item.volume_remaining / item.total_volume)  * 100);

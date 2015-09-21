@@ -29,7 +29,15 @@ angular.module('eveTool')
                 $scope.loading = false;
             });
 
+            $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 2 })).then(function(data){
+                var data = data.data;
+
+                $scope.updated_at = moment(data.created_at).format('x');
+                $scope.next_update = moment(data.created_at).add(10, 'hours').format('x');
+            });
+
         };
+
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
             if (typeof val.id === 'undefined') {

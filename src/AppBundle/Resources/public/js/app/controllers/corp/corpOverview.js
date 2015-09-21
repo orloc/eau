@@ -37,11 +37,11 @@ angular.module('eveTool')
             $scope.selected_corp = val;
             refreshView(val);
 
-            $http.get(Routing.generate('api.corporation.apiupdate', { id: selectedCorpManager.get().id, type: 1 })).then(function(data){
+            $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 1 })).then(function(data){
                 var data = data.data;
 
                 $scope.updated_at = moment(data.created_at).format('x');
-                $scope.next_update = moment(data.created_at).add(35, 'minutes').format('x');
+                $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
             });
         });
 

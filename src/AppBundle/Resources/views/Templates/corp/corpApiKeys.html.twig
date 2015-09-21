@@ -48,7 +48,7 @@
                     </label>
                 </td>
                 <td>{{ '{{ i.created_at | date:"shortDate"}}' }} <br> <span class="small muted">{{ '{{ i.created_at | date:"shortTime"}}' }}</span></td>
-                <td><eve-image image-type="'Character'" object-id="i.character_id" img-width="256"></eve-image></td>
+                <td width="125"><eve-image image-type="'Character'" object-id="i.character_id" img-width="256"></eve-image></td>
                 <td>
                     <a ng-click="disable(i)" ng-show="i.is_active" class="btn text-danger"><i class="fa fa-warning"></i>&nbsp;&nbsp;&nbsp;Disable</a>
                     <a ng-click="enable(i)" ng-show="!i.is_active" class="btn text-info"><i class="fa fa-lightbulb-o"></i>&nbsp;&nbsp;&nbsp;Enable</a>

@@ -22,6 +22,13 @@ angular.module('eveTool')
                 $scope.total_price = items.total_price;
                 $scope.loading = false;
             });
+
+            $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 2 })).then(function(data){
+                var data = data.data;
+
+                $scope.updated_at = moment(data.created_at).format('x');
+                $scope.next_update = moment(data.created_at).add(10, 'hours').format('x');
+            });
         });
 
         $scope.totalM3 = function(){
@@ -32,6 +39,7 @@ angular.module('eveTool')
 
             return total;
         };
+
 
         $scope.getM3 = function(item){
             if (item && typeof item.descriptors != 'undefined' && typeof item.descriptors.volume !== 'undefined')

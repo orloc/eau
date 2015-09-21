@@ -20,13 +20,13 @@ class ApiUpdateRepository extends EntityRepository {
     }
 
     public function getShortTimerExpired(Corporation $entity, $call){
-        $now = Carbon::create()->subMinutes(35);
+        $now = Carbon::create()->subMinutes(10);
 
         return (bool)$this->getTimeExpiredBuilder($entity, $now, $call);
     }
 
     public function getLongTimerExpired(Corporation $entity, $call){
-        $now = Carbon::create()->subDay();
+        $now = Carbon::create()->subHours(5);
 
         return (bool)$this->getTimeExpiredBuilder($entity, $now, $call);
     }

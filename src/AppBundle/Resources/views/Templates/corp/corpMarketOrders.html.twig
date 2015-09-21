@@ -2,6 +2,14 @@
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
         <b class="text-info">Total Escrow:</b> {{ '{{ total_escrow | currency }}' }}
         <b class="text-info">Total On Market:</b> {{ '{{ total_sales | currency }}' }}
+        &nbsp;
+        &nbsp;
+        <span class="small muted" ng-show="updated_at">
+            <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}'}}
+            &nbsp;
+            &nbsp;
+            <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
+        </span>
         <br>
         <table class="table data-table table-striped table-hover table-condensed">
             <thead>
