@@ -70,4 +70,198 @@ class Starbase
     public function __construct(){
         $this->created_at = new \DateTime();
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set item_id
+     *
+     * @param integer $itemId
+     * @return Starbase
+     */
+    public function setItemId($itemId)
+    {
+        $this->item_id = $itemId;
+
+        return $this;
+    }
+
+    /**
+     * Get item_id
+     *
+     * @return integer 
+     */
+    public function getItemId()
+    {
+        return $this->item_id;
+    }
+
+    /**
+     * Set type_id
+     *
+     * @param integer $typeId
+     * @return Starbase
+     */
+    public function setTypeId($typeId)
+    {
+        $this->type_id = $typeId;
+
+        return $this;
+    }
+
+    /**
+     * Get type_id
+     *
+     * @return integer 
+     */
+    public function getTypeId()
+    {
+        return $this->type_id;
+    }
+
+    /**
+     * Set moon_id
+     *
+     * @param integer $moonId
+     * @return Starbase
+     */
+    public function setMoonId($moonId)
+    {
+        $this->moon_id = $moonId;
+
+        return $this;
+    }
+
+    /**
+     * Get moon_id
+     *
+     * @return integer 
+     */
+    public function getMoonId()
+    {
+        return $this->moon_id;
+    }
+
+    /**
+     * Set state
+     *
+     * @param integer $state
+     * @return Starbase
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return integer 
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set state_timestamp
+     *
+     * @param \DateTime $stateTimestamp
+     * @return Starbase
+     */
+    public function setStateTimestamp($stateTimestamp)
+    {
+        $this->state_timestamp = $stateTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get state_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getStateTimestamp()
+    {
+        return $this->state_timestamp;
+    }
+
+    /**
+     * Set online_timestamp
+     *
+     * @param \DateTime $onlineTimestamp
+     * @return Starbase
+     */
+    public function setOnlineTimestamp($onlineTimestamp)
+    {
+        $this->online_timestamp = $onlineTimestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get online_timestamp
+     *
+     * @return \DateTime 
+     */
+    public function getOnlineTimestamp()
+    {
+        return $this->online_timestamp;
+    }
+
+    /**
+     * Set standing_owner_id
+     *
+     * @param integer $standingOwnerId
+     * @return Starbase
+     */
+    public function setStandingOwnerId($standingOwnerId)
+    {
+        $this->standing_owner_id = $standingOwnerId;
+
+        return $this;
+    }
+
+    /**
+     * Get standing_owner_id
+     *
+     * @return integer 
+     */
+    public function getStandingOwnerId()
+    {
+        return $this->standing_owner_id;
+    }
+
+    /**
+     * Set created_at
+     *
+     * @param \DateTime $createdAt
+     * @return Starbase
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
 }
