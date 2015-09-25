@@ -24,9 +24,11 @@ class MarketOrderController extends AbstractController implements ApiControllerI
     public function indexAction(Corporation $corp)
     {
         $repo = $this->getDoctrine()->getRepository('AppBundle:MarketOrder');
+        $newestGroup = $this->getDoctrine()->getRepository('AppBundle:MarketOrderGroup')
+            ->getLatestMarketOrderGroup($corp);
 
-        $orders = $repo->getOpenBuyOrders($corp);
-        $sellorders = $repo->getOpenSellOrders($corp);
+        $orders = $repo->getOpenBuyOrders($corp, $newestGroup);
+        $sellorders = $repo->getOpenSellOrders($corp, $newestGroup);
 
         $total_onMarket = array_reduce($sellorders, function($carry, $data){
             if ($carry === null){

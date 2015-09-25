@@ -37,3 +37,9 @@ services:
     arguments: [ "@doctrine.dbal.eve_data_connection" ]
     tags:
         - { name: evedata.repository }
+
+  evedata.repo.invmarketgroups:
+    class: EveBundle\Repository\InvMarketGroupRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }

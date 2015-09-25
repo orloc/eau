@@ -5,6 +5,7 @@ namespace AppBundle\Service\Manager;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrder;
+use AppBundle\Entity\MarketOrderGroup;
 use AppBundle\Service\EBSDataMapper;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;
@@ -32,24 +33,28 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
 
         $orders = $client->MarketOrders();
 
-        $marketOrders = $this->mapList($orders->orders, [ 'corp' => $corporation ]);
+        $marketOrderGroup = $this->mapList($orders->orders, [ 'corp' => $corporation ]);
 
-        return $marketOrders;
+        $corporation->addMarketOrderGroup($marketOrderGroup);
+
+        return $marketOrderGroup;
 
     }
 
     public function mapList($orders, array $options){
-        $mappedOrders = [];
+        $marketGroup = new MarketOrderGroup();
+
         $corp = $options['corp'] ? $options['corp'] : false;
 
         if (!$corp instanceof Corporation){
             throw new \OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
 
-        $repo = $this->doctrine->getRepository('AppBundle:MarketOrder');
         foreach ($orders as $o){
             $order = $this->mapItem($o);
 
+            /*
+            $repo = $this->doctrine->getRepository('AppBundle:MarketOrder');
             $entity = $repo->hasOrder(
                 $corp,
                 $order->getPlacedById(),
@@ -58,15 +63,12 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
                 $order->getTypeId(),
                 $order->getOrderId()
             );
+            */
+            $marketGroup->addMarketOrder($order);
 
-            if ($entity === null){
-                $corp->addMarketOrder($order);
-            }
-
-            $mappedOrders[] = $order;
         }
 
-        return $mappedOrders;
+        return $marketGroup;
     }
 
     public function mapItem($order){

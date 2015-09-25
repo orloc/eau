@@ -48,9 +48,9 @@ class Corporation
     protected $accounts;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketOrder", mappedBy="corporation", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketOrderGroup", mappedBy="corporation", cascade={"persist"})
      */
-    protected $market_orders;
+    protected $market_order_groups;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="corporation", cascade={"persist"})
@@ -136,10 +136,10 @@ class Corporation
      * @param \AppBundle\Entity\MarketOrder $marketOrders
      * @return Corporation
      */
-    public function addMarketOrder(\AppBundle\Entity\MarketOrder $marketOrders)
+    public function addMarketOrderGroup(\AppBundle\Entity\MarketOrderGroup $marketOrders)
     {
-        if (!$this->accounts->contains($marketOrders)){
-            $this->market_orders[] = $marketOrders;
+        if (!$this->market_order_groups->contains($marketOrders)){
+            $this->market_order_groups[] = $marketOrders;
             $marketOrders->setCorporation($this);
         }
 
@@ -286,26 +286,6 @@ class Corporation
     }
 
     /**
-     * Remove market_orders
-     *
-     * @param \AppBundle\Entity\MarketOrder $marketOrders
-     */
-    public function removeMarketOrder(\AppBundle\Entity\MarketOrder $marketOrders)
-    {
-        $this->market_orders->removeElement($marketOrders);
-    }
-
-    /**
-     * Get market_orders
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getMarketOrders()
-    {
-        return $this->market_orders;
-    }
-
-    /**
      * Set lasted_updated_at
      *
      * @param \DateTime $lastedUpdatedAt
@@ -426,5 +406,25 @@ class Corporation
     public function getCorporationDetails()
     {
         return $this->corporation_details;
+    }
+
+    /**
+     * Remove market_order_groups
+     *
+     * @param \AppBundle\Entity\MarketOrderGroup $marketOrderGroups
+     */
+    public function removeMarketOrderGroup(\AppBundle\Entity\MarketOrderGroup $marketOrderGroups)
+    {
+        $this->market_order_groups->removeElement($marketOrderGroups);
+    }
+
+    /**
+     * Get market_order_groups
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMarketOrderGroups()
+    {
+        return $this->market_order_groups;
     }
 }

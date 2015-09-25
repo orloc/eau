@@ -4,8 +4,9 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Entity\Corporation;
+
 use AppBundle\Entity\MarketOrder;
-use Carbon\Carbon;
+use AppBundle\Entity\MarketOrderGroup;
 use Doctrine\ORM\EntityRepository;
 
 class MarketOrderRepository extends EntityRepository
@@ -18,25 +19,29 @@ class MarketOrderRepository extends EntityRepository
             ->getQuery()->getResult();
     }
 
-    public function getOpenBuyOrders(Corporation $corp){
+    public function getOpenBuyOrders(Corporation $corp, MarketOrderGroup $group){
         return $this->createQueryBuilder('mo')
             ->where('mo.corporation = :corp')
             ->andWhere('mo.bid = :bid')
             ->andWhere('mo.state = :state')
+            ->andWhere('mo.market_order_group = :mgroup ')
             ->setParameter('state', MarketOrder::OPEN)
+            ->setParameter('mgroup', $group)
             ->setParameter('corp', $corp)
             ->setParameter('bid', 1)
             ->getQuery()->getResult();
 
     }
 
-    public function getOpenSellOrders(Corporation $corp){
+    public function getOpenSellOrders(Corporation $corp, MarketOrderGroup $group){
 
         return $this->createQueryBuilder('mo')
             ->where('mo.corporation = :corp')
             ->andWhere('mo.bid = :bid')
             ->andWhere('mo.state = :state')
+            ->andWhere('mo.market_order_group = :mgroup ')
             ->setParameter('state', MarketOrder::OPEN)
+            ->setParameter('mgroup', $group)
             ->setParameter('corp', $corp)
             ->setParameter('bid', 0)
             ->getQuery()->getResult();

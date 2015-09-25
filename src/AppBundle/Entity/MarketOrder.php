@@ -53,6 +53,11 @@ class MarketOrder
     protected $placed_by_id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MarketOrderGroup", inversedBy="market_orders")
+     */
+    protected $market_order_group;
+
+    /**
      * @ORM\Column(type="bigint")
      * @JMS\Expose()
      */
@@ -538,5 +543,28 @@ class MarketOrder
     public function getOrderId()
     {
         return $this->order_id;
+    }
+
+    /**
+     * Set market_order_group
+     *
+     * @param \AppBundle\Entity\MarketOrderGroup $marketOrderGroup
+     * @return MarketOrder
+     */
+    public function setMarketOrderGroup(\AppBundle\Entity\MarketOrderGroup $marketOrderGroup = null)
+    {
+        $this->market_order_group = $marketOrderGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get market_order_group
+     *
+     * @return \AppBundle\Entity\MarketOrderGroup 
+     */
+    public function getMarketOrderGroup()
+    {
+        return $this->market_order_group;
     }
 }

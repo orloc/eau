@@ -139,8 +139,6 @@ class EveDataUpdateService {
                 $e->getMessage()
             ));
 
-            throw $e;
-
             return false;
         }
     }

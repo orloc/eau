@@ -23,5 +23,15 @@ class ItemTypeRepository extends AbstractDbalRepository implements RepositoryInt
 
     }
 
+    public function findTypesByGroupId($groupId){
+        $sql = "SELECT * FROM {$this->getTableName()} WHERE marketGroupID = :id ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $groupId]);
+
+        return $stmt->fetchAll();
+
+    }
+
 }
 
