@@ -48,6 +48,11 @@ class Corporation
     protected $accounts;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Starbase", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $starbases;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketOrderGroup", mappedBy="corporation", cascade={"persist"})
      */
     protected $market_order_groups;
@@ -95,6 +100,7 @@ class Corporation
         $this->accounts = new ArrayCollection();
         $this->api_updates = new ArrayCollection();
         $this->api_credentials = new ArrayCollection();
+        $this->starbases = new ArrayCollection();
         $this->asset_groups = new ArrayCollection();
     }
 
@@ -129,6 +135,16 @@ class Corporation
 
         return $this;
     }
+
+    public function addStarbase(Starbase $starbase){
+        if (!$this->starbases->contains($starbase)){
+            $this->starbases[] = $starbase;
+            $starbase->setCorporation($this);
+        }
+
+        return $this;
+    }
+
 
     /**
      * Add market_orders
@@ -426,5 +442,25 @@ class Corporation
     public function getMarketOrderGroups()
     {
         return $this->market_order_groups;
+    }
+
+    /**
+     * Remove starbases
+     *
+     * @param \AppBundle\Entity\Starbase $starbases
+     */
+    public function removeStarbase(\AppBundle\Entity\Starbase $starbases)
+    {
+        $this->starbases->removeElement($starbases);
+    }
+
+    /**
+     * Get starbases
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getStarbases()
+    {
+        return $this->starbases;
     }
 }

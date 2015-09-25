@@ -9,9 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StarBaseRepository")
- * @ORM\Table(name="starbases", uniqueConstraints={
- *  @ORM\UniqueConstraint(name="datePlacedAt_indx", columns={"placed_by_id", "issued", "type_id", "placed_at_id"})
- * })
+ * @ORM\Table(name="starbases")
  * @JMS\ExclusionPolicy("all")
  *
  * @package AppBundle\Entity
@@ -61,6 +59,11 @@ class Starbase
      * @ORM\Column(type="bigint")
      */
     protected $standing_owner_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="starbases")
+     */
+    protected $corporation;
 
     /**
      * @ORM\Column(type="datetime")
@@ -263,5 +266,28 @@ class Starbase
     public function getCreatedAt()
     {
         return $this->created_at;
+    }
+
+    /**
+     * Set corporation
+     *
+     * @param \AppBundle\Entity\Corporation $corporation
+     * @return Starbase
+     */
+    public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
+    {
+        $this->corporation = $corporation;
+
+        return $this;
+    }
+
+    /**
+     * Get corporation
+     *
+     * @return \AppBundle\Entity\Corporation 
+     */
+    public function getCorporation()
+    {
+        return $this->corporation;
     }
 }
