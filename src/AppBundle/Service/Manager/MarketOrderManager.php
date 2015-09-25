@@ -6,7 +6,6 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrder;
 use AppBundle\Entity\MarketOrderGroup;
-use AppBundle\Service\EBSDataMapper;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
@@ -52,18 +51,6 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
 
         foreach ($orders as $o){
             $order = $this->mapItem($o);
-
-            /*
-            $repo = $this->doctrine->getRepository('AppBundle:MarketOrder');
-            $entity = $repo->hasOrder(
-                $corp,
-                $order->getPlacedById(),
-                $order->getPlacedAtId(),
-                $order->getIssued(),
-                $order->getTypeId(),
-                $order->getOrderId()
-            );
-            */
             $marketGroup->addMarketOrder($order);
 
         }

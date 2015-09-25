@@ -36,11 +36,6 @@ class MarketOrder
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="market_orders")
-     */
-    protected $corporation;
-
-    /**
      * @ORM\Column(type="bigint")
      * @JMS\Expose()
      */
@@ -497,29 +492,6 @@ class MarketOrder
     public function getCreatedAt()
     {
         return $this->created_at;
-    }
-
-    /**
-     * Set corporation
-     *
-     * @param \AppBundle\Entity\Corporation $corporation
-     * @return MarketOrder
-     */
-    public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
-    {
-        $this->corporation = $corporation;
-
-        return $this;
-    }
-
-    /**
-     * Get corporation
-     *
-     * @return \AppBundle\Entity\Corporation 
-     */
-    public function getCorporation()
-    {
-        return $this->corporation;
     }
 
     /**
