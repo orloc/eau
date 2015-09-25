@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use AppBundle\Entity\MarketOrderGroup;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,6 +27,10 @@ class MarketOrderController extends AbstractController implements ApiControllerI
         $repo = $this->getDoctrine()->getRepository('AppBundle:MarketOrder');
         $newestGroup = $this->getDoctrine()->getRepository('AppBundle:MarketOrderGroup')
             ->getLatestMarketOrderGroup($corp);
+
+        if (!$newestGroup instanceof MarketOrderGroup){
+            return $this->jsonResponse(json_encode(['error' => 'not found']), 400);
+        }
 
         $orders = $repo->getOpenBuyOrders($newestGroup);
         $sellorders = $repo->getOpenSellOrders($newestGroup);

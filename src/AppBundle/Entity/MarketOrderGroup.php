@@ -75,4 +75,70 @@ class MarketOrderGroup
         return $this;
     }
 
+
+    /**
+     * Set created_at
+     *
+     * @param \DateTime $createdAt
+     * @return MarketOrderGroup
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->created_at = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * Get created_at
+     *
+     * @return \DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    /**
+     * Remove market_orders
+     *
+     * @param \AppBundle\Entity\MarketOrder $marketOrders
+     */
+    public function removeMarketOrder(\AppBundle\Entity\MarketOrder $marketOrders)
+    {
+        $this->market_orders->removeElement($marketOrders);
+    }
+
+    /**
+     * Get market_orders
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMarketOrders()
+    {
+        return $this->market_orders;
+    }
+
+    /**
+     * Set corporation
+     *
+     * @param \AppBundle\Entity\Corporation $corporation
+     * @return MarketOrderGroup
+     */
+    public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
+    {
+        $this->corporation = $corporation;
+
+        return $this;
+    }
+
+    /**
+     * Get corporation
+     *
+     * @return \AppBundle\Entity\Corporation 
+     */
+    public function getCorporation()
+    {
+        return $this->corporation;
+    }
 }
