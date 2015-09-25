@@ -21,11 +21,15 @@ angular.module('eveTool')
             $('svg').remove();
 
             updateAccountBalances(val).then(function(){
-                updateSVG();
                 $scope.selectAccount($scope.accounts[0]);
+            }).then(function(){
+                updateData();
+            }).then(function(){
+                updateSVG();
+            }).then(function(){
+                $scope.loading = false;
             });
 
-            $scope.loading = false;
 
         };
 
@@ -34,6 +38,11 @@ angular.module('eveTool')
                 return;
             }
 
+            $scope.loading = true;
+            $scope.buy_orders = [];
+            $scope.sell_orders = [];
+            $scope.totalBalance = 0;
+            $scope.grossProfit = 0;
             $scope.selected_corp = val;
             refreshView(val);
 
@@ -42,6 +51,8 @@ angular.module('eveTool')
 
                 $scope.updated_at = moment(data.created_at).format('x');
                 $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
+
+                $scope.loading = false;
             });
         });
 
@@ -54,8 +65,8 @@ angular.module('eveTool')
             $scope.buy_orders = [];
             $scope.sell_orders = [];
             $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
-            updateData();
             updateAccountBalances($scope.selected_corp);
+            updateData();
 
             var start = moment($scope.svg_start_date);
 
@@ -69,9 +80,9 @@ angular.module('eveTool')
             $scope.buy_orders = [];
             $scope.sell_orders = [];
             $scope.current_date = moment($scope.current_date).add(1,'day').format('MM/DD/YY');
-            updateData();
             updateAccountBalances($scope.selected_corp);
 
+            updateData();
             updateSVG();
         };
 

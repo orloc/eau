@@ -5,9 +5,11 @@ angular.module('eveTool')
         $scope.orders = [];
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
-            if (typeof val.id === 'undefined') {
+            console.log(val,'hi');
+            if (typeof val === 'undefined' || typeof val.id === 'undefined') {
                 return;
             }
+
 
             $scope.selected_corp = val;
             $scope.loading = true;
