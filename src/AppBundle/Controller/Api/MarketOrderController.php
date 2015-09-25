@@ -27,8 +27,8 @@ class MarketOrderController extends AbstractController implements ApiControllerI
         $newestGroup = $this->getDoctrine()->getRepository('AppBundle:MarketOrderGroup')
             ->getLatestMarketOrderGroup($corp);
 
-        $orders = $repo->getOpenBuyOrders($corp, $newestGroup);
-        $sellorders = $repo->getOpenSellOrders($corp, $newestGroup);
+        $orders = $repo->getOpenBuyOrders($newestGroup);
+        $sellorders = $repo->getOpenSellOrders($newestGroup);
 
         $total_onMarket = array_reduce($sellorders, function($carry, $data){
             if ($carry === null){
