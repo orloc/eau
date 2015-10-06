@@ -9,9 +9,9 @@
                     <div class="summary-stats col-xs-11" ng-cloak>
                         <div class="row">
                             <div class="col-xs-2">
-                                <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency}}' }}<br>
+                                <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}<br>
                                 <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i><br>
-                                {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency }})' }}
+                                {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
                                 <br>
                                 <span class="small muted" ng-show="updated_at">
                                     <b>Updated At:</b> {{ '{{ updated_at | date:"shortTime" }}' }}<br>
@@ -39,24 +39,24 @@
                 <ul class="list-unstyled list-group wallet-divisions">
                     <li ng-repeat="acc in accounts" ng-class="{ 'list-group-item active': selected_account.id == acc.id, 'list-group-item': selected_account.id != acc.id}" ng-click="selectAccount(acc)">
                         <p>
-                            <b>{{ '{{ acc.name }}' }}</b>: {{ '{{ acc.current_balance | currency }}' }}
+                            <b>{{ '{{ acc.name }}' }}</b>: {{ '{{ acc.current_balance | currency:"ISK" }}' }}
                             <loading-spinner class="spinner-inline" style="color: #c7ddef" ng-show="loading && selected_account.id == acc.id"></loading-spinner>
                         </p>
                         <p ng-show="selected_account.id == acc.id">
                             <b>Division Change:</b>&nbsp;&nbsp;&nbsp; <i ng-class="{ 'fa fa-chevron-up text-success': findGross() > 0, 'fa fa-chevron-down text-danger': findGross() < 0 }"></i>
-                            {{ '{{ findGross() | currency }}' }}
+                            {{ '{{ findGross() | currency:"ISK" }}' }}
                         </p>
                     </li>
                 </ul>
             </div>
             <div ng-show="page == 'buy'">
-                <h5 class="text-danger">Buy Orders - <span class="small">Total: {{ '{{  sumOrders(buy_orders) | currency }}' }}</span>
+                <h5 class="text-danger">Buy Orders - <span class="small">Total: {{ '{{  sumOrders(buy_orders) | currency:"ISK" }}' }}</span>
                     <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
                 </h5>
             </div>
 
             <div ng-show="page == 'sell'">
-                <h5 class="text-success">Sell Orders - <span class="small">Total: {{ '{{  sumOrders(sell_orders) | currency }}' }}</span>
+                <h5 class="text-success">Sell Orders - <span class="small">Total: {{ '{{  sumOrders(sell_orders) | currency:"ISK" }}' }}</span>
                     <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
                 </h5>
             </div>
@@ -83,8 +83,8 @@
                             </div>
                         </td>
                         <td>{{ '{{ b.quantity }}' }}</td>
-                        <td>{{ '{{ b.price | currency }}' }}</td>
-                        <td>{{ '{{ b.price * b.quantity | currency}}' }}</td>
+                        <td>{{ '{{ b.price | currency:"ISK" }}' }}</td>
+                        <td>{{ '{{ b.price * b.quantity | currency:"ISK"}}' }}</td>
                         <td width="100">
                             <eve-image image-type="'Character'" object-id="b.character_id" img-width="256"></eve-image> {{ '{{ b.character_name }}' }}
                         </td>
@@ -125,8 +125,8 @@
                             </div>
                         </td>
                         <td>{{ '{{ s.quantity }}' }}</td>
-                        <td>{{ '{{ s.price | currency }}' }}</td>
-                        <td>{{ '{{ s.price * s.quantity | currency}}' }}</td>
+                        <td>{{ '{{ s.price | currency:"ISK" }}' }}</td>
+                        <td>{{ '{{ s.price * s.quantity | currency:"ISK"}}' }}</td>
                         <td width="100">
                             <eve-image image-type="'Character'" object-id="s.character_id" img-width="256"></eve-image> {{ '{{ s.character_name }}' }}
                         </td>

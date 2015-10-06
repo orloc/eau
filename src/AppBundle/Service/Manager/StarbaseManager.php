@@ -30,9 +30,11 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
 
         $client = $this->getClient($apiKey);
 
+        /*
         $bases = $client->StarbaseList();
 
         $this->mapList($bases);
+        */
     }
 
     public function mapList($items, array $options = []){

@@ -9,11 +9,11 @@
                     <div class="form-group">
                         <textarea ng-model="input_data" class="form-control" style="min-height: 300px;" cols="50"></textarea>
                     </div>
-                    <input type="submit" class="btn btn-default" value="Calculate">
+                    <input ng-disabled="loading" type="submit" class="btn btn-default btn-block" value="Calculate">
                 </form>
 
                 <div ng-show="updated_items.length != 0" class="summary well" ng-cloak>
-                        <h3>Total Worth: <span class="text-success">{{ '{{ total_value.total_value | currency  }}' }}</span></h3>
+                        <h3>Total Worth: <span class="text-success">{{ '{{ total_value.total_value | currency:"ISK " }}' }}</span></h3>
 
                         <div ng-show="errors.length > 0" class="errors">
                             <p class="text-danger">Items here were not parsed correctly and were excluded from the list</p>
@@ -27,7 +27,7 @@
             </div>
 
             <div class="col-xs-6">
-                <p class="">Please paste your item content in the provided space. Not all inventory formats are supported.<br>
+                <p class="">Please paste your item content in the provided space. <i>Not all inventory formats are supported.</i><br>
                     For the best results - repackaged and stack items in your inventory - make sure your in list view - <b>ctrl +a,   ctrl + c , ctrl + v</b>
                 </p>
                 <table class="table data-table table-striped table-hover table-condensed" ng-show="updated_items.length > 0" ng-cloak>
@@ -45,8 +45,8 @@
                             </td>
                             <td>{{ '{{ i.typeName }}' }}</td>
                             <td>{{ '{{ i.quantity }}' }}</td>
-                            <td>{{ '{{ i.price | currency }}' }}</td>
-                            <td>{{ '{{ i.quantity * i.price | currency }}' }}</td>
+                            <td>{{ '{{ i.price | currency:"ISK " }}' }}</td>
+                            <td>{{ '{{ i.quantity * i.price | currency:"ISK " }}' }}</td>
                         </tr>
                     </tbody>
                 </table>

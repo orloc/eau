@@ -1,5 +1,9 @@
 .buyback {
 
+  textarea {
+    background-color: $offWhite;
+  }
+
   .well {
     background-color: $darkerBlack;
     border-color: lighten($darkerBlack, 10);

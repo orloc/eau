@@ -31,7 +31,7 @@ class CorporationManager implements DataManagerInterface {
         $creds = $this->api_manager->buildInstanceFromRequest($content);
         $creds->setIsActive(true);
 
-        $corp->setApiCredentials($creds);
+        $corp->addApiCredential($creds);
 
         return $corp;
     }

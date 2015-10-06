@@ -86,11 +86,16 @@ class AccountManager implements DataManagerInterface, MappableDataManagerInterfa
         $balanceRepo = $this->doctrine->getRepository('AppBundle:AccountBalance');
         foreach($accounts as $acc){
             if ($date){
-                $balance = $balanceRepo->getLatestBalance($acc, $date)
-                    ->getBalance();
+                $balance = $balanceRepo->getLatestBalance($acc, $date);
+                if ($balance !== null){
+                    $balance = $balance->getBalance();
+                }
             } else {
-                $balance = $balanceRepo->getLatestBalance($acc)
-                    ->getBalance();
+                $balance = $balanceRepo->getLatestBalance($acc);
+
+                if ($balance !== null){
+                    $balance = $balance->getBalance();
+                }
             }
 
             $lastDay = ($b = $balanceRepo->getLastDayBalance($acc)) instanceof AccountBalance

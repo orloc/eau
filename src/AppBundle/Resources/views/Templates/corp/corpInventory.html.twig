@@ -1,6 +1,6 @@
 <div ng-controller="inventoryController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <b class="text-info">Total Value:</b> {{ '{{ total_price | currency }}' }}
+        <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}
         &nbsp;
         &nbsp;
         &nbsp;
@@ -65,10 +65,10 @@
                     {{ '{{ item.descriptors.station  }}' }}
                 </td>
                 <td>
-                    {{ '{{ item.descriptors.price | currency }}' }}
+                    {{ '{{ item.descriptors.price | currency:"ISK" }}' }}
                 </td>
                 <td>
-                    {{ '{{ item.descriptors.total_price | currency }}' }}
+                    {{ '{{ item.descriptors.total_price | currency:"ISK" }}' }}
                 </td>
             </tr>
             <tr ng-show="loading">

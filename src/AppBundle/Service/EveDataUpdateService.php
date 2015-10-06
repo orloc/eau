@@ -67,9 +67,9 @@ class EveDataUpdateService {
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
-            //'acc_manager' => 'updateAccounts',
-            //'journal_manager' => 'updateJournalTransactions',
-            //'transaction_manager' => 'updateMarketTransactions'
+            'acc_manager' => 'updateAccounts',
+            'journal_manager' => 'updateJournalTransactions',
+            'transaction_manager' => 'updateMarketTransactions',
             'starbase_manager' => 'getStarbases'
         ];
 

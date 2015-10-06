@@ -1,7 +1,7 @@
 <div ng-controller="marketOrderController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <b class="text-info">Total Escrow:</b> {{ '{{ total_escrow | currency }}' }}
-        <b class="text-info">Total On Market:</b> {{ '{{ total_sales | currency }}' }}
+        <b class="text-info">Total Escrow:</b> {{ '{{ total_escrow | currency:"ISK" }}' }}
+        <b class="text-info">Total On Market:</b> {{ '{{ total_sales | currency:"ISK" }}' }}
         &nbsp;
         &nbsp;
         <span class="small muted" ng-show="updated_at">
@@ -56,7 +56,7 @@
                         </span>
                 </td>
                 <td>
-                    {{ '{{ item.volume_remaining  * item.price | currency }}' }}
+                    {{ '{{ item.volume_remaining  * item.price | currency:"ISK" }}' }}
                 </td>
                 <td>
                     {{ '{{ item.descriptors.region  }}' }}
@@ -74,7 +74,7 @@
                     <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
                 </td>
                 <td>
-                    {{ '{{ item.descriptors.total_price | currency }}' }}
+                    {{ '{{ item.descriptors.total_price | currency:"ISK" }}' }}
                 </td>
             </tr>
             <tr ng-show="loading">

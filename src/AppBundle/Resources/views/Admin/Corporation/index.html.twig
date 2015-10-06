@@ -5,7 +5,7 @@
         <h3>Corporation <span class="muted small">LIST</span>
         </h3>
         <side-menu-container ng-transclude>
-            <div class="col-xs-12 corporation-list" ng-controller="corpListController">
+            <div class="col-xs-12 corporation-list" ng-controller="corpListController" ng-cloak>
                 <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" class="corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
                     <div class="row">
                         <div class="col-xs-4">

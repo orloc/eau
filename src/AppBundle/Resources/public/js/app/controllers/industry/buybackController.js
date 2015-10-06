@@ -5,9 +5,11 @@ angular.module('eveTool')
         $scope.input_data = '';
         $scope.updated_items = [];
         $scope.errors = [];
+        $scope.loading = false;
 
 
         $scope.submit = function(){
+            $scope.loading = true;
             var inputs = $scope.input_data.split("\n");
             var r = /\d[^a-zA-Z]+/;
             var data = [];
@@ -68,6 +70,8 @@ angular.module('eveTool')
                 };
             };
 
-            $http.post(Routing.generate('api.buyback_items'), data).then(callback(data));
+            $http.post(Routing.generate('api.buyback_items'), data).then(callback(data)).then(function(){
+                $scope.loading = false;
+            });
         };
     }]);

@@ -1,6 +1,6 @@
 <div ng-controller="deliveryController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <b class="text-info">Total Value:</b> {{ '{{ total_price | currency }}' }}
+        <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}
 
         &nbsp;
         &nbsp;
@@ -106,16 +106,16 @@
                 </td>
                 <td>
                             <span ng-if="getShowColumn()">
-                            {{ '{{  item.descriptors.price | currency }}' }}
+                            {{ '{{  item.descriptors.price | currency:"ISK" }}' }}
                             </span>
                     <span ng-if="!getShowColumn()">N/A</span>
                 </td>
                 <td>
                             <span ng-if="filter =='*'">
-                                {{ ' {{  item.descriptors.total_price | currency }}' }}
+                                {{ ' {{  item.descriptors.total_price | currency:"ISK" }}' }}
                             </span>
                             <span ng-if="filter !='*'">
-                                {{ ' {{  item.actual_total | currency }}' }}
+                                {{ ' {{  item.actual_total | currency:"ISK" }}' }}
                             </span>
                 </td>
             </tr>
