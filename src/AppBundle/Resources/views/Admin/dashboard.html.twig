@@ -1,6 +1,14 @@
 {% extends 'AppBundle:Admin:layout.html.twig' %}
 
 {% block content -%}
+    <style>
+        p.soon {
+            font-size: 40px;
+            padding: 4em;
+            text-align: center;
+        }
+    </style>
     <div ng-controller="dashboardController">
+        <p class="soon">Coming Soon</p>
     </div>
 {% endblock %}

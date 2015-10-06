@@ -1,12 +1,14 @@
 @import 'compass/css3';
 @import '_partials/_fonts.scss';
 @import '_partials/_colors.scss';
+@import '_partials/_footer.scss';
+@import '_partials/_legal.scss';
 @import '_partials/_form.scss';
 
 body {
   height: 100%;
   width: 100%;
-  background: url('../img/maxresdefault.jpg') no-repeat;
+  background: black;//url('../img/maxresdefault.jpg') no-repeat;
   background-size: cover;
   background-attachment: fixed;
 }

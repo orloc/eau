@@ -21,6 +21,7 @@ class DefaultController extends Controller
      * @Route("/legal", name="legal")
      */
     public function legalAction(Request $request){
+        return $this->render('@App/legal.html.twig');
 
     }
 }

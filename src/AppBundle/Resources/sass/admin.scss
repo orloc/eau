@@ -2,7 +2,9 @@
 @import '_partials/_fonts.scss';
 @import '_partials/_colors.scss';
 @import '_partials/_pushMenu.scss';
+@import '_partials/_footer.scss';
 @import '_partials/_form.scss';
+@import '_partials/_legal.scss';
 @import '_partials/_tables.scss';
 @import '_partials/_sidemenu.scss';
 @import '_partials/_onlineWidget.scss';
@@ -21,7 +23,6 @@ body {
   font-family: $roboto;
 }
 
-
 h1, h2, h3, {
   font-family: 'eve_alphabold', sans-serif;
   color: $offWhite;
@@ -37,6 +38,11 @@ p, a, ul {
 
 #page-wrapper {
   background-color: lighten($darkerBlack,10);
+  .container-fluid {
+    position: relative;
+    min-height: 900px;
+    padding-bottom: 3em;
+  }
   /*
   @include background-image(radial-gradient(circle at 1.98% 23.04%, #2b0000, transparent 100%),radial-gradient(circle at 98.02% 70.05%, #190A05, transparent 93%),radial-gradient(circle at 50% 50%, #050d06, #050d06 100%));
   */
