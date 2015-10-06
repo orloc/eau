@@ -1,0 +1,21 @@
+.buyback {
+
+  .well {
+    background-color: $darkerBlack;
+    border-color: lighten($darkerBlack, 10);
+  }
+  h3 {
+    font-family: $roboto;
+  }
+
+  table.data-table {
+    tbody tr td {
+      padding: 0;
+      padding-left: 5px;
+    }
+
+    .errors p {
+      font-size: 20px;
+    }
+  }
+}

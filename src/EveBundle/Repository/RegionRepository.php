@@ -23,5 +23,14 @@ class RegionRepository extends AbstractDbalRepository implements RepositoryInter
 
     }
 
+    public function getAll(){
+        $sql = "SELECT * FROM {$this->getTableName()}";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
 }
 

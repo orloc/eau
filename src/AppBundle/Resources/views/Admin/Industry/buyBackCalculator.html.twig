@@ -1,0 +1,57 @@
+{% extends 'AppBundle:Admin:layout.html.twig' %}
+
+{% block content -%}
+    <div ng-controller="buybackController" class="buyback">
+        <h2>Buyback Calculator</h2>
+        <div class="row">
+            <div class="col-xs-6">
+                <form ng-submit="submit()">
+                    <div class="form-group">
+                        <textarea ng-model="input_data" class="form-control" style="min-height: 300px;" cols="50"></textarea>
+                    </div>
+                    <input type="submit" class="btn btn-default" value="Calculate">
+                </form>
+
+                <div ng-show="updated_items.length != 0" class="summary well" ng-cloak>
+                        <h3>Total Worth: <span class="text-success">{{ '{{ total_value.total_value | currency  }}' }}</span></h3>
+
+                        <div ng-show="errors.length > 0" class="errors">
+                            <p class="text-danger">Items here were not parsed correctly and were excluded from the list</p>
+                            <ul>
+                                <li ng-repeat="e in errors">
+                                    {{ '{{ e }}' }}
+                                </li>
+                            </ul>
+                        </div>
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <p class="">Please paste your item content in the provided space. Not all inventory formats are supported.<br>
+                    For the best results - repackaged and stack items in your inventory - make sure your in list view - <b>ctrl +a,   ctrl + c , ctrl + v</b>
+                </p>
+                <table class="table data-table table-striped table-hover table-condensed" ng-show="updated_items.length > 0" ng-cloak>
+                    <thead>
+                        <th width="32"></th>
+                        <th>Name</th>
+                        <th>#</th>
+                        <th>Unit Price</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="i in updated_items">
+                            <td >
+                                <eve-image image-type="'Type'" object-id="i.typeID" img-width="64"></eve-image>
+                            </td>
+                            <td>{{ '{{ i.typeName }}' }}</td>
+                            <td>{{ '{{ i.quantity }}' }}</td>
+                            <td>{{ '{{ i.price | currency }}' }}</td>
+                            <td>{{ '{{ i.quantity * i.price | currency }}' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

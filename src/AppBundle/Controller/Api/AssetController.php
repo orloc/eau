@@ -110,4 +110,47 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
     }
 
+    /**
+     * @Route("/industry/buyback", name="api.buyback_items", options={"expose"=true})
+     * @Method("POST")
+     */
+    public function getBuybackPrice(Request $request){
+
+        $region_id = $request->query->get('region', null);
+        $data = $request->request->all();
+
+        $names = array_map(function($d){ return $d['name']; }, $data);
+
+        $items = $this->get('evedata.registry')
+            ->get('EveBundle:ItemType')
+            ->findTypesByName($names);
+
+        $assetManager = $this->get('app.asset.manager');
+        $items = $assetManager->updatePrices($items);
+
+        $json = $this->get('serializer')->serialize($items, 'json');
+
+        return $this->jsonResponse($json);
+
+
+        /*
+        $ore_groups = $this->get('evedata.registry')->get('EveBundle:MarketGroup')
+            ->getOreGroups();
+
+        $item_repo = $this->get('evedata.registry')->get('EveBundle:ItemType') ;
+
+        $oreTypes = [];
+        foreach($ore_groups as $ore){
+            $res = $item_repo->findTypesByGroupId($ore['marketGroupID']);
+            $oreTypes[$ore['marketGroupName']] = $res;
+        }
+
+
+        $json = $this->get('serializer')->serialize($oreTypes, 'json');
+
+        return $this->jsonResponse($json);
+        */
+    }
+
+
 }

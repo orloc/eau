@@ -58,6 +58,10 @@ services:
       arguments: [ "@tarioch.pheal.factory", "@doctrine" ]
       class: AppBundle\Service\Manager\AccountManager
 
+  app.starbase.manager:
+      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
+      class: AppBundle\Service\Manager\StarbaseManager
+
   app.marketorder.manager:
       arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
       class: AppBundle\Service\Manager\MarketOrderManager
@@ -67,7 +71,7 @@ services:
       class: AppBundle\Service\Manager\AssetManager
 
   app.evedataupdate.service:
-      arguments: [ "@app.corporation.manager", "@app.account.manager", "@app.marketorder.manager", "@app.asset.manager", "@app.journaltransaction.manager", "@app.markettransaction.manager", "@doctrine", "@logger"]
+      arguments: [ "@app.corporation.manager", "@app.account.manager", "@app.marketorder.manager", "@app.asset.manager", "@app.journaltransaction.manager", "@app.markettransaction.manager",  "@app.starbase.manager", "@doctrine", "@logger"]
       class: AppBundle\Service\EveDataUpdateService
 
 

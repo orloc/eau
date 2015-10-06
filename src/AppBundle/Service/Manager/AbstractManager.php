@@ -20,32 +20,46 @@ abstract class AbstractManager {
     }
 
 
+    /**
+     * @TODO I need to go into my own place
+     */
     public function updatePrices(array $items){
         $prices = $this->doctrine->getManager('eve_data')
             ->getRepository('EveBundle:AveragePrice');
 
-        $types = [];
+        $arrType = [];
         foreach ($items as $i){
-            $descriptors = $i->getDescriptors();
+            // @TODO I think this is of type Asset
+            if (is_object($i)){
+                $descriptors = $i->getDescriptors();
 
-            if (!isset($types[$i->getTypeId()])){
                 $price = $prices->getAveragePriceByType($i->getTypeId());
-
-                $types[$i->getTypeId()] = $descriptors['price'] = $price instanceof AveragePrice
+                $descriptors['price'] = $price instanceof AveragePrice
                     ? floatval($price->getAveragePrice())
                     : 0;
 
                 $descriptors['total_price'] = floatval($descriptors['price'] * $i->getQuantity());
+                $i->setDescriptors($descriptors);
 
-            } else {
-                $descriptors['price'] = floatval($types[$i->getTypeId()]);
-                $descriptors['total_price'] = floatval($descriptors['price']) * $i->getQuantity();
+            } elseif (is_array($i)) {
+                $price = $prices->getAveragePriceByType($i['typeID']);
+                $i['price'] = $price instanceof AveragePrice
+                    ? floatval($price->getAveragePrice())
+                    : 0;
+
+                $arrType[] = $i;
+
             }
+        }
 
-            $i->setDescriptors($descriptors);
+        if (count($arrType)){
+            return $arrType;
         }
     }
 
+    /**
+     * @TODO I need to go into my own place
+     */
     public function updateResultSet(array $items){
         $itemTypes = $this->registry->get('EveBundle:ItemType');
         $regions = $this->registry->get('EveBundle:Region');

@@ -19,9 +19,9 @@ class RegionController extends AbstractController implements ApiControllerInterf
      */
     public function indexAction(Request $request)
     {
-        $em = $this->get('doctrine')->getManager('eve_data');
 
-        $regions = $em->getRepository('EveBundle:Region')->findAll();
+        $regions = $this->get('evedata.registry')
+            ->get('EveBundle:Region')->getAll();
 
         $json = $this->get('serializer')->serialize($regions, 'json');
 

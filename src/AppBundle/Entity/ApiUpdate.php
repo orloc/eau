@@ -28,7 +28,8 @@ class ApiUpdate
           CORP_CONTRACTS = 5,
           CORP_MARKET_ORDERS = 6,
           CORP_WALLET_JOURNAL = 7,
-          CORP_WALLET_TRANSACTION = 8;
+          CORP_WALLET_TRANSACTION = 8,
+          CORP_STARBASE_LIST = 9;
 
     /**
      * @ORM\Id

@@ -11,6 +11,7 @@ use AppBundle\Service\Manager\CorporationManager;
 use AppBundle\Service\Manager\JournalTransactionManager;
 use AppBundle\Service\Manager\MarketOrderManager;
 use AppBundle\Service\Manager\MarketTransactionManager;
+use AppBundle\Service\Manager\StarbaseManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 
@@ -30,9 +31,11 @@ class EveDataUpdateService {
 
     protected $transaction_manager;
 
+    protected $starbase_manager;
+
     protected $log;
 
-    public function __construct(CorporationManager $cMan, AccountManager $aMan, MarketOrderManager $moMan, AssetManager $assMan, JournalTransactionManager $jMan, MarketTransactionManager $mtMan, Registry $doctrine, Logger $log){
+    public function __construct(CorporationManager $cMan, AccountManager $aMan, MarketOrderManager $moMan, AssetManager $assMan, JournalTransactionManager $jMan, MarketTransactionManager $mtMan, StarbaseManager $stMan, Registry $doctrine, Logger $log){
         $this->doctrine = $doctrine;
         $this->corp_manager = $cMan;
         $this->acc_manager = $aMan;
@@ -40,6 +43,7 @@ class EveDataUpdateService {
         $this->asset_manager =  $assMan;
         $this->journal_manager = $jMan;
         $this->transaction_manager = $mtMan;
+        $this->starbase_manager = $stMan;
         $this->log = $log;
     }
 
@@ -63,9 +67,10 @@ class EveDataUpdateService {
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
-            'acc_manager' => 'updateAccounts',
-            'journal_manager' => 'updateJournalTransactions',
-            'transaction_manager' => 'updateMarketTransactions'
+            //'acc_manager' => 'updateAccounts',
+            //'journal_manager' => 'updateJournalTransactions',
+            //'transaction_manager' => 'updateMarketTransactions'
+            'starbase_manager' => 'getStarbases'
         ];
 
         foreach ($calls as $manager => $call){
@@ -155,6 +160,8 @@ class EveDataUpdateService {
                 return ApiUpdate::CORP_ASSET_LIST;
             case 'getMarketOrders':
                 return ApiUpdate::CORP_MARKET_ORDERS;
+            case 'getStarbases':
+                return ApiUpdate::CORP_STARBASE_LIST;
         }
     }
 }
