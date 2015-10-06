@@ -70,7 +70,7 @@ class EveDataUpdateService {
             'acc_manager' => 'updateAccounts',
             'journal_manager' => 'updateJournalTransactions',
             'transaction_manager' => 'updateMarketTransactions',
-            'starbase_manager' => 'getStarbases'
+            //'starbase_manager' => 'getStarbases'
         ];
 
         foreach ($calls as $manager => $call){

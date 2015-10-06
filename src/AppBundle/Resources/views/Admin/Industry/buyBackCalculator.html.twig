@@ -44,7 +44,7 @@
                                 <eve-image image-type="'Type'" object-id="i.typeID" img-width="64"></eve-image>
                             </td>
                             <td>{{ '{{ i.typeName }}' }}</td>
-                            <td>{{ '{{ i.quantity }}' }}</td>
+                            <td>{{ '{{ i.quantity | number }}' }}</td>
                             <td>{{ '{{ i.price | currency:"ISK " }}' }}</td>
                             <td>{{ '{{ i.quantity * i.price | currency:"ISK " }}' }}</td>
                         </tr>

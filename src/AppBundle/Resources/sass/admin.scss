@@ -36,7 +36,10 @@ p, a, ul {
 
 
 #page-wrapper {
+  background-color: lighten($darkerBlack,10);
+  /*
   @include background-image(radial-gradient(circle at 1.98% 23.04%, #2b0000, transparent 100%),radial-gradient(circle at 98.02% 70.05%, #190A05, transparent 93%),radial-gradient(circle at 50% 50%, #050d06, #050d06 100%));
+  */
   border-left: $darkerBlack;
 }
 

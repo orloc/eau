@@ -18,7 +18,8 @@
                                     <b>Next Update:</b> {{ '{{ next_update | date:"shortTime" }}' }}<br>
                                 </span>
                             </div>
-                            <div class="graphs col-xs-10"></div>
+                            <div class="graphs col-xs-10" ng-hide="not_enough_data"></div>
+                            <div class="col-xs-10" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
                         </div>
                     </div>
                     <div class="col-xs-1 viewing-details" >

@@ -194,102 +194,103 @@ angular.module('eveTool')
 
             d3.json(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id , date: moment($scope.current_date).format('X') }), function(data){
 
-                // Nest stock values by symbol.
-                var wallets  = d3.nest()
-                      .key(function(d) { return d.name; })
-                      .entries(data);
+                if (data.length > 100){
+                    // Nest stock values by symbol.
+                    var wallets  = d3.nest()
+                        .key(function(d) { return d.name; })
+                        .entries(data);
 
-                var cDomain = [];
+                    var cDomain = [];
 
-                var maxTotal = 0;
-                wallets.forEach(function(w) {
-                    w.values.forEach(function(d) { d.date = parse(d.date); d.balance = +d.balance; });
+                    var maxTotal = 0;
+                    wallets.forEach(function(w) {
+                        w.values.forEach(function(d) { d.date = parse(d.date); d.balance = +d.balance; });
 
-                    maxTotal += d3.max(w.values, function(d) { return d.balance; });
-                    cDomain.push(w.key);
+                        maxTotal += d3.max(w.values, function(d) { return d.balance; });
+                        cDomain.push(w.key);
 
-                    w.values.sort(function(a,b){
-                        return a.date - b.date;
+                        w.values.sort(function(a,b){
+                            return a.date - b.date;
+                        });
+
                     });
 
-                });
+                    var yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .tickSize(-width)
+                        .ticks((maxTotal / 100000000) / 3)
+                        .tickFormat(d3.format('$s'))
+                        .orient("right");
 
-                var yAxis = d3.svg.axis()
-                    .scale(yScale)
-                    .tickSize(-width)
-                    .ticks((maxTotal / 100000000) / 3)
-                    .tickFormat(d3.format('$s'))
-                    .orient("right");
+                    color.domain(cDomain);
 
-                color.domain(cDomain);
+                    var wStack = stack(color.domain().map(function(name){
+                        return {
+                            name: name,
+                            values: _.find(wallets, function(w){ return w.key == name; }).values.map(function(d){
+                                return {
+                                    date: d.date,
+                                    y: d.balance
+                                };
+                            })
+                        };
+                    }));
 
-                var wStack = stack(color.domain().map(function(name){
-                    return {
-                        name: name,
-                        values: _.find(wallets, function(w){ return w.key == name; }).values.map(function(d){
-                            return {
-                                date: d.date,
-                                y: d.balance
-                            };
-                        })
-                    };
-                }));
-
-                xScale.domain(d3.extent(data, function(d){
-                    return d.date;
-                }));
+                    xScale.domain(d3.extent(data, function(d){
+                        return d.date;
+                    }));
 
 
-                yScale.domain(d3.extent([0, maxTotal], function(d){
-                    return d;
-                }));
-
-                var svgWallets = vis.selectAll('.wallet')
-                    .data(wStack)
-                    .enter().append("g")
-                    .attr("class", "wallet");
-
-                svgWallets.append("path")
-                    .attr("class", "area")
-                    .attr("d", function(d){ return area(d.values); })
-                    .style("fill", function(d){ return color(d.name); });
-
-                vis.append("g")
-                    .attr("class", "x-axis")
-                    .attr("transform", "translate(0,"+height+")")
-                    .call(xAxis);
-
-                vis.append("g")
-                    .attr("class", "x-axis")
-                    .call(yAxis);
-
-                vis.append("circle")
-
-                var legend = vis.selectAll(".legend")
-                    .data(color.domain().slice().reverse())
-                    .enter().append("g")
-                    .attr("class", "legend")
-                    .attr("transform", function (d, i) {
-                        return "translate(0," + i * 15 + ")";
-                    });
-
-                legend.append("rect")
-                    .attr("x", width - 18)
-                    .attr("width", 10)
-                    .attr("height", 10)
-                    .style("fill", color);
-
-                legend.append("text")
-                    .attr("x", width - 24)
-                    .attr("y", 9)
-                    .attr("dy", ".35em")
-                    .style("text-anchor", "end")
-                    .text(function (d) {
+                    yScale.domain(d3.extent([0, maxTotal], function(d){
                         return d;
-                    });
+                    }));
 
+                    var svgWallets = vis.selectAll('.wallet')
+                        .data(wStack)
+                        .enter().append("g")
+                        .attr("class", "wallet");
+
+                    svgWallets.append("path")
+                        .attr("class", "area")
+                        .attr("d", function(d){ return area(d.values); })
+                        .style("fill", function(d){ return color(d.name); });
+
+                    vis.append("g")
+                        .attr("class", "x-axis")
+                        .attr("transform", "translate(0,"+height+")")
+                        .call(xAxis);
+
+                    vis.append("g")
+                        .attr("class", "x-axis")
+                        .call(yAxis);
+
+                    vis.append("circle");
+
+                    var legend = vis.selectAll(".legend")
+                        .data(color.domain().slice().reverse())
+                        .enter().append("g")
+                        .attr("class", "legend")
+                        .attr("transform", function (d, i) {
+                            return "translate(0," + i * 15 + ")";
+                        });
+
+                    legend.append("rect")
+                        .attr("x", width - 18)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", color);
+
+                    legend.append("text")
+                        .attr("x", width - 24)
+                        .attr("y", 9)
+                        .attr("dy", ".35em")
+                        .style("text-anchor", "end")
+                        .text(function (d) {
+                            return d;
+                        });
+                } else {
+                    $scope.not_enough_data = true;
+                }
             });
-
         }
-
     }]);

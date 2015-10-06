@@ -102,6 +102,7 @@ class Corporation
         $this->api_credentials = new ArrayCollection();
         $this->starbases = new ArrayCollection();
         $this->asset_groups = new ArrayCollection();
+        $this->market_order_groups = new ArrayCollection();
     }
 
     /**
