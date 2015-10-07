@@ -32,15 +32,13 @@
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </button>
-                            <a class="navbar-brand" href="./index.html">Sleek</a>
+                            <a class="navbar-brand" href="./index.html">EAU</a>
                         </div>
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav navbar-right">
-                                <li><a href="./index.html">Home</a></li>
-                                <li><a href="#">Sample Page</a></li>
-                                <li><a class="page-scroll" href="#footer">Contact</a></li>
-                                <li><a href="http://themeforest.net/user/Dilipkumar/portfolio" target="_blank">Purchase Now</a></li>
+                                <li><a class="page-scroll" href="#faq">FAQ</a></li>
+                                <li><a href={{ path('fos_user_security_login') }}>Login</a></li>
                             </ul>
                         </div>
                         <!-- /.navbar-collapse -->
@@ -57,12 +55,16 @@
                     <div class="col-md-12">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2>Welcome to the Sleek</h2>
-                                <p>Lorem ipsum dolor sit amet adipiscing elit curabitur sapien leo consequat sed aliquam at convallis sit amet metus. Vivamus malesuada ex in placerat bibendum, est dui euismod sapien, eget tincidunt nunc ipsum ut mauris.</p>
+                                <h2><span>E</span>ssential <span>A</span>lliance <span>U</span>tility</h2>
+                                <p>
+                                    <span>EAU</span> is a third party tool for Eve Online&copy;, providing alliance or corporation financial managment and an assortment of industrial tools.<br>
+                                    Currently under heavy development. We are in an alpha and internal use only stage. Feel free to contact us if you have questions or suggestions.</p>
+                                {#
                                 <div class="dual-btns">
                                     <a href="#">Purchase Now</a>
                                     <a href="#">Learn More</a>
                                 </div>
+                                #}
                             </div>
                         </div>
                     </div>
@@ -70,94 +72,7 @@
             </div>
         </section>
         <!-- INTRO -->
-
-
-        {#
-        <!-- FEATURES -->
-        <section id="features">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                        <!-- Download App Section -->
-                        <div class="app-info">
-                            <h3>Download App</h3>
-                            <p>Morbi laoreet scelerisque orci finibus ullam corper quam semper utac aliquam magna quis</p>
-                            <div class="app-btns">
-                                <a href="#" class="fa fa-mobile" title="Download for Iphone"></a>
-                                <a href="#" class="fa fa-android" title="Download for Android"></a>
-                                <a href="#" class="fa fa-windows" title="Download for Windows"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <img src="{{ asset('bundles/app/theme/images/1.png') }}" class="img-responsive" alt=""/>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="space60"></div>
-                        <div class="feature-content">
-                            <i class="fa fa-magic"></i>
-                            <h4>Multi Homepages</h4>
-                            <p>Morbi laoreet scelerisque orci finibus ullam corper quam sed aliquam semper utac aliquam magna quis</p>
-                        </div>
-                        <div class="feature-content">
-                            <i class="fa fa-tablet"></i>
-                            <h4>Custom Forms</h4>
-                            <p>Morbi laoreet scelerisque orci finibus ullam corper quam sed aliquam semper utac aliquam magna quis</p>
-                        </div>
-                        <div class="feature-content">
-                            <i class="fa fa-toggle-on"></i>
-                            <h4>Creative Design</h4>
-                            <p>Morbi laoreet scelerisque orci finibus ullam corper quam sed aliquam semper utac aliquam magna quis</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- FEATURES -->
-        #}
-
-        <!-- SCREENSHOTS -->
-        <section class="shots">
-            <div class="container">
-                <div class="content-head">
-                    <h3>Check Product Screenshots</h3>
-                    <p>Suspendisse egestas mattis rhoncus pellen tesque euismod erat at posuere molestie lorem lectus interdum augue</p>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="shots-slider">
-                            <div class="shots-thumb">
-                                <a href="{{ asset("bundles/app/theme/images/shots/1.jpg") }}" class="prettyPhoto">
-                                    <img src="{{ asset("bundles/app/theme/images/shots/1.jpg") }}" class="img-responsive" alt=""/>
-                                </a>
-                            </div>
-
-                            <div class="shots-thumb">
-                                <a href="{{ asset("bundles/app/theme/images/shots/2.jpg") }}" class="prettyPhoto">
-                                    <img src="{{ asset("bundles/app/theme/images/shots/2.jpg") }}" class="img-responsive" alt=""/>
-                                </a>
-                            </div>
-                            <div class="shots-thumb">
-                                <a href="{{ asset("bundles/app/theme/images/shots/3.jpg") }}" class="prettyPhoto">
-                                    <img src="{{ asset("bundles/app/theme/images/shots/3.jpg") }}" class="img-responsive" alt=""/>
-                                </a>
-                            </div>
-                            <div class="shots-thumb">
-                                <a href="{{ asset("bundles/app/theme/images/shots/4.jpg") }}" class="prettyPhoto">
-                                    <img src="{{ asset("bundles/app/theme/images/shots/4.jpg") }}" class="img-responsive" alt=""/>
-                                </a>
-                            </div>
-                            <div class="shots-thumb">
-                                <a href="{{ asset("bundles/app/theme/images/shots/5.jpg") }}" class="prettyPhoto">
-                                    <img src="{{ asset("bundles/app/theme/images/shots/5.jpg") }}" class="img-responsive" alt=""/>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- SCREENSHOTS -->
+{#
 
         <!-- NEWSLETTER -->
         <div class="home-subscribe">
@@ -174,14 +89,14 @@
                 </div>
             </div>
         </div>
+        #}
 
         <!-- FAQ CONTENT -->
-        <div class="faq-content">
+        <div class="faq-content" id="faq">
             <div class="container">
                 <div class="row">
                     <div class="content-head">
                         <h3>Frequently Asked Questions</h3>
-                        <p>Suspendisse egestas mattis rhoncus pellen tesque augue</p>
                     </div>
                     <div class="faq-wrap">
                         <div class="col-md-6">

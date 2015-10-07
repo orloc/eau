@@ -2,6 +2,66 @@
 @import '_partials/_fonts.scss';
 @import '_partials/_colors.scss';
 
-.intro2 {
-  background: url('../img/maxresdefault.jpg') no-repeat;
+$darkBlue : darken(#3498DB, 30);
+$mistyBlue : desaturate($darkBlue, 40);
+$darkerBlue : #061624;
+body {
+  background: $darkerBlue;
+  font-family: $roboto;
+}
+
+a:hover {
+}
+
+.home-subscribe {
+  background-color: $darkBlue;
+}
+
+
+.navbar-brand {
+  font-family: 'eve_alphabold', $roboto, sans-serif;
+}
+
+h1, h2, h3, h4, h5, p, {
+  color: darken($offWhite,10);
+}
+
+#intro h2 {
+  color: darken($offWhite,5);
+
+  span {
+    font-family: 'eve_alphabold', $roboto, sans-serif;
+  }
+}
+
+.footer-copy {
+  p {
+    color : $darkerBlack;
+  }
+}
+
+#intro.intro2 {
+  background: url('../img/moon-station.png');
+  background-attachment: fixed;
+}
+
+.info-content.boxes {
+  .ic-inner {
+    img {
+      max-height: 200px;
+    }
+  }
+}
+
+.faq-content .panel-default {
+  border: none;
+  background: transparent;
+}
+
+.faq-content .panel-heading {
+  border: none;
+  background: transparent;
+}
+.faq-content .panel-default > .panel-heading + .panel-collapse > .panel-body {
+  border: none;
 }
