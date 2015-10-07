@@ -4,10 +4,10 @@
 
     <div class="container login-container">
         <div class="row">
-            <div class="col-sm-8 col-sm-offset-2">
+            <div class="col-sm-6 col-sm-offset-3">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title text-center">EVE Tool<span class="small">v0.0.1</span>
+                        <h3 class="panel-title center-text">EAU</span>
                         </h3>
                     </div>
                     <div class="panel-body">
@@ -28,13 +28,18 @@
                                 </div>
 
 
-                                <input class="btn center-block" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+                                <input height="auto" class="btn center-block" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
+                                <a style="margin-top: 15px" href="{{ path('fos_user_registration_register') }}" class="btn center-block">Register</a>
                             </fieldset>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div style=" color :white!important; }">
+        {% include '::common/footer.html.twig' %}
     </div>
 {% endblock %}
 

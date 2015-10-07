@@ -23,11 +23,11 @@ a:hover {
 }
 
 h1, h2, h3, h4, h5, p, {
-  color: darken($offWhite,10);
+  color: $offWhite;
 }
 
 #intro h2 {
-  color: darken($offWhite,5);
+  color: $offWhite;
 
   span {
     font-family: 'eve_alphabold', $roboto, sans-serif;
@@ -64,4 +64,9 @@ h1, h2, h3, h4, h5, p, {
 }
 .faq-content .panel-default > .panel-heading + .panel-collapse > .panel-body {
   border: none;
+}
+
+.footer-copy {
+  background-color: darken($darkBlue, 20);
+  color: $offWhite;
 }
