@@ -1,6 +1,17 @@
 {% extends "AppBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/app/theme/css/style.css') }}">
+    <!-- SKIN -->
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/themeOverrides.css') }}">
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/app/theme/js/modernizr.custom.js') }}"></script>
+{% endblock %}
 {% block body %}
     {% trans_default_domain 'FOSUserBundle' %}
+
+    {% include '@App/Marketing/header.html.twig' %}
 
     <div class="container login-container">
         <div class="row">

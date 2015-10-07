@@ -23,6 +23,7 @@ body {
     margin: 0 auto;
     width: 75%;
     min-height: 300px;
+    padding: 0;
     background: $darkerBlack;
     border: grey;
 
@@ -42,6 +43,9 @@ body {
 
     .panel-body {
       height: 100%;
+      background: $darkerBlack;
+      font-family: $roboto;
+      color: $offWhite;
     }
 
     form {

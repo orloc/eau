@@ -1,9 +1,19 @@
-
 {% extends "AppBundle::layout.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('bundles/app/theme/css/style.css') }}">
+    <!-- SKIN -->
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/themeOverrides.css') }}">
+    {{ parent() }}
+
+    <script src="{{ asset('bundles/app/theme/js/modernizr.custom.js') }}"></script>
+{% endblock %}
+
 {% block body %}
 
     {% trans_default_domain 'FOSUserBundle' %}
 
+    {% include '@App/Marketing/header.html.twig' %}
     <div class="container login-container">
         <div class="row">
             <div class="col-sm-6 col-sm-offset-3">
@@ -14,10 +24,29 @@
                     </div>
                     <div class="panel-body">
                         <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
-                            {{ form_widget(form) }}
-                            <div>
-                                <input type="submit" value="{{ 'registration.submit'|trans }}" />
+                            <div class="form-group">
+                                {{ form_errors(form.email) }}
+                                {{ form_widget(form.email, { attr: { class: 'form-control', placeholder: 'Enter your email...'}}) }}
                             </div>
+
+                            <div class="form-group">
+                                {{ form_errors(form.username) }}
+                                {{ form_widget(form.username, { attr: { class: 'form-control', placeholder: 'Pick a username'}}) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_errors(form.plainPassword.first) }}
+                                {{ form_widget(form.plainPassword.first, { attr: { class: 'form-control', placeholder: 'Password'}}) }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form_errors(form.plainPassword.second) }}
+                                {{ form_widget(form.plainPassword.second, { attr: { class: 'form-control', placeholder: 'Password confirmation'}}) }}
+                            </div>
+                            <div>
+                                <input class="btn center-block" type="submit" value="{{ 'registration.submit'|trans }}" />
+                            </div>
+                            {{ form_widget(form) }}
                         </form>
                     </div>
                 </div>
