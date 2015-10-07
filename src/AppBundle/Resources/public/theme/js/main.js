@@ -88,7 +88,7 @@ $(".t-close").on("click", function() {
 // Fixed Header
 $(window).scroll(function() {
     var value = $(this).scrollTop();
-    if (value > 350)
+    if (value > 50)
         $("header").css("background", "#000000").css("padding", "0px 0px 13px");
     else
         $("header").css("background", "transparent").css("padding", "20px 0px 20px");

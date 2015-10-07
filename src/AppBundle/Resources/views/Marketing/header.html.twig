@@ -18,7 +18,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     {% if app.request.attributes.get('_route') == 'default'%}
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a class="page-scroll" href="#faq">FAQ</a></li>
+                        {#<li><a class="page-scroll" href="#faq">FAQ</a></li>#}
                         <li><a href={{ path('fos_user_security_login') }}>Login</a></li>
                     </ul>
                     {% endif %}

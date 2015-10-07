@@ -28,16 +28,14 @@
                         <div class="col-md-12">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h2><span>E</span>ssential <span>A</span>lliance <span>U</span>tility</h2>
+                                    <h2><span>E</span>ve <span>A</span>lliance <span>U</span>tility</h2>
                                     <p>
                                         <span>EAU</span> is a third party tool for Eve Online&copy;, providing alliance or corporation financial managment and an assortment of industrial tools.<br>
                                         Currently under heavy development. We are in an alpha and internal use only stage. Feel free to contact us if you have questions or suggestions.</p>
-                                    {#
                                     <div class="dual-btns">
-                                        <a href="#">Purchase Now</a>
-                                        <a href="#">Learn More</a>
+                                        <a href="{{ path('fos_user_registration_register') }}">Register</a>
+                                        <a href="{{ path('fos_user_security_login') }}">Login</a>
                                     </div>
-                                    #}
                                 </div>
                             </div>
                         </div>
@@ -46,85 +44,19 @@
             </section>
             <!-- INTRO -->
 
-            <!-- FAQ CONTENT -->
-            <div class="faq-content" id="faq">
-                <div class="container">
-                    <div class="row">
-                        <div class="content-head">
-                            <h3>Frequently Asked Questions</h3>
-                        </div>
-                        <div class="faq-wrap">
-                            <div class="col-md-6">
-                                <div class="panel-group" id="accordion">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                                                    <i class="fa fa-comments-o"></i> 1. What is Lorem Ipsum?
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseOne" class="panel-collapse collapse in">
-                                            <div class="panel-body">
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent odio ligula, blandit sit amet malesuada sit amet, vestibulum quis lectus. Quisque placerat non metus sed lobortis.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                                                    <i class="fa fa-comments-o"></i> 2. Why do we use it?
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseTwo" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent odio ligula, blandit sit amet malesuada sit amet, vestibulum quis lectus. Quisque placerat non metus sed lobortis.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
-                                                    <i class="fa fa-comments-o"></i> 3. Where does it come from ?
-                                                </a>
-                                            </h4>
-                                        </div>
-                                        <div id="collapseThree" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent odio ligula, blandit sit amet malesuada sit amet, vestibulum quis lectus. Quisque placerat non metus sed lobortis.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 video-wrap">
-                                <div class="video">
-                                    <iframe height="300" src="http://player.vimeo.com/video/92141950?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff&amp;autoplay=0" width="500" ></iframe>
-                                </div>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                        <!-- Faq wrap content end -->
-                    </div>
-                </div>
-                <!-- /.container -->
-            </div>
-            <!-- FAQ CONTENT -->
-
             <!-- FOOTER / COPYRIGHT -->
             <div class="footer-copy">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-7">
-                            <p>&copy; {{ date() | date('Y') }}. . All rights reserved. Designed by <a href="http://themeforest.net/user/Dilipkumar" target="_blank">Dilipkumar</a>.</p>
+                        <div class="col-md-12 text-center">
+                            {% include ':common:footer.html.twig' %}
                         </div>
 
-                        <div class="col-md-5">
+                        {#
+                        <div class="col-md-3">
                             <a class="backtotop page-scroll" href="#page-top">Back to top &Delta;</a>
                         </div>
+                        #}
                     </div>
                 </div>
             </div>

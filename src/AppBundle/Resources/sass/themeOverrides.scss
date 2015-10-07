@@ -6,7 +6,7 @@ $darkBlue : darken(#3498DB, 30);
 $mistyBlue : desaturate($darkBlue, 40);
 $darkerBlue : #061624;
 body {
-  background: $darkerBlue;
+  background-color: darken($darkBlue, 20);
   font-family: $roboto;
 }
 
@@ -53,6 +53,12 @@ h1, h2, h3, h4, h5, p, {
   }
 }
 
+.dual-btns {
+  a {
+    background: $darkBlue;
+  }
+}
+
 .faq-content .panel-default {
   border: none;
   background: transparent;
@@ -68,5 +74,12 @@ h1, h2, h3, h4, h5, p, {
 
 .footer-copy {
   background-color: darken($darkBlue, 20);
-  color: $offWhite;
+
+  p.footer {
+    color: $offWhite;
+  }
+
+  a:hover {
+    color: $offWhite;
+  }
 }
