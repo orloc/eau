@@ -5,7 +5,6 @@ server '52.2.42.174', user: 'ubuntu', roles: %w{app web db}
 set :branch, 'staging'
 
 set :default_env, {
-  'SYMFONY_ENV' => 'prod',
   path: "/usr/local/bin:$PATH"
 }
 # Custom SSH Options

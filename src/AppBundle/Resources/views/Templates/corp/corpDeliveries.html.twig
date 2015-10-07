@@ -1,135 +1,141 @@
 <div ng-controller="deliveryController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}
+        <div class="row">
+            <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}
 
-        &nbsp;
-        &nbsp;
-        &nbsp;
-        &nbsp;
-        <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
-        &nbsp;
-        &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            &nbsp;
+            <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
+            &nbsp;
+            &nbsp;
         <span class="small muted" ng-show="updated_at">
-            <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}'}}
+
+            <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
             &nbsp;
             &nbsp;
             <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
         </span>
+        </div>
+        <div class="row">
+            <ul class="list-inline list-unstyled pull-right">
+                <li>
+                    <button ng-click="doFilter('region')" class="btn btn-sm btn-success">Region</button>
+                </li>
+                <li>
+                    <button ng-click="doFilter('constellation')" class="btn btn-sm btn-info">
+                        Constellation
+                    </button>
+                </li>
+                <li>
+                    <button ng-click="doFilter('system')" class="btn btn-sm btn-warning">
+                        System
+                    </button>
+                </li>
+                <li>
+                    <button ng-click="doFilter('station')" class="btn btn-sm btn-danger">
+                        Station
+                    </button>
+                </li>
+                <li>
+                    <button ng-click="doFilter('*')" class="btn btn-sm btn-link">
+                        All
+                    </button>
+                </li>
+            </ul>
+        </div>
 
-        <ul class="list-inline list-unstyled pull-right">
-            <li>
-                <button ng-click="doFilter('region')" class="btn btn-sm btn-success">Region</button>
-            </li>
-            <li>
-                <button ng-click="doFilter('constellation')" class="btn btn-sm btn-info">
-                    Constellation
-                </button>
-            </li>
-            <li>
-                <button ng-click="doFilter('system')" class="btn btn-sm btn-warning">
-                    System
-                </button>
-            </li>
-            <li>
-                <button ng-click="doFilter('station')" class="btn btn-sm btn-danger">
-                    Station
-                </button>
-            </li>
-            <li>
-                <button ng-click="doFilter('*')" class="btn btn-sm btn-link">
-                    All
-                </button>
-            </li>
-        </ul>
-        <table class="table data-table table-condensed table-striped table-hover">
-            <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>m<sup>3</sup></th>
-                <th>Region</th>
-                <th>Constellation</th>
-                <th>System</th>
-                <th>Station</th>
-                <th>Avg Market Price</th>
-                <th>Total Price</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="item in filtered_assets | orderBy:order_by_value:order_by_reverse" ng-class="{'warning': getRowClass(item) == 1, 'danger': getRowClass(item) == 2, 'info': getRowClass(item) == 0, 'success' : getRowClass(item) == -1 }">
-                <td width="75px">
-                    <eve-image ng-if="filter == '*'" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                </td>
-                <td>
+        <div class="table-responsive">
+            <table class="table data-table table-condensed table-striped table-hover">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>m<sup>3</sup></th>
+                    <th>Region</th>
+                    <th>Constellation</th>
+                    <th>System</th>
+                    <th>Station</th>
+                    <th>Avg Market Price</th>
+                    <th>Total Price</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in filtered_assets | orderBy:order_by_value:order_by_reverse" ng-class="{'warning': getRowClass(item) == 1, 'danger': getRowClass(item) == 2, 'info': getRowClass(item) == 0, 'success' : getRowClass(item) == -1 }">
+                    <td width="32px">
+                        <eve-image ng-if="filter == '*'" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                    </td>
+                    <td>
                             <span ng-if="filter =='*'">
                             {{ '{{ item.descriptors.name }}' }}
                             </span>
-                    <span ng-if="filter != '*'">N/A</span>
-                </td>
-                <td>
+                        <span ng-if="filter != '*'">N/A</span>
+                    </td>
+                    <td>
                             <span ng-if="getShowColumn('quantity')">
                                 {{ '{{ item.total_quantity }}' }}
                             </span>
                             <span ng-if="!getShowColumn('quantity')">
                                 {{ '{{ item.quantity }}' }}
                             </span>
-                </td>
-                <td>
+                    </td>
+                    <td>
                             <span ng-if="filter =='*'">
                             {{ '{{ getM3(item) | number:2 }}' }}
                             </span>
                             <span ng-if="filter !='*'">
                             {{ '{{ item.total_m3 | number:2 }}' }}
                             </span>
-                </td>
-                <td>
-                    {{ '{{ item.descriptors.region }}' }}
-                </td>
-                <td>
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.region }}' }}
+                    </td>
+                    <td>
                             <span ng-if="getShowColumn('constellation')">
                             {{ '{{ item.descriptors.constellation }}' }}
                             </span>
-                    <span ng-if="!getShowColumn('constellation')">N/A</span>
-                </td>
-                <td>
+                        <span ng-if="!getShowColumn('constellation')">N/A</span>
+                    </td>
+                    <td>
                             <span ng-if="getShowColumn('system')">
                             {{ '{{  item.descriptors.solar_system }}' }}
                             </span>
-                    <span ng-if="!getShowColumn('system')">N/A</span>
-                </td>
-                <td>
+                        <span ng-if="!getShowColumn('system')">N/A</span>
+                    </td>
+                    <td>
                             <span ng-if="getShowColumn('station')">
                             {{ '{{  item.descriptors.station }}' }}
                             </span>
-                    <span ng-if="!getShowColumn('station')">N/A</span>
-                </td>
-                <td>
+                        <span ng-if="!getShowColumn('station')">N/A</span>
+                    </td>
+                    <td>
                             <span ng-if="getShowColumn()">
                             {{ '{{  item.descriptors.price | currency:"ISK" }}' }}
                             </span>
-                    <span ng-if="!getShowColumn()">N/A</span>
-                </td>
-                <td>
+                        <span ng-if="!getShowColumn()">N/A</span>
+                    </td>
+                    <td>
                             <span ng-if="filter =='*'">
                                 {{ ' {{  item.descriptors.total_price | currency:"ISK" }}' }}
                             </span>
                             <span ng-if="filter !='*'">
                                 {{ ' {{  item.actual_total | currency:"ISK" }}' }}
                             </span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="10" class="text-center" ng-show="!loading && assets.length === 0">
-                    No Deliveries Found
-                </td>
-                <td colspan="10" class="text-center" ng-show="loading">
-                    <loading-spinner ></loading-spinner>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <table id="header-fixed"></table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10" class="text-center" ng-show="!loading && assets.length === 0">
+                        No Deliveries Found
+                    </td>
+                    <td colspan="10" class="text-center" ng-show="loading">
+                        <loading-spinner ></loading-spinner>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
     </div>
     <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>

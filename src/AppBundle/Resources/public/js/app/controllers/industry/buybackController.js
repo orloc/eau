@@ -11,14 +11,12 @@ angular.module('eveTool')
         $scope.submit = function(){
             $scope.loading = true;
             var inputs = $scope.input_data.split("\n");
-
-            var r = /\d{1,3}(,\d{3})*(\.\d+)?/;
+            var r = /\d{1,3}(,\d{3})*(\.\d+)?(?=\s)/;
             var data = [];
 
             angular.forEach(inputs, function(i){
                 i.trim();
                 var res = r.exec(i);
-
                 var name = i.substr(0, res.index).trim();
 
                 if (name.length > 0){
@@ -70,8 +68,6 @@ angular.module('eveTool')
 
                         return total;
                     });
-
-
                 };
             };
 
