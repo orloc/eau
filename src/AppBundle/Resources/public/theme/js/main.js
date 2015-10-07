@@ -95,6 +95,7 @@ $(window).scroll(function() {
 });
 
 // Google Map
+/*
 $(function() {
     var map = new GMaps({
         el: "#map",
@@ -121,3 +122,4 @@ $(function() {
         icon: "images/mapicon.png"
     });
 });
+*/
