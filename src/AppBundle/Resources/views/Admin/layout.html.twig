@@ -1,6 +1,8 @@
 {% extends '::base.html.twig' %}
 
 {% block stylesheets %}
+    <link href="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css') }}" rel="stylesheet">
     <link href="{{ asset('/bundles/app/css/admin.css')}}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block body %}
@@ -26,6 +28,14 @@
 {% endblock %}
 {% block extra_javascript %}
     {{ parent() }}
+
+    <script src="{{ asset('/bower_components/angularjs/angular.js') }}"></script>
+    <script src="{{ asset('/bower_components/angular-ladda/dist/angular-ladda.js') }}"></script>
+    <script src="{{ asset('/bower_components/angular-messages/angular-messages.js') }}"></script>
+    <script src="{{ asset('/bower_components/angular-animate/angular-animate.js') }}"></script>
+    <script src="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
+    <script src="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js') }}"></script>
+    <!-- -->
     <script src="{{ asset('/bower_components/d3/d3.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/app.js') }}"></script>
     <script src="{{ asset('/bundles/app/js/app/directives/loadingSpinner.js') }}"></script>

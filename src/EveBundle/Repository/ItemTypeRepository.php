@@ -23,6 +23,18 @@ class ItemTypeRepository extends AbstractDbalRepository implements RepositoryInt
 
     }
 
+    public function findAllInGroups(array $groupIds){
+        $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getTableName()} WHERE marketGroupID IN (?)",
+            array($groupIds),
+            array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
+        );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+
     public function findTypesByName(array $types = []){
         $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getTableName()} WHERE typeName IN (?)",
             array($types),

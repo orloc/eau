@@ -23,5 +23,14 @@ class InvMarketGroupRepository extends AbstractDbalRepository implements Reposit
 
     }
 
+    public function getAllGroups(){
+        $sql = "SELECT * FROM {$this->getTableName()}";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
 }
 
