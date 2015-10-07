@@ -13,54 +13,56 @@
             &nbsp;&nbsp;&nbsp;&nbsp;
             <button class="btn  btn-sm btn-default" type="submit"><i class="fa fa-info"></i>&nbsp;&nbsp;&nbsp;Add New Key</button>
         </form>
-        <table class="table data-table table-striped table-condensed">
-            <thead>
-            <th>
-                ID
-            </th>
-            <th>
-                Key
-            </th>
-            <th>
-                Verification Code
-            </th>
-            <th>
-                Active
-            </th>
-            <th>
-                Created At
-            </th>
-            <th>
-                Issued By
-            </th>
-            <th>
-            </th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="i in api_keys" ng-show="!loading">
-                <td>{{ '{{ i.id }}' }}</td>
-                <td>{{ '{{ i.api_key }}' }}</td>
-                <td>{{ '{{ i.verification_code }}' }}</td>
-                <td>
-                    <label class="label" ng-class="{ 'label-success': i.is_active, 'label-danger': !i.is_active }">
-                        <span ng-if="i.is_active">Yes</span>
-                        <span ng-if="!i.is_active">No</span>
-                    </label>
-                </td>
-                <td>{{ '{{ i.created_at | date:"shortDate"}}' }} <br> <span class="small muted">{{ '{{ i.created_at | date:"shortTime"}}' }}</span></td>
-                <td width="125"><eve-image image-type="'Character'" object-id="i.character_id" img-width="256"></eve-image></td>
-                <td>
-                    <a ng-click="disable(i)" ng-show="i.is_active" class="btn text-danger"><i class="fa fa-warning"></i>&nbsp;&nbsp;&nbsp;Disable</a>
-                    <a ng-click="enable(i)" ng-show="!i.is_active" class="btn text-info"><i class="fa fa-lightbulb-o"></i>&nbsp;&nbsp;&nbsp;Enable</a>
-                </td>
-            </tr>
+        <div class="table-responsive">
+            <table class="table data-table table-striped table-condensed">
+                <thead>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Key
+                </th>
+                <th>
+                    Verification Code
+                </th>
+                <th>
+                    Active
+                </th>
+                <th>
+                    Created At
+                </th>
+                <th>
+                    Issued By
+                </th>
+                <th>
+                </th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="i in api_keys" ng-show="!loading">
+                    <td>{{ '{{ i.id }}' }}</td>
+                    <td>{{ '{{ i.api_key }}' }}</td>
+                    <td>{{ '{{ i.verification_code }}' }}</td>
+                    <td>
+                        <label class="label" ng-class="{ 'label-success': i.is_active, 'label-danger': !i.is_active }">
+                            <span ng-if="i.is_active">Yes</span>
+                            <span ng-if="!i.is_active">No</span>
+                        </label>
+                    </td>
+                    <td>{{ '{{ i.created_at | date:"shortDate"}}' }} <br> <span class="small muted">{{ '{{ i.created_at | date:"shortTime"}}' }}</span></td>
+                    <td width="125"><eve-image image-type="'Character'" object-id="i.character_id" img-width="256"></eve-image></td>
+                    <td>
+                        <a ng-click="disable(i)" ng-show="i.is_active" class="btn text-danger"><i class="fa fa-warning"></i>&nbsp;&nbsp;&nbsp;Disable</a>
+                        <a ng-click="enable(i)" ng-show="!i.is_active" class="btn text-info"><i class="fa fa-lightbulb-o"></i>&nbsp;&nbsp;&nbsp;Enable</a>
+                    </td>
+                </tr>
 
-            <tr ng-show="loading">
-                <td colspan="6"> <loading-spinner></loading-spinner></td>
-            </tr>
+                <tr ng-show="loading">
+                    <td colspan="6"> <loading-spinner></loading-spinner></td>
+                </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>
 </div>

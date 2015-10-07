@@ -50,6 +50,7 @@ angular.module('eveTool')
                 var data = data.data;
                 if (data !== null){
                     $scope.updated_at = moment(data.created_at).format('x');
+                    $scope.update_succeeded = data.succeeded;
                     $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
                 }
                 $scope.loading = false;

@@ -3,7 +3,7 @@ set :repo_url, 'git@github.com:orloc/evetool.git'
 
 set :deploy_to, '/srv/evetool'
 set :log_level, :debug
-set :pty, true
+set :pty, false
 
 set :keep_releases, 5
 
@@ -50,4 +50,17 @@ namespace :deploy do
     end
   end
 
+end
+
+Rake::Task['deploy:updated'].prerequisites.delete('composer:install')
+
+namespace :composer do
+    before 'install', 'change_dir'
+
+    desc 'Composer update'
+    task :change_dir do
+        on roles(:app) do
+            execute "cd #{release_path}/ && composer update"
+        end
+    end
 end
