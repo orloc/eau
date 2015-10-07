@@ -1,5 +1,18 @@
 {% extends 'AppBundle:Marketing:landing.html.twig' %}
-t s
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+
+    </style>
+{% endblock %}
+
+
 {% block inner_content -%}
-    {% include '@App/legal.html.twia' %}
+    <div class="legal-container " style="min-height:850px">
+        <div class="container" style="padding-top: 150px;">
+            {% include '@App/legal.html.twig' %}
+        </div>
+    </div>
+
 {% endblock %}

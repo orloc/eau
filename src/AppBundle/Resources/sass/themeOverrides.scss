@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, p, {
 #intro.intro2 {
   background: url('../img/moon-station.png');
   background-attachment: fixed;
+  min-height: 850px;
 }
 
 .info-content.boxes {
@@ -82,4 +83,9 @@ h1, h2, h3, h4, h5, p, {
   a:hover {
     color: $offWhite;
   }
+}
+.legal-container {
+  height: 100%;
+  background: url('../img/moon-station.png');
+  background-attachment: fixed;
 }

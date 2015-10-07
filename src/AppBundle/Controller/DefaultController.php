@@ -21,7 +21,8 @@ class DefaultController extends Controller
      * @Route("/legal", name="legal")
      */
     public function legalAction(Request $request){
-        return $this->render('@App/legal.html.twig');
-
+        return $this->isGranted('ROLE_AUTHENTICATED_FULLY')
+            ? $this->render('@App/Admin/legal.html.twig')
+            : $this->render('@App/Marketing/legal.html.twig');
     }
 }
