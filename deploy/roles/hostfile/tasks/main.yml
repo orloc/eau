@@ -1,0 +1,3 @@
+---
+  - name: Install known_hosts file
+    copy: src=known_hosts dest=/home/${ansible_ssh_user}/.ssh/known_hosts owner=${ansible_ssh_user} group=${ansible_ssh_user}
