@@ -1,6 +1,7 @@
 @import 'compass/css3';
 @import '_partials/_fonts.scss';
 @import '_partials/_colors.scss';
+@import '_partials/_security.scss';
 
 $darkBlue : darken(#3498DB, 30);
 $mistyBlue : desaturate($darkBlue, 40);
@@ -84,8 +85,10 @@ h1, h2, h3, h4, h5, p, {
     color: $offWhite;
   }
 }
-.legal-container {
+
+.legal-container,.login-container{
   height: 100%;
   background: url('../img/moon-station.png');
   background-attachment: fixed;
 }
+

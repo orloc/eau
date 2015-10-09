@@ -5,6 +5,7 @@
   remote_user: ubuntu
   roles:
     - servergrove.symfony2
+    - post-install
 
   vars:
     symfony2_project_root: /srv/eau

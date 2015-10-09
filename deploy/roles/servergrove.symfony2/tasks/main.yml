@@ -37,13 +37,13 @@
   file: state=link src={{symfony2_project_root}}/shared/app/config path={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/config
   when: config_dir.stat.exists == false
 
-- name: Check if shared/app/config/parameters.ini exists.
-  stat: path={{symfony2_project_root}}/shared/app/config/parameters.ini
-  register: parameters_ini
+- name: Check if shared/app/config/parameters.yml exists.
+  stat: path={{symfony2_project_root}}/shared/app/config/parameters.yml
+  register: parameters_yml
 
-- name: Create symlink for app/config/parameters.ini from shared directory.
-  shell: ln -s {{symfony2_project_root}}/shared/app/config/parameters.ini {{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/config/parameters.ini creates={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/config/parameters.ini
-  when: parameters_ini.stat.exists
+- name: Create symlink for app/config/parameters.yml from shared directory.
+  shell: ln -s {{symfony2_project_root}}/shared/app/config/parameters.yml {{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/config/parameters.yml creates={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/config/parameters.yml
+  when: parameters_yml.stat.exists
 
 - name: Check if composer exists.
   stat: path={{symfony2_project_composer_path}}/composer.phar
@@ -76,3 +76,4 @@
 
 - name: Cleanup releases.
   shell: cd {{symfony2_project_root}}/releases && ls -t1 | tail -n +$(({{symfony2_project_keep_releases}}+1)) | xargs -n1 rm -rf
+  sudo: yes

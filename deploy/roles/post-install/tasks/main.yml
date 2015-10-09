@@ -1,0 +1,17 @@
+---
+  - name: Fixing Permissions
+    file: dest={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/cache mode=0777 recurse=true owner=ubuntu
+
+  - name: Run bower
+    bower: path={{symfony2_project_root}}/releases/{{symfony2_project_release}} state=latest
+
+  - name: Compiling CSS
+    command: compass compile --force chdir={{symfony2_project_root}}/releases/{{symfony2_project_release}}
+
+  - name: Restarting php-fpm
+    sudo: yes
+    service: name=php5-fpm state=restarted
+
+  - name: Restarting apache
+    sudo: yes
+    service: name=apache2 state=restarted

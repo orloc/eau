@@ -1,0 +1,59 @@
+.login-container {
+  width:100%;
+  min-height: 850px;
+  padding-top: 150px;
+  .login-panel {
+    margin: 0 auto;
+    width: 75%;
+    padding: 0;
+    background: $darkerBlack;
+    border: grey;
+
+    .panel-heading {
+      height: 70px;
+      position: relative;
+      background: $darkestBlack;
+      border: grey;
+
+      .panel-title {
+        font-family: 'eve_alphabold', sans-serif;
+        font-size: 45px;
+        position: absolute;
+        span {font-size: 10px; padding-left: 10px;}
+      }
+    }
+
+    .panel-body {
+      height: 100%;
+      background: $darkerBlack;
+      font-family: $roboto;
+      color: $offWhite;
+    }
+
+    form {
+      height: 100%;
+      padding: 10px;
+
+      input {
+        margin: 0 auto;
+        background-color: $offWhite;
+        width: 80%;
+        font-size: 18px;
+        height: 48px;
+      }
+
+      .btn {
+        width: 45%;
+        margin-top: 3em;
+        background-color: $offGrey;
+        color: darken(white, 30);
+        font-family: 'eve_alphabold', sans-serif;
+
+        &:hover {
+          background-color: lighten($offGrey, 5);
+        }
+      }
+    }
+  }
+
+}
