@@ -28,16 +28,19 @@ class CorporationMember
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $character_id;
 
     /**
      * @ORM\Column(type="string")
+     * @JMS\Expose()
      */
     protected $character_name;
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $start_time;
 
@@ -48,11 +51,13 @@ class CorporationMember
 
     /**
      * @ORM\Column(type="boolean")
+     * @JMS\Expose()
      */
     protected $is_registered;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @JMS\Expose()
      */
     protected $disbanded_at;
 

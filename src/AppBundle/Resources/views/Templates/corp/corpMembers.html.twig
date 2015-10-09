@@ -13,18 +13,26 @@
             <th>
                 Time in corp
             </th>
+            <th>Is Registered</th>
             <th>
                 Total Contributions
             </th>
             </thead>
             <tbody>
-            <tr >
+            <tr ng-repeat="m in members | orderBy:'start_time':true">
+                <td width="50px">
+                    <eve-image image-type="'Character'" object-id="m.character_id" img-width="256"></eve-image>
+                </td>
                 <td>
-                    <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                    {{ '{{ m.character_name }}' }}
+                </td>
+                <td>
+                    {{ '{{ m.start_time | date:"longDate" }}' }}
                 </td>
                 <td>
                 </td>
                 <td>
+                    {{ '{{ m.is_registered }}' }}
                 </td>
                 <td></td>
             </tr>
