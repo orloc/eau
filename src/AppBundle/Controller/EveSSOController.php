@@ -118,7 +118,7 @@ class EveSSOController extends Controller
         } else {
             // all is well
             $session->set('registration_authorized', true);
-            return $this->forward('AppBundle:Registration:register');
+            return $this->redirect($this->generateUrl('fos_user_registration_register'));
         }
 
     }
