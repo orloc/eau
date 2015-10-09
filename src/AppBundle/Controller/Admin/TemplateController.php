@@ -103,4 +103,12 @@ class TemplateController extends Controller
     {
         return $this->render('AppBundle:Templates:corp/corpStructures.html.twig');
     }
+
+    /**
+     * @Route("/corp_members", name="template.corpmembers")
+     */
+    public function corpMemberAction()
+    {
+        return $this->render('AppBundle:Templates:corp/corpMembers.html.twig');
+    }
 }

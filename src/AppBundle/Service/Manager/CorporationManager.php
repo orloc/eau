@@ -84,12 +84,12 @@ class CorporationManager implements DataManagerInterface {
 
         // any that were left over are not in our list anymore...
         foreach ($ids as $deleted_member){
-            $deleted_member->setDis
-
+            $deleted_member->setDisbandedAt(new \DateTime());
         }
 
-
-
+        /*
+         * @TODO what h appens when someone rejoins
+         */
     }
 
     public function getCorporationSheet(Corporation $corporation){
