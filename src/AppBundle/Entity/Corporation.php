@@ -73,6 +73,11 @@ class Corporation
     protected $asset_groups;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CorporationMember", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $corporation_members;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
     protected $created_by;
@@ -103,6 +108,7 @@ class Corporation
         $this->starbases = new ArrayCollection();
         $this->asset_groups = new ArrayCollection();
         $this->market_order_groups = new ArrayCollection();
+        $this->corporation_members = new ArrayCollection();
     }
 
     /**
@@ -463,5 +469,38 @@ class Corporation
     public function getStarbases()
     {
         return $this->starbases;
+    }
+
+    /**
+     * Add corporation_members
+     *
+     * @param \AppBundle\Entity\CorporationMember $corporationMembers
+     * @return Corporation
+     */
+    public function addCorporationMember(\AppBundle\Entity\CorporationMember $corporationMembers)
+    {
+        $this->corporation_members[] = $corporationMembers;
+
+        return $this;
+    }
+
+    /**
+     * Remove corporation_members
+     *
+     * @param \AppBundle\Entity\CorporationMember $corporationMembers
+     */
+    public function removeCorporationMember(\AppBundle\Entity\CorporationMember $corporationMembers)
+    {
+        $this->corporation_members->removeElement($corporationMembers);
+    }
+
+    /**
+     * Get corporation_members
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCorporationMembers()
+    {
+        return $this->corporation_members;
     }
 }

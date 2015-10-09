@@ -62,7 +62,6 @@ class EveSSOController extends Controller
 
         $auth_uri = "https://login.eveonline.com/oauth/token";
 
-        $client = new Client();
 
         $creds = [
             trim($this->container->getParameter('eve_client_id')),
@@ -72,13 +71,13 @@ class EveSSOController extends Controller
         /*
          * LOOK OUT FOR THE SPACE
          */
-        $request = new \GuzzleHttp\Psr7\Request('POST', $auth_uri, [
+        $auth_request = new \GuzzleHttp\Psr7\Request('POST', $auth_uri, [
             'Content-Type' => 'application/x-www-form-urlencoded',
             'Authorization' => 'Basic '.base64_encode(implode(":", $creds))
         ], "grant_type=authorization_code&code=$code");
 
         try {
-            $response = $client->send($request, [ 'timeout' => 2]);
+            $response = $this->tryRequest($auth_request);
         } catch (\Exception $e){
             $session->getFlashBag()->add('danger', 'There was <b>EITHER</b> a serious error when attempting to authenticate you <b>OR</b> the request you had sent was invald! <br><b><i>Try Again - if this persists - Don\'t worry we are fixing it...</i></b>');
 
@@ -86,8 +85,32 @@ class EveSSOController extends Controller
         }
 
         $response_content = json_decode($response->getBody()->getContents());
+        $token = $response_content->access_token;
 
-        var_dump($response_content);die;
+        $verify_uri = "https://login.eveonline.com/oauth/verify";
+
+        $verfiyRequest = new \GuzzleHttp\Psr7\Request('GET', $verify_uri, [
+            'Authorization' => 'Bearer '.$token
+        ]);
+
+        try {
+            $charResponse = $this->tryRequest($verfiyRequest);
+        } catch (\Exception $e){
+            $session->getFlashBag()->add('danger', 'There was <b>EITHER</b> a serious error when attempting to authenticate you <b>OR</b> the request you had sent was invald! <br><b><i>Try Again - if this persists - Don\'t worry we are fixing it...</i></b>');
+
+            return $this->redirect($this->generateUrl('fos_user_registration_register'));
+        }
+
+        var_dump($charResponse->getBody()->getContents());die;
+
+    }
+
+    protected function tryRequest(\GuzzleHttp\Psr7\Request $request){
+        $client = new Client();
+
+        $response = $client->send($request, [ 'timeout' => 2]);
+
+        return $response;
 
     }
 }
