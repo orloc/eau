@@ -26,7 +26,7 @@
         "friendsofsymfony/jsrouting-bundle": "^1.5",
         "jms/serializer-bundle": "^1.0",
         "nesbot/carbon": "^1.20",
-        "guzzlehttp/guzzle": "^6.0",
+        "guzzlehttp/guzzle": "^6.1",
         "knplabs/knp-paginator-bundle": "^2.4",
         "sensio/generator-bundle": "~2.3"
     },

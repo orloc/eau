@@ -2,6 +2,10 @@ default:
     resource: "@AppBundle/Controller/DefaultController.php"
     type: annotation
 
+sso:
+    resource: "@AppBundle/Controller/EveSSOController.php"
+    type: annotation
+
 admin:
     resource: "@AppBundle/Controller/Admin"
     prefix: /admin

@@ -19,4 +19,5 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: xxxxxxx
-    eve_api_keys: {}
+
+    eve_client_id: xxxxxx

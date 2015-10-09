@@ -9,10 +9,23 @@
             <div class="col-sm-6 col-sm-offset-3">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title center-text">EAU</span>
+                        <h3 class="panel-title center-text">EAU<br><span class="small">Register</span></span>
                         </h3>
                     </div>
                     <div class="panel-body">
+                        {% include ':common:flashes.html.twig' %}
+                        <p width="80%" class="text-center text-warning"><b>If you are unsure what SSO</b> is or are worried about your security. Rest assured and <b>please read</b> the <br><a href="http://community.eveonline.com/news/dev-blogs/eve-online-sso-and-what-you-need-to-know/" target="_blank">dev blog</a> regarding <b>your security</b> and this AWESOME feature.
+                        <div class="row text-center">
+                            <form style="display: inline-block;" method="POST" action="{{ path('redirect_sso') }}">
+                                <button class="btn-link center-block" type="submit">
+                                    <img src="{{ asset('bundles/app/img/EVE_SSO_Login_Buttons_Large_Black.png') }}">
+                                </button>
+                            </form>
+                            <p style="position: absolute; bottom: 0; right: 150px;" class="text-center">
+                                <a href="{{ path('fos_user_security_login') }}">Login</a>
+                            </p>
+                        </div>
+                        {#
                         <form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
                             <div class="form-group">
                                 {{ form_errors(form.email) }}
@@ -38,6 +51,7 @@
                             </div>
                             {{ form_widget(form) }}
                         </form>
+                        #}
                     </div>
                 </div>
             </div>

@@ -1,0 +1,7 @@
+{% for type, messages in app.session.flashBag.all %}
+    {% for message in messages %}
+        <div style="margin: 10px;" class="alert alert-{{ type }} text-center">
+            <i class="fa fa-info"></i> &nbsp; {{ message|trans({}, 'FOSUserBundle')|raw }}
+        </div>
+    {% endfor %}
+{% endfor %}

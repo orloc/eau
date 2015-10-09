@@ -16,9 +16,11 @@
       border: grey;
 
       .panel-title {
+        text-align: center;
         font-family: 'eve_alphabold', sans-serif;
+        color: $offWhite;
         font-size: 45px;
-        position: absolute;
+        padding: 10px;
         span {font-size: 10px; padding-left: 10px;}
       }
     }
