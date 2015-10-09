@@ -101,7 +101,24 @@ class EveSSOController extends Controller
             return $this->redirect($this->generateUrl('fos_user_registration_register'));
         }
 
-        var_dump($charResponse->getBody()->getContents());die;
+        $decoded = json_decode($charResponse->getBody()->getContents());
+
+        $cId = $decoded->CharacterID;
+
+        $exists = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')->findOneBy(['character_id' => intval($cId)]);
+
+        // character isnt in a corp that is registered by an admin
+        if ($exists === null){
+            $session->getFlashBag()->add('warning', 'Sorry we do not support non-alpha tester registrations at this time.<br><b>COME BACK SOON</b>');
+
+            $cName = $decoded->CharacterName;
+            $this->get('logger')->info(sprintf("ATTEMPTED REGISTRATION: char_id = %s char_name = %s", $cId, $cName ));
+            return $this->redirect($this->generateUrl('fos_user_registration_register'));
+
+        } else {
+            // all is well
+
+        }
 
     }
 

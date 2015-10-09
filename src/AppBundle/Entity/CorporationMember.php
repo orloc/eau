@@ -47,10 +47,19 @@ class CorporationMember
     protected $corporation;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $is_registered;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
 
+    public function __construct(){
+        $this->created_at = new \DateTime();
+        $this->is_registered = false;
+    }
 
     /**
      * Get id
@@ -175,5 +184,28 @@ class CorporationMember
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Set is_registered
+     *
+     * @param boolean $isRegistered
+     * @return CorporationMember
+     */
+    public function setIsRegistered($isRegistered)
+    {
+        $this->is_registered = $isRegistered;
+
+        return $this;
+    }
+
+    /**
+     * Get is_registered
+     *
+     * @return boolean 
+     */
+    public function getIsRegistered()
+    {
+        return $this->is_registered;
     }
 }

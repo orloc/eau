@@ -75,16 +75,16 @@ class EveDataUpdateService {
         ];
 
         foreach ($calls as $manager => $call){
-
             if (is_array($call)){
                 foreach ($call as $ic){
                     if(!$this->checkShortTimer($c, $ic) || $force === true) {
                         $this->doUpdate($manager, $ic, $c, ApiUpdate::CACHE_STYLE_SHORT);
                     }
                 }
-            }
-            if(!$this->checkShortTimer($c, $call) || $force === true) {
-                $this->doUpdate($manager, $call, $c, ApiUpdate::CACHE_STYLE_SHORT);
+            } else {
+                if(!$this->checkShortTimer($c, $call) || $force === true) {
+                    $this->doUpdate($manager, $call, $c, ApiUpdate::CACHE_STYLE_SHORT);
+                }
             }
         }
     }
