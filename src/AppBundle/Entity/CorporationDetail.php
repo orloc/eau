@@ -53,37 +53,37 @@ class CorporationDetail
     protected $ceo_name;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="bigint", nullable=true)
      * @JMS\Expose()
      */
     protected $headquarters_id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
     protected $headquarters_name;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      * @JMS\Expose()
      */
     protected $description;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
     protected $url;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="bigint", nullable=true)
      * @JMS\Expose()
      */
     protected $alliance_id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      * @JMS\Expose()
      */
     protected $alliance_name;
