@@ -18,6 +18,14 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/registration", name="eve.register")
+     */
+    public function eveRegistration(Request $request){
+
+        return $this->render('@App/Marketing/eve_registration.html.twig');
+    }
+
+    /**
      * @Route("/legal", name="legal")
      */
     public function legalAction(Request $request){

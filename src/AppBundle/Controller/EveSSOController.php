@@ -54,6 +54,7 @@ class EveSSOController extends Controller
 
         $session = $this->get('session');
         $nonce = $session->get('eve_sso_nonce');
+        $session->remove('eve_sso_nonce');
 
         if (!StringUtils::equals($nonce, $state)){
             $session->getFlashBag()->add('danger', 'Authentication Nonce does not match - your request may have been intercepted by a malicious 4th party.');
@@ -61,7 +62,6 @@ class EveSSOController extends Controller
         }
 
         $auth_uri = "https://login.eveonline.com/oauth/token";
-
 
         $creds = [
             trim($this->container->getParameter('eve_client_id')),
@@ -117,7 +117,8 @@ class EveSSOController extends Controller
 
         } else {
             // all is well
-
+            $session->set('registration_authorized', true);
+            return $this->forward('AppBundle:Registration:register');
         }
 
     }
