@@ -479,7 +479,10 @@ class Corporation
      */
     public function addCorporationMember(\AppBundle\Entity\CorporationMember $corporationMembers)
     {
-        $this->corporation_members[] = $corporationMembers;
+        if (!$this->corporation_members->contains($corporationMembers)){
+            $this->corporation_members[] = $corporationMembers;
+            $corporationMembers->setCorporation($this);
+        }
 
         return $this;
     }

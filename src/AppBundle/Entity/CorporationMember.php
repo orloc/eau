@@ -7,8 +7,10 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="corporation_members")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CorporationMemberRepository")
+ * @ORM\Table(name="corporation_members", uniqueConstraints={
+    @ORM\UniqueConstraint(name="member_corp_idx", columns={"character_id","corporation_id"})
+ * })
  * @JMS\ExclusionPolicy("all")
  *
  * @package AppBundle\Entity

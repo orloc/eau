@@ -6,6 +6,7 @@ use AppBundle\Entity\Account;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationDetail;
+use AppBundle\Entity\CorporationMember;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -55,7 +56,24 @@ class CorporationManager implements DataManagerInterface {
 
         $members = $client->MemberTracking()->members;
 
-        var_dump($members);die;
+        $repo = $this->doctrine->getRepository('AppBundle:CorporationMember');
+        foreach ($members as $m) {
+            $exists = $repo->findOneBy(['character_id' => intval($m->characterID)]);
+
+            if ($exists === null){
+                $mem = new CorporationMember();
+
+                $mem->setCharacterId($m->characterID)
+                    ->setCharacterName($m->name)
+                    ->setStartTime(new \DateTime($m->startDateTime));
+                /**
+                 * @TODO you forgot the homebase..
+                 */
+
+                $corporation->addCorporationMember($mem);
+            }
+        }
+
     }
 
     public function getCorporationSheet(Corporation $corporation){
