@@ -48,6 +48,16 @@ class CorporationManager implements DataManagerInterface {
         return $result;
     }
 
+    public function getMembers(Corporation $corporation){
+        $apiKey = $this->getApiKey($corporation);
+
+        $client = $this->getClient($apiKey);
+
+        $members = $client->MemberTracking()->members;
+
+        var_dump($members);die;
+    }
+
     public function getCorporationSheet(Corporation $corporation){
         $apiKey = $this->getApiKey($corporation);
         $corpClient = $this->getClient($apiKey);
@@ -56,7 +66,9 @@ class CorporationManager implements DataManagerInterface {
 
         $this->initializeAccounts($corpSheet->walletDivisions, $corporation);
 
-        $entity = new CorporationDetail();
+        if (!($entity = $corporation->getCorporationDetails()) instanceof CorporationDetail){
+            $entity = new CorporationDetail();
+        }
 
         $entity->setName($corpSheet->corporationName)
             ->setTicker($corpSheet->ticker)

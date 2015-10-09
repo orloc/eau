@@ -68,12 +68,21 @@ class EveDataUpdateService {
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
             'acc_manager' => 'updateAccounts',
+            'corp_manager' => ['getCorporationSheet', 'getMembers'],
             'journal_manager' => 'updateJournalTransactions',
             'transaction_manager' => 'updateMarketTransactions',
             //'starbase_manager' => 'getStarbases'
         ];
 
         foreach ($calls as $manager => $call){
+
+            if (is_array($call)){
+                foreach ($call as $ic){
+                    if(!$this->checkShortTimer($c, $ic) || $force === true) {
+                        $this->doUpdate($manager, $ic, $c, ApiUpdate::CACHE_STYLE_SHORT);
+                    }
+                }
+            }
             if(!$this->checkShortTimer($c, $call) || $force === true) {
                 $this->doUpdate($manager, $call, $c, ApiUpdate::CACHE_STYLE_SHORT);
             }
@@ -162,6 +171,10 @@ class EveDataUpdateService {
                 return ApiUpdate::CORP_MARKET_ORDERS;
             case 'getStarbases':
                 return ApiUpdate::CORP_STARBASE_LIST;
+            case 'getMembers':
+                return ApiUpdate::CORP_MEMBERS;
+            case 'getCorporationSheet':
+                return ApiUpdate::CORP_DETAILS;
         }
     }
 }
