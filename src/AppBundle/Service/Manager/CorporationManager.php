@@ -57,10 +57,16 @@ class CorporationManager implements DataManagerInterface {
         $members = $client->MemberTracking()->members;
 
         $repo = $this->doctrine->getRepository('AppBundle:CorporationMember');
-        foreach ($members as $m) {
-            $exists = $repo->findOneBy(['character_id' => intval($m->characterID)]);
 
-            if ($exists === null){
+        $existing_members = $repo->findBy(['corporation' => $corporation, 'disbanded_at' => null]);
+
+        $ids = [];
+        foreach ($existing_members as $m) {
+            $ids[(int)$m->getCharacterId()] = $m;
+        }
+
+        foreach ($members as $m) {
+            if (!isset($ids[(int)$m->characterID])){
                 $mem = new CorporationMember();
 
                 $mem->setCharacterId($m->characterID)
@@ -71,8 +77,18 @@ class CorporationManager implements DataManagerInterface {
                  */
 
                 $corporation->addCorporationMember($mem);
+            } else {
+                unset($ids[(int)$m->characterID]);
             }
         }
+
+        // any that were left over are not in our list anymore...
+        foreach ($ids as $deleted_member){
+            $deleted_member->setDis
+
+        }
+
+
 
     }
 

@@ -52,6 +52,11 @@ class CorporationMember
     protected $is_registered;
 
     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    protected $disbanded_at;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
@@ -207,5 +212,28 @@ class CorporationMember
     public function getIsRegistered()
     {
         return $this->is_registered;
+    }
+
+    /**
+     * Set disbanded_at
+     *
+     * @param boolean $disbandedAt
+     * @return CorporationMember
+     */
+    public function setDisbandedAt($disbandedAt)
+    {
+        $this->disbanded_at = $disbandedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get disbanded_at
+     *
+     * @return boolean 
+     */
+    public function getDisbandedAt()
+    {
+        return $this->disbanded_at;
     }
 }
