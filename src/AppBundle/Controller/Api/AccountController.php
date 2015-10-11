@@ -8,6 +8,7 @@ use AppBundle\Entity\Account;
 use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\Corporation;
 use Carbon\Carbon;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,6 +22,7 @@ class AccountController extends AbstractController implements ApiControllerInter
     /**
      * @Route("/corporation/{id}/account", name="api.corporation.account", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp)
@@ -46,6 +48,7 @@ class AccountController extends AbstractController implements ApiControllerInter
     /**
      * @Route("/corporation/{id}/account/data", name="api.corporation.account_data", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
      */
     public function dataAllAction(Request $request, Corporation $corp){

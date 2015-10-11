@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -19,6 +20,7 @@ class CorporationMemberController extends AbstractController implements ApiContr
      * @Route("/corporation/{id}/members", name="api.corporation.members", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function indexAction(Request $request, Corporation $corp)
     {

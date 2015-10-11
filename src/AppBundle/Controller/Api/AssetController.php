@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -18,6 +19,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/corporation/{id}/assets", name="api.corporation.assets", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp)
@@ -71,6 +73,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/corporation/{id}/deliveries", name="api.corporation.deliveries", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
      */
     public function deliveriesAction(Request $request, Corporation $corp)
@@ -113,6 +116,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/industry/buyback", name="api.buyback_items", options={"expose"=true})
      * @Method("POST")
+     * @Secure(roles="ROLE_USER")
      */
     public function getBuybackPrice(Request $request){
 

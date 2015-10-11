@@ -10,7 +10,7 @@
                 <h2 class="text-center" style="color:white;">
                     <span class="text-success">Congratulations</span> you have successfully activated your account.
                 </h2>
-                <p class="text-center text-warning"> If you are not redirected in 5 seconds click <a id="redirect" href="{{ path('dashboard', [], true) }}">here</a></p>
+                <h3 class="text-center text-warning"> If you are not redirected in 5 seconds click <a id="redirect" href="{{ path('dashboard', [], true) }}">here</a></h3>
             </div>
         </div>
     </div>
@@ -22,7 +22,7 @@
     <script>
         $('document').ready(function(){
             setTimeout(function(){
-                console.log($('#redirect').attr('href'));
+                window.location = $('#redirect').attr('href');
             }, 3000);
         });
     </script>

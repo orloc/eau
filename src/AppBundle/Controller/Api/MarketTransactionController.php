@@ -7,6 +7,7 @@ use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
 use Carbon\Carbon;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,6 +22,7 @@ class MarketTransactionController extends AbstractController implements ApiContr
      * @Route("/corporation/{id}/account/{acc_id}/markettransaction", name="api.corporation.account.markettransactions", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @ParamConverter(name="account", class="AppBundle:Account", options={"id" = "acc_id"})
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp, Account $account)

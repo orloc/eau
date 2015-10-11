@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\Admin;
 
+use AppBundle\Controller\AbstractController;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -11,12 +13,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  *
  * @Route("/corporation")
  */
-class CorporationController extends Controller
+class CorporationController extends AbstractController
 {
     /**
      * @Route("", name="corporation")
      * @Route("/")
      * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function indexAction()
     {

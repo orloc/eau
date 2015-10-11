@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\User;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -22,6 +23,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * Lists all User entities.
      *
      * @Route("/", name="api.users")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("GET")
      */
     public function indexAction()
@@ -38,6 +40,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * Creates a new User entity.
      *
      * @Route("/", name="api.user_create")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
      */
     public function createAction(Request $request)
@@ -70,6 +73,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      *
      * @Route("/{id}", name="api.user_show")
      * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
      * @ParamConverter("user", class="AppBundle:User")
      */
     public function showAction($id, User $user)
@@ -83,6 +87,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * @Route("/{id}", name="api.user_update")
      * @ParamConverter("user", class="AppBundle:User")
      * @Method("PUT")
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function updateAction(Request $request, User $user)
     {
@@ -110,6 +115,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      *
      * @Route("/{id}", name="api.user_delete")
      * @Method("DELETE")
+     * @Secure(roles="ROLE_ADMIN")
      * @ParamConverter("user", class="AppBundle:User")
      */
     public function deleteAction(Request $request, User $user)

@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Entity\Corporation;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -19,10 +20,12 @@ class ApiUpdateController extends AbstractController implements ApiControllerInt
     /**
      * @Route("/corporation/{id}/api_update", name="api.corporation.apiupdate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_USER")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp)
     {
+
         $types = [
             ApiUpdate::CORP_ACC_BALANCES,
             ApiUpdate::CORP_ASSET_LIST,

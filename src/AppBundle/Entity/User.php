@@ -79,13 +79,6 @@ class User extends BaseUser {
     }
 
     /**
-     * @JMS\VirtualProperty()
-     */
-    public function hasValidApiCrendentials(){
-        return $this->getApiCredentials() instanceof ApiCredentials;
-    }
-
-    /**
      * Get id
      *
      * @return integer 
@@ -172,7 +165,10 @@ class User extends BaseUser {
      */
     public function addCharacter(\AppBundle\Entity\Character $characters)
     {
-        $this->characters[] = $characters;
+        if (!$this->characters->contains($characters)){
+            $this->characters[] = $characters;
+            $characters->setUser($this);
+        }
 
         return $this;
     }

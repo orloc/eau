@@ -9,10 +9,11 @@
             <br>
             <table class="table data-table table-hover table-condensed" ng-cloak>
                 <thead>
-                    <th>ID</th>
+                    <th width="64px">ID</th>
                     <th>Username</th>
                     <th>Email</th>
                     <th>Last Login</th>
+                    <th>Characters</th>
                     <th>Created At</th>
                     <th>Updated At</th>
                     <th>Enabled</th>
@@ -22,11 +23,17 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="u in users">
-                        <td>{{ '{{ u.id }}' }}</td>
+                        <td ng-if="u.characters.length === 0">{{ '{{ u.id }}' }}</td>
+                        <td ng-if="u.characters.length !== 0">
+                            <eve-image image-type="'Character'" object-id="u.characters[0].eve_id" img-width="256"></eve-image>
+                        </td>
                         <td>{{ '{{ u.username }}' }}</td>
                         <td>{{ '{{ u.email }}' }}</td>
                         <td class="text-center">{{ '{{ u.last_login | date:"M/d/yy" }}' }}<br>
                             <span class="small">{{ '{{ u.last_login | date:"shortTime" }}' }}</span>
+                        </td>
+                        <td>
+                            {{ '{{ u.characters.length }}' }}
                         </td>
                         <td class="text-center">{{ '{{ u.created_at | date:"M/d/yy" }}' }}<br>
                             <span class="small">{{ '{{ u.created_at | date:"shortTime" }}' }}</span>

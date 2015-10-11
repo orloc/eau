@@ -9,6 +9,7 @@ use AppBundle\Entity\User;
 use AppBundle\Event\CorporationEvents;
 use AppBundle\Event\NewCorporationEvent;
 use AppBundle\Exception\InvalidExpirationException;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -25,6 +26,7 @@ class CorporationController extends AbstractController implements ApiControllerI
      *
      * @Route("/", name="api.corps")
      * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function indexAction()
     {
@@ -40,6 +42,7 @@ class CorporationController extends AbstractController implements ApiControllerI
      * Creates a new User entity.
      *
      * @Route("/", name="api.corp_create")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
      */
     public function createAction(Request $request)
@@ -81,25 +84,5 @@ class CorporationController extends AbstractController implements ApiControllerI
             'Connection' => 'close'
         ]);
 
-    }
-
-    /**
-     * Finds and displays a Corporation entity.
-     *
-     * @Route("/{id}", name="api.corp_show")
-     * @Method("GET")
-     */
-    public function showAction($id)
-    {
-    }
-
-    /**
-     * Deletes a Corporation entity.
-     *
-     * @Route("/{id}", name="api.corp_delete")
-     * @Method("DELETE")
-     */
-    public function deleteAction(Request $request, $id)
-    {
     }
 }

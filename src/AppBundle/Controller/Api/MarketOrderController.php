@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrderGroup;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,6 +22,7 @@ class MarketOrderController extends AbstractController implements ApiControllerI
      * @Route("/corporation/{id}/marketorders", name="api.corporation.marketorders", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function indexAction(Corporation $corp)
     {

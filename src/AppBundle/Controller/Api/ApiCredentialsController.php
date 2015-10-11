@@ -7,6 +7,7 @@ use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use Doctrine\DBAL\DBALException;
+use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -21,6 +22,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function indexAction(Request $request, Corporation $corp)
     {
@@ -38,6 +40,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     /**
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.post", options={"expose"=true})
      * @ParamConverter(name="corporation", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
      */
     public function newAction(Request $request,  Corporation $corporation){
@@ -74,10 +77,12 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     /**
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.update", options={"expose"=true})
      * @ParamConverter(name="credentials", class="AppBundle:ApiCredentials")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("PATCH")
      */
     public function updateAction(Request $request, ApiCredentials $credentials)
     {
+
         //@TODO clean this up please
         $em = $this->getDoctrine()->getManager();
 

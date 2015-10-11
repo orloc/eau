@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new \JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new \JMS\SerializerBundle\JMSSerializerBundle(),
+            new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new \JMS\AopBundle\JMSAopBundle(),
             new \Tarioch\PhealBundle\TariochPhealBundle(),
             new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),

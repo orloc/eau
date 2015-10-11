@@ -28,7 +28,8 @@
         "nesbot/carbon": "^1.20",
         "guzzlehttp/guzzle": "^6.1",
         "knplabs/knp-paginator-bundle": "^2.4",
-        "sensio/generator-bundle": "~2.3"
+        "sensio/generator-bundle": "~2.3",
+        "jms/security-extra-bundle": "^1.5"
     },
     "scripts": {
         "post-root-package-install": [
