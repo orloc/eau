@@ -1,6 +1,12 @@
 'use strict';
 
-angular.module('eveTool', ['ngMessages', 'angular-ladda', 'ngAnimate']);
+angular.module('eveTool', [
+    'ngMessages',
+    'angular-ladda',
+    'ngAnimate',
+    'localytics.directives'
+
+]);
 
 
 Array.prototype.unique = function(){

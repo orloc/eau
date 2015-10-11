@@ -2,6 +2,12 @@
 
 $roboto: 'Roboto', sans-serif;
 
+$knewave: 'Knewave', cursive;
+
 .logo-font {
   font-family: 'eve_alphabold';
+}
+
+.slanted-font {
+  font-family: $knewave;
 }

@@ -1,0 +1,24 @@
+<side-menu-slider form-context="gears" ng-cloak>
+    <div class="header">
+        <h3>Configure Buyback</h3>
+    </div>
+    <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
+    <div ng-controller="buyBackConfigController">
+
+        <form class="form">
+            <label for="region">
+                Select Region for Base Prices
+            </label>
+            <select
+                chosen
+                multiple
+                class="form-control"
+                ng-model="configuration.base_region"
+                ng-options="r.regionID as r.regionName for r in regions"
+                name="region"
+            >
+                <option value="">Eve Average</option>
+            </select>
+        </form>
+    </div>
+</side-menu-slider>

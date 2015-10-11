@@ -3,6 +3,7 @@
 {% block stylesheets %}
     <link href="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/angular-chosen-localytics/chosen-spinner.css') }}" rel="stylesheet">
     <link href="{{ asset('/bundles/app/css/admin.css')}}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block body %}
@@ -29,11 +30,11 @@
 {% block extra_javascript %}
     {{ parent() }}
 
-
     <script src="{{ asset('/bower_components/angularjs/angular.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-ladda/dist/angular-ladda.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-messages/angular-messages.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-animate/angular-animate.js') }}"></script>
+    <script src="{{ asset('/bower_components/angular-chosen-localytics/chosen.js') }}"></script>
     <script src="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
     <script src="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js') }}"></script>
     <script src="{{ asset('/bower_components/d3/d3.js') }}"></script>
@@ -43,12 +44,13 @@
         '@AppBundle/Resources/public/js/app/app.js'
         '@AppBundle/Resources/public/js/app/directives/loadingSpinner.js'
         '@AppBundle/Resources/public/js/app/directives/compareTo.js'
-        '@AppBundle/Resources/public/js/app/directives/sideMenuContainer.js'
         '@AppBundle/Resources/public/js/app/directives/serverStatus.js'
         '@AppBundle/Resources/public/js/app/directives/eveImage.js'
         '@AppBundle/Resources/public/js/app/directives/tabs.js'
         '@AppBundle/Resources/public/js/app/directives/pane.js'
+        '@AppBundle/Resources/public/js/app/directives/sideMenuContainer.js'
         '@AppBundle/Resources/public/js/app/directives/slideButton.js'
+        '@AppBundle/Resources/public/js/app/directives/sideMenuSlider.js'
         '@AppBundle/Resources/public/js/app/services/dataDispatcher.js'
         '@AppBundle/Resources/public/js/app/services/corp/selectedCorpManager.js'
         '@AppBundle/Resources/public/js/app/controllers/dashboardController.js'
@@ -56,6 +58,7 @@
         '@AppBundle/Resources/public/js/app/controllers/user/userEdit.js'
         '@AppBundle/Resources/public/js/app/controllers/user/userNew.js'
         '@AppBundle/Resources/public/js/app/controllers/industry/buybackController.js'
+        '@AppBundle/Resources/public/js/app/controllers/industry/buyBackConfigController.js'
         '@AppBundle/Resources/public/js/app/controllers/corp/corpApiKeyController.js'
         '@AppBundle/Resources/public/js/app/controllers/corp/corpList.js'
         '@AppBundle/Resources/public/js/app/controllers/corp/corpMembers.js'

@@ -12,8 +12,9 @@
 
     <link href="{{ asset('/bower_components/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/bower_components/chosen/chosen.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/ladda/dist/ladda-themeless.min.css')}}" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700|Knewave' rel='stylesheet' type='text/css'>
     {% block stylesheets %}{% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -35,6 +36,7 @@
 <script src="{{ asset('/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/bower_components/ladda/dist/ladda.min.js') }}"></script>
 <script src="{{ asset('/bower_components/momentjs/min/moment.min.js') }}"></script>
+<script src="{{ asset('/bower_components/chosen/chosen.jquery.min.js') }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
 
