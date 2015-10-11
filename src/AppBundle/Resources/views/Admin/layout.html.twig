@@ -29,38 +29,42 @@
 {% block extra_javascript %}
     {{ parent() }}
 
+
     <script src="{{ asset('/bower_components/angularjs/angular.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-ladda/dist/angular-ladda.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-messages/angular-messages.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-animate/angular-animate.js') }}"></script>
     <script src="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
     <script src="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js') }}"></script>
-    <!-- -->
     <script src="{{ asset('/bower_components/d3/d3.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/app.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/loadingSpinner.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/compareTo.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/sideMenuSlider.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/serverStatus.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/eveImage.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/tabs.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/pane.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/sideMenuContainer.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/directives/slideButton.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/services/dataDispatcher.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/services/corp/selectedCorpManager.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/user/userList.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/user/userNew.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/user/userEdit.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/dashboardController.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/industry/buybackController.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/corpList.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/corpOverview.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/inventory.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/corpMembers.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/deliveries.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/marketOrders.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/structures.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/corpApiKeyController.js') }}"></script>
-    <script src="{{ asset('/bundles/app/js/app/controllers/corp/corpNew.js') }}"></script>
+    <!-- -->
+
+    {% javascripts
+        '@AppBundle/Resources/public/js/app/app.js'
+        '@AppBundle/Resources/public/js/app/directives/loadingSpinner.js'
+        '@AppBundle/Resources/public/js/app/directives/compareTo.js'
+        '@AppBundle/Resources/public/js/app/directives/sideMenuContainer.js'
+        '@AppBundle/Resources/public/js/app/directives/serverStatus.js'
+        '@AppBundle/Resources/public/js/app/directives/eveImage.js'
+        '@AppBundle/Resources/public/js/app/directives/tabs.js'
+        '@AppBundle/Resources/public/js/app/directives/pane.js'
+        '@AppBundle/Resources/public/js/app/directives/slideButton.js'
+        '@AppBundle/Resources/public/js/app/services/dataDispatcher.js'
+        '@AppBundle/Resources/public/js/app/services/corp/selectedCorpManager.js'
+        '@AppBundle/Resources/public/js/app/controllers/dashboardController.js'
+        '@AppBundle/Resources/public/js/app/controllers/user/userList.js'
+        '@AppBundle/Resources/public/js/app/controllers/user/userEdit.js'
+        '@AppBundle/Resources/public/js/app/controllers/user/userNew.js'
+        '@AppBundle/Resources/public/js/app/controllers/industry/buybackController.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/corpApiKeyController.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/corpList.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/corpMembers.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/corpNew.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/corpOverview.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/inventory.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/deliveries.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/structures.js'
+        '@AppBundle/Resources/public/js/app/controllers/corp/marketOrders.js' output='js/compiled/app.js'%}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
