@@ -115,10 +115,17 @@ jms_di_extra:
         all_bundles: false
         bundles: [TariochPhealBundle]
 
+
 fos_user:
     db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\User
+    registration:
+        confirmation:
+            enabled: true
+    from_email:
+        address:        donotreply@dev.servall.xyz
+        sender_name:    EAU
 
 jms_serializer:
     metadata:

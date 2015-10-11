@@ -81,7 +81,7 @@ class EveSSOController extends Controller
         } catch (\Exception $e){
             $session->getFlashBag()->add('danger', 'There was <b>EITHER</b> a serious error when attempting to authenticate you <b>OR</b> the request you had sent was invald! <br><b><i>Try Again - if this persists - Don\'t worry we are fixing it...</i></b>');
 
-            return $this->redirect($this->generateUrl('fos_user_registration_register'));
+            return $this->redirect($this->generateUrl('eve.register'));
         }
 
         $response_content = json_decode($response->getBody()->getContents());
@@ -98,12 +98,13 @@ class EveSSOController extends Controller
         } catch (\Exception $e){
             $session->getFlashBag()->add('danger', 'There was <b>EITHER</b> a serious error when attempting to authenticate you <b>OR</b> the request you had sent was invald! <br><b><i>Try Again - if this persists - Don\'t worry we are fixing it...</i></b>');
 
-            return $this->redirect($this->generateUrl('fos_user_registration_register'));
+            return $this->redirect($this->generateUrl('eve.register'));
         }
 
         $decoded = json_decode($charResponse->getBody()->getContents());
 
         $cId = $decoded->CharacterID;
+        $cName = $decoded->CharacterName;
 
         $exists = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')->findOneBy(['character_id' => intval($cId)]);
 
@@ -111,13 +112,13 @@ class EveSSOController extends Controller
         if ($exists === null){
             $session->getFlashBag()->add('warning', 'Sorry we do not support non-alpha tester registrations at this time.<br><b>COME BACK SOON</b>');
 
-            $cName = $decoded->CharacterName;
             $this->get('logger')->info(sprintf("ATTEMPTED REGISTRATION: char_id = %s char_name = %s", $cId, $cName ));
-            return $this->redirect($this->generateUrl('fos_user_registration_register'));
+            return $this->redirect($this->generateUrl('eve.register'));
 
         } else {
             // all is well
             $session->set('registration_authorized', true);
+            $session->set('registration_charname', $cName);
             return $this->redirect($this->generateUrl('fos_user_registration_register'));
         }
 

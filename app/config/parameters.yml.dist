@@ -8,16 +8,21 @@ parameters:
     app_data.database_user: root
     app_data.database_password: null
 
+
     eve_data.database_host: 127.0.0.1
     eve_data.database_port: null
     eve_data.database_name: ebs_datadump
     eve_data.database_user: root
     eve_data.database_password: null
 
-    mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: null
-    mailer_password: null
+    mailer_transport:  smtp
+    mailer_host:       smtp.something.com
+    mailer_user:       admin@someone.com
+    mailer_port:       587
+    mailer_password:   xxxxxxxxxxxxxxxxxxxxxx
+
     secret: xxxxxxx
 
-    eve_client_id: xxxxxx
+    eve_client_id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    eve_client_secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
