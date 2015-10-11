@@ -2,9 +2,11 @@
 
 {% block content -%}
     <div class="row" ng-controller="userListController">
-        <h3>User <span class="muted small">LIST</span></h3>
         <side-menu-container ng-transclude>
-            <slide-button open-type="new"></slide-button>
+            <h3>User <span class="muted small">LIST</span>
+                <slide-button ng-cloak style="color: grey;" open-type="new"></slide-button>
+            </h3>
+            <br>
             <table class="table data-table table-hover table-condensed" ng-cloak>
                 <thead>
                     <th>ID</th>

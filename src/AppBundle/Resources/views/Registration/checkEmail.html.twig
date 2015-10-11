@@ -1,7 +1,15 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends 'AppBundle:Marketing:landing.html.twig' %}
 
-{% trans_default_domain 'FOSUserBundle' %}
 
-{% block fos_user_content %}
-    <p>{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
-{% endblock fos_user_content %}
+{% block inner_content -%}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <h2 class="text-center" style="color:white;">Please check your email for a link to confirm and active your account.</h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

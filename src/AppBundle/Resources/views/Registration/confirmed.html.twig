@@ -1,10 +1,29 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends 'AppBundle:Marketing:landing.html.twig' %}
 
-{% trans_default_domain 'FOSUserBundle' %}
 
-{% block fos_user_content %}
-    <p>{{ 'registration.confirmed'|trans({'%username%': user.username}) }}</p>
-    {% if targetUrl %}
-    <p><a href="{{ targetUrl }}">{{ 'registration.back'|trans }}</a></p>
-    {% endif %}
-{% endblock fos_user_content %}
+{% block inner_content -%}
+    {% trans_default_domain 'FOSUserBundle' %}
+
+    <div class="container login-container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <h2 class="text-center" style="color:white;">
+                    <span class="text-success">Congratulations</span> you have successfully activated your account.
+                </h2>
+                <p class="text-center text-warning"> If you are not redirected in 5 seconds click <a id="redirect" href="{{ path('dashboard', [], true) }}">here</a></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_javascript %}
+    {{ parent() }}
+
+    <script>
+        $('document').ready(function(){
+            setTimeout(function(){
+                console.log($('#redirect').attr('href'));
+            }, 3000);
+        });
+    </script>
+{% endblock %}

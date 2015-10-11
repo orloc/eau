@@ -74,4 +74,13 @@ class RegistrationController extends BaseController {
 
         return $this->redirect($this->generateUrl('eve.register'));
     }
+
+    /**
+     * Tell the user to check his email provider
+     */
+    public function checkEmailAction()
+    {
+        $this->get('session')->remove('registration_authorized');
+        return parent::checkEmailAction();
+    }
 }

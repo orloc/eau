@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service\Manager;
 
+use AppBundle\Entity\Character;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -14,7 +15,14 @@ class CharacterManager {
         $this->log = $logger;
     }
 
-    public function newCharacterWithName($name){
+    public function newCharacterWithName(array $details){
+
+        $char = new Character();
+
+        $char->setEveId($details['id'])
+            ->setName($details['name']);
+
+        return $char;
 
     }
 

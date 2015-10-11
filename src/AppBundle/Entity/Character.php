@@ -33,11 +33,13 @@ class Character
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $eve_id;
 
     /**
      * @ORM\Column(type="string")
+     * @JMS\Expose()
      */
     protected $name;
 

@@ -22,7 +22,13 @@ class DefaultController extends Controller
      */
     public function eveRegistration(Request $request){
 
+        $session = $this->get('session');
+        if (($auth = $session->get('registration_authorized', false)) !== false) {
+            return $this->redirect($this->generateUrl('fos_user_registration_register'));
+        }
+
         return $this->render('@App/Marketing/eve_registration.html.twig');
+
     }
 
     /**

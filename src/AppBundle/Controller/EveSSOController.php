@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use GuzzleHttp\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -116,6 +117,13 @@ class EveSSOController extends Controller
             return $this->redirect($this->generateUrl('eve.register'));
 
         } else {
+
+           $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(['username' => strtolower(str_replace(' ','_', trim($exists->getCharacterName()))) ]);
+
+            if ($user instanceof User){
+                $session->getFlashBag()->add('warning', 'This character is already associated with a user. IF you have forgot your username or password please see the link below');
+                return $this->redirect($this->generateUrl('eve.register'));
+            }
             // all is well
             $session->set('registration_authorized', [ 'id' => $cId, 'name' => $cName ]);
             return $this->redirect($this->generateUrl('fos_user_registration_register'));

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Subscriber;
 
-use AppBundle\Entity\Character;
+use AppBundle\Entity\User;
 use AppBundle\Service\Manager\CharacterManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -28,13 +28,12 @@ class UserSubscriber implements EventSubscriber {
     public function prePersist(LifecycleEventArgs $args){
         $entity = $args->getObject();
 
-        if ($entity instanceof Character){
-            $name = $this->session->get('registration_authorized');
+        if ($entity instanceof User){
+            $details = $this->session->get('registration_authorized');
             $newChar = $this->manager
-                ->newCharacterWithName($name);
+                ->newCharacterWithName($details);
 
-            var_dump($newChar);
-            die;
+            $entity->addCharacter($newChar);
         }
     }
 }

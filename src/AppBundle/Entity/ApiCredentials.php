@@ -71,11 +71,6 @@ class ApiCredentials {
     protected $corporation;
 
     /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", inversedBy="api_credentials")
-     */
-    protected $user;
-
-    /**
      * @ORM\Column(type="boolean", nullable=true)
      * @JMS\Expose()
      */
@@ -335,29 +330,6 @@ class ApiCredentials {
     public function getDeletedAt()
     {
         return $this->deleted_at;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\User $user
-     * @return ApiCredentials
-     */
-    public function setUser(\AppBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \AppBundle\Entity\User 
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 
     /**

@@ -39,14 +39,10 @@ class User extends BaseUser {
     protected $created_at;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Character", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Character", mappedBy="user", cascade={"persist"})
+     * @JMS\Expose()
      */
     protected $characters;
-
-    /**
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="user")
-     */
-    protected $api_credentials;
 
     /**
      * @ORM\Column(type="datetime")
@@ -166,29 +162,6 @@ class User extends BaseUser {
     public function getUpdatedAt()
     {
         return $this->updated_at;
-    }
-
-    /**
-     * Set api_credentials
-     *
-     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
-     * @return User
-     */
-    public function setApiCredentials(\AppBundle\Entity\ApiCredentials $apiCredentials = null)
-    {
-        $this->api_credentials = $apiCredentials;
-
-        return $this;
-    }
-
-    /**
-     * Get api_credentials
-     *
-     * @return \AppBundle\Entity\ApiCredentials 
-     */
-    public function getApiCredentials()
-    {
-        return $this->api_credentials;
     }
 
     /**
