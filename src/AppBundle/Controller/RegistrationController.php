@@ -23,55 +23,53 @@ class RegistrationController extends BaseController {
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
 
-        $uname = 'Orloc';
-        $user = $userManager->createUser();
-        $user->setEnabled(true);
 
-        $user->setUsername(strtolower(str_replace(' ','_', trim($uname))));
+        if (($auth = $session->get('registration_authorized', false)) !== false) {
 
-        $event = new GetResponseUserEvent($user, $request);
-        $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+            $user = $userManager->createUser();
+            $user->setEnabled(true);
 
-        if (null !== $event->getResponse()) {
-            return $event->getResponse();
-        }
+            $user->setUsername(strtolower(str_replace(' ','_', trim($auth['name']))))
+                ->addRole('ROLE_CORP_MEMBER');
 
-        $form = $formFactory->createForm();
+            $event = new GetResponseUserEvent($user, $request);
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
 
-        $form->remove('username')
-            ->add('username', null, ['disabled' => true]);
-
-        $form->setData($user);
-
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $event = new FormEvent($form, $request);
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
-
-            $userManager->updateUser($user);
-
-            if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('fos_user_registration_confirmed');
-                $response = new RedirectResponse($url);
+            if (null !== $event->getResponse()) {
+                return $event->getResponse();
             }
 
-            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+            $form = $formFactory->createForm();
 
-            return $response;
-        }
+            $form->remove('username')
+                ->add('username', null, ['disabled' => true]);
 
-        return $this->render('FOSUserBundle:Registration:register.html.twig', array(
-            'form' => $form->createView(),
-            'charName' => $uname
-        ));
+            $form->setData($user);
 
-        if ($session->get('registration_authorized', false)) {
-            $session->remove('registration_authorized');
-            $uname = $session->get('registration_charname');
-            $session->remove('registration_charname');
+            $form->handleRequest($request);
 
-            return parent::registerAction($request);
+            if ($form->isValid()) {
+                $event = new FormEvent($form, $request);
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+
+                $userManager->updateUser($user);
+
+                if (null === $response = $event->getResponse()) {
+                    $url = $this->generateUrl('fos_user_registration_confirmed');
+                    $response = new RedirectResponse($url);
+                }
+
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+                return $response;
+            }
+
+            return $this->render('FOSUserBundle:Registration:register.html.twig', array(
+                'form' => $form->createView(),
+                'auth' => $auth
+            ));
+
+
         }
 
         return $this->redirect($this->generateUrl('eve.register'));

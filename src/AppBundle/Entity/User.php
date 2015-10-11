@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -14,6 +15,8 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @ORM\Table(name="users")
  * @JMS\ExclusionPolicy("all")
+ * @UniqueEntity("email")
+ * @UniqueEntity("username")
  *
  * Class User
  * @package AppBundle\Entity

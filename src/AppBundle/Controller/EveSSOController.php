@@ -117,8 +117,7 @@ class EveSSOController extends Controller
 
         } else {
             // all is well
-            $session->set('registration_authorized', true);
-            $session->set('registration_charname', $cName);
+            $session->set('registration_authorized', [ 'id' => $cId, 'name' => $cName ]);
             return $this->redirect($this->generateUrl('fos_user_registration_register'));
         }
 
