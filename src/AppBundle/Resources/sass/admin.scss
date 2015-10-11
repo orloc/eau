@@ -25,12 +25,17 @@ body {
 
 h1, h2, h3, {
   font-family: 'eve_alphabold', sans-serif;
-  color: $offWhite;
+  color: white;
 }
 
 p, a, ul {
-  color: $offWhite;
+  color: white;
 }
+
+a.navbar-brand {
+  color: white!important;
+}
+
 #wrapper {
   background-color: $darkerBlack;
 }
