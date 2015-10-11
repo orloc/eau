@@ -3,10 +3,31 @@
 angular.module('eveTool')
     .controller('buyBackConfigController', ['$scope', '$http', function($scope, $http){
 
-        $scope.configuration = {};
+        $scope.configuration = {
+            corporation: null,
+            base_markdown: null,
+            base_regions: [],
+            overrides: []
+        };
 
         $http.get(Routing.generate('api.regions')).then(function(data){
             $scope.regions = data.data;
-            console.log($scope.regions);
         });
+
+        $http.get(Routing.generate('api.corps')).then(function(data){
+            $scope.corporations = data.data;
+        });
+
+        $scope.addEmptyOverride = function(){
+            $scope.configuration.overrides.push(getOverride());
+        };
+
+        var getOverride = function(){
+            return {
+                itemID: null,
+                price: null,
+                override: null,
+                difference: null
+            };
+        };
     }]);

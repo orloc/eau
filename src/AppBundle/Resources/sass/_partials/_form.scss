@@ -30,22 +30,22 @@ form {
 }
 
 .btn-custom {
-  background-color: $offGrey;
+  background-color: $darkBlue;
   color: $offWhite;
   font-family: 'eve_alphabold', sans-serif;
 
   &:disabled {
-    background-color: lighten($offGrey, 5);
+    background-color: lighten($darkBlue, 5);
   }
 
   &:hover, &:active, &:focus {
     &:disabled {
       color: $offWhite;
-      background-color: lighten($offGrey, 5);
+      background-color: lighten($darkBlue, 5);
     }
     border: 0;
     outline: 0;
-    background-color: lighten($offGrey, 10);
+    background-color: lighten($darkBlue, 10);
     color: lighten($offWhite, 10);
   }
 }

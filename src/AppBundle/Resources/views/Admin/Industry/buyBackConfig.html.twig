@@ -6,19 +6,72 @@
     <div ng-controller="buyBackConfigController">
 
         <form class="form">
-            <label for="region">
-                Select Region for Base Prices
-            </label>
-            <select
-                chosen
-                multiple
-                class="form-control"
-                ng-model="configuration.base_region"
-                ng-options="r.regionID as r.regionName for r in regions"
-                name="region"
-            >
-                <option value="">Eve Average</option>
-            </select>
+            <div class="form-group">
+                <label for="region">
+                    Select Corporation to apply this configuration to
+                </label>
+                <select
+                        chosen
+                        multiple
+                        class="form-control"
+                        ng-model="configuration.corporation"
+                        ng-options="c.id as c.corporation_details.name for c in corporations"
+                        name="corporation"
+                        >
+                    <option value="">ALL</option>
+                </select>
+            </div>
+            <div class="form-group"
+                 ng-hide="configuration.corporation === null">
+                <label for="region">
+                    Select Region for Base Prices
+                </label>
+                <select
+                        chosen
+                        multiple
+                        class="form-control"
+                        ng-model="configuration.base_regions"
+                        ng-options="r.regionID as r.regionName for r in regions"
+                        name="region"
+                        >
+                    <option value="">Eve UNIVERSE Average</option>
+                </select>
+            </div>
+
+            <div class="form-group"
+                 ng-hide="configuration.corporation === null || configuration.base_regions.length === 0">
+                <label for="base_markdown">
+                    This markdown is applied to ALL items that do NOT have specific price overrides.
+                </label>
+                <div class="input-group"
+                     ng-hide="configuration.corporation === null || configuration.base_regions.length === 0">
+                    <input name="base_markdown" class="form-control" type="number" ng-model="configuration.base_markdown">
+                    <span class="input-group-addon">
+                        %
+                    </span>
+                </div>
+            </div>
+
+            <div
+                ng-hide="configuration.corporation === null || configuration.base_regions.length === 0 || configuration.base_markdown === null">
+                <h3>Overrides <button class="btn btn-sm btn-custom pull-right" type="button" ng-click="addEmptyOverride()"><i class="fa fa-plus"></i></button></h3>
+                <table class="table" ng-show="configuration.overrides.length > 0">
+                    <thead>
+                    <th>Item</th>
+                    <th>Base</th>
+                    <th>Override</th>
+                    <th>Difference</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="o in configuration.overrides">
+                        <td>{{ '{{ o.itemID }}' }}</td>
+                        <td>{{ '{{ o.price | currency:"ISK"}}' }}</td>
+                        <td>{{ '{{ o.override }}' }}</td>
+                        <td>{{ '{{ o.difference }}' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </form>
     </div>
 </side-menu-slider>
