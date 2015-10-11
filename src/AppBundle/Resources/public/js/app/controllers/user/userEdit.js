@@ -36,13 +36,11 @@ angular.module('eveTool')
         $scope.delete = function(id){
             var response = window.confirm('Are you sure you wish to delete this user?');
 
-            /*
-            if (response){
+            if (response === true){
                 $http.delete(Routing.generate('api.user_delete', { id: id })).then(function(data){
-                    console.log(data);
-                    $scope.users.splice($scope.current_index, 1);
+                    dataDispatcher.addEvent('close_window');
+                    dataDispatcher.addEvent('update_list');
                 });
             }
-            */
         };
     }]);

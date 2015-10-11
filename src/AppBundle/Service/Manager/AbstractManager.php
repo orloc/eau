@@ -72,15 +72,18 @@ abstract class AbstractManager {
                 $i instanceof Asset ? $i->getLocationId() : $i->getPlacedAtId()
             );
 
-            $updateData = array_merge(
-                $itemTypes->getItemTypeData($i->getTypeId()),
-                is_array(($ss = $solarsystems->getSolarSystemById($locationData['solar_system']))) ? $ss : [],
-                is_array(($con = $constellations->getConstellationById($locationData['constellation'])))? $con: [],
-                is_array(($reg = $regions->getRegionById($locationData['region']))) ? $reg : [],
-                ['station' => $locationData['station_name']]
-            );
 
-            $i->setDescriptors($updateData);
+            if (count($locationData)){
+                $updateData = array_merge(
+                    $itemTypes->getItemTypeData($i->getTypeId()),
+                    is_array(($ss = $solarsystems->getSolarSystemById($locationData['solar_system']))) ? $ss : [],
+                    is_array(($con = $constellations->getConstellationById($locationData['constellation'])))? $con: [],
+                    is_array(($reg = $regions->getRegionById($locationData['region']))) ? $reg : [],
+                    ['station' => $locationData['station_name']]
+                );
+
+                $i->setDescriptors($updateData);
+            }
         }
 
         return $items;
