@@ -14,6 +14,8 @@ angular.module('eveTool')
             market_group : null
         };
 
+        $scope.existing_configurations = [];
+
         $http.get(Routing.generate('api.regions')).then(function(data){
             $scope.regions = data.data;
         });
