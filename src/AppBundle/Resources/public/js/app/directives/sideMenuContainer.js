@@ -45,25 +45,29 @@ angular.module('eveTool')
                         return menu.scope.active === true;
                     });
 
-                    if (typeof sideMenu != 'undefined'){
-                        if (value){
-                            $(sideMenu.menu).animate({
-                                right: "0px"
-                            }, 300);
+                    if (typeof sideMenu !== 'undefined'){
+                        var width = sideMenu.scope.menuWidth;
+                        if (typeof sideMenu != 'undefined'){
+                            if (value){
+                                $(sideMenu.menu).animate({
+                                    right: "0px"
+                                }, 300);
 
-                            $('body').animate({
-                                left: "-350px"
-                            }, 300);
-                        } else {
-                            $(sideMenu.menu).animate({
-                                right: "-350px"
-                            }, 300);
+                                $('body').animate({
+                                    left: "-"+width
+                                }, 300);
+                            } else {
+                                $(sideMenu.menu).animate({
+                                    right: "-"+width
+                                }, 300);
 
-                            $('body').animate({
-                                left: "0px"
-                            }, 300);
+                                $('body').animate({
+                                    left: "0px"
+                                }, 300);
+                            }
                         }
                     }
+
 
                 });
             },

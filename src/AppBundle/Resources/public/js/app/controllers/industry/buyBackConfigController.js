@@ -10,12 +10,20 @@ angular.module('eveTool')
             overrides: []
         };
 
+        $scope.search = {
+            market_group : null
+        };
+
         $http.get(Routing.generate('api.regions')).then(function(data){
             $scope.regions = data.data;
         });
 
         $http.get(Routing.generate('api.corps')).then(function(data){
             $scope.corporations = data.data;
+        });
+
+        $http.get(Routing.generate('api.marketgroups')).then(function(data){
+            $scope.market_groups = data.data;
         });
 
         $scope.addEmptyOverride = function(){

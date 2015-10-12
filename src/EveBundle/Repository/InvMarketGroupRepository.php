@@ -23,6 +23,15 @@ class InvMarketGroupRepository extends AbstractDbalRepository implements Reposit
 
     }
 
+    public function getTopLevelGroups(){
+        $sql = "SELECT * FROM {$this->getTableName()} WHERE parentGroupID IS NULL ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function getAllGroups(){
         $sql = "SELECT * FROM {$this->getTableName()}";
 

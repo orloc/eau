@@ -1,8 +1,8 @@
 side-menu-slider {
   width: 350px;
   top: 0;
-  right:-350px;
   position: fixed;
+  display: none;
   height: 100%;
   background-color: $darkerBlack;
 

@@ -7,7 +7,8 @@ angular.module('eveTool')
             transclude: true,
             require: '^sideMenuContainer',
             scope: {
-                formContext: "=formContext"
+                formContext: "=formContext",
+                menuWidth: "=menuWidth"
             },
             link : function(scope, element, attributes, container) {
                 scope.formContext = typeof attributes.formContext != 'undefined'
@@ -15,6 +16,10 @@ angular.module('eveTool')
                     :  false;
 
                 scope.active = false;
+
+                $(element).css('width', attributes.menuWidth+'px').css('right', '-'+attributes.menuWidth+'px');
+
+                $(element).show();
 
                 container.addSideMenu(scope, element);
             },
