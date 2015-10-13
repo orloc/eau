@@ -11,38 +11,42 @@ angular.module('eveTool')
         $scope.submit = function(){
             $scope.loading = true;
             var inputs = $scope.input_data.split("\n");
+
+            console.log(inputs);
             var r = /\d{1,3}(,\d{3})*(\.\d+)?(?=\s)/;
             var data = [];
 
             angular.forEach(inputs, function(i){
                 i.trim();
-                var res = r.exec(i);
-                var name = i.substr(0, res.index).trim();
 
-                if (name.length > 0){
-                    var datum = {
-                        name: name,
-                        quantity: res[0].trim()
-                    };
+                if (i.length > 0){
+                    var res = r.exec(i);
+                    var name = i.substr(0, res.index).trim();
 
-                    if (datum.quantity.length >= 4){
-                        datum.quantity = datum.quantity.replace(',','');
-                    }
+                    if (name.length > 0){
+                        var datum = {
+                            name: name,
+                            quantity: res[0].trim()
+                        };
 
-                    var exists = _.find(data, function(i){
-                        return i.name === datum.name;
-                    });
+                        if (datum.quantity.length >= 4){
+                            datum.quantity = datum.quantity.replace(',','');
+                        }
 
-                    if (typeof exists !== 'undefined'){
-                        exists.quantity = parseInt(exists.quantity);
-                        exists.quantity += parseInt(datum.quantity);
+                        var exists = _.find(data, function(i){
+                            return i.name === datum.name;
+                        });
+
+                        if (typeof exists !== 'undefined'){
+                            exists.quantity = parseInt(exists.quantity);
+                            exists.quantity += parseInt(datum.quantity);
+                        } else {
+                            data.push(datum);
+                        }
                     } else {
-                        data.push(datum);
+                        $scope.errors.push(i);
                     }
-                } else {
-                    $scope.errors.push(i);
                 }
-
             });
 
             var callback = function(extra){
@@ -72,6 +76,7 @@ angular.module('eveTool')
             };
 
             $http.post(Routing.generate('api.buyback_items'), data).then(callback(data)).then(function(){
+
                 $scope.loading = false;
             });
         };
