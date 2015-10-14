@@ -64,7 +64,7 @@ angular.module('eveTool')
             };
 
             if ($scope.regions.length){
-                if (ids.length > 1){
+                if (typeof ids != 'undefined' && ids.length > 1){
                     angular.forEach(ids, function(id){
                         names += getRegion(id).regionName+", ";
                     });
