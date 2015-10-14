@@ -27,7 +27,9 @@ angular.module('eveTool')
         });
 
         $scope.addOverride = function(){
-            console.log($scope.configuration);
+
+            $http.post(Routing.generate('api.buyback_configuration'), $scope.configuration).then(function(data){
+            });
         };
 
 
