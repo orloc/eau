@@ -31,26 +31,43 @@ class BuybackConfiguration
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation")
+     * @JMS\Expose()
      */
     protected $corporation;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $regions;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $type;
 
     /**
-     * @ORM\Column(type="decimal", scale=2, precision=16)
+     * @ORM\Column(type="bigint", nullable=true)
+     * @JMS\Expose()
+     */
+    protected $single_item;
+
+    /**
+     * @ORM\Column(type="decimal", scale=2, precision=16, nullable=true)
+     * @JMS\Expose()
+     */
+    protected $base_markdown;
+
+    /**
+     * @ORM\Column(type="decimal", scale=2, precision=16, nullable=true)
+     * @JMS\Expose()
      */
     protected $override;
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $created_at;
 
@@ -185,5 +202,51 @@ class BuybackConfiguration
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Set single_item
+     *
+     * @param integer $singleItem
+     * @return BuybackConfiguration
+     */
+    public function setSingleItem($singleItem)
+    {
+        $this->single_item = $singleItem;
+
+        return $this;
+    }
+
+    /**
+     * Get single_item
+     *
+     * @return integer 
+     */
+    public function getSingleItem()
+    {
+        return $this->single_item;
+    }
+
+    /**
+     * Set base_markdown
+     *
+     * @param string $baseMarkdown
+     * @return BuybackConfiguration
+     */
+    public function setBaseMarkdown($baseMarkdown)
+    {
+        $this->base_markdown = $baseMarkdown;
+
+        return $this;
+    }
+
+    /**
+     * Get base_markdown
+     *
+     * @return string 
+     */
+    public function getBaseMarkdown()
+    {
+        return $this->base_markdown;
     }
 }

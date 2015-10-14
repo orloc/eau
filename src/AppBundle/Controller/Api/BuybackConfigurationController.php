@@ -43,8 +43,12 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
                     : BuybackConfiguration::TYPE_GLOBAL
             );
 
-        var_dump($config);die;
-        die;
-        //return $this->jsonResponse($json);
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($config);
+
+        $json = $this->get('serializer')->serialize($config, 'json');
+
+        return $this->jsonResponse($json);
     }
 }
