@@ -87,7 +87,7 @@
                             >
                         <div class="input-group">
                             <span class="input-group-addon">ISK</span>
-                            <input class="form-control" type="number" name="price" ng-model="configuration.override_price">
+                            <input class="form-control" type="text" name="price" ng-model="configuration.override_price">
                         </div>
                     </div>
 
@@ -97,7 +97,7 @@
             <div class="col-xs-12 existing-configurations">
                 <h3 class="text-center" ng-show="existing_configurations.length === 0"> No existing Buyback configurations Eve Averages are used for all prices.</h3>
                 <div style="width:90%; margin: 0 auto;" ng-show="existing_configurations.length > 0">
-                    <h3>Overrides</h3>
+                    <h3>Overrides <span class="small muted">Click to Edit</span></h3>
                     {{ '{{ override_edit_value}}' }}
                     <table class="table data-table table-hover table-condensed table-striped">
                         <thead>
@@ -129,7 +129,7 @@
                                     <div class="form-group" ng-show="override.type === 2">
                                         <div class="input-group">
                                             <span class="input-group-addon">ISK</span>
-                                            <input class="form-control" ng-model="override.override" type="number" ng-value="override.override">
+                                            <input class="form-control" ng-model="override.override" type="text" ng-value="override.override">
                                         </div>
                                     </div>
 

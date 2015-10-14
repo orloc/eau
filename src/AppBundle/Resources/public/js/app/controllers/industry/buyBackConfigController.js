@@ -10,6 +10,8 @@ angular.module('eveTool')
         $scope.item_list = [];
         $scope.edit_id = null;
 
+        $scope.original_existing = [];
+
         function getConfig()  {
             return {
                 corporation: null,
@@ -26,6 +28,7 @@ angular.module('eveTool')
             $scope.existing_configurations = [];
             $http.get(Routing.generate('api.buyback_configuration')).then(function(data){
                 $scope.existing_configurations = data.data;
+                $scope.original_existing = data.data;
             });
         };
 
@@ -102,13 +105,13 @@ angular.module('eveTool')
 
         $scope.update = function(item){
             $http.patch(Routing.generate('api.buyback_configuration.patch', { id: item.id }), item).then(function(data){
-                updateBuyback();
+                $scope.edit_id = null;
             });
         };
 
         $scope.closeEdit = function() {
+            $scope.existing_configurations = $scope.original_existing;
             $scope.edit_id = null;
-            updateBuyback();
         };
 
     }]);
