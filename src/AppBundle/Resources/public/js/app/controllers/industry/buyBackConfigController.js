@@ -64,12 +64,14 @@ angular.module('eveTool')
             };
 
             if ($scope.regions.length){
-                if (typeof ids != 'undefined' && ids.length > 1){
-                    angular.forEach(ids, function(id){
-                        names += getRegion(id).regionName+", ";
-                    });
-                } else {
-                    names = getRegion(ids[0]).regionName;
+                if (typeof ids != 'undefined'){
+                    if (ids.length > 1){
+                        angular.forEach(ids, function(id){
+                            names += getRegion(id).regionName+", ";
+                        });
+                    } else {
+                        names = getRegion(ids[0]).regionName;
+                    }
                 }
             }
 
