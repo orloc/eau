@@ -87,16 +87,47 @@
                             >
                         <div class="input-group">
                             <span class="input-group-addon">ISK</span>
-                            <input required class="form-control" type="number" name="price" ng-model="configuration.override_price">
+                            <input class="form-control" type="number" name="price" ng-model="configuration.override_price">
                         </div>
                     </div>
 
-                    <button ng-show="configuration.override_price !== null" type="submit" class="btn btn-block">Add Override</button>
+                    <button ng-show="configuration.override_price !== null || configuration.base_markdown !== null" type="submit" class="btn btn-block">Add Override</button>
                 </form>
             </div>
             <div class="col-xs-12 existing-configurations">
                 <h3 class="text-center" ng-show="existing_configurations.length === 0"> No existing Buyback configurations Eve Averages are used for all prices.</h3>
-
+                <div style="width:90%; margin: 0 auto;" ng-show="existing_configurations.length > 0">
+                    <h3>Overrides</h3>
+                    <table class="table data-table table-hover table-condensed table-striped">
+                        <thead>
+                            <th>Corp</th>
+                            <th>Regions Factored</th>
+                            <th>Type</th>
+                            <th>Detail</th>
+                            <th>Delete</th>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="override in existing_configurations">
+                                <td >
+                                    {{ '{{ override.corporation.corporation_details.name }}' }}
+                                </td>
+                                <td>{{ '{{ getRegionNames(override.regions) }}' }}</td>
+                                <td>{{ '{{ getType(override.type) }}' }}</td>
+                                <td>
+                                    <span ng-if="override.type == 1 ">
+                                        {{ '{{ getDetail(override) | number:2 }}' }} %
+                                    </span>
+                                    <span ng-if="override.type == 2">
+                                        {{ '{{ getDetail(override) }}' }}
+                                        <br>
+                                        {{ '{{ override.override | currency:"ISK" }}' }}
+                                    </span>
+                                </td>
+                                <td><a href=""><i class="fa fa-times text-danger"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

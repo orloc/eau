@@ -15,6 +15,23 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
 
     /**
      * @Route("/buyback_configuration", name="api.buyback_configuration", options={"expose"=true})
+     * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
+     */
+    public function getAllAction(Request $request)
+    {
+
+        $configs = $this->getDoctrine()
+            ->getRepository('AppBundle:BuybackConfiguration')
+            ->findAll();
+
+        $json = $this->get('serializer')->serialize($configs, 'json');
+
+        return $this->jsonResponse($json);
+    }
+
+    /**
+     * @Route("/buyback_configuration", name="api.buyback_configuration.new", options={"expose"=true})
      * @Method("POST")
      * @Secure(roles="ROLE_ADMIN")
      */
@@ -51,6 +68,8 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($config);
+
+        $em->flush();
 
         $json = $this->get('serializer')->serialize($config, 'json');
 
