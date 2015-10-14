@@ -8,6 +8,7 @@ angular.module('eveTool')
         $scope.regions = [];
         $scope.corporations = [];
         $scope.item_list = [];
+        $scope.edit_id = null;
 
         function getConfig()  {
             return {
@@ -21,9 +22,14 @@ angular.module('eveTool')
         }
 
 
-        $http.get(Routing.generate('api.buyback_configuration')).then(function(data){
-            $scope.existing_configurations = data.data;
-        });
+        var updateBuyback = function(){
+            $scope.existing_configurations = [];
+            $http.get(Routing.generate('api.buyback_configuration')).then(function(data){
+                $scope.existing_configurations = data.data;
+            });
+        };
+
+        updateBuyback();
 
         $http.get(Routing.generate('api.regions')).then(function(data){
             $scope.regions = data.data;
@@ -86,8 +92,23 @@ angular.module('eveTool')
                 } else {
                     return item.base_markdown;
                 }
-
             }
+        };
+
+        $scope.toggleEdit = function(item){
+            $scope.edit_id = item.id;
+
+        };
+
+        $scope.update = function(item){
+            $http.patch(Routing.generate('api.buyback_configuration.patch', { id: item.id }), item).then(function(data){
+                updateBuyback();
+            });
+        };
+
+        $scope.closeEdit = function() {
+            $scope.edit_id = null;
+            updateBuyback();
         };
 
     }]);

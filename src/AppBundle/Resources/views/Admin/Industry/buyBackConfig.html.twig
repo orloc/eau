@@ -98,6 +98,7 @@
                 <h3 class="text-center" ng-show="existing_configurations.length === 0"> No existing Buyback configurations Eve Averages are used for all prices.</h3>
                 <div style="width:90%; margin: 0 auto;" ng-show="existing_configurations.length > 0">
                     <h3>Overrides</h3>
+                    {{ '{{ override_edit_value}}' }}
                     <table class="table data-table table-hover table-condensed table-striped">
                         <thead>
                             <th>Corp</th>
@@ -107,13 +108,13 @@
                             <th>Delete</th>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="override in existing_configurations">
-                                <td >
+                            <tr ng-repeat="override in existing_configurations" >
+                                <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">
                                     {{ '{{ override.corporation.corporation_details.name }}' }}
                                 </td>
-                                <td>{{ '{{ getRegionNames(override.regions) }}' }}</td>
-                                <td>{{ '{{ getType(override.type) }}' }}</td>
-                                <td>
+                                <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">{{ '{{ getRegionNames(override.regions) }}' }}</td>
+                                <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">{{ '{{ getType(override.type) }}' }}</td>
+                                <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">
                                     <span ng-if="override.type == 1 ">
                                         {{ '{{ getDetail(override) | number:2 }}' }} %
                                     </span>
@@ -123,7 +124,31 @@
                                         {{ '{{ override.override | currency:"ISK" }}' }}
                                     </span>
                                 </td>
-                                <td><a href=""><i class="fa fa-times text-danger"></i></a></td>
+                                <td ng-show="edit_id !== override.id"><a href=""><i class="fa fa-times text-danger"></i></a></td>
+                                <td colspan="3" ng-show="edit_id == override.id">
+                                    <div class="form-group" ng-show="override.type === 2">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">ISK</span>
+                                            <input class="form-control" ng-model="override.override" type="number" ng-value="override.override">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-show="override.type === 1">
+                                        <div class="input-group">
+                                            <input class="form-control" ng-model="override.base_markdown" type="number" ng-value="override.base_markdown">
+                                            <span class="input-group-addon">%</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td ng-show="edit_id == override.id">
+                                    {{ '{{ getDetail(override) }}' }}
+                                </td>
+                                <td width="125px" class="text-center" ng-show="edit_id == override.id">
+                                    <div class="btn-group">
+                                        <button ng-click="update(override)" class="btn btn-info btn-sm">Update</button>
+                                        <button ng-click="closeEdit()" class="btn btn-danger btn-sm">Close</button>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

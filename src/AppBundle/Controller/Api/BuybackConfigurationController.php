@@ -7,6 +7,7 @@ use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\BuybackConfiguration;
 use AppBundle\Entity\Corporation;
 use JMS\SecurityExtraBundle\Annotation\Secure;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -39,7 +40,6 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
     {
 
         $content = $request->request->all();
-
         $config = new BuybackConfiguration();
 
         $corp = $this->getDoctrine()
@@ -51,8 +51,48 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
             return $this->jsonResponse(['error' => 'Not found', 'code' => 400], 400);
         }
 
+        $config->setCorporation($corp);
+        $this->updateConfig($content. $config);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($config);
+
+        $em->flush();
+
+        $json = $this->get('serializer')->serialize($config, 'json');
+
+        return $this->jsonResponse($json);
+    }
+
+    /**
+     * @Route("/buyback_configuration/{id}", name="api.buyback_configuration.patch", options={"expose"=true})
+     * @ParamConverter(name="config", class="AppBundle:BuybackConfiguration")
+     * @Method("PATCH")
+     * @Secure(roles="ROLE_ADMIN")
+     */
+    public function patchAction(Request $request, BuybackConfiguration $config)
+    {
+
+        $content = $request->request->all();
+
+        if ($config->getType() == BuybackConfiguration::TYPE_GLOBAL){
+            $config->setBaseMarkdown($content['base_markdown']);
+        } elseif ($config->getType() == BuybackConfiguration::TYPE_SINGLE){
+            $config->setOverride($content['override']);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($config);
+
+        $em->flush();
+
+        $json = $this->get('serializer')->serialize($config, 'json');
+
+        return $this->jsonResponse($json);
+    }
+
+    protected function updateConfig(array $content, BuybackConfiguration $config){
         $config->setOverride($content['override_price'])
-            ->setCorporation($corp)
             ->setRegions($content['base_regions'])
             ->setSingleItem($content['search_item'] != null
                 ? (int)$content['search_item']
@@ -66,13 +106,6 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
                     : BuybackConfiguration::TYPE_GLOBAL
             );
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($config);
-
-        $em->flush();
-
-        $json = $this->get('serializer')->serialize($config, 'json');
-
-        return $this->jsonResponse($json);
+        return;
     }
 }
