@@ -78,6 +78,11 @@ class Corporation
     protected $corporation_members;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\BuybackConfiguration", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $buyback_configurations;
+
+    /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
     protected $created_by;
@@ -107,6 +112,7 @@ class Corporation
         $this->api_credentials = new ArrayCollection();
         $this->starbases = new ArrayCollection();
         $this->asset_groups = new ArrayCollection();
+        $this->buyback_configurations = new ArrayCollection();
         $this->market_order_groups = new ArrayCollection();
         $this->corporation_members = new ArrayCollection();
     }
@@ -505,5 +511,38 @@ class Corporation
     public function getCorporationMembers()
     {
         return $this->corporation_members;
+    }
+
+    /**
+     * Add buyback_configurations
+     *
+     * @param \AppBundle\Entity\BuybackConfiguration $buybackConfigurations
+     * @return Corporation
+     */
+    public function addBuybackConfiguration(\AppBundle\Entity\BuybackConfiguration $buybackConfigurations)
+    {
+        $this->buyback_configurations[] = $buybackConfigurations;
+
+        return $this;
+    }
+
+    /**
+     * Remove buyback_configurations
+     *
+     * @param \AppBundle\Entity\BuybackConfiguration $buybackConfigurations
+     */
+    public function removeBuybackConfiguration(\AppBundle\Entity\BuybackConfiguration $buybackConfigurations)
+    {
+        $this->buyback_configurations->removeElement($buybackConfigurations);
+    }
+
+    /**
+     * Get buyback_configurations
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBuybackConfigurations()
+    {
+        return $this->buyback_configurations;
     }
 }

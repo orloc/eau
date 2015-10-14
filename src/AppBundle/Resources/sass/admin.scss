@@ -43,8 +43,20 @@ a.navbar-brand {
 
 #page-wrapper {
   background-color: lighten($darkerBlack,10);
+  position: relative;
+  #page-overlay{
+    position: absolute;
+    width: 100%;
+    margin-left: -30px;
+    height: 100%;
+    z-index: 10;
+    opacity: 0.6;
+    background-color: black;
+    display: none;
+  }
   .container-fluid {
     position: relative;
+    z-index: 10;
     min-height: 900px;
     padding-bottom: 3em;
   }

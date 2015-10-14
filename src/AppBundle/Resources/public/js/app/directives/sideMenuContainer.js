@@ -51,19 +51,22 @@ angular.module('eveTool')
                             if (value){
                                 $(sideMenu.menu).animate({
                                     right: "0px"
-                                }, 300);
+                                }, 300, false);
 
                                 $('body').animate({
                                     left: "-"+width
-                                }, 300);
+                                }, 300, false);
+
+                                $('#page-overlay').fadeIn('fast');
                             } else {
                                 $(sideMenu.menu).animate({
                                     right: "-"+width
-                                }, 300);
+                                }, 300, false);
 
                                 $('body').animate({
                                     left: "0px"
-                                }, 300);
+                                }, 300, false);
+                                $('#page-overlay').fadeOut('fast');
                             }
                         }
                     }

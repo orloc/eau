@@ -62,7 +62,7 @@ class MarketOrderController extends AbstractController implements ApiControllerI
             'total_on_market' => $total_onMarket
         ];
 
-        $json = $this->get('jms_serializer')->serialize($items, 'json');
+        $json = json_encode($items);
 
         return $this->jsonResponse($json);
 

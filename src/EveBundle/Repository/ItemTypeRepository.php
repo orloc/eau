@@ -34,6 +34,15 @@ class ItemTypeRepository extends AbstractDbalRepository implements RepositoryInt
         return $stmt->fetchAll();
     }
 
+    public function findAllMarketItems(){
+        $sql = "SELECT * FROM {$this->getTableName()} WHERE marketGroupID IS NOT NULL";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
 
     public function findTypesByName(array $types = []){
         $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getTableName()} WHERE typeName IN (?)",

@@ -4,6 +4,7 @@
     <link href="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css') }}" rel="stylesheet">
     <link href="{{ asset('/bower_components/angular-chosen-localytics/chosen-spinner.css') }}" rel="stylesheet">
+    <link href="{{ asset('/bower_components/angular-bootstrap/ui-bootstrap-csp.css') }}" rel="stylesheet">
     <link href="{{ asset('/bundles/app/css/admin.css')}}" rel="stylesheet" type="text/css">
 {% endblock %}
 {% block body %}
@@ -13,6 +14,9 @@
 
     <!-- Page Content -->
     <div id="page-wrapper" >
+        {#
+        <div id="page-overlay"></div>
+        #}
         <div class="container-fluid" >
             {% block content %}
                 {% block fos_user_content %}
@@ -31,6 +35,8 @@
     {{ parent() }}
 
     <script src="{{ asset('/bower_components/angularjs/angular.js') }}"></script>
+    <script src="{{ asset('/bower_components/angular-bootstrap/ui-bootstrap.js') }}"></script>
+    <script src="{{ asset('/bower_components/angular-bootstrap/ui-bootstrap-tpls.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-ladda/dist/angular-ladda.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-messages/angular-messages.js') }}"></script>
     <script src="{{ asset('/bower_components/angular-animate/angular-animate.js') }}"></script>

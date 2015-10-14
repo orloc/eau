@@ -4,8 +4,8 @@ angular.module('eveTool', [
     'ngMessages',
     'angular-ladda',
     'ngAnimate',
+    'ui.bootstrap',
     'localytics.directives'
-
 ]);
 
 

@@ -156,5 +156,22 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         */
     }
 
+    /**
+     * @Route("/item_list", name="api.item_list", options={"expose"=true})
+     * @Method("GET")
+     * @Secure(roles="ROLE_USER")
+     */
+    public function getItemList(Request $request){
+
+        $items = $this->get('evedata.registry')
+            ->get('EveBundle:ItemType')
+            ->findAllMarketItems();
+
+        $json = json_encode($items);
+
+        return $this->jsonResponse($json);
+
+    }
+
 
 }

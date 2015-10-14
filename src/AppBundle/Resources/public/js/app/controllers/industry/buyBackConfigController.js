@@ -5,13 +5,11 @@ angular.module('eveTool')
 
         $scope.configuration = {
             corporation: null,
-            base_markdown: null,
             base_regions: [],
-            overrides: []
-        };
-
-        $scope.search = {
-            market_group : null
+            base_markdown: null,
+            search_item: null,
+            override_price: null,
+            type: null
         };
 
         $scope.existing_configurations = [];
@@ -24,20 +22,13 @@ angular.module('eveTool')
             $scope.corporations = data.data;
         });
 
-        $http.get(Routing.generate('api.marketgroups')).then(function(data){
-            $scope.market_groups = data.data;
+        $http.get(Routing.generate('api.item_list')).then(function(data){
+            $scope.item_list = data.data;
         });
 
-        $scope.addEmptyOverride = function(){
-            $scope.configuration.overrides.push(getOverride());
+        $scope.addOverride = function(){
+            console.log($scope.configuration);
         };
 
-        var getOverride = function(){
-            return {
-                itemID: null,
-                price: null,
-                override: null,
-                difference: null
-            };
-        };
+
     }]);

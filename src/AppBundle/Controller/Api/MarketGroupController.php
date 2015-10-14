@@ -28,7 +28,7 @@ class MarketGroupController extends AbstractController implements ApiControllerI
         $groups = $registry->get('EveBundle:MarketGroup')
             ->getTopLevelGroups();
 
-        $json = $this->get('jms_serializer')->serialize($groups, 'json');
+        $json = json_encode($groups);
 
         return $this->jsonResponse($json);
     }

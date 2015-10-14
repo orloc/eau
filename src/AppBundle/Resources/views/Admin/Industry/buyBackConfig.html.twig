@@ -1,34 +1,28 @@
-<side-menu-slider menu-width="950" form-context="gears" ng-cloak>
+<side-menu-slider menu-width="550" form-context="gears" ng-cloak>
     <div class="header">
         <h3>Configure Buyback</h3>
     </div>
     <div ng-controller="buyBackConfigController">
 
         <div class="row">
-            <div class="col-xs-6 existing-configurations">
-                <h3 class="text-center" ng-show="existing_configurations.length === 0"> No existing Buyback configurations Eve Averages are used for all prices.</h3>
-
-            </div>
-            <div class="col-xs-6">
+            <div class="col-xs-12">
                 <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
-                <form class="form">
+                <form name="configForm" class="form" ng-submit="addOverride()">
                     <div class="form-group">
                         <label for="region">
                             Select Corporation to apply this configuration to
                         </label>
                         <select
                                 chosen
-                                multiple
                                 class="form-control"
+                                required
                                 ng-model="configuration.corporation"
                                 ng-options="c.id as c.corporation_details.name for c in corporations"
                                 name="corporation"
                                 >
-                            <option value="">ALL</option>
                         </select>
                     </div>
-                    <div class="form-group"
-                         ng-hide="configuration.corporation === null">
+                    <div class="form-group">
                         <label for="region">
                             Select Region for Base Prices
                         </label>
@@ -36,6 +30,7 @@
                                 chosen
                                 multiple
                                 class="form-control"
+                                required
                                 ng-model="configuration.base_regions"
                                 ng-options="r.regionID as r.regionName for r in regions"
                                 name="region"
@@ -43,68 +38,65 @@
                             <option value="">Eve UNIVERSE Average</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                       value="global"
+                                       ng-model="configuration.type">
 
+                                Global Rule
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                       value="item"
+                                       ng-model="configuration.type">
+
+                                Single Item rule
+                            </label>
+                        </div>
+                    </div>
                     <div class="form-group"
-                         ng-hide="configuration.corporation === null || configuration.base_regions.length === 0">
+                         ng-hide="configuration.type != 'global'">
                         <label for="base_markdown">
                             This markdown is applied to ALL items that do NOT have specific price overrides.
                         </label>
-                        <div class="input-group"
-                             ng-hide="configuration.corporation === null || configuration.base_regions.length === 0">
+                        <div class="input-group">
                             <input name="base_markdown" class="form-control" type="number" ng-model="configuration.base_markdown">
                             <span class="input-group-addon">
                                 %
                             </span>
                         </div>
                     </div>
-                    <div class="row"
-                         ng-hide="configuration.corporation === null || configuration.base_regions.length === 0 || configuration.base_markdown === null">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="marketgroup">Market Group</label>
-                                <select
-                                        name="marketgroup"
-                                        chosen
-                                        ng-model="search.market_group"
-                                        ng-options="m.marketGroupID as m.marketGroupName for m in market_groups"
-                                        class="form-control">
-                                    <option value="">Pick a group</option>
-
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6" ng-hide="search.market_group === null">
-                            <div class="form-group">
-                                <label for="itemChoice">Item</label>
-                                <div class="input-group">
-                                    <select
-                                            chosen
-                                            name="itemChoice"
-                                            ng-model="search.item_choice" class="form-control">
-                                        <option value="">Pick an item</option>
-
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="form-group"
+                         ng-hide="configuration.type != 'item'">
+                        <label for="search">
+                            Search
+                        </label>
+                        <select type="text"
+                               ng-model="configuration.search_item"
+                               ng-options="item.typeID as item.typeName for item in item_list"
+                               chosen
+                               class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group"
+                         ng-hide="configuration.search_item === null || configuration.type != 'item'"
+                            >
+                        <div class="input-group">
+                            <span class="input-group-addon">ISK</span>
+                            <input required class="form-control" type="number" name="price" ng-model="configuration.override_price">
                         </div>
                     </div>
-                    <table class="table" ng-show="configuration.overrides.length > 0">
-                        <thead>
-                        <th>Item</th>
-                        <th>Base</th>
-                        <th>Override</th>
-                        <th>Difference</th>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="o in configuration.overrides">
-                            <td>{{ '{{ o.itemID }}' }}</td>
-                            <td>{{ '{{ o.price | currency:"ISK"}}' }}</td>
-                            <td>{{ '{{ o.override }}' }}</td>
-                            <td>{{ '{{ o.difference }}' }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+
+                    <button ng-show="configuration.override_price !== null" type="submit" class="btn btn-block">Add Override</button>
                 </form>
+            </div>
+            <div class="col-xs-12 existing-configurations">
+                <h3 class="text-center" ng-show="existing_configurations.length === 0"> No existing Buyback configurations Eve Averages are used for all prices.</h3>
+
             </div>
         </div>
     </div>
