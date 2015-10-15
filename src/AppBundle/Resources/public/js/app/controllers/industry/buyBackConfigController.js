@@ -80,13 +80,19 @@ angular.module('eveTool')
 
 
         $scope.getType = function(type){
-            return parseInt(type) === 1
-             ? 'Global'
-             : 'Specific';
+            var t = parseInt(type);
+
+            switch (t){
+                case 1:
+                    return 'Global';
+                case 2:
+                    return 'Specific';
+                case 3:
+                    return 'Base Price';
+            }
         };
 
         $scope.getDetail = function(item){
-
             if ($scope.item_list.length > 0){
                 if (item.type == 2){
                     var foundItem = _.find($scope.item_list, function(d){
@@ -94,15 +100,18 @@ angular.module('eveTool')
                     });
 
                     return  foundItem.typeName;
-                } else {
+                } else if(item.type == 1) {
                     return item.base_markdown;
+                } else if (item.type == 3){
+                    return $scope.getRegionNames(item.regions);
                 }
             }
         };
 
         $scope.toggleEdit = function(item){
-            $scope.edit_id = item.id;
-
+            if (item.type !== 3){
+                $scope.edit_id = item.id;
+            }
         };
 
         $scope.update = function(item){

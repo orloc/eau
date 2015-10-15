@@ -18,7 +18,8 @@ class BuybackConfiguration
 {
 
     const TYPE_GLOBAL = 1,
-        TYPE_SINGLE = 2;
+        TYPE_SINGLE = 2,
+        TYPE_REGION = 3;
 
     /**
      * @ORM\Id
@@ -35,7 +36,7 @@ class BuybackConfiguration
     protected $corporation;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      * @JMS\Expose()
      */
     protected $regions;

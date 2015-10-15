@@ -54,18 +54,19 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
         $config->setCorporation($corp);
 
         $config->setOverride($content['override_price'])
-            ->setRegions($content['base_regions'])
+            ->setRegions(count($content['base_regions']) ? $content['base_regions'] : null)
             ->setSingleItem($content['search_item'] != null
                 ? (int)$content['search_item']
                 : null)
             ->setBaseMarkdown($content['base_markdown'] != null
                 ? $content['base_markdown']
                 : null)
-            ->setType(
-                $content['type'] === 'item'
-                    ? BuybackConfiguration::TYPE_SINGLE
-                    : BuybackConfiguration::TYPE_GLOBAL
-            );
+            ->setType($content['type'] === 'item'
+                    ?  BuybackConfiguration::TYPE_SINGLE
+                    : ($content['type'] === 'global'
+                        ? BuybackConfiguration::TYPE_GLOBAL
+                        : BuybackConfiguration::TYPE_REGION
+                ));
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($config);
@@ -92,6 +93,8 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
             $config->setBaseMarkdown($content['base_markdown']);
         } elseif ($config->getType() == BuybackConfiguration::TYPE_SINGLE){
             $config->setOverride($content['override']);
+        } elseif ($config->getType() == BuybackConfiguration::TYPE_REGION){
+            $config->setRegions($content['base_regions']);
         }
 
         $em = $this->getDoctrine()->getManager();

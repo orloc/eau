@@ -10,7 +10,7 @@
                 <form name="configForm" class="form" ng-submit="addOverride()">
                     <div class="form-group">
                         <label for="region">
-                            Select Corporation to apply this configuration to
+                            select corporation to apply this configuration to
                         </label>
                         <select
                                 chosen
@@ -20,22 +20,6 @@
                                 ng-options="c.id as c.corporation_details.name for c in corporations"
                                 name="corporation"
                                 >
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="region">
-                            Select Region for Base Prices
-                        </label>
-                        <select
-                                chosen
-                                multiple
-                                class="form-control"
-                                required
-                                ng-model="configuration.base_regions"
-                                ng-options="r.regionID as r.regionName for r in regions"
-                                name="region"
-                                >
-                            <option value="">Eve UNIVERSE Average</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -57,6 +41,15 @@
                                 Single Item rule
                             </label>
                         </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                       value="region"
+                                       ng-model="configuration.type">
+
+                                Base Price Rule
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group"
                          ng-hide="configuration.type != 'global'">
@@ -69,6 +62,23 @@
                                 %
                             </span>
                         </div>
+                    </div>
+                    <div class="form-group"
+                         ng-hide="configuration.type != 'region'">
+                        <label for="region">
+                            Select Region for Base Prices
+                        </label>
+                        <select
+                                chosen
+                                multiple
+                                class="form-control"
+                                required
+                                ng-model="configuration.base_regions"
+                                ng-options="r.regionID as r.regionName for r in regions"
+                                name="region"
+                                >
+                            <option value="">Eve UNIVERSE Average</option>
+                        </select>
                     </div>
                     <div class="form-group"
                          ng-hide="configuration.type != 'item'">
@@ -91,7 +101,7 @@
                         </div>
                     </div>
 
-                    <button ng-show="configuration.override_price !== null || configuration.base_markdown !== null" type="submit" class="btn btn-block">Add Override</button>
+                    <button ng-show="configuration.override_price !== null || configuration.base_markdown !== null || configuration.base_regions.length != 0" type="submit" class="btn btn-block">Add Override</button>
                 </form>
             </div>
             <div class="col-xs-12 existing-configurations">
@@ -102,7 +112,6 @@
                     <table class="table data-table table-hover table-condensed table-striped">
                         <thead>
                             <th>Corp</th>
-                            <th>Regions Factored</th>
                             <th>Type</th>
                             <th>Detail</th>
                             <th>Delete</th>
@@ -112,20 +121,21 @@
                                 <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">
                                     {{ '{{ override.corporation.corporation_details.name }}' }}
                                 </td>
-                                <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">{{ '{{ getRegionNames(override.regions) }}' }}</td>
                                 <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">{{ '{{ getType(override.type) }}' }}</td>
                                 <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">
                                     <span ng-if="override.type == 1 ">
                                         {{ '{{ getDetail(override) | number:2 }}' }} %
                                     </span>
-                                    <span ng-if="override.type == 2">
+                                    <span ng-if="override.type == 2 || override.type == 3">
                                         {{ '{{ getDetail(override) }}' }}
                                         <br>
-                                        {{ '{{ override.override | currency:"ISK" }}' }}
+                                        <span ng-if="override.type == 2">
+                                            {{ '{{ override.override | currency:"ISK" }}' }}
+                                        </span>
                                     </span>
                                 </td>
                                 <td ng-show="edit_id !== override.id"><a href=""><i class="fa fa-times text-danger"></i></a></td>
-                                <td colspan="3" ng-show="edit_id == override.id">
+                                <td colspan="2" ng-show="edit_id == override.id">
                                     <div class="form-group" ng-show="override.type === 2">
                                         <div class="input-group">
                                             <span class="input-group-addon">ISK</span>
@@ -143,7 +153,7 @@
                                 <td ng-show="edit_id == override.id">
                                     {{ '{{ getDetail(override) }}' }}
                                 </td>
-                                <td width="125px" class="text-center" ng-show="edit_id == override.id">
+                                <td  width="125px" class="text-center" ng-show="edit_id == override.id">
                                     <div class="btn-group">
                                         <button ng-click="update(override)" class="btn btn-info btn-sm">Update</button>
                                         <button ng-click="closeEdit()" class="btn btn-danger btn-sm">Close</button>
