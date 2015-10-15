@@ -15,7 +15,6 @@
                         <select
                                 chosen
                                 class="form-control"
-                                required
                                 ng-model="configuration.corporation"
                                 ng-options="c.id as c.corporation_details.name for c in corporations"
                                 name="corporation"
@@ -72,7 +71,6 @@
                                 chosen
                                 multiple
                                 class="form-control"
-                                required
                                 ng-model="configuration.base_regions"
                                 ng-options="r.regionID as r.regionName for r in regions"
                                 name="region"
@@ -117,7 +115,7 @@
                             <th>Delete</th>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="override in existing_configurations" >
+                            <tr ng-repeat="override in existing_configurations" ng-show="override.deleted !== true">
                                 <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">
                                     {{ '{{ override.corporation.corporation_details.name }}' }}
                                 </td>
@@ -134,7 +132,7 @@
                                         </span>
                                     </span>
                                 </td>
-                                <td ng-show="edit_id !== override.id"><a href=""><i class="fa fa-times text-danger"></i></a></td>
+                                <td ng-show="edit_id !== override.id"><a ng-click="delete(override)" ><i class="fa fa-times text-danger"></i></a></td>
                                 <td colspan="2" ng-show="edit_id == override.id">
                                     <div class="form-group" ng-show="override.type === 2">
                                         <div class="input-group">

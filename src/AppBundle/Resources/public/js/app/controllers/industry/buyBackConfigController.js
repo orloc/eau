@@ -120,6 +120,16 @@ angular.module('eveTool')
             });
         };
 
+        $scope.delete = function(item){
+            var confirm =window.confirm('Are you sure you wish to delete this item?');
+
+            if (confirm){
+                $http.delete(Routing.generate('api.buyback_configuration.delete', { id: item.id })).then(function(data){
+                    item.deleted = true;
+                });
+            }
+        };
+
         $scope.closeEdit = function() {
             $scope.existing_configurations = $scope.original_existing;
             $scope.edit_id = null;

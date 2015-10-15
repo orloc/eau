@@ -106,4 +106,22 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
 
         return $this->jsonResponse($json);
     }
+
+    /**
+     * @Route("/buyback_configuration/{id}", name="api.buyback_configuration.delete", options={"expose"=true})
+     * @ParamConverter(name="config", class="AppBundle:BuybackConfiguration")
+     * @Method("DELETE")
+     * @Secure(roles="ROLE_ADMIN")
+     */
+    public function deleteAction(Request $request, BuybackConfiguration $config){
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($config);
+        $em->flush();
+
+        $json = $this->get('serializer')->serialize($config, 'json');
+
+        return $this->jsonResponse($json);
+
+    }
 }
