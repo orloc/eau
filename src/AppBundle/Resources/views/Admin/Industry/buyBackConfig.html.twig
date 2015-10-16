@@ -107,14 +107,15 @@
                 <div style="width:90%; margin: 0 auto;" ng-show="existing_configurations.length > 0">
                     <h3>Overrides <span class="small muted">Click to Edit</span></h3>
                     {{ '{{ override_edit_value}}' }}
-                    <table class="table data-table table-hover table-condensed table-striped">
-                        <thead>
+                    <div class="table-responsive">
+                        <table class="table data-table table-hover table-condensed table-striped">
+                            <thead>
                             <th>Corp</th>
                             <th>Type</th>
                             <th>Detail</th>
                             <th>Delete</th>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             <tr ng-repeat="override in existing_configurations" ng-show="override.deleted !== true">
                                 <td ng-click="toggleEdit(override)" ng-show="edit_id !== override.id">
                                     {{ '{{ override.corporation.corporation_details.name }}' }}
@@ -158,8 +159,9 @@
                                     </div>
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

@@ -3,8 +3,6 @@
 namespace EveBundle\Command;
 
 use EveBundle\Entity\AveragePrice;
-use EveBundle\Entity\Region;
-
 use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
