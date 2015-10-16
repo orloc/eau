@@ -2,6 +2,7 @@
 
 namespace EveBundle\Command;
 
+use EveBundle\Entity\ItemPrice;
 use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -36,6 +37,8 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $progress = new ProgressBar($output, count($regions) * count($items));
         $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> %message% </info>');
 
+        $itemPriceRepo = $em->getRepository('EveBundle:ItemPrice');
+
         foreach ($regions as $r){
             $progress->setMessage("Processing Region {$r['regionName']}");
             foreach ($items as $i){
@@ -44,11 +47,26 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
                 $obj = json_decode($response->getBody()->getContents(), true);
 
-                foreach ($obj['items'] as $item){
-                    $this->makePriceData($item);
+                $processableItems = array_slice(array_reverse($obj['items']), 0, 1);
+
+
+                foreach ($processableItems as $idx => $item){
+                    /*
+                    $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
+                    if ($exists instanceof ItemPrice){
+
+                    } else {
+                    */
+                    $p = $this->makePriceData($item, $r, $i);
+
+                    $em->persist($p);
+
+
                 }
+
                 $progress->advance();
             }
+            $em->flush();
         }
 
         $progress->finish();
@@ -56,8 +74,21 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
     }
 
-    protected function makePriceData(array $data){
-        var_dump($data);die;
+    protected function makePriceData(array $data, array $region, array $item){
+        $price = new ItemPrice();
+
+        $price->setTypeId($item['typeID'])
+            ->setTypeName($item['typeName'])
+            ->setRegionId($region['regionID'])
+            ->setRegionName($region['regionName'])
+            ->setVolume($data['volume'])
+            ->setOrderCount($data['orderCount'])
+            ->setHighPrice($data['highPrice'])
+            ->setLowPrice($data['lowPrice'])
+            ->setAvgPrice($data['avgPrice'])
+            ->setDate(new \DateTime($data['date']));
+
+        return $price;
     }
 
     protected function getCrestUrl($region, $item){

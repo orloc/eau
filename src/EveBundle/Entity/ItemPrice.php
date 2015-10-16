@@ -5,8 +5,9 @@ namespace EveBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="EveBundle\Repository\AveragePriceRepository")
- * @ORM\Table(name="item_prices")
+ * @ORM\Entity(repositoryClass="EveBundle\Repository\ItemPriceRepository")
+ * @ORM\Table(name="item_prices", uniqueConstraints={
+    @ORM\UniqueConstraint(name="item_price_date_idx", columns={"region_id", "type_id", "date"})})
  * @package AppBundle\Entity
  */
 class ItemPrice
