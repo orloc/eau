@@ -23,6 +23,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
     {
 
         $registry = $this->getContainer()->get('doctrine');
+        $log = $this->getContainer()->get('logger');
         $em = $registry->getManager('eve_data');
 
         $eveRegistry = $this->getContainer()->get('evedata.registry');
@@ -52,6 +53,9 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
         $itemPriceRepo = $em->getRepository('EveBundle:ItemPrice');
 
+
+        $succeded = 0;
+        $failed = 0;
         foreach ($neededRegions as $r){
             $r = $eveRegistry->get('EveBundle:Region')->getRegionById($r);
             $progress->setMessage("Processing Region {$r['regionName']}");
@@ -63,14 +67,19 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                     $processableItems = array_slice(array_reverse($obj['items']), 0, 1);
 
                     foreach ($processableItems as $idx => $item){
-                        $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
-                        if (!$exists instanceof ItemPrice){
+                        //$exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
+                        //if (!$exists instanceof ItemPrice){
                             $p = $this->makePriceData($item, $r, $i);
                             $em->persist($p);
-                        }
+                        //}
                     }
+
+                    $succeded++;
                 }  catch (\Exception $e){
-                    echo $e->getMessage();
+
+                    $log->addError(sprintf("Failed request for : %s with %s", $url, $e->getMessage()));
+
+                    $failed++;
                 }
 
                 $progress->advance();
