@@ -57,18 +57,22 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             $progress->setMessage("Processing Region {$r['regionName']}");
             foreach ($items as $i){
                 $url = $this->getCrestUrl($r['regionID'], $i['typeID']);
-                $response = $client->get($url);
+                try {
+                    $response = $client->get($url);
+                    $obj = json_decode($response->getBody()->getContents(), true);
+                    $processableItems = array_slice(array_reverse($obj['items']), 0, 1);
 
-                $obj = json_decode($response->getBody()->getContents(), true);
-                $processableItems = array_slice(array_reverse($obj['items']), 0, 1);
-
-                foreach ($processableItems as $idx => $item){
-                    $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
-                    if (!$exists instanceof ItemPrice){
-                        $p = $this->makePriceData($item, $r, $i);
-                        $em->persist($p);
+                    foreach ($processableItems as $idx => $item){
+                        $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
+                        if (!$exists instanceof ItemPrice){
+                            $p = $this->makePriceData($item, $r, $i);
+                            $em->persist($p);
+                        }
                     }
+                }  catch (\Exception $e){
+                    echo $e->getMessage();
                 }
+
                 $progress->advance();
             }
             $em->flush();
