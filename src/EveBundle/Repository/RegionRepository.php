@@ -14,7 +14,7 @@ class RegionRepository extends AbstractDbalRepository implements RepositoryInter
 
     public function getRegionById($regionId){
 
-        $sql = "SELECT regionName as region FROM {$this->getTableName()} WHERE regionID = :id ";
+        $sql = "SELECT * FROM {$this->getTableName()} WHERE regionID = :id ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $regionId]);

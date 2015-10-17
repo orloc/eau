@@ -2,6 +2,7 @@
 
 namespace EveBundle\Command;
 
+use AppBundle\Entity\BuybackConfiguration;
 use EveBundle\Entity\ItemPrice;
 use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -30,40 +31,44 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             'base_uri' => 'https://public-crest.eveonline.com/'
         ]);
 
-        $regions = $eveRegistry->get('EveBundle:Region')->getAll();
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
 
-        $progress = new ProgressBar($output, count($regions) * count($items));
+        // regions we actually need
+        $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
+            ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
+
+
+        $neededRegions = array_reduce($configs, function($carry, $value){
+            if ($carry === null){
+                return $value->getRegions();
+            }
+            return array_merge($carry, $value->getRegions());
+        });
+
+
+        $progress = new ProgressBar($output, count($neededRegions) * count($items));
         $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> %message% </info>');
 
         $itemPriceRepo = $em->getRepository('EveBundle:ItemPrice');
 
-        foreach ($regions as $r){
+        foreach ($neededRegions as $r){
+            $r = $eveRegistry->get('EveBundle:Region')->getRegionById($r);
             $progress->setMessage("Processing Region {$r['regionName']}");
             foreach ($items as $i){
                 $url = $this->getCrestUrl($r['regionID'], $i['typeID']);
                 $response = $client->get($url);
 
                 $obj = json_decode($response->getBody()->getContents(), true);
-
                 $processableItems = array_slice(array_reverse($obj['items']), 0, 1);
 
-
                 foreach ($processableItems as $idx => $item){
-                    /*
                     $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
-                    if ($exists instanceof ItemPrice){
-
-                    } else {
-                    */
-                    $p = $this->makePriceData($item, $r, $i);
-
-                    $em->persist($p);
-
-
+                    if (!$exists instanceof ItemPrice){
+                        $p = $this->makePriceData($item, $r, $i);
+                        $em->persist($p);
+                    }
                 }
-
                 $progress->advance();
             }
             $em->flush();
