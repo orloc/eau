@@ -40,7 +40,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
 
-
         $neededRegions = array_reduce($configs, function($carry, $value){
             if ($carry === null){
                 return $value->getRegions();
@@ -48,15 +47,10 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             return array_merge($carry, $value->getRegions());
         });
 
-
         $progress = new ProgressBar($output, count($neededRegions) * count($items));
         $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> %message% </info>');
 
         $itemPriceRepo = $em->getRepository('EveBundle:ItemPrice');
-
-        $weeklyCheck = Carbon::create();
-        $weeklyCheck->addWeek();
-
 
         $succeded = 0;
         $failed = 0;
@@ -75,7 +69,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                         if (!$exists instanceof ItemPrice){
                             $p = $this->makePriceData($item, $r, $i);
                             $em->persist($p);
-                            $log->addDebug("Adding item {$item['typeName']}");
+                            $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
                         } else{
                             $log->addDebug("Skiping {$exists->getTypeName()} in {$exists->getRegionName()}");
                         }
