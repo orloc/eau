@@ -125,9 +125,12 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $names = array_map(function($d){ return $d['name']; }, $data);
 
-        $items = $this->get('evedata.registry')
-            ->get('EveBundle:ItemType')
+        $eveReg = $this->get('evedata.registry');
+        $items = $eveReg->get('EveBundle:ItemType')
             ->findTypesByName($names);
+
+        $configs = $this->getDoctrine()->getRepository('AppBundle:BuybackConfiguration')
+            ->findAll();
 
         $assetManager = $this->get('app.asset.manager');
         $items = $assetManager->updatePrices($items);

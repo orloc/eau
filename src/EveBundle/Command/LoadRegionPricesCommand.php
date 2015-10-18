@@ -3,6 +3,7 @@
 namespace EveBundle\Command;
 
 use AppBundle\Entity\BuybackConfiguration;
+use Carbon\Carbon;
 use EveBundle\Entity\ItemPrice;
 use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -53,6 +54,9 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
         $itemPriceRepo = $em->getRepository('EveBundle:ItemPrice');
 
+        $weeklyCheck = Carbon::create();
+        $weeklyCheck->addWeek();
+
 
         $succeded = 0;
         $failed = 0;
@@ -64,14 +68,17 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                 try {
                     $response = $client->get($url);
                     $obj = json_decode($response->getBody()->getContents(), true);
-                    $processableItems = array_slice(array_reverse($obj['items']), 0, 1);
+                    $processableItems = array_slice(array_reverse($obj['items']), 0, 5);
 
                     foreach ($processableItems as $idx => $item){
-                        //$exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
-                        //if (!$exists instanceof ItemPrice){
+                        $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
+                        if (!$exists instanceof ItemPrice){
                             $p = $this->makePriceData($item, $r, $i);
                             $em->persist($p);
-                        //}
+                            $log->addDebug("Adding item {$item['typeName']}");
+                        } else{
+                            $log->addDebug("Skiping {$exists->getTypeName()} in {$exists->getRegionName()}");
+                        }
                     }
 
                     $succeded++;
@@ -84,11 +91,14 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
                 $progress->advance();
             }
-            $em->flush();
         }
+        $em->flush();
+
+        $em->clear();
 
         $progress->finish();
 
+        $output->writeln(sprintf("%s Succeded, %s failed - check logs for more information.", $succeded, $failed));
 
     }
 
