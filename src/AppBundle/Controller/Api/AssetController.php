@@ -120,7 +120,6 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      */
     public function getBuybackPrice(Request $request){
 
-        $region_id = $request->query->get('region', null);
         $data = $request->request->all();
 
         $names = array_map(function($d){ return $d['name']; }, $data);
@@ -131,6 +130,9 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $configs = $this->getDoctrine()->getRepository('AppBundle:BuybackConfiguration')
             ->findAll();
+
+        $user = $this->getUser();
+        var_dump($configs);die;
 
         $assetManager = $this->get('app.asset.manager');
         $items = $assetManager->updatePrices($items);

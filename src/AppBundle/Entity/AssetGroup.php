@@ -35,6 +35,8 @@ class AssetGroup
      */
     protected $corporation;
 
+    protected $asset_sum;
+
     /**
      * @ORM\Column(type="datetime")
      */

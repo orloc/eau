@@ -8,10 +8,18 @@ angular.module('eveTool')
                 $http.get(Routing.generate('api.server.status')).then(function(data){
                     scope.server_status = data.data;
                 });
+
+                var working = true;
                 $interval(function(){
-                    $http.get(Routing.generate('api.server.status')).then(function(data){
-                        scope.server_status = data.data;
-                    });
+                    if (working) {
+                        $http.get(Routing.generate('api.server.status')).then(function(data){
+                            scope.server_status = data.data;
+                        },
+                        function(data){
+                            console.log(data);
+                            working = false;
+                        });
+                    }
                 }, 1000*60);
             },
             templateUrl: Routing.generate('template.serverstatus')

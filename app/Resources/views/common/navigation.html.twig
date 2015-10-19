@@ -35,6 +35,9 @@
                 <li>
                     <a href="{{ path('dashboard') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                 </li>
+                <li>
+                    <a href="{{ path('characters') }}"><i class="fa fa-group fa-fw"></i> Characters</a>
+                </li>
                 {%  if is_granted('ROLE_ADMIN') %}
                 <li>
                     <a href="{{ path('user') }}"><i class="fa fa-user fa-fw"></i> Users</a>
