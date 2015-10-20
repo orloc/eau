@@ -18,6 +18,7 @@
         <div id="page-overlay"></div>
         #}
         <div class="container-fluid" >
+            {%  include ':common:flashes.html.twig' %}
             {% block content %}
                 {% block fos_user_content %}
                 {% endblock fos_user_content %}
