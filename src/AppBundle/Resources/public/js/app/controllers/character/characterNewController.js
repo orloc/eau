@@ -7,9 +7,9 @@ angular.module('eveTool')
 
         $scope.submit = function(){
             $scope.submitLoading = true;
-            $http.post(Routing.generate('api.character_create'), $scope.newUser).then(function(data){
+            $http.post(Routing.generate('api.character_create'), $scope.newCharacter).then(function(data){
                 $scope.submitLoading = false;
-                $scope.newUser = {};
+                $scope.newCharacter = {};
                 $scope.errors = [];
 
                 dataDispatcher.addEvent('update_list', data.data);

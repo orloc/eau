@@ -37,6 +37,7 @@ class ActiveApiRequestListener {
         $blackList = [
             'api.server.status',
             'api.characters',
+            'api.character_create',
             'template.serverstatus',
             'template.slidebutton',
             'template.slidemenu'

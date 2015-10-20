@@ -16,14 +16,16 @@
                         <th>Created At</th>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="c in characters" ng-show="characters.length > 0">
-                            <td></td>
-                            <td>{{ '{{ c }}' }}</td>
-                            <td>Has Key</td>
-                            <td>Created At</td>
+                        <tr ng-repeat="c in characters" ng-show="characters.length > 0" ng-cloak>
+                            <td width="64">
+                                <eve-image image-type="'Character'" object-id="c.eve_id" img-width="256"></eve-image>
+                            </td>
+                            <td>{{ '{{ c.name }}' }}</td>
+                            <td>{{ '{{  c.has_key }}' }}</td>
+                            <td> {{ '{{  c.created_at | date:"shortDate" }}' }}</td>
                         </tr>
 
-                        <tr ng-show="characters.length == 0">
+                        <tr ng-show="characters.length == 0" ng-cloak>
                             <td colspan="4" class=" text-center">
                                 <h3 style="font-family: 'roboto';" class="text-danger">No characters found</h3>
                                 <p style="color: black;">You will <b>need to add or update</b> a character with a valid api key prior to being able to use this application.</p>

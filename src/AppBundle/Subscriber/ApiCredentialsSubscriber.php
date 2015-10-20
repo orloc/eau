@@ -28,11 +28,12 @@ class ApiCredentialsSubscriber implements EventSubscriber {
         $entity = $args->getObject();
         $em = $args->getObjectManager();
 
-        if ($entity instanceof ApiCredentials && $entity->getId() === null){
+        if ($entity instanceof ApiCredentials && $entity->getId() === null && $entity->getType() === 'Corporation'){
             $user = $this->tokenManager->getToken()->getUser();
             $entity->setCreatedBy($user);
 
-            $this->manager->validateAndUpdateApiKey($entity);
+            $result = $this->manager->validateAndUpdateApiKey($entity);
+
         }
     }
 

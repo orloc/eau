@@ -40,7 +40,7 @@ class Character
     protected $eve_id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="character")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="character", cascade={"persist"})
      */
     protected $api_credentials;
 
@@ -55,6 +55,15 @@ class Character
      * @JMS\Expose()
      */
     protected $created_at;
+
+    /**
+     * @JMS\VirtualProperty()
+     */
+    public function hasKey(){
+
+        return $this->getApiCredentials()->count() ? true : false;
+
+    }
 
     public static function loadValidatorMetadata(ClassMetadata $metadata){
         $metadata->addPropertyConstraints('api_credentials',[
@@ -177,7 +186,10 @@ class Character
      */
     public function addApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
     {
-        $this->api_credentials[] = $apiCredentials;
+        if (!$this->api_credentials->contains($apiCredentials)){
+            $this->api_credentials[] = $apiCredentials;
+            $apiCredentials->setCharacter($this);
+        }
 
         return $this;
     }

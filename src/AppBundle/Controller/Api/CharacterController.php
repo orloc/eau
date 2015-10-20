@@ -36,7 +36,7 @@ class CharacterController extends AbstractController implements ApiControllerInt
     /**
      * Creates a new corporation entity.
      *
-     * @Route("/", name="api.character_create")
+     * @Route("/characters", name="api.character_create", options={"expose"=true})
      * @Secure(roles="ROLE_USER")
      * @Method("POST")
      */
@@ -44,41 +44,41 @@ class CharacterController extends AbstractController implements ApiControllerInt
     {
         $content = $request->request;
 
-        $corp = $this->get('app.corporation.manager')
+
+        $char = $this->get('app.character.manager')
             ->buildInstanceFromRequest($content);
 
         $validator = $this->get('validator');
 
-        $errors = $validator->validate($corp);
+        $errors = $validator->validate($char);
 
         if (count($errors) > 0){
             return $this->getErrorResponse($errors);
         }
 
         $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
         $jms = $this->get('jms_serializer');
 
-        try {
-            $em->persist($corp);
-            $em->flush();
-        } catch (\Exception $e){
-            $this->get('logger')->warning(sprintf('Invalid API creation attempt Key: %s Code %s User_Id: %s',
-                $content->get('api_key'),
-                $content->get('verification_code'),
-                $this->getUser() instanceof User ? $this->getUser()->getId() : '.anon'
-            ));
+        $user->addCharacter($char);
 
-            return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
+        try {
+            $result = $this->get('app.apikey.manager')
+                ->validateAndUpdateApiKey($char->getApiCredentials()[0]);
+
+            $eveDetails = $result->key->characters[0];
+            $char->setName($eveDetails->characterName)
+                ->setEveId($eveDetails->characterID);
+        } catch (\Exception $e){
+
         }
 
-        $this->get('app.task.dispatcher')->addDeferred(CorporationEvents::NEW_CORPORATION, new NewCorporationEvent($corp));
+        $em->persist($char);
+        $em->flush();
 
-        $json = $jms->serialize($corp, 'json');
+        $json = $jms->serialize($char, 'json');
 
-        return $this->jsonResponse($json, 200, [
-            'Connection' => 'close'
-        ]);
-
+        return $this->jsonResponse($json, 200);
     }
 
 }
