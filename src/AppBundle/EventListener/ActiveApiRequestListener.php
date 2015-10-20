@@ -3,6 +3,7 @@
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,14 +20,16 @@ class ActiveApiRequestListener {
     protected $router;
 
     protected $session;
+    protected $doctrine;
 
     protected $log;
 
-    public function __construct(TokenStorageInterface $storage, Router $router, Session $session, Logger $logger) {
+    public function __construct(TokenStorageInterface $storage, Router $router, Session $session, Logger $logger, Registry $registry) {
         $this->storage = $storage;
         $this->router = $router;
         $this->session = $session;
         $this->log = $logger;
+        $this->doctrine = $registry;
     }
 
     public function onRequest(GetResponseEvent $event){
@@ -68,7 +71,10 @@ class ActiveApiRequestListener {
         ){
             $characters =  $user->getCharacters();
 
-            if ($characters->count() == 0){
+            $activeKeys = $this->doctrine->getRepository('AppBundle:ApiCredentials')
+                ->getActiveKeyForUser($user);
+
+            if ($characters->count() == 0 || count($activeKeys) <= 0){
                 $this->log->debug(sprintf("LISTENER REDIRECT for %s", $request->attributes->get('_route')));
                 $response = new RedirectResponse($this->router->generate('characters'));
                 $this->session->set(self::ACTIVE_API_CHECK, time());
