@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity
@@ -54,6 +55,12 @@ class Character
      * @JMS\Expose()
      */
     protected $created_at;
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata){
+        $metadata->addPropertyConstraints('api_credentials',[
+            new Assert\Valid()
+        ]);
+    }
 
     public function __construct(){
         $this->created_at = new \DateTime();
@@ -160,5 +167,38 @@ class Character
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add api_credentials
+     *
+     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
+     * @return Character
+     */
+    public function addApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
+    {
+        $this->api_credentials[] = $apiCredentials;
+
+        return $this;
+    }
+
+    /**
+     * Remove api_credentials
+     *
+     * @param \AppBundle\Entity\ApiCredentials $apiCredentials
+     */
+    public function removeApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
+    {
+        $this->api_credentials->removeElement($apiCredentials);
+    }
+
+    /**
+     * Get api_credentials
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getApiCredentials()
+    {
+        return $this->api_credentials;
     }
 }

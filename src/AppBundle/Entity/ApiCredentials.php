@@ -405,4 +405,27 @@ class ApiCredentials {
     {
         return $this->is_active;
     }
+
+    /**
+     * Set character
+     *
+     * @param \AppBundle\Entity\Character $character
+     * @return ApiCredentials
+     */
+    public function setCharacter(\AppBundle\Entity\Character $character = null)
+    {
+        $this->character = $character;
+
+        return $this;
+    }
+
+    /**
+     * Get character
+     *
+     * @return \AppBundle\Entity\Character 
+     */
+    public function getCharacter()
+    {
+        return $this->character;
+    }
 }
