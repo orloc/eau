@@ -8,6 +8,14 @@ angular.module('eveTool')
             {
                 role: 'ROLE_ADMIN',
                 name:'Admin'
+            },
+            {
+                role: 'ROLE_USER',
+                name:'User'
+            },
+            {
+                role: 'ROLE_SUPER_ADMIN',
+                name:'Super Admin'
             }
         ];
 

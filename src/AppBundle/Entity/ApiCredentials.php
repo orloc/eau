@@ -39,13 +39,13 @@ class ApiCredentials {
      * @ORM\Column(type="integer")
      * @JMS\Expose()
      */
-    protected $character_id;
+    protected $eve_character_id;
 
     /**
      * @ORM\Column(type="integer")
      * @JMS\Expose()
      */
-    protected $corporation_id;
+    protected $eve_corporation_id;
 
     /**
      * @ORM\Column(type="string")
@@ -69,6 +69,11 @@ class ApiCredentials {
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="api_credentials")
      */
     protected $corporation;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Character", inversedBy="api_credentials")
+     */
+    protected $character;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -338,9 +343,9 @@ class ApiCredentials {
      * @param integer $characterId
      * @return ApiCredentials
      */
-    public function setCharacterId($characterId)
+    public function setEveCharacterId($characterId)
     {
-        $this->character_id = $characterId;
+        $this->eve_character_id = $characterId;
 
         return $this;
     }
@@ -350,9 +355,9 @@ class ApiCredentials {
      *
      * @return integer 
      */
-    public function getCharacterId()
+    public function getEveCharacterId()
     {
-        return $this->character_id;
+        return $this->eve_character_id;
     }
 
     /**
@@ -361,9 +366,9 @@ class ApiCredentials {
      * @param integer $corporationId
      * @return ApiCredentials
      */
-    public function setCorporationId($corporationId)
+    public function setEveCorporationId($corporationId)
     {
-        $this->corporation_id = $corporationId;
+        $this->eve_corporation_id = $corporationId;
 
         return $this;
     }
@@ -373,9 +378,9 @@ class ApiCredentials {
      *
      * @return integer 
      */
-    public function getCorporationId()
+    public function getEveCorporationId()
     {
-        return $this->corporation_id;
+        return $this->eve_corporation_id;
     }
 
     /**

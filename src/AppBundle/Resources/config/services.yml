@@ -83,7 +83,7 @@ services:
       class: AppBundle\Service\Manager\AccountManager
 
   app.character.manager:
-      arguments: [ "@logger" ]
+      arguments: [ "@logger", "@app.apikey.manager" ]
       class: AppBundle\Service\Manager\CharacterManager
 
   app.starbase.manager:

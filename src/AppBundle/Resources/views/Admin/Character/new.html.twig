@@ -1,0 +1,63 @@
+<side-menu-slider menu-width="350" form-context="new" ng-cloak>
+    <div class="header">
+        <h3>New Character</h3>
+    </div>
+    <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
+    <form name="newCharForm" ng-controller="characterNewController">
+        {{ '{{ newChar }}' }}
+        <table class="table-form">
+            <tbody>
+            <tr ng-repeat="e in errors">
+                <td></td>
+                <td>
+                    <div class="alert alert-danger">
+                        <p class="small text-danger">
+                            <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
+                        </p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i ng-class="{ 'text-danger fa fa-times': newCharForm.api_key.$invalid, 'text-success fa fa-check': newCharForm.api_key.$valid}"></i>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input name="api_key"
+                               type="text"
+                               class="form-control"
+                               placeholder="API Key..."
+                               ng-required="true"
+                               ng-model="newChar.api_key"
+                                />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i ng-class="{ 'text-danger fa fa-times': newCharForm.verification_code.$invalid, 'text-success fa fa-check': newCharForm.verification_code.$valid}"></i>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input name="verification_code"
+                               type="text"
+                               ng-minlength="64"
+                               ng-maxlength="64"
+                               class="form-control"
+                               placeholder="Verification Code..."
+                               ng-required="true"
+                               ng-model="newChar.verification_code"
+                                />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button ladda="submitLoading" ng-disabled="!newCharForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</side-menu-slider>

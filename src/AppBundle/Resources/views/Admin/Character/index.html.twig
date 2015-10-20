@@ -2,12 +2,38 @@
 
 {% block content -%}
     <div class="row" >
-        <h3>Character <span class="muted small">LIST</span>
-        </h3>
         <side-menu-container ng-transclude>
-
+            <h3>Character <span class="muted small">LIST</span>
                 <slide-button open-type="new"></slide-button>
+            </h3>
+
+            <div class="col-xs-12" ng-controller="characterListController">
+                <table class="table table-condensed data-table" ng-cloak>
+                    <thead>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Has Key</th>
+                        <th>Created At</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in characters" ng-show="characters.length > 0">
+                            <td></td>
+                            <td>{{ '{{ c }}' }}</td>
+                            <td>Has Key</td>
+                            <td>Created At</td>
+                        </tr>
+
+                        <tr ng-show="characters.length == 0">
+                            <td colspan="4" class=" text-center">
+                                <h3 style="font-family: 'roboto';" class="text-danger">No characters found</h3>
+                                <p style="color: black;">You will <b>need to add or update</b> a character with a valid api key prior to being able to use this application.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
+            {% include '@App/Admin/Character/new.html.twig' %}
         </side-menu-container>
     </div>
 {% endblock %}

@@ -36,8 +36,10 @@ class ActiveApiRequestListener {
 
         $blackList = [
             'api.server.status',
+            'api.characters',
             'template.serverstatus',
-            'template.slidebutton'
+            'template.slidebutton',
+            'template.slidemenu'
         ];
 
         if (!$event->isMasterRequest()

@@ -37,6 +37,7 @@ class ApiKeyManager implements DataManagerInterface {
             ->characters[0]
             ->characterID;
 
+        var_dump($type);die;
         $corp = $result->key
             ->characters[0]
             ->corporationID;
@@ -44,8 +45,8 @@ class ApiKeyManager implements DataManagerInterface {
 
         $entity->setAccessMask($accessMask)
             ->setType($type)
-            ->setCharacterId($char)
-            ->setCorporationId($corp);
+            ->setEveCharacterId($char)
+            ->setEveCorporationId($corp);
 
     }
 

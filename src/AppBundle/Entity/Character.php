@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
@@ -38,6 +39,11 @@ class Character
     protected $eve_id;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="character")
+     */
+    protected $api_credentials;
+
+    /**
      * @ORM\Column(type="string")
      * @JMS\Expose()
      */
@@ -45,11 +51,13 @@ class Character
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $created_at;
 
     public function __construct(){
         $this->created_at = new \DateTime();
+        $this->api_credentials = new ArrayCollection();
     }
 
     /**

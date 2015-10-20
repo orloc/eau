@@ -38,6 +38,7 @@ class CorporationController extends AbstractController implements ApiControllerI
         return $this->jsonResponse($json);
 
     }
+
     /**
      * Creates a new User entity.
      *
