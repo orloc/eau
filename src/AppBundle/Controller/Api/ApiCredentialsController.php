@@ -106,7 +106,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
         $user = $this->getUser();
 
         if (!$user->getCharacters()->contains($character) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-            return $this->jsonResponse(json_encode(['error' => 'YUou are not authorized to view this resource', 'code' => 403]), 403);
+            return $this->jsonResponse(json_encode(['message' => 'YUou are not authorized to view this resource', 'code' => 403]), 403);
         }
 
         $content = $request->request;
@@ -129,15 +129,23 @@ class ApiCredentialsController extends AbstractController implements ApiControll
             $eveDetails = $result->key->characters[0];
 
             if ($character->getEveId() !== $eveDetails->characterID){
-                return $this->jsonResponse(json_encode(['error' => 'character / api key mismatch']), 409);
+                return $this->jsonResponse(json_encode(['message' => 'character / api key mismatch', 'property_path' => '']), 409);
             }
         } catch (\Exception $e){
             $this->get('logger')->addEmergency('Error registering new api key for user '.$user->getId());
-            return $this->jsonResponse(json_encode(['error' => 'error']), 400);
+            return $this->jsonResponse(json_encode(['message' => 'Error with the EVE Api please try again', 'property_path' => '']), 400);
         }
 
 
-        
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($character);
+
+        $em->flush();
+
+        $json = $this->get('serializer')->serialize($newKey, 'json');
+
+        return $this->jsonResponse($json);
     }
 
     /**

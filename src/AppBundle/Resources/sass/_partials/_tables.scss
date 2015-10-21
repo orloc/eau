@@ -24,3 +24,9 @@ table.table.data-table {
   }
 }
 
+
+table.small-table {
+  tbody {
+    tr td { font-size: 9px!important; }
+  }
+}

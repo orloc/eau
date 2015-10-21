@@ -11,10 +11,11 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="characters")
+ * @ORM\Table(name="characters", uniqueConstraints={
+    @ORM\UniqueConstraint(name="unique_name", columns={"eve_id"})
+ * })
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
- *
  * @package AppBundle\Entity
  */
 class Character

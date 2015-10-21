@@ -59,7 +59,7 @@ class ActiveApiRequestListener {
         }
 
         if ($request->attributes->get('_controller') === 'AppBundle\Controller\Admin\CharacterController::indexAction'
-            || $this->session->has(self::ACTIVE_API_CHECK)
+            && $this->session->has(self::ACTIVE_API_CHECK)
         ){
             $this->session->getFlashBag()->add('danger', 'You must add a character with a valid NO EXPIRY API KEY in order to proceed');
             $this->log->debug(sprintf("LISTENER Skipping %s", $request->attributes->get('_route')));
