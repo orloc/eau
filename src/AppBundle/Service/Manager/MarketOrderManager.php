@@ -30,7 +30,9 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
 
         $client = $this->getClient($apiKey);
 
-        $orders = $client->MarketOrders();
+        $orders = $client->MarketOrders([
+            'characterID' => $apiKey->getEveCharacterId()
+        ]);
 
         $marketOrderGroup = $this->mapList($orders->orders, [ 'corp' => $corporation ]);
 

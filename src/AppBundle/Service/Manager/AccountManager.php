@@ -34,7 +34,7 @@ class AccountManager implements DataManagerInterface, MappableDataManagerInterfa
         $client = $this->getClient($apiKey);
 
         $accounts = $client->AccountBalance([
-            'characterID' => $corporation->getApiCredentials()[0]->getCharacterId()
+            'characterID' => $apiKey->getEveCharacterId()
         ]);
 
         $this->mapList($accounts->accounts, ['corp' => $corporation]);
