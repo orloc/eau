@@ -73,8 +73,13 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
         }
 
-        $em->persist($char);
-        $em->flush();
+
+        try {
+            $em->persist($char);
+            $em->flush();
+        } catch (\Exception $e) {
+            return $this->jsonResponse(json_encode(['message' => $e->getMessage(), 'code' => 409]), 409);
+        }
 
         $json = $jms->serialize($char, 'json');
 
