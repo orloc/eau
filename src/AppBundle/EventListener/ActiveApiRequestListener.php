@@ -42,6 +42,8 @@ class ActiveApiRequestListener {
             'api.characters',
             'api.character_create',
             'template.serverstatus',
+            'api.character.apicredentials',
+            'api.character.apicredentials.update',
             'template.slidebutton',
             'template.slidemenu'
         ];

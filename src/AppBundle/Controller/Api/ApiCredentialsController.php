@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiCredentials;
+use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
 use Doctrine\DBAL\DBALException;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -72,6 +73,71 @@ class ApiCredentialsController extends AbstractController implements ApiControll
         return $this->jsonResponse($this->get('serializer')->serialize($newKey, 'json'));
 
 
+    }
+
+    /**
+     * @Route("/character/{id}/api_credentials", name="api.character.apicredentials", options={"expose"=true})
+     * @ParamConverter(name="character", class="AppBundle:Character")
+     * @Method("GET")
+     * @Secure(roles="ROLE_USER")
+     */
+    public function getCharacterKeys(Request $request, Character $character){
+        $user = $this->getUser();
+
+        if (!$user->getCharacters()->contains($character) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+            return $this->jsonResponse(json_encode(['error' => 'YUou are not authorized to view this resource', 'code' => 403]), 403);
+        }
+
+        $repo = $this->getDoctrine()->getRepository('AppBundle:ApiCredentials');
+
+        $keys = $repo->getKeysByCharacter($character);
+
+        return $this->jsonResponse($this->get('serializer')->serialize($keys, 'json'), 200);
+
+    }
+
+    /**
+     * @Route("/character/{id}/api_credentials", name="api.character.apicredentials.update", options={"expose"=true})
+     * @ParamConverter(name="character", class="AppBundle:Character")
+     * @Method("POST")
+     * @Secure(roles="ROLE_USER")
+     */
+    public function addCharacterKey(Request $request, Character $character){
+        $user = $this->getUser();
+
+        if (!$user->getCharacters()->contains($character) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+            return $this->jsonResponse(json_encode(['error' => 'YUou are not authorized to view this resource', 'code' => 403]), 403);
+        }
+
+        $content = $request->request;
+
+        $newKey = $this->get('app.apikey.manager')
+            ->buildInstanceFromRequest($content);
+
+        $validator = $this->get('validator');
+
+        $errors = $validator->validate($newKey);
+
+        if (count($errors) > 0){
+            return $this->getErrorResponse($errors);
+        }
+
+        try {
+            $result = $this->get('app.apikey.manager')
+                ->validateAndUpdateApiKey($newKey);
+
+            $eveDetails = $result->key->characters[0];
+
+            if ($character->getEveId() !== $eveDetails->characterID){
+                return $this->jsonResponse(json_encode(['error' => 'character / api key mismatch']), 409);
+            }
+        } catch (\Exception $e){
+            $this->get('logger')->addEmergency('Error registering new api key for user '.$user->getId());
+            return $this->jsonResponse(json_encode(['error' => 'error']), 400);
+        }
+
+
+        
     }
 
     /**

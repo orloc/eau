@@ -1,8 +1,8 @@
 <button type="button" ng-click="toggleOpen()" class="pull-right btn btn-sm btn-custom" style="z-index:1000;" ng-cloak>
     <i ng-class='{
-        "fa fa-plus": !open && openType == "new",
-        "fa fa-minus": open && openType == "new",
-        "fa fa-chevron-right": !open && openType == "edit",
+        "fa fa-plus": !open && (openType == "new" || openType == "new_key"),
+        "fa fa-minus": open && (openType == "new" || openType == "new_key"),
+        "fa fa-chevron-right": !open && openType == "edit" ,
         "fa fa-chevron-left": open && openType == "edit",
         "fa fa-cogs": !open && openType == "gears",
         "fa fa-times": open && openType == "gears"

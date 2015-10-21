@@ -1,9 +1,9 @@
-<side-menu-slider menu-width="350" form-context="new" ng-cloak>
+<side-menu-slider menu-width="350" form-context="new_key" ng-cloak>
     <div class="header">
-        <h3>New Character</h3>
+        <h3>New API Key</h3>
     </div>
     <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
-    <form name="newCharForm" ng-controller="characterNewController">
+    <form name="newKeyForm" ng-controller="characterNewController">
         <table class="table-form">
             <tbody>
             <tr ng-repeat="e in errors">
@@ -18,7 +18,7 @@
             </tr>
             <tr>
                 <td>
-                    <i ng-class="{ 'text-danger fa fa-times': newCharForm.api_key.$invalid, 'text-success fa fa-check': newCharForm.api_key.$valid}"></i>
+                    <i ng-class="{ 'text-danger fa fa-times': newKeyForm.api_key.$invalid, 'text-success fa fa-check': newKeyForm.api_key.$valid}"></i>
                 </td>
                 <td>
                     <div class="form-group">
@@ -27,14 +27,14 @@
                                class="form-control"
                                placeholder="API Key..."
                                ng-required="true"
-                               ng-model="newCharacter.api_key"
+                               ng-model="newKey.api_key"
                                 />
                     </div>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <i ng-class="{ 'text-danger fa fa-times': newCharForm.verification_code.$invalid, 'text-success fa fa-check': newCharForm.verification_code.$valid}"></i>
+                    <i ng-class="{ 'text-danger fa fa-times': newKeyForm.verification_code.$invalid, 'text-success fa fa-check': newKeyForm.verification_code.$valid}"></i>
                 </td>
                 <td>
                     <div class="form-group">
@@ -45,7 +45,7 @@
                                class="form-control"
                                placeholder="Verification Code..."
                                ng-required="true"
-                               ng-model="newCharacter.verification_code"
+                               ng-model="newKey.verification_code"
                                 />
                     </div>
                 </td>
@@ -53,7 +53,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <button ladda="submitLoading" ng-disabled="!newCharForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
+                    <button ladda="submitLoading" ng-disabled="!newKeyForm.$valid " class="btn btn-block" type="submit" ng-click="key_submit(selected_character)">Submit</button>
                 </td>
             </tr>
             </tbody>

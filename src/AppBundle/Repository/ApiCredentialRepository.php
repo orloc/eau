@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
@@ -17,6 +18,16 @@ class ApiCredentialRepository extends EntityRepository {
             ->andWhere('u = :user')
             ->setParameters(['user' => $user, 'active' => true])
             ->getQuery()->getResult();
+    }
+
+    public function getKeysByCharacter(Character $char){
+
+        return $this->createQueryBuilder('api')
+            ->select('api')
+            ->andWhere('api.eve_character_id = :char_id')
+            ->setParameters(['char_id' => $char->getEveId()])
+            ->getQuery()->getResult();
+
     }
 
     public function getActiveKey(Corporation $corp){
