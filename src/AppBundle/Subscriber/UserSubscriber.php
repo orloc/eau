@@ -29,11 +29,13 @@ class UserSubscriber implements EventSubscriber {
         $entity = $args->getObject();
 
         if ($entity instanceof User){
-            $details = $this->session->get('registration_authorized');
-            $newChar = $this->manager
-                ->newCharacterWithName($details);
+            if ($this->session->has('registration_authorized')){
+                $details = $this->session->get('registration_authorized');
+                $newChar = $this->manager
+                    ->newCharacterWithName($details);
 
-            $entity->addCharacter($newChar);
+                $entity->addCharacter($newChar);
+            }
         }
     }
 }
