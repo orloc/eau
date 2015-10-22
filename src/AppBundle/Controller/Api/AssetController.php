@@ -33,10 +33,10 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $allItems = $query->getResult();
 
-        $assetManager = $this->get('app.asset.manager');
+        $priceManager = $this->get('app.price.manager');
 
-        $assetManager->updatePrices(
-            $assetManager->updateResultSet($allItems)
+        $this->get('app.itemdetail.manager')->updateDetails($allItems);die;
+        $priceManager->updatePrices(
         );
 
         $filteredList = array_filter($allItems, function($i) {
@@ -132,7 +132,6 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->findAll();
 
         $user = $this->getUser();
-        var_dump($configs);die;
 
         $assetManager = $this->get('app.asset.manager');
         $items = $assetManager->updatePrices($items);

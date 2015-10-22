@@ -14,7 +14,7 @@ class ConstellationRepository extends AbstractDbalRepository implements Reposito
 
     public function getConstellationById($constellationId){
 
-        $sql = "SELECT constellationName as constellation FROM {$this->getTableName()} WHERE constellationID = :id ";
+        $sql = "SELECT constellationName as name FROM {$this->getTableName()} WHERE constellationID = :id ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $constellationId]);

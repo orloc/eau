@@ -14,7 +14,7 @@ class SolarSystemRepository extends AbstractDbalRepository implements Repository
 
     public function getSolarSystemById($ssID){
 
-        $sql = "SELECT solarSystemName as solar_system FROM {$this->getTableName()} WHERE solarSystemID = :id ";
+        $sql = "SELECT solarSystemName as name FROM {$this->getTableName()} WHERE solarSystemID = :id ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $ssID]);

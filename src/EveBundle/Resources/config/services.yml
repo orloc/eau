@@ -26,6 +26,12 @@ services:
     tags:
         - { name: evedata.repository }
 
+  evedata.repo.mapdenormalize:
+    class: EveBundle\Repository\MapDenormalizeRepository
+    arguments: [ "@doctrine.dbal.eve_data_connection" ]
+    tags:
+        - { name: evedata.repository }
+
   evedata.repo.constellations:
     class: EveBundle\Repository\ConstellationRepository
     arguments: [ "@doctrine.dbal.eve_data_connection" ]

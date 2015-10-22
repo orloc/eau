@@ -90,6 +90,14 @@ services:
       arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
       class: AppBundle\Service\Manager\StarbaseManager
 
+  app.price.manager:
+      arguments: [ "@doctrine", "@evedata.registry" ]
+      class: AppBundle\Service\PriceUpdateManager
+
+  app.itemdetail.manager:
+      arguments: [ "@evedata.registry" ]
+      class: AppBundle\Service\AssetDetailUpdateManager
+
   app.marketorder.manager:
       arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
       class: AppBundle\Service\Manager\MarketOrderManager
