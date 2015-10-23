@@ -76,9 +76,11 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
             ->setSingleton($i->singleton)
             ->setTypeId($i->typeID);
 
+
         if (isset($i->locationID)){
             $item->setLocationId($i->locationID);
         }
+
         return $item;
     }
 

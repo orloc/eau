@@ -33,32 +33,48 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $allItems = $query->getResult();
 
-        $priceManager = $this->get('app.price.manager');
 
-        $this->get('app.itemdetail.manager')->updateDetails($allItems);die;
-        $priceManager->updatePrices(
-        );
+        if (!$group->getHasBeenUpdated()){
+            $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($allItems);
 
-        $filteredList = array_filter($allItems, function($i) {
-            $name = $i->getDescriptors()['name'];
-            $t = strstr($name, 'Blueprint');
+            $priceManager = $this->get('app.price.manager');
+            $priceManager->updatePrices($updatedItems);
 
-            return $t === false;
-        });
+            $filteredList = array_filter($updatedItems, function($i) {
+                if (!isset($i->getDescriptors()['name'])) {
+                    return false;
+                }
 
-        $total_price = array_reduce($filteredList, function($carry, $data){
-            if ($carry === null){
-                return $data->getDescriptors()['total_price'];
-            }
+                $name = $i->getDescriptors()['name'];
+                $t = strstr($name, 'Blueprint');
 
-            return $carry + $data->getDescriptors()['total_price'];
-        });
+                return $t === false;
+            });
+
+            $total_price = array_reduce($filteredList, function($carry, $data){
+                if ($carry === null){
+                    return $data->getDescriptors()['total_price'];
+                }
+
+                return $carry + $data->getDescriptors()['total_price'];
+            });
+
+            $group->setAssetSum($total_price)
+                ->setHasBeenUpdated(true);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($group);
+
+            $em->flush();
+        } else {
+            $filteredList = $allItems;
+        }
 
 
         $assets = $this->paginateResult($request, array_values($filteredList));
 
         $newList = [
-            'total_price' => $total_price,
+            'total_price' => $group->getAssetSum(),
             'items' => $assets->getItems()
         ];
 
@@ -86,13 +102,13 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getDeliveriesByGroup($group);
 
 
-        $assetManager = $this->get('app.asset.manager');
-
         $items = $query->getResult();
 
-        $assetManager->updatePrices(
-            $assetManager->updateResultSet($items)
-        );
+        $priceManager = $this->get('app.price.manager');
+
+        $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($items);
+        $priceManager->updatePrices($updatedItems);
+
 
         $total_price = array_reduce($items, function($carry, $data){
             if ($carry === null){
@@ -133,8 +149,8 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $user = $this->getUser();
 
-        $assetManager = $this->get('app.asset.manager');
-        $items = $assetManager->updatePrices($items);
+        $priceManager = $this->get('app.price.manager');
+        $priceManager->updatePrices($items);
 
         $json = $this->get('serializer')->serialize($items, 'json');
 

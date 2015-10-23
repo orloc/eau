@@ -48,9 +48,11 @@ class PriceUpdateManager extends AbstractManager {
 
         if (!$this->hasItem($typeId)){
             $price = $prices->getAveragePriceByType($typeId);
-            $this->cacheItem($typeId, $price->getAveragePrice());
+            if ($price instanceof AveragePrice){
+                $this->cacheItem($typeId, $price->getAveragePrice());
 
-            return $this->updateItemPrice($i, $price, $descriptors);
+                return $this->updateItemPrice($i, $price, $descriptors);
+            }
         }
 
         return $this->updateItemPrice($i, $this->cache[$typeId], $descriptors);

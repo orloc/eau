@@ -70,6 +70,7 @@ class Asset
 
     /**
      * @JMS\Expose()
+     * @ORM\Column(type="array", nullable=true)
      */
     protected $descriptors;
 
@@ -83,10 +84,10 @@ class Asset
     }
 
     public function getDescriptors(){
-        return $this->descriptors;
+        return $this->descriptors === null ? [] :  $this->descriptors;
     }
 
-    public function setDescriptors($desc) {
+    public function setDescriptors(array $desc) {
         $this->descriptors = $desc;
 
         return $this;

@@ -131,6 +131,7 @@ class MarketOrder
     protected $created_at;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
      * @JMS\Expose()
      */
     protected $descriptors;

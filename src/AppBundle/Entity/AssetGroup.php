@@ -35,7 +35,15 @@ class AssetGroup
      */
     protected $corporation;
 
+    /**
+     * @ORM\Column(type="decimal", scale=2, precision=16, nullable=true)
+     */
     protected $asset_sum;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $has_been_updated;
 
     /**
      * @ORM\Column(type="datetime")
@@ -49,6 +57,7 @@ class AssetGroup
     {
         $this->assets = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_at = new \DateTime();
+        $this->has_been_updated = false;
     }
 
     /**
@@ -141,5 +150,51 @@ class AssetGroup
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Set asset_sum
+     *
+     * @param string $assetSum
+     * @return AssetGroup
+     */
+    public function setAssetSum($assetSum)
+    {
+        $this->asset_sum = $assetSum;
+
+        return $this;
+    }
+
+    /**
+     * Get asset_sum
+     *
+     * @return string 
+     */
+    public function getAssetSum()
+    {
+        return $this->asset_sum;
+    }
+
+    /**
+     * Set has_been_updated
+     *
+     * @param boolean $hasBeenUpdated
+     * @return AssetGroup
+     */
+    public function setHasBeenUpdated($hasBeenUpdated)
+    {
+        $this->has_been_updated = $hasBeenUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get has_been_updated
+     *
+     * @return boolean 
+     */
+    public function getHasBeenUpdated()
+    {
+        return $this->has_been_updated;
     }
 }

@@ -95,7 +95,7 @@ services:
       class: AppBundle\Service\PriceUpdateManager
 
   app.itemdetail.manager:
-      arguments: [ "@evedata.registry" ]
+      arguments: [ "@evedata.registry" , "@doctrine"]
       class: AppBundle\Service\AssetDetailUpdateManager
 
   app.marketorder.manager:

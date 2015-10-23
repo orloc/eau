@@ -36,6 +36,11 @@ class MarketOrderGroup
     protected $corporation;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $has_been_updated;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
@@ -47,6 +52,7 @@ class MarketOrderGroup
     {
         $this->market_orders = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_at = new \DateTime();
+        $this->has_been_updated = false;
     }
 
     /**
@@ -140,5 +146,28 @@ class MarketOrderGroup
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Set has_been_updated
+     *
+     * @param boolean $hasBeenUpdated
+     * @return MarketOrderGroup
+     */
+    public function setHasBeenUpdated($hasBeenUpdated)
+    {
+        $this->has_been_updated = $hasBeenUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get has_been_updated
+     *
+     * @return boolean 
+     */
+    public function getHasBeenUpdated()
+    {
+        return $this->has_been_updated;
     }
 }
