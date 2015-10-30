@@ -43,7 +43,7 @@ class Character
     protected $eve_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @JMS\Expose()
      */
     protected $eve_corporation_id;

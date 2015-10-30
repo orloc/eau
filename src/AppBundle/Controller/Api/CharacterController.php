@@ -79,11 +79,6 @@ class CharacterController extends AbstractController implements ApiControllerInt
             }
 
             return $this->jsonResponse(json_encode($arr));
-            /*
-            $eveDetails = $result->key->characters[0];
-            $char->setName($eveDetails->characterName)
-                ->setEveId($eveDetails->characterID);
-            */
 
         } catch (\Exception $e){
             return $this->jsonResponse(json_encode(['message' => $e->getMessage(), 'code' => 400]), 400);
@@ -118,12 +113,30 @@ class CharacterController extends AbstractController implements ApiControllerInt
         $validCreds = $initialKey['result']['key'];
 
         $key->setType($validCreds['type'])
-            ->setAccessMask($validCreds['accessMask']);
+            ->setAccessMask($validCreds['accessMask'])
+            ->setIsActive(true)
+            // @TODO these two fields feel strange here probably is a beter spot
+            ->setEveCharacterId($selected_char['characterID'])
+            ->setEveCorporationId($selected_char['corporationID']);
 
-        var_dump($selected_char);die;
 
-        var_dump($key);die;
+        $char = $this->get('app.character.manager')->createCharacter($selected_char);
+        $char->addApiCredential($key);
 
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($char);
+
+        $char->setUser($user);
+
+        try {
+            $em->flush($char);
+
+            return  $this->jsonResponse($this->get('jms_serializer')->serialize($char, 'json'));
+        } catch (\Exception $e){
+            return $this->jsonResponse(json_encode(['message' => $e->getMessage(), 'code' => 400]), 400);
+        }
     }
 
 }

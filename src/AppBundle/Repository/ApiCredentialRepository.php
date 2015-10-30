@@ -25,8 +25,8 @@ class ApiCredentialRepository extends EntityRepository {
         return $this->createQueryBuilder('api')
             ->select('api')
             ->andWhere('api.eve_character_id = :char_id')
-            ->andWhere('api.type = :type')
-            ->setParameters(['char_id' => $char->getEveId(), 'type' => 'Character'])
+            ->andWhere('api.type IN (:types)')
+            ->setParameters(['char_id' => $char->getEveId(), 'types' => ['Character', 'Account']])
             ->getQuery()->getResult();
 
     }
