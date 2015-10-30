@@ -31,7 +31,7 @@ class CorporationMemberController extends AbstractController implements ApiContr
 
         $repo = $this->getRepository('AppBundle:ApiCredentials');
         foreach ($members as $m){
-            $found = $repo->findOneBy(['eve_character_id' => $m->getCharacterId(), 'type' => 'Character']);
+            $found = $repo->findOneBy(['eve_character_id' => $m->getCharacterId(), 'type' => ['Character', 'Account']]);
 
             if ($found instanceof ApiCredentials){
                 $m->setApiKey($found);
