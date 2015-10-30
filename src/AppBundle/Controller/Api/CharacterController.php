@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
+use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,6 +66,8 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
             $arr['result']['key']['api_key'] = $key->getApiKey();
             $arr['result']['key']['verification_code'] = $key->getVerificationCode();
+            $arr['result']['key']['access_mask'] = $key->getAccessMask();
+            $arr['result']['key']['type'] = $key->getType();
 
 
             $corps = $this->getDoctrine()->getRepository('AppBundle:Corporation');
@@ -85,6 +88,41 @@ class CharacterController extends AbstractController implements ApiControllerInt
         } catch (\Exception $e){
             return $this->jsonResponse(json_encode(['message' => $e->getMessage(), 'code' => 400]), 400);
         }
+
+    }
+
+    /**
+     * Creates a new character entity.
+     *
+     * @Route("/characters/final", name="api.character_create.finalize", options={"expose"=true})
+     * @Secure(roles="ROLE_USER")
+     * @Method("POST")
+     */
+    public function createFinalAction(Request $request){
+        $content = $request->request;
+
+        $initialKey = $content->get('full_key', null);
+        $selected_char = $content->get('char', null);
+
+        $key = $this->get('app.apikey.manager')
+            ->buildInstanceFromRequest($content);
+
+        $validator = $this->get('validator');
+
+        $errors = $validator->validate($key);
+
+        if (count($errors) > 0 ){
+            return $this->getErrorResponse($errors);
+        }
+
+        $validCreds = $initialKey['result']['key'];
+
+        $key->setType($validCreds['type'])
+            ->setAccessMask($validCreds['accessMask']);
+
+        var_dump($selected_char);die;
+
+        var_dump($key);die;
 
     }
 

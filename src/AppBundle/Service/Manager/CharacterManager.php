@@ -15,6 +15,13 @@ class CharacterManager {
         $this->log = $logger;
     }
 
+    public function createCharacter(array $details){
+        $char = new Character();
+
+        $char->setEveId($details['characterID'])
+            ->setName($details['characterName']);
+    }
+
 
     public function newCharacterWithName(array $details){
 

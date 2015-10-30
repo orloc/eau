@@ -76,7 +76,7 @@
 
         <div ng-show="stage == 2" ng-cloak >
             <div class="character-select">
-                <p>
+                <p class="text-center">
                     You must select a primary character.
                     <br> <b class="text-info"> We have tried to guess which character is your main.</b>
                 </p>
@@ -100,10 +100,13 @@
                         <b>{{ '{{ char_result.result.key.verification_code }}' }}</b></li>
                     <li>Access Mask:<br>
                         <b>{{ '{{ char_result.result.key.access_mask}}' }}</b></li>
-                    <li ng-if="selected_character !== null">Selected Character:<br>
+                    <li ng-if="selected_character !== null">Primary Character:<br>
                         <b>{{ '{{ selected_character.characterName }}' }}</b></li>
                 </ul>
                 <button class="btn btn-block btn-success" ng-disabled="selected_character === null" ng-click="finalSubmit()">Confirm</button>
+                <br>
+                <br>
+                <span class="small">** All Characters are added for records and future features.</span>
             </div>
         </div>
     </div>

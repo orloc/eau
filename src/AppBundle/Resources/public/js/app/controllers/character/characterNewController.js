@@ -6,7 +6,7 @@ angular.module('eveTool')
         $scope.newCharacter = {};
         $scope.newKey = {};
         $scope.stage = 1;
-        $scope.char_result = {};
+        $scope.char_result = null;
         $scope.selected_character = null;
 
         $scope.submit = function(){
@@ -29,6 +29,23 @@ angular.module('eveTool')
             }).catch(function(data){
                 $scope.errors = [data.data];
                 $scope.submitLoading = false;
+            });
+        };
+
+        $scope.finalSubmit = function(){
+            if ($scope.selected_character === null || $scope.char_result === null){
+                return;
+            }
+
+            var obj = {
+                char: $scope.selected_character,
+                api_key: $scope.char_result.result.key.api_key,
+                verification_code: $scope.char_result.result.key.verification_code,
+                full_key: $scope.char_result
+            };
+
+            $http.post(Routing.generate('api.character_create.finalize'), obj).then(function(data){
+                console.log(data)  ;
             });
         };
 

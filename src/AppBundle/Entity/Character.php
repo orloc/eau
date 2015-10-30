@@ -43,6 +43,12 @@ class Character
     protected $eve_id;
 
     /**
+     * @ORM\Column(type="integer")
+     * @JMS\Expose()
+     */
+    protected $eve_corporation_id;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="character", cascade={"persist"})
      */
     protected $api_credentials;
@@ -215,5 +221,28 @@ class Character
     public function getApiCredentials()
     {
         return $this->api_credentials;
+    }
+
+    /**
+     * Set eve_corporation_id
+     *
+     * @param integer $eveCorporationId
+     * @return Character
+     */
+    public function setEveCorporationId($eveCorporationId)
+    {
+        $this->eve_corporation_id = $eveCorporationId;
+
+        return $this;
+    }
+
+    /**
+     * Get eve_corporation_id
+     *
+     * @return integer 
+     */
+    public function getEveCorporationId()
+    {
+        return $this->eve_corporation_id;
     }
 }
