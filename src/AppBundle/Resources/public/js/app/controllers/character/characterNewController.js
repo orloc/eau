@@ -6,7 +6,8 @@ angular.module('eveTool')
         $scope.newCharacter = {};
         $scope.newKey = {};
         $scope.stage = 1;
-        $scope.result_char_result = {};
+        $scope.char_result = {};
+        $scope.selected_character = null;
 
         $scope.submit = function(){
             $scope.submitLoading = true;
@@ -15,13 +16,24 @@ angular.module('eveTool')
                 $scope.newCharacter = {};
                 $scope.errors = [];
 
-                $scope.result_char_result = data.data;
+                $scope.char_result = data.data;
+
+                angular.forEach($scope.char_result.result.key.characters, function(c){
+                    if (c.best_guess){
+                        $scope.selected_character = c;
+                    }
+                });
+
                 $scope.stage = 2;
 
             }).catch(function(data){
                 $scope.errors = [data.data];
                 $scope.submitLoading = false;
             });
+        };
+
+        $scope.selectCharacter = function(c){
+            $scope.selected_character = c;
         };
 
         $scope.$on('new_char_api', function(event, data){

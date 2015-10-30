@@ -74,23 +74,37 @@
             <p class="small muted">**There is a 5 minute delay when updating an api key if you DID NOT check "no expiry" first. <br> If you are in this situation - rather than waiting just create a new API key.</p>
         </form>
 
-        <div ng-show="stage == 2" ng-cloak class="character-select">
-            <p class="text-info">
-                You must select a primary character.
-                <br> <b> We have tried to guess which character is your main.</b>
-            </p>
-            <ul class="list-group">
-                <li class="list-group-item" ng-repeat="char in result_char_result.result.key.characters">
-                    <div class="row">
-                        <div class="col-xs-3">
-                            <eve-image image-type="'Character'" object-id="char.characterID" img-width="256"></eve-image>
+        <div ng-show="stage == 2" ng-cloak >
+            <div class="character-select">
+                <p>
+                    You must select a primary character.
+                    <br> <b class="text-info"> We have tried to guess which character is your main.</b>
+                </p>
+                <ul class="list-group">
+                    <li class="list-group-item" ng-class="{ 'active' : char.characterID === selected_character.characterID }" ng-repeat="char in char_result.result.key.characters" ng-click="selectCharacter(char)">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <eve-image image-type="'Character'" object-id="char.characterID" img-width="256"></eve-image>
+                            </div>
+                            <div class="col-xs-9">
+                                {{ '{{ char.characterName }}' }} - {{ '{{ char.corporationName }}' }}
+                            </div>
                         </div>
-                        <div class="col-xs-9">
-                            {{ '{{ char.characterName }}' }} - {{ '{{ char.corporationName }}' }}
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </div>
+            <div  style="padding: 20px;">
+                <ul class="list-unstyled">
+                    <li>Key ID:<br><b>{{ '{{ char_result.result.key.api_key }}' }}</b></li>
+                    <li>Verification Code:<br>
+                        <b>{{ '{{ char_result.result.key.verification_code }}' }}</b></li>
+                    <li>Access Mask:<br>
+                        <b>{{ '{{ char_result.result.key.access_mask}}' }}</b></li>
+                    <li ng-if="selected_character !== null">Selected Character:<br>
+                        <b>{{ '{{ selected_character.characterName }}' }}</b></li>
+                </ul>
+                <button class="btn btn-block btn-success" ng-disabled="selected_character === null" ng-click="finalSubmit()">Confirm</button>
+            </div>
         </div>
     </div>
 </side-menu-slider>

@@ -63,6 +63,10 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
             $arr = $result->toArray();
 
+            $arr['result']['key']['api_key'] = $key->getApiKey();
+            $arr['result']['key']['verification_code'] = $key->getVerificationCode();
+
+
             $corps = $this->getDoctrine()->getRepository('AppBundle:Corporation');
 
             foreach ($arr['result']['key']['characters'] as $i => $c){
