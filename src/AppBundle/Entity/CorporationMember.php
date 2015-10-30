@@ -66,6 +66,15 @@ class CorporationMember
      */
     protected $created_at;
 
+    /**
+    * @JMS\Expose()
+    */
+    protected $api_key = null;
+
+    public function setApiKey(ApiCredentials $creds){
+        $this->api_key = $creds;
+    }
+
     public function __construct(){
         $this->created_at = new \DateTime();
         $this->is_registered = false;

@@ -9,6 +9,19 @@ angular.module('eveTool')
             }
             $scope.selected_corp = val;
 
+            var now = moment();
+
+            $scope.getTimeWith = function(char){
+                var time = moment(char.start_time);
+
+                return  now.format('DDD')- time.format('DDD');
+
+            };
+
+            $scope.hasApiKey = function(char){
+                return typeof char.api_key !== 'undefined';
+            };
+
             $http.get(Routing.generate('api.corporation.members', { id: val.id})).then(function(data){
                 $scope.members = data.data;
             });

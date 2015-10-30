@@ -14,9 +14,6 @@
                 Time in corp
             </th>
             <th>Is Registered</th>
-            <th>
-                Total Contributions
-            </th>
             </thead>
             <tbody>
             <tr ng-repeat="m in members | orderBy:'start_time':true">
@@ -30,11 +27,21 @@
                     {{ '{{ m.start_time | date:"longDate" }}' }}
                 </td>
                 <td>
+                    {{ '{{ getTimeWith(m) }}' }} Days
                 </td>
                 <td>
-                    {{ '{{ m.is_registered }}' }}
+                    <span ng-show="hasApiKey(m)" class="api-key small">
+                        Key: {{ '{{  m.api_key.api_key }}' }}<br>
+                        Code: {{ '{{  m.api_key.verification_code }}' }}<br>
+                        Mask: {{ '{{  m.api_key.access_mask }}' }}
+                    </span>
+                    <span ng-show="!hasApiKey(m)" >
+                        <div class="label label-danger">
+                            NO API KEY
+                        </div>
+                    </span>
                 </td>
-                <td></td>
+
             </tr>
             </tbody>
         </table>
