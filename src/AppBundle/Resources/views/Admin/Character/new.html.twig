@@ -1,62 +1,96 @@
 <side-menu-slider menu-width="350" form-context="new" ng-cloak>
-    <div class="header">
-        <h3>New Character</h3>
+    <div ng-controller="characterNewController">
+        <div class="header">
+            <h3>New Character</h3>
+        </div>
+        <p class="text-center" ng-show="stage == 1" ng-cloak>
+            <a class="eve" target="_blank" href="http://community.eveonline.com/support/api-key/CreatePredefined?accessMask=1073741823">Click here to get a pre-generated key</a>
+            <br>
+            <br>
+        <span class="small text-danger">
+            <b>BE SURE TO CHECK NO EXPIRY</b> <br>LEAVE ALL BOXES CHECKED
+        </span>
+        </p>
+        <form name="newCharForm" ng-show="stage == 1" ng-cloak>
+            <table class="table-form">
+                <tbody>
+                <tr ng-repeat="e in errors">
+                    <td></td>
+                    <td>
+                        <div class="alert alert-danger">
+                            <p class="small text-danger">
+                                <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your request - {{ e.message }}' }} </span>
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i ng-class="{ 'text-danger fa fa-times': newCharForm.api_key.$invalid, 'text-success fa fa-check': newCharForm.api_key.$valid}"></i>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input name="api_key"
+                                   type="text"
+                                   class="form-control"
+                                   placeholder="API Key..."
+                                   ng-required="true"
+                                   ng-model="newCharacter.api_key"
+                                    />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <i ng-class="{ 'text-danger fa fa-times': newCharForm.verification_code.$invalid, 'text-success fa fa-check': newCharForm.verification_code.$valid}"></i>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <input name="verification_code"
+                                   type="text"
+                                   ng-minlength="64"
+                                   ng-maxlength="64"
+                                   class="form-control"
+                                   placeholder="Verification Code..."
+                                   ng-required="true"
+                                   ng-model="newCharacter.verification_code"
+                                    />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button ladda="submitLoading" ng-disabled="!newCharForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <p class="small muted">**There is a 5 minute delay when updating an api key if you DID NOT check "no expiry" first. <br> If you are in this situation - rather than waiting just create a new API key.</p>
+        </form>
+
+        <div ng-show="stage == 2" ng-cloak class="character-select">
+            <p class="text-info">
+                You must select a primary character.
+                <br> <b> We have tried to guess which character is your main.</b>
+            </p>
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="char in result_char_result.result.key.characters">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <eve-image image-type="'Character'" object-id="char.characterID" img-width="256"></eve-image>
+                        </div>
+                        <div class="col-xs-9">
+                            {{ '{{ char.characterName }}' }} - {{ '{{ char.corporationName }}' }}
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-    <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
-    <form name="newCharForm" ng-controller="characterNewController">
-        <table class="table-form">
-            <tbody>
-            <tr ng-repeat="e in errors">
-                <td></td>
-                <td>
-                    <div class="alert alert-danger">
-                        <p class="small text-danger">
-                            <i class="fa fa-warning fa-fw"></i> {{ 'There was a problem with your request - {{ e.property_path }}' }}  <br>{{ '{{ e.message }}' }}</span>
-                        </p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i ng-class="{ 'text-danger fa fa-times': newCharForm.api_key.$invalid, 'text-success fa fa-check': newCharForm.api_key.$valid}"></i>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input name="api_key"
-                               type="text"
-                               class="form-control"
-                               placeholder="API Key..."
-                               ng-required="true"
-                               ng-model="newCharacter.api_key"
-                                />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i ng-class="{ 'text-danger fa fa-times': newCharForm.verification_code.$invalid, 'text-success fa fa-check': newCharForm.verification_code.$valid}"></i>
-                </td>
-                <td>
-                    <div class="form-group">
-                        <input name="verification_code"
-                               type="text"
-                               ng-minlength="64"
-                               ng-maxlength="64"
-                               class="form-control"
-                               placeholder="Verification Code..."
-                               ng-required="true"
-                               ng-model="newCharacter.verification_code"
-                                />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <button ladda="submitLoading" ng-disabled="!newCharForm.$valid " class="btn btn-block" type="submit" ng-click="submit()">Submit</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </form>
 </side-menu-slider>

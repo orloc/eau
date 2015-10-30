@@ -9,24 +9,12 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CharacterManager {
 
-    private $api_manager;
     private $log;
 
-    public function __construct(Logger $logger, ApiKeyManager $apiManager){
+    public function __construct(Logger $logger){
         $this->log = $logger;
-        $this->api_manager = $apiManager;
     }
 
-    public function buildInstanceFromRequest(ParameterBag $content){
-        $corp = new Character();
-
-        $creds = $this->api_manager->buildInstanceFromRequest($content);
-        $creds->setIsActive(true);
-
-        $corp->addApiCredential($creds);
-
-        return $corp;
-    }
 
     public function newCharacterWithName(array $details){
 

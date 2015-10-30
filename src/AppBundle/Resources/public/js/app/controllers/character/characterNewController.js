@@ -5,18 +5,21 @@ angular.module('eveTool')
         $scope.submitLoading = false;
         $scope.newCharacter = {};
         $scope.newKey = {};
+        $scope.stage = 1;
+        $scope.result_char_result = {};
 
         $scope.submit = function(){
             $scope.submitLoading = true;
-            $http.post(Routing.generate('api.character_create'), $scope.newCharacter).then(function(data){
+            $http.post(Routing.generate('api.character_create.validate'), $scope.newCharacter).then(function(data){
                 $scope.submitLoading = false;
                 $scope.newCharacter = {};
                 $scope.errors = [];
 
-                dataDispatcher.addEvent('update_list', data.data);
-                dataDispatcher.addEvent('close_window', true);
+                $scope.result_char_result = data.data;
+                $scope.stage = 2;
+
             }).catch(function(data){
-                $scope.errors = data.data;
+                $scope.errors = [data.data];
                 $scope.submitLoading = false;
             });
         };

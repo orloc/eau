@@ -4,6 +4,7 @@ namespace AppBundle\Service\Manager;
 
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
+use AppBundle\Exception\InvalidAccessMaskException;
 use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -33,18 +34,29 @@ class ApiKeyManager implements DataManagerInterface {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }
 
-        $char = $result->key
+        if ($accessMask !== '1073741823'){
+            throw new InvalidAccessMaskException('Your Access Mask is invalid - please use the link above and CHECK No Expiry to generate a valid key');
+        }
+
+        $exists = $this->doctrine->getRepository('AppBundle:ApiCredentials')
+            ->findOneBy(['api_key' => $entity->getApiKey(), 'verification_code' => $entity->getVerificationCode()]);
+
+        if ($exists instanceof ApiCredentials){
+            throw new \Exception('API key already exists');
+        }
+
+        /*
+            $char = $result->key
             ->characters[0]
             ->characterID;
 
         $corp = $result->key
             ->characters[0]
             ->corporationID;
+        */
 
         $entity->setAccessMask($accessMask)
-            ->setType($type)
-            ->setEveCharacterId($char)
-            ->setEveCorporationId($corp);
+            ->setType($type);
 
         return $result;
 

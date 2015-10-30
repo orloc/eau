@@ -28,9 +28,21 @@ h1, h2, h3, {
   color: white;
 }
 
-p, a, ul, label {
+p, ul,a, label {
   color: white;
 }
+
+a.eve {
+  color: $eveOrange;
+  &:hover {
+    color: darken($eveOrange, 20);
+  }
+  &:focus {
+    color: darken($eveOrange, 20);
+  }
+}
+
+
 
 a.navbar-brand {
   color: white!important;
@@ -101,6 +113,16 @@ a.navbar-brand {
   span {
     font-size: 15px;
   }
+}
+
+.character-select{
+  padding: 10px;
+
+  ul li {
+    color: $darkerBlack;
+  }
+
+
 }
 
 /*

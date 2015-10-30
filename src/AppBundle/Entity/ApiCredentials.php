@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ApiCredentialRepository")
  * @ORM\Table(name="api_credentials", uniqueConstraints={
-@ORM\UniqueConstraint(name="key_val_corpIdx", columns={"api_key", "verification_code", "corporation_id"}),
+@ORM\UniqueConstraint(name="key_val_corpIdx", columns={"api_key", "verification_code"}),
  * })
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
@@ -36,13 +36,13 @@ class ApiCredentials {
     protected $api_key;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @JMS\Expose()
      */
     protected $eve_character_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @JMS\Expose()
      */
     protected $eve_corporation_id;
@@ -82,7 +82,7 @@ class ApiCredentials {
     protected $invalid;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer")
      * @JMS\Expose()
      */
     protected $access_mask;
@@ -104,6 +104,15 @@ class ApiCredentials {
      * @JMS\Expose()
      */
     protected $created_by;
+
+    public function toArray(){
+        return [
+            'api_key' => $this->getApiKey(),
+            'verification_code' => $this->getVerificationCode(),
+            'access_mask' => $this->getAccessMask(),
+            'type' => $this->getType()
+        ];
+    }
 
     public static function loadValidatorMetadata(ClassMetadata $metadata){
         $metadata->addPropertyConstraints('api_key',[

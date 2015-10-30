@@ -43,8 +43,7 @@ class CorporationManager implements DataManagerInterface {
 
         $client = $this->getClient($apiKey, 'account');
         $details = $client->APIKeyInfo()->key->characters[0];
-        $result =  [ 'id' => $details->characterID ];
-
+        $result =  [ 'id' => $details->corporationID ];
 
         return $result;
     }
