@@ -41,7 +41,7 @@ class AssetDetailUpdateManager {
 
             $descriptors = $this->formatDescriptors(array_merge(
                 isset($location) ? $location : []
-                , $iData
+                , $iData !== false ? $iData : []
             ));
 
             $i->setDescriptors($descriptors);
@@ -102,12 +102,13 @@ class AssetDetailUpdateManager {
     protected function formatDescriptors($itemData){
 
         return [
-            'name' => $itemData['name'],
-            'description' => $itemData['description'],
+            'name' => isset($itemData['name']) ? $itemData['name'] : null,
+            'description' => isset($itemData['description']) ? $itemData['description'] : null,
             'system' => isset($itemData['solarSystemID'])
                 ? $itemData['solarSystemID']['name']
                 : (isset($itemData['itemName']) ? $itemData['itemName'] : null),
             'constellation' => isset($itemData['constellationID']) ? $itemData['constellationID']['name'] : null,
+            'stationName' => isset($itemData['stationName']) ? $itemData['stationName'] : null,
             'region' => isset($itemData['regionID']) ? $itemData['regionID']['name'] : null
         ];
 
