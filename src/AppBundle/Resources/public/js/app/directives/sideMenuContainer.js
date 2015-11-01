@@ -9,8 +9,6 @@ angular.module('eveTool')
                 var buttons = [];
                 var sideMenus = [];
 
-                $scope.open = false;
-
                 this.addSideMenu = function(scope, menu){
                     sideMenus.push({ scope: scope, menu: menu });
                 };
@@ -28,50 +26,35 @@ angular.module('eveTool')
                         return openType === menu.scope.formContext;
                     });
 
-                    m.scope.active = true;
-                    $scope.open = !$scope.open;
-                    return $scope.open;
+                    var isOpen = m.scope.active;
+
+                    if (isOpen){
+                        m.scope.closeMenu();
+                    } else {
+                        angular.forEach(sideMenus, function(m){
+                            if (m.scope.active){
+                                m.scope.closeMenu();
+                                var button = _.find(buttons, function(b){
+                                    return b.openType === m.scope.formContext;
+                                });
+
+                                button.open = false;
+                            }
+                        });
+                        m.scope.openMenu();
+                    }
+
+                    return !isOpen;
                 };
 
                 $scope.$on('close_window', function(){
-                    $scope.open = !$scope.open;
+                    angular.forEach(sideMenus, function(m){
+                        m.scope.active = false;
+                    });
+
                     angular.forEach(buttons, function (b){
-                        b.open = $scope.open;
+                        b.open = false;
                     });
-                });
-
-                $scope.$watch('open', function(value){
-                    var sideMenu = _.find(sideMenus, function(menu){
-                        return menu.scope.active === true;
-                    });
-
-                    if (typeof sideMenu !== 'undefined'){
-                        var width = sideMenu.scope.menuWidth;
-                        if (typeof sideMenu != 'undefined'){
-                            if (value){
-                                $(sideMenu.menu).animate({
-                                    right: "0px"
-                                }, 300, false);
-
-                                $('body').animate({
-                                    left: "-"+width
-                                }, 300, false);
-
-                                $('#page-overlay').fadeIn('fast');
-                            } else {
-                                $(sideMenu.menu).animate({
-                                    right: "-"+width
-                                }, 300, false);
-
-                                $('body').animate({
-                                    left: "0px"
-                                }, 300, false);
-                                $('#page-overlay').fadeOut('fast');
-                            }
-                        }
-                    }
-
-
                 });
             },
             transclude: true
