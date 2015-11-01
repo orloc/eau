@@ -30,15 +30,6 @@ class UserSubscriber implements EventSubscriber {
 
         if ($entity instanceof User){
             if ($this->session->has('registration_authorized')){
-                /*
-                 * @TODO not sure how i feel about this
-                $details = $this->session->get('registration_authorized');
-                $newChar = $this->manager
-                    ->newCharacterWithName($details);
-
-                $entity->addCharacter($newChar);
-                */
-
                 $this->session->remove('registration_authorized');
             }
         }

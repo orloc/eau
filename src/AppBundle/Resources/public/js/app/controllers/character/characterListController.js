@@ -31,7 +31,4 @@ angular.module('eveTool')
             $scope.characters.push(item);
         });
 
-        $scope.$on('update_key_list', function(event, item){
-            $scope.api_credentials.push(item);
-        });
     }]);
