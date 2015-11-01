@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CorporationRepository")
  * @ORM\Table(name="corporations", uniqueConstraints={
     @ORM\UniqueConstraint(name="eve_id_idx", columns={"eve_id"})
  * })

@@ -29,7 +29,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
-                'roles' => ['ROLE_ADMIN']
+                'roles' => ['ROLE_SUPER_ADMIN']
             ],
             [
                 'username' => 'capn',
@@ -37,7 +37,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
-                'roles' => ['ROLE_ADMIN']
+                'roles' => ['ROLE_SUPER_ADMIN']
             ]
         ];
 

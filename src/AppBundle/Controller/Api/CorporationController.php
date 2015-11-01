@@ -22,8 +22,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class CorporationController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * Lists all User entities.
-     *
      * @Route("/", name="api.corps")
      * @Method("GET")
      * @Secure(roles="ROLE_ADMIN")
@@ -31,7 +29,23 @@ class CorporationController extends AbstractController implements ApiControllerI
     public function indexAction()
     {
         $corp = $this->getDoctrine()->getRepository('AppBundle:Corporation')
-            ->findAll();
+            ->findAllUpdatedCorporations();
+
+        $json = $this->get('jms_serializer')->serialize($corp, 'json');
+
+        return $this->jsonResponse($json);
+
+    }
+
+    /**
+     * @Route("/needsUpdate", name="api.corp.needs_update")
+     * @Method("GET")
+     * @Secure(roles="ROLE_ADMIN")
+     */
+    public function needsUpdateAction()
+    {
+        $corp = $this->getDoctrine()->getRepository('AppBundle:Corporation')
+            ->findToBeUpdatedCorporations();
 
         $json = $this->get('jms_serializer')->serialize($corp, 'json');
 
@@ -50,12 +64,13 @@ class CorporationController extends AbstractController implements ApiControllerI
     {
         $content = $request->request;
 
-        $corp = $this->get('app.corporation.manager')
-            ->buildInstanceFromRequest($content);
+        $keyManager = $this->get('app.apikey.manager');
+
+        $key = $keyManager->buildInstanceFromRequest($content);
 
         $validator = $this->get('validator');
 
-        $errors = $validator->validate($corp);
+        $errors = $validator->validate($key);
 
         if (count($errors) > 0){
             return $this->getErrorResponse($errors);
@@ -63,8 +78,23 @@ class CorporationController extends AbstractController implements ApiControllerI
 
         $em = $this->getDoctrine()->getManager();
         $jms = $this->get('jms_serializer');
+        $corpManager = $this->get('app.corporation.manager');
 
         try {
+            $result = $this->get('app.apikey.manager')
+                ->validateAndUpdateApiKey($key);
+
+            $result_key = $result->toArray()['result']['key'];
+
+            $keyManager->updateKey($key, $result_key);
+
+            $character = array_pop($result_key['characters']);
+
+            $key->setEveCharacterId($character['characterID'])
+                ->setEveCorporationId($character['corporationID']);
+
+            $corp = $corpManager->createNewCorporation($key);
+
             $em->persist($corp);
             $em->flush();
         } catch (\Exception $e){
@@ -77,7 +107,7 @@ class CorporationController extends AbstractController implements ApiControllerI
             return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
         }
 
-        $this->get('app.task.dispatcher')->addDeferred(CorporationEvents::NEW_CORPORATION, new NewCorporationEvent($corp));
+        #$this->get('app.task.dispatcher')->addDeferred(CorporationEvents::NEW_CORPORATION, new NewCorporationEvent($corp));
 
         $json = $jms->serialize($corp, 'json');
 

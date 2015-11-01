@@ -35,8 +35,9 @@ class ApiKeyManager implements DataManagerInterface {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }
 
-        if ($accessMask !== '1073741823'){
-            throw new InvalidAccessMaskException('Your Access Mask is invalid - please use the link above and CHECK No Expiry to generate a valid key');
+
+        if ($accessMask !== '1073741823' && $accessMask !== '134217727'){
+            throw new InvalidAccessMaskException('Your Access Mask is invalid - please use the link above to generate a valid key');
         }
 
         if ($required_type && $type !== $required_type){
@@ -57,8 +58,10 @@ class ApiKeyManager implements DataManagerInterface {
 
     }
 
-    public function updateActiveKey(Corporation $corporation, ApiCredentials $key){
-
+    public function updateKey(ApiCredentials $key, array $creds){
+        $key->setType($creds['type'])
+            ->setAccessMask($creds['accessMask'])
+            ->setIsActive(true);
     }
 
     public function buildInstanceFromRequest(ParameterBag $content){

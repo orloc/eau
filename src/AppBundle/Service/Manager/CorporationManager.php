@@ -26,15 +26,13 @@ class CorporationManager implements DataManagerInterface {
         $this->log = $logger;
     }
 
-    public function buildInstanceFromRequest(ParameterBag $content){
-        $corp = new Corporation();
+    public function createNewCorporation(ApiCredentials $key){
+        $corp  = new Corporation();
 
-        $creds = $this->api_manager->buildInstanceFromRequest($content);
-        $creds->setIsActive(true);
-
-        $corp->addApiCredential($creds);
+        $corp->addApiCredential($key);
 
         return $corp;
+
     }
 
     public function getCorporationDetails(Corporation $corporation){

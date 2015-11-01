@@ -42,6 +42,8 @@ class ActiveApiRequestListener {
             'api.characters',
             'api.character_create',
             'template.serverstatus',
+            'api.character_create.validate',
+            'api.character_create.finalize',
             'api.character.apicredentials',
             'api.character.apicredentials.update',
             'template.slidebutton',
@@ -50,6 +52,7 @@ class ActiveApiRequestListener {
 
         if (!$event->isMasterRequest()
             || $token === null
+            || in_array('ROLE_SUPER_ADMIN', $this->getRolesArray($token->getRoles()))
             || in_array($request->attributes->get('_route'), $blackList)
             || !strstr(explode('::',$request->attributes->get('_controller'))[0],'AppBundle')
         ){
@@ -84,6 +87,12 @@ class ActiveApiRequestListener {
             }
         }
 
+    }
+
+    protected function getRolesArray(array $roles){
+        return array_map(function($r){
+            return $r->getRole();
+        }, $roles);
     }
 
 }

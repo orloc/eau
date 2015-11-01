@@ -35,6 +35,9 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $dataUpdateService->updateShortTimerCalls($c, $force);
             $dataUpdateService->updateLongTimerCalls($c, $force);
 
+            $dataUpdateService->updateAssetCache($c);
+
+
         }
 
     }

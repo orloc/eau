@@ -33,45 +33,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $allItems = $query->getResult();
 
-
-        if (!$group->getHasBeenUpdated()){
-            $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($allItems);
-
-            $priceManager = $this->get('app.price.manager');
-            $priceManager->updatePrices($updatedItems);
-
-            $filteredList = array_filter($updatedItems, function($i) {
-                if (!isset($i->getDescriptors()['name'])) {
-                    return false;
-                }
-
-                $name = $i->getDescriptors()['name'];
-                $t = strstr($name, 'Blueprint');
-
-                return $t === false;
-            });
-
-            $total_price = array_reduce($filteredList, function($carry, $data){
-                if ($carry === null){
-                    return $data->getDescriptors()['total_price'];
-                }
-
-                return $carry + $data->getDescriptors()['total_price'];
-            });
-
-            $group->setAssetSum($total_price)
-                ->setHasBeenUpdated(true);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($group);
-
-            $em->flush();
-        } else {
-            $filteredList = $allItems;
-        }
-
-
-        $assets = $this->paginateResult($request, array_values($filteredList));
+        $assets = $this->paginateResult($request, $allItems);
 
         $newList = [
             'total_price' => $group->getAssetSum(),
@@ -104,23 +66,20 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $items = $query->getResult();
 
-        $priceManager = $this->get('app.price.manager');
 
-        $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($items);
-        $priceManager->updatePrices($updatedItems);
+        if ($group->getHasBeenUpdated()){
+            $total_price = array_reduce($items, function($carry, $data){
+                if ($carry === null){
+                    return $data->getDescriptors()['total_price'];
+                }
 
-
-        $total_price = array_reduce($items, function($carry, $data){
-            if ($carry === null){
-                return $data->getDescriptors()['total_price'];
-            }
-
-            return $carry + $data->getDescriptors()['total_price'];
-        });
+                return $carry + $data->getDescriptors()['total_price'];
+            });
+        }
 
         $newList = [
-            'total_price' => $total_price,
-            'items' => array_values($items)
+            'total_price' => isset($total_price) ? $total_price : 0,
+            'items' => $items
         ];
 
         $json = $this->get('serializer')->serialize($newList, 'json');

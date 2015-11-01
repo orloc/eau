@@ -98,8 +98,8 @@ class CharacterController extends AbstractController implements ApiControllerInt
         $initialKey = $content->get('full_key', null);
         $selected_char = $content->get('char', null);
 
-        $key = $this->get('app.apikey.manager')
-            ->buildInstanceFromRequest($content);
+        $keyManager = $this->get('app.apikey.manager');
+        $key = $keyManager->buildInstanceFromRequest($content);
 
         $validator = $this->get('validator');
 
@@ -109,13 +109,9 @@ class CharacterController extends AbstractController implements ApiControllerInt
             return $this->getErrorResponse($errors);
         }
 
-        $validCreds = $initialKey['result']['key'];
+        $keyManager->updateKey($key, $initialKey['result']['key']);
 
-        $key->setType($validCreds['type'])
-            ->setAccessMask($validCreds['accessMask'])
-            ->setIsActive(true)
-            // @TODO these two fields feel strange here probably is a beter spot
-            ->setEveCharacterId($selected_char['characterID'])
+        $key->setEveCharacterId($selected_char['characterID'])
             ->setEveCorporationId($selected_char['corporationID']);
 
 

@@ -113,6 +113,11 @@ class EveDataUpdateService {
             ->getLongTimerExpired($c, $call);
     }
 
+    public function updateAssetCache(Corporation $c){
+        $this->log->debug(sprintf("Updating asset group cache for"));
+        $this->asset_manager->updateAssetGroupCache($c);
+    }
+
 
     public function createApiUpdate($type, $call, $success){
         $access = new ApiUpdate();

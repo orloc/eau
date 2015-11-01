@@ -103,7 +103,7 @@ services:
       class: AppBundle\Service\Manager\MarketOrderManager
 
   app.asset.manager:
-      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
+      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine", "@app.itemdetail.manager", "@app.price.manager" ]
       class: AppBundle\Service\Manager\AssetManager
 
   app.evedataupdate.service:

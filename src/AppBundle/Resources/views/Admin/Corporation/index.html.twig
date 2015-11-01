@@ -2,25 +2,34 @@
 
 {% block content -%}
     <div class="row" >
-        <h3>Corporation <span class="muted small">LIST</span>
-        </h3>
         <side-menu-container ng-transclude>
             <div class="col-xs-12 corporation-list" ng-controller="corpListController" ng-cloak>
-                <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" class="corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
-                    <div class="row">
-                        <div class="col-xs-4">
-                            <eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="128" ng-show="!c.new"></eve-image>
-                            <loading-spinner ng-show="c.new"></loading-spinner>
-                        </div>
-                        <div class="col-xs-8 description">
-                            <span class="corp-name" ng-show="!c.new">{{ '{{ c.corporation_details.name }}' }} </span>
-                            <span class="small muted"><b>{{ '<{{ c.corporation_details.ticker }}>' }}</b>
-                            <br> {{ '{{ c.corporation_details.alliance_name }}' }}</span>
-                        </div>
+                <h3>Corporation <span class="muted small">LIST</span>
+                    <span class="pull-right small normal_font" ng-if="needs_update.length > 0">
+                        <b class="text-danger">{{ '{{ needs_update.length }}' }}</b> Corporation(s) Pending Initial Update
+                    </span>
+                </h3>
+                <div class="row">
+                   <div class="col-xs-3">
+                       <select width="150px" class="form-control" ng-options="c as getLabel(c) for c in corps" ng-model="selected_corp">
+                           <option>Select A Corporation</option>
+                       </select>
+                   </div>
+                    <div class="col-xs-9">
+                        <slide-button open-type="new"></slide-button>
                     </div>
                 </div>
+                    {#
+                <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorporation(c)" class="corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
+                            <eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="128" ng-show="!c.new"></eve-image>
+                            <loading-spinner ng-show="c.new"></loading-spinner>
+                            <span class="corp-name" ng-show="!c.new">{{ '{{ c.corporation_details.name }}' }} </span>
+                            <span class="small muted"><b>{{ '<{{ c.corporation_details.ticker }}>' }}</b>
 
-                <slide-button open-type="new"></slide-button>
+                            <br> {{ '{{ c.corporation_details.alliance_name }}' }}</span>
+                </div>
+                        #}
+
             </div>
             {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
 

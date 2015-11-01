@@ -6,7 +6,9 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
 use AppBundle\Entity\Corporation;
+use AppBundle\Service\AssetDetailUpdateManager;
 use AppBundle\Service\EBSDataMapper;
+use AppBundle\Service\PriceUpdateManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
@@ -15,15 +17,17 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 class AssetManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
     protected $pheal;
-
-
+    protected $item_manager;
+    protected $price_manager;
     protected $mapper;
 
 
-    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine)
+    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine, AssetDetailUpdateManager $itemManager, PriceUpdateManager $priceManager)
     {
         parent::__construct($doctrine, $registry);
         $this->pheal = $pheal;
+        $this->item_manager = $itemManager;
+        $this->price_manager = $priceManager;
     }
 
     public function generateAssetList(Corporation $corporation){
@@ -82,6 +86,48 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
         }
 
         return $item;
+    }
+
+    public function updateAssetGroupCache(Corporation $corp){
+        $group = $this->doctrine->getRepository('AppBundle:AssetGroup')
+            ->getLatestAssetGroup($corp);
+
+        if (!$group->getHasBeenUpdated()){
+            $query = $this->doctrine->getRepository('AppBundle:Asset')
+                ->getAllByGroup($group);
+
+            $allItems = $query->getResult();
+            $updatedItems = $this->item_manager->updateDetails($allItems);
+
+            $this->price_manager->updatePrices($updatedItems);
+
+            $filteredList = array_filter($updatedItems, function($i) {
+                if (!isset($i->getDescriptors()['name'])) {
+                    return false;
+                }
+
+                $name = $i->getDescriptors()['name'];
+                $t = strstr($name, 'Blueprint');
+
+                return $t === false;
+            });
+
+            $total_price = array_reduce($filteredList, function($carry, $data){
+                if ($carry === null){
+                    return $data->getDescriptors()['total_price'];
+                }
+
+                return $carry + $data->getDescriptors()['total_price'];
+            });
+
+            $group->setAssetSum($total_price)
+                ->setHasBeenUpdated(true);
+
+            $em = $this->doctrine()->getManager();
+            $em->persist($group);
+
+            $em->flush();
+        }
     }
 
     public function getClient(ApiCredentials $key, $scope = 'corp'){
