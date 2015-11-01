@@ -25,7 +25,7 @@
                     <tr ng-repeat="u in users">
                         <td ng-if="u.characters.length === 0">{{ '{{ u.id }}' }}</td>
                         <td ng-if="u.characters.length !== 0">
-                            <eve-image image-type="'Character'" object-id="u.characters[0].eve_id" img-width="256"></eve-image>
+                            <eve-image image-type="'Character'" object-id="u.main_id" img-width="256"></eve-image>
                         </td>
                         <td>{{ '{{ u.username }}' }}</td>
                         <td>{{ '{{ u.email }}' }}</td>
@@ -43,7 +43,7 @@
                         </td>
                         <td><i ng-class="{'fa fa-check text-success': u.enabled, 'fa fa-times text-danger': !u.enabled}"></i> </td>
                         <td><i ng-class="{'fa fa-check text-success': u.locked, 'fa fa-times text-danger': !u.locked}"></i> </td>
-                        <td><i ng-class="{'fa fa-check text-success': u.has_valid_api_crendentials, 'fa fa-times text-danger': !u.has_valid_api_crendentials}"></i> </td>
+                        <td><i ng-class="{'fa fa-check text-success': hasApiKey(u), 'fa fa-times text-danger': !hasApiKey(u)}"></i> </td>
                         <td class="text-center">
                             <slide-button open-type="edit" ng-click="populateEdit(u)"></slide-button>
                         </td>

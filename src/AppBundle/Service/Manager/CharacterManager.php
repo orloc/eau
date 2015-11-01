@@ -20,6 +20,7 @@ class CharacterManager {
 
         $char->setEveId($details['characterID'])
             ->setName($details['characterName'])
+            ->setCorporationName($details['corporationName'])
             ->setEveCorporationId($details['corporationID']);
 
         return $char;

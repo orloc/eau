@@ -121,8 +121,17 @@ class CharacterController extends AbstractController implements ApiControllerInt
         $user = $this->getUser();
 
         $addedChars = [];
+
+        $has_main = $this->getDoctrine()->getRepository('AppBundle:Character')
+            ->findOneBy(['user' => $user, 'is_main' => true]);
+
         foreach($all_chars as $c){
             $char = $cmanager->createCharacter($c);
+
+            if ($char->getEveId() === $selected_char['characterID'] && !$has_main){
+                $char->setIsMain(true);
+            }
+
             $char->addApiCredential($key);
             $char->setUser($user);
 

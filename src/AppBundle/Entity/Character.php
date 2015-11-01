@@ -66,6 +66,12 @@ class Character
     protected $corporation_name;
 
     /**
+     * @ORM\Column(type="boolean")
+     * @JMS\Expose()
+     */
+    protected $is_main;
+
+    /**
      * @ORM\Column(type="datetime")
      * @JMS\Expose()
      */
@@ -88,6 +94,7 @@ class Character
 
     public function __construct(){
         $this->created_at = new \DateTime();
+        $this->is_main = false;
         $this->api_credentials = new ArrayCollection();
     }
 
@@ -273,5 +280,28 @@ class Character
     public function getCorporationName()
     {
         return $this->corporation_name;
+    }
+
+    /**
+     * Set is_main
+     *
+     * @param boolean $isMain
+     * @return Character
+     */
+    public function setIsMain($isMain)
+    {
+        $this->is_main = $isMain;
+
+        return $this;
+    }
+
+    /**
+     * Get is_main
+     *
+     * @return boolean 
+     */
+    public function getIsMain()
+    {
+        return $this->is_main;
     }
 }

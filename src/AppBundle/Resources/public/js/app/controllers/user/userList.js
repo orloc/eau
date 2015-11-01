@@ -5,8 +5,42 @@ angular.module('eveTool')
     $scope.users = [];
 
     $http.get(Routing.generate('api.users')).then(function(data){
-            $scope.users = data.data;
+        var getMain = function(chars){
+            var id = false;
+            angular.forEach(chars, function(c){
+                if (c.is_main){
+                    id = c.eve_id;
+                }
+            });
+
+            return id;
+        };
+
+        angular.forEach(data.data, function(u){
+            var main = getMain(u.characters);
+
+            u.main_id = main;
+        });
+
+        console.log(data.data);
+
+
+        $scope.users = data.data;
     });
+
+    $scope.hasApiKey = function(u){
+        if (typeof u.characters === 'undefined' || u.characters.length <= 0){
+            return false;
+        }
+
+        var hasKey = false;
+
+        angular.forEach(u.characters, function(c){
+            if (c.has_key){ hasKey = true; }
+        });
+
+        return hasKey;
+    };
 
     $scope.populateEdit = function(user){
 
