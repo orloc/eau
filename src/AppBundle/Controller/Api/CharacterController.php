@@ -115,20 +115,26 @@ class CharacterController extends AbstractController implements ApiControllerInt
             ->setEveCorporationId($selected_char['corporationID']);
 
 
-        $char = $this->get('app.character.manager')->createCharacter($selected_char);
-        $char->addApiCredential($key);
-
+        $all_chars = $initialKey['result']['key']['characters'];
+        $cmanager = $this->get('app.character.manager');
+        $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($char);
+        $addedChars = [];
+        foreach($all_chars as $c){
+            $char = $cmanager->createCharacter($c);
+            $char->addApiCredential($key);
+            $char->setUser($user);
 
-        $char->setUser($user);
+            $em->persist($char);
+
+            array_push($addedChars, $char);
+        }
 
         try {
-            $em->flush($char);
+            $em->flush();
 
-            return  $this->jsonResponse($this->get('jms_serializer')->serialize($char, 'json'));
+            return  $this->jsonResponse($this->get('jms_serializer')->serialize($addedChars, 'json'));
         } catch (\Exception $e){
             return $this->jsonResponse(json_encode(['message' => $e->getMessage(), 'code' => 400]), 400);
         }

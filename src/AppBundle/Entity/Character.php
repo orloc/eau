@@ -197,7 +197,7 @@ class Character
     {
         if (!$this->api_credentials->contains($apiCredentials)){
             $this->api_credentials[] = $apiCredentials;
-            $apiCredentials->setCharacter($this);
+            $apiCredentials->addCharacter($this);
         }
 
         return $this;

@@ -45,7 +45,12 @@ angular.module('eveTool')
             };
 
             $http.post(Routing.generate('api.character_create.finalize'), obj).then(function(data){
-                dataDispatcher.addEvent('update_list', data.data);
+                angular.forEach(data.data, function(d){
+                    dataDispatcher.addEvent('update_list', d);
+                });
+
+                $scope.stage = 1;
+                $scope.char_result = $scope.selected_character = null;
                 dataDispatcher.addEvent('close_window', true);
             });
         };

@@ -76,10 +76,10 @@ class AssetDetailUpdateManager {
 
                 }
 
-                $this->cacheItem('location', $i->getLocationId(), $location);
+                $this->cacheItem('location', $locId, $location);
             }
         } else {
-            $location = $this->cache['location'][$i->getLocationId()];
+            $location = $this->cache['location'][$locId];
         }
 
         return $location;
