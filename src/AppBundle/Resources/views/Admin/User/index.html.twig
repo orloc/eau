@@ -12,6 +12,7 @@
                     <th width="64px">ID</th>
                     <th>Username</th>
                     <th>Email</th>
+                    <th>Role</th>
                     <th>Last Login</th>
                     <th>Characters</th>
                     <th>Created At</th>
@@ -29,6 +30,7 @@
                         </td>
                         <td>{{ '{{ u.username }}' }}</td>
                         <td>{{ '{{ u.email }}' }}</td>
+                        <td>{{ '{{ u.roles }}' }}</td>
                         <td class="text-center">{{ '{{ u.last_login | date:"M/d/yy" }}' }}<br>
                             <span class="small">{{ '{{ u.last_login | date:"shortTime" }}' }}</span>
                         </td>
