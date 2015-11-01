@@ -47,9 +47,11 @@ angular.module('eveTool')
                     return !isOpen;
                 };
 
-                $scope.$on('close_window', function(){
+                $scope.$on('close_window', function(e){
                     angular.forEach(sideMenus, function(m){
-                        m.scope.active = false;
+                        if (m.scope.active){
+                            m.scope.closeMenu();
+                        }
                     });
 
                     angular.forEach(buttons, function (b){

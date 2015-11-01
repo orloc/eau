@@ -26,7 +26,6 @@ angular.module('eveTool')
             return;
 
         }
-        console.log(value);
         if (typeof value.corporation_details === 'undefined'){
             return;
         }
@@ -36,7 +35,7 @@ angular.module('eveTool')
 
 
     $scope.$on('update_list', function(event, item){
-        $scope.corps.push(item);
+        $scope.needs_update.push(item);
     });
 
 }]);

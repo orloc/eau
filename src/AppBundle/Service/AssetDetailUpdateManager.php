@@ -27,21 +27,16 @@ class AssetDetailUpdateManager {
         $em = $this->doctrine->getManager();
 
         foreach ($items as $i){
-
-            $locId = $i instanceof Asset
-                ? $i->getLocationId()
-                : ( $i instanceof MarketOrder
-                    ? $i->getPlacedAtId()
-                    :null
-                );
+            $locId = $this->determineLocationId($i);
 
             $iData = $itemTypes->getItemTypeData($i->getTypeId());
 
             if ($locId !== null){
-                $location = $this->checkAndGetLocation($i);
+                $location = $this->checkAndGetLocation($i, $locId);
             } else {
                 $parent = $this->getTopMostParent($i);
-                $location = $this->checkAndGetLocation($parent);
+
+                $location = $this->checkAndGetLocation($parent, $this->determineLocationId($parent));
             }
 
             if (isset($location)){
@@ -53,6 +48,15 @@ class AssetDetailUpdateManager {
         }
 
         return $items;
+    }
+
+    protected function determineLocationId($i){
+        return $i instanceof Asset
+            ? $i->getLocationId()
+            : ( $i instanceof MarketOrder
+                ? $i->getPlacedAtId()
+                :null
+            );
     }
 
     protected  function checkAndGetLocation($i, $locId){

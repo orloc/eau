@@ -32,6 +32,8 @@ class PriceUpdateManager extends AbstractManager {
         if (count($arrType)){
             return $arrType;
         }
+
+        return $items;
     }
 
     protected function doUpdate($i, $object = true){

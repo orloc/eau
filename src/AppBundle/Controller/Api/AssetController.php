@@ -66,20 +66,23 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $items = $query->getResult();
 
+        $priceManager = $this->get('app.price.manager');
 
-        if ($group->getHasBeenUpdated()){
-            $total_price = array_reduce($items, function($carry, $data){
-                if ($carry === null){
-                    return $data->getDescriptors()['total_price'];
-                }
+        $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($items);
+        $priceManager->updatePrices($updatedItems);
 
-                return $carry + $data->getDescriptors()['total_price'];
-            });
-        }
+
+        $total_price = array_reduce($items, function($carry, $data){
+            if ($carry === null){
+                return $data->getDescriptors()['total_price'];
+            }
+
+            return $carry + $data->getDescriptors()['total_price'];
+        });
 
         $newList = [
-            'total_price' => isset($total_price) ? $total_price : 0,
-            'items' => $items
+            'total_price' => $total_price,
+            'items' => array_values($items)
         ];
 
         $json = $this->get('serializer')->serialize($newList, 'json');

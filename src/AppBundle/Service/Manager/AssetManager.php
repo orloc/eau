@@ -97,9 +97,10 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
                 ->getAllByGroup($group);
 
             $allItems = $query->getResult();
-            $updatedItems = $this->item_manager->updateDetails($allItems);
 
-            $this->price_manager->updatePrices($updatedItems);
+            $updatedItems = $this->price_manager->updatePrices(
+                $this->item_manager->updateDetails($allItems)
+            );
 
             $filteredList = array_filter($updatedItems, function($i) {
                 if (!isset($i->getDescriptors()['name'])) {
@@ -123,7 +124,7 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
             $group->setAssetSum($total_price)
                 ->setHasBeenUpdated(true);
 
-            $em = $this->doctrine()->getManager();
+            $em = $this->doctrine->getManager();
             $em->persist($group);
 
             $em->flush();
