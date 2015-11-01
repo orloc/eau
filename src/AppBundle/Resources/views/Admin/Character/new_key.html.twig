@@ -2,8 +2,10 @@
     <div class="header">
         <h3>New API Key</h3>
     </div>
-    <p class="text-center">&nbsp;&nbsp;Please enter the required information.</p>
     <form name="newKeyForm" ng-controller="characterNewController">
+        <p class="text-center">You are about to add an API Key for your character {{ '{{ current_char.name }}' }}.
+            <br> <br>
+            If you need a pre-generated API key - click <a target="_blank" class="eve" href="http://community.eveonline.com/support/api-key/CreatePredefined?accessMask=1073741823">here</a>.</p>
         <table class="table-form">
             <tbody>
             <tr ng-repeat="e in errors">

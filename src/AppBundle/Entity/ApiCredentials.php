@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 use JMS\Serializer\Annotation as JMS;
@@ -71,9 +72,9 @@ class ApiCredentials {
     protected $corporation;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Character", inversedBy="api_credentials")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Character", inversedBy="api_credentials")
      */
-    protected $character;
+    protected $characters;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -126,6 +127,7 @@ class ApiCredentials {
 
     public function __construct(){
         $this->created_at = new \DateTime();
+        $this->characters = new ArrayCollection();
         $this->is_active = false;
     }
 
@@ -415,26 +417,37 @@ class ApiCredentials {
         return $this->is_active;
     }
 
+
     /**
-     * Set character
+     * Add characters
      *
-     * @param \AppBundle\Entity\Character $character
+     * @param \AppBundle\Entity\Character $characters
      * @return ApiCredentials
      */
-    public function setCharacter(\AppBundle\Entity\Character $character = null)
+    public function addCharacter(\AppBundle\Entity\Character $characters)
     {
-        $this->character = $character;
+        $this->characters[] = $characters;
 
         return $this;
     }
 
     /**
-     * Get character
+     * Remove characters
      *
-     * @return \AppBundle\Entity\Character 
+     * @param \AppBundle\Entity\Character $characters
      */
-    public function getCharacter()
+    public function removeCharacter(\AppBundle\Entity\Character $characters)
     {
-        return $this->character;
+        $this->characters->removeElement($characters);
+    }
+
+    /**
+     * Get characters
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCharacters()
+    {
+        return $this->characters;
     }
 }

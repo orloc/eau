@@ -12,7 +12,7 @@ class ApiCredentialRepository extends EntityRepository {
     public function getActiveKeyForUser(User $user){
         return $this->createQueryBuilder('api')
             ->select('api')
-            ->leftJoin('api.character', 'char')
+            ->leftJoin('api.characters', 'char')
             ->leftJoin('char.user', 'u')
             ->where('api.is_active = :active')
             ->andWhere('u = :user')

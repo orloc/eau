@@ -5,6 +5,7 @@ namespace AppBundle\Service\Manager;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Exception\InvalidAccessMaskException;
+use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\ParameterBag;
@@ -21,7 +22,7 @@ class ApiKeyManager implements DataManagerInterface {
         $this->doctrine = $doctrine;
     }
 
-    public function validateAndUpdateApiKey(ApiCredentials $entity) {
+    public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false) {
         $client = $this->getClient($entity, 'account');
 
         $result = $client->APIKeyInfo();
@@ -38,22 +39,16 @@ class ApiKeyManager implements DataManagerInterface {
             throw new InvalidAccessMaskException('Your Access Mask is invalid - please use the link above and CHECK No Expiry to generate a valid key');
         }
 
+        if ($required_type && $type !== $required_type){
+            throw new InvalidApiKeyTypeException('Api Key must be of type:'.$required_type.' - '.$type.' given');
+        }
+
         $exists = $this->doctrine->getRepository('AppBundle:ApiCredentials')
             ->findOneBy(['api_key' => $entity->getApiKey(), 'verification_code' => $entity->getVerificationCode()]);
 
         if ($exists instanceof ApiCredentials){
             throw new \Exception('API key already exists');
         }
-
-        /*
-            $char = $result->key
-            ->characters[0]
-            ->characterID;
-
-        $corp = $result->key
-            ->characters[0]
-            ->corporationID;
-        */
 
         $entity->setAccessMask($accessMask)
             ->setType($type);

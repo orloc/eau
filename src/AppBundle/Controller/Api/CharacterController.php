@@ -58,7 +58,6 @@ class CharacterController extends AbstractController implements ApiControllerInt
         }
 
         try {
-            // new char only has one credential
             $result = $this->get('app.apikey.manager')
                 ->validateAndUpdateApiKey($key);
 

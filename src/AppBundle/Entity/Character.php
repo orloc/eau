@@ -49,7 +49,7 @@ class Character
     protected $eve_corporation_id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="character", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="character", cascade={"persist"})
      */
     protected $api_credentials;
 
