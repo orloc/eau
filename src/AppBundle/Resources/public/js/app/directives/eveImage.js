@@ -8,7 +8,7 @@ angular.module('eveTool')
                 imageType: "=imageType",
                 object_id: "=objectId",
                 imgWidth: "=imgWidth",
-                overrideWidth: "=overrideWidth"
+                overrideWidth: "=?overrideWidth"
             },
             link : function(scope, element, attributes) {
                 var baseUrl = 'https://imageserver.eveonline.com';
@@ -17,7 +17,6 @@ angular.module('eveTool')
                 scope.overrideWidth = typeof scope.overrideWidth === 'undefined'
                     ? '64px'
                     : scope.overrideWidth+'px';
-                console.log(scope.overrideWidth);
 
                 scope.url = [baseUrl,scope.imageType, path+ending].join('/');
             },

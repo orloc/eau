@@ -21,7 +21,6 @@ angular.module('eveTool')
         ];
 
         $scope.$on('update_user', function(event, item){
-            console.log(item);
             $scope.editUser = item;
         });
 

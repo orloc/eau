@@ -46,7 +46,7 @@
 
                         <div class="row" ng-show="selected_character != null">
                             <div class="col-sm-6">
-                                <eve-image ng-if="selected_character != null" image-type="'Character'" object-id="selected_character.eve_id" img-width="256"></eve-image>
+                                <eve-image ng-if="selected_character != null" image-type="'Character'" override-width="image_size" object-id="selected_character.eve_id" img-width="256" ng-init="image_size = 256"></eve-image>
                             </div>
                             <div class="col-sm-6">
                                 <h3 style="font-family: 'roboto'; color: black;" class="text-center">More details coming soon.</h3>
