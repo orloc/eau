@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
+use AppBundle\Entity\CorporationMember;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
@@ -29,6 +30,17 @@ class ApiCredentialRepository extends EntityRepository {
             ->setParameters(['char_id' => $char->getEveId(), 'types' => ['Character', 'Account']])
             ->getQuery()->getResult();
 
+    }
+
+    public function findRelatedKeyByMember(CorporationMember $member){
+        return $this->createQueryBuilder('api')
+            ->leftJoin('api.characters', 'c')
+            ->where('c.eve_id = :char_id')
+            ->andWhere('api.type IN ( :api_types )')
+            ->setParameters([
+                'char_id' => $member->getCharacterId(),
+                'api_types' => [ 'Character', 'Account']
+            ])->getQuery()->getOneOrNullResult();
     }
 
     public function getActiveKey(Corporation $corp){

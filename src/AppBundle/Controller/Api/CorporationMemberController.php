@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiCredentials;
+use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -29,15 +30,16 @@ class CorporationMemberController extends AbstractController implements ApiContr
         $members = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')
             ->findBy(['corporation' => $corp]);
 
-        $repo = $this->getRepository('AppBundle:ApiCredentials');
+        $repo = $this->getRepository('AppBundle:Character');
         foreach ($members as $m){
-            $found = $repo->findOneBy(['eve_character_id' => $m->getCharacterId(), 'type' => ['Character', 'Account']]);
+            $found = $repo->findOneBy(['eve_id' => $m->getCharacterId()]);
 
-            if ($found instanceof ApiCredentials){
-                $m->setApiKey($found);
+            if ($found instanceof Character){
+                $m->setApiKey($found->getApiCredentials()->first());
             }
-        }
 
+
+        }
         $json = $this->get('serializer')->serialize($members, 'json');
 
         return $this->jsonResponse($json);

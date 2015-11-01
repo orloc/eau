@@ -71,13 +71,35 @@ class CorporationMember
     */
     protected $api_key = null;
 
+    /**
+     * @JMS\Expose()
+     */
+    protected $is_main = false;
+
+    /**
+     * @JMS\Expose()
+     */
+    protected $mains_name;
+
     public function setApiKey(ApiCredentials $creds){
         $this->api_key = $creds;
+    }
+
+    public function setIsMain($bool){
+        $this->is_main = $bool;
     }
 
     public function __construct(){
         $this->created_at = new \DateTime();
         $this->is_registered = false;
+    }
+
+    public function getIsMain(){
+        return $this->is_main;
+    }
+
+    public function getMainsName(){
+        return $this->mains_name;
     }
 
     /**
