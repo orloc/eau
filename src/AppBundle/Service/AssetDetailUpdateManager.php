@@ -39,10 +39,12 @@ class AssetDetailUpdateManager {
                 $location = $this->checkAndGetLocation($parent, $this->determineLocationId($parent));
             }
 
-            if (isset($location)){
-                $descriptors = $this->formatDescriptors(array_merge($location, $iData));
-                $i->setDescriptors($descriptors);
-            }
+            $descriptors = $this->formatDescriptors(array_merge(
+                isset($location) ? $location : []
+                , $iData
+            ));
+
+            $i->setDescriptors($descriptors);
 
             $em->persist($i);
         }
@@ -102,9 +104,11 @@ class AssetDetailUpdateManager {
         return [
             'name' => $itemData['name'],
             'description' => $itemData['description'],
-            'system' => $itemData['solarSystemID'] ? $itemData['solarSystemID']['name'] : $itemData['itemName'],
-            'constellation' => $itemData['constellationID']['name'],
-            'region' => $itemData['regionID']['name']
+            'system' => isset($itemData['solarSystemID'])
+                ? $itemData['solarSystemID']['name']
+                : (isset($itemData['itemName']) ? $itemData['itemName'] : null),
+            'constellation' => isset($itemData['constellationID']) ? $itemData['constellationID']['name'] : null,
+            'region' => isset($itemData['regionID']) ? $itemData['regionID']['name'] : null
         ];
 
     }

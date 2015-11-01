@@ -71,6 +71,12 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($items);
         $priceManager->updatePrices($updatedItems);
 
+        foreach($updatedItems as $i){
+            if (!count($i->getDescriptors())){
+                var_dump($i);
+            }
+        }
+
 
         $total_price = array_reduce($items, function($carry, $data){
             if ($carry === null){
