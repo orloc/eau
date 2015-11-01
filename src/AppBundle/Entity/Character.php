@@ -49,7 +49,7 @@ class Character
     protected $eve_corporation_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="character", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ApiCredentials", mappedBy="characters", cascade={"persist"})
      */
     protected $api_credentials;
 
@@ -58,6 +58,12 @@ class Character
      * @JMS\Expose()
      */
     protected $name;
+
+    /**
+     * @ORM\Column(type="string")
+     * @JMS\Expose()
+     */
+    protected $corporation_name;
 
     /**
      * @ORM\Column(type="datetime")
@@ -244,5 +250,28 @@ class Character
     public function getEveCorporationId()
     {
         return $this->eve_corporation_id;
+    }
+
+    /**
+     * Set corporation_name
+     *
+     * @param string $corporationName
+     * @return Character
+     */
+    public function setCorporationName($corporationName)
+    {
+        $this->corporation_name = $corporationName;
+
+        return $this;
+    }
+
+    /**
+     * Get corporation_name
+     *
+     * @return string 
+     */
+    public function getCorporationName()
+    {
+        return $this->corporation_name;
     }
 }
