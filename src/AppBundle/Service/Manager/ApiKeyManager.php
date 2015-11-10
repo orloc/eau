@@ -35,7 +35,7 @@ class ApiKeyManager implements DataManagerInterface {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }
 
-
+        // char or corp
         if ($accessMask !== '1073741823' && $accessMask !== '134217727'){
             throw new InvalidAccessMaskException('Your Access Mask is invalid - please use the link above to generate a valid key');
         }
@@ -52,7 +52,8 @@ class ApiKeyManager implements DataManagerInterface {
         }
 
         $entity->setAccessMask($accessMask)
-            ->setType($type);
+            ->setType($type)
+            ->setIsActive(true);
 
         return $result;
 

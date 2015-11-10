@@ -11,11 +11,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ApiCredentialsSubscriber implements EventSubscriber {
 
     private $tokenManager;
-    private $manager;
 
-    public function __construct(TokenStorageInterface $storage, ApiKeyManager $manager){
+    public function __construct(TokenStorageInterface $storage){
         $this->tokenManager = $storage;
-        $this->manager = $manager;
     }
 
     public function getSubscribedEvents(){
@@ -26,11 +24,6 @@ class ApiCredentialsSubscriber implements EventSubscriber {
 
     public function prePersist(LifecycleEventArgs $args){
         $entity = $args->getObject();
-        $em = $args->getObjectManager();
-
-        if ($entity instanceof ApiCredentials && $entity->getId() === null && $entity->getType() === 'Corporation'){
-            $result = $this->manager->validateAndUpdateApiKey($entity);
-        }
 
         if ($entity instanceof ApiCredentials){
             $user = $this->tokenManager->getToken()->getUser();

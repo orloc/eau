@@ -56,7 +56,7 @@ class CorporationMember
     protected $is_registered;
 
     /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      * @JMS\Expose()
      */
     protected $disbanded_at;

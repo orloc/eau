@@ -34,7 +34,7 @@ services:
 
   app.api_credentials.subscriber:
       class: AppBundle\Subscriber\ApiCredentialsSubscriber
-      arguments: [ "@security.token_storage", "@app.apikey.manager", "@app.account.manager" ]
+      arguments: [ "@security.token_storage" ]
       tags:
           - { name: doctrine.event_subscriber, connection: default }
 

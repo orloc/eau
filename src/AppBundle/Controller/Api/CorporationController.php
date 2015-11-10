@@ -86,8 +86,6 @@ class CorporationController extends AbstractController implements ApiControllerI
 
             $result_key = $result->toArray()['result']['key'];
 
-            $keyManager->updateKey($key, $result_key);
-
             $character = array_pop($result_key['characters']);
 
             $key->setEveCharacterId($character['characterID'])

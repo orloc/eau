@@ -59,15 +59,25 @@ class ApiCredentialsController extends AbstractController implements ApiControll
             return $this->getErrorResponse($errors);
         }
 
-        $corporation->addApiCredential($newKey);
-
-        $em = $this->getDoctrine()->getManager();
-
-        $em->persist($newKey);
         try {
+            $result = $this->get('app.apikey.manager')
+                ->validateAndUpdateApiKey($newKey);
+
+            $eveDetails = $result->key->characters[0];
+
+            $newKey->setEveCharacterId($eveDetails['characterID'])
+                ->setEveCorporationId($eveDetails['corporationID']);
+
+            $corporation->addApiCredential($newKey);
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($newKey);
+
             $em->flush();
-        } catch (DBALException $e) {
-            return $this->jsonResponse(json_encode(['message' => $e->getMessage()]), 409);
+        } catch (\Exception $e){
+            $this->get('logger')->addEmergency('Error registering new api key for user '.$corporation->getCorporationDetails()->getName());
+            return $this->jsonResponse(json_encode(['message' => 'Error with the EVE Api please try again', 'property_path' => '', 'exception' => $e->getMessage()]), 400);
         }
 
         return $this->jsonResponse($this->get('serializer')->serialize($newKey, 'json'));
