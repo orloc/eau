@@ -55,7 +55,7 @@ class CorporationManager implements DataManagerInterface {
 
         $repo = $this->doctrine->getRepository('AppBundle:CorporationMember');
 
-        $existing_members = $repo->findBy(['corporation' => $corporation, 'disbanded_at' => null]);
+        $existing_members = $repo->findBy(['corporation' => $corporation]);
 
         $ids = [];
         foreach ($existing_members as $m) {
@@ -63,7 +63,8 @@ class CorporationManager implements DataManagerInterface {
         }
 
         foreach ($members as $m) {
-            if (!isset($ids[(int)$m->characterID])){
+            $intId = (int)$m->characterID;
+            if (!isset($ids[$intId])){
                 $mem = new CorporationMember();
 
                 $mem->setCharacterId($m->characterID)
@@ -75,7 +76,14 @@ class CorporationManager implements DataManagerInterface {
 
                 $corporation->addCorporationMember($mem);
             } else {
-                unset($ids[(int)$m->characterID]);
+                /*
+                 * @TODO just lost their history
+                 */
+                if ($ids[$intId]->getDisbandedAt() !== null){
+                    $ids[$intId]->setDisbandedAt(null)
+                        ->setStartTime(new \Datetime($m->startDateTime));
+                }
+                unset($ids[$intId]);
             }
         }
 
@@ -84,9 +92,6 @@ class CorporationManager implements DataManagerInterface {
             $deleted_member->setDisbandedAt(new \DateTime());
         }
 
-        /*
-         * @TODO what h appens when someone rejoins
-         */
     }
 
     public function getCorporationSheet(Corporation $corporation){
