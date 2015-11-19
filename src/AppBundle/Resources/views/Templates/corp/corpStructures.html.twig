@@ -1,48 +1,48 @@
 <div ng-controller="structureController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <table class="table data-table table-striped table-condensed">
-            <thead>
-            <th>
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Quantity
-            </th>
-            <th>
-                Market Group
-            </th>
-            <th>
-                Type
-            </th>
-            <th>
-                Location
-            </th>
-            <th>
-                Market Buy
-            </th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="item in assets">
-                <td>
-                    <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                </td>
-                <td>
-                    {{ '{{ item.name }}' }}
-                </td>
-                <td>
-                    {{ '{{ item.quantity }}' }}
-                </td>
-                <td></td>
-                <td></td>
-                <td>
-                    {{ '{{ item.location }}' }}
-                </td>
-                <td></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table data-table table-striped table-condensed">
+                <thead>
+                <th>
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Fuel Level
+                </th>
+                <th>
+                    State
+                </th>
+                <th>
+                    Corporate Access?
+                </th>
+                <th>
+                    Alliance Access?
+                </th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in bases" ng-if="bases.length">
+                    <td>
+                        <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                    </td>
+                    <td>
+                        {{ '{{ item.descriptors.itemName }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ item.fuel }}' }}
+                    </td>
+                    <td>
+                        <label class="label" ng-class="{ 'label-info': item.state === 4, 'label-warning': item.state === 1 || item.state === 2, 'label-danger': item.state === 0 || item.state === 3}">
+                            {{ '{{ resolveState(item.state) }}' }}
+                        </label>
+                    </td>
+                    <td> <i ng-class="{ 'fa fa-check': hasCorpAccess(item.general_settings), 'fa fa-minus': !hasCorpAccess(item.general_settings) }"></i></td>
+                    <td> <i ng-class="{ 'fa fa-check': hasAllianceAccess(item.general_settings), 'fa fa-minus': !hasAllianceAccess(item.general_settings) }"></i></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>
 </div>

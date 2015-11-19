@@ -1,22 +1,43 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('structureController', ['$scope', '$http', function($scope, $http){
+    .controller('structureController', ['$scope', '$http', 'selectedCorpManager', function($scope, $http, selectedCorpManager){
         $scope.selected_corp = null;
 
-        $scope.$on('select_corporation', function(event, data){
-            $scope.selected_corp = data;
-        });
-
-        $scope.$watch('selected_corp', function(val){
-            if (val === null || typeof val === 'undefined'){
+        $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
+            if (typeof val.id === 'undefined'){
                 return;
             }
-            /*
-            $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
-                $scope.assets = data.data.items;
+            $scope.selected_corp = val;
+
+            $http.get(Routing.generate('api.corporation.starbases', { id: val.id})).then(function(data){
+                $scope.bases = data.data;
             });
-            */
 
         });
+
+        $scope.hasAllianceAccess = function(settings){
+            return  settings.allowAllianceMembers === '1';
+
+        };
+
+        $scope.hasCorpAccess = function(settings){
+            return settings.allowCorporationMembers === '1';
+
+        };
+
+        $scope.resolveState = function(state){
+            switch(state){
+                case 0:
+                    return 'Unanchored';
+                case 1:
+                    return 'Offline';
+                case 2:
+                    return 'Onlining';
+                case 3:
+                    return 'Reinforced';
+                case 4:
+                    return 'Online';
+            }
+        }
     }]);

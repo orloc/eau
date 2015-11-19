@@ -33,56 +33,67 @@ class Starbase
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $item_id;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $type_id;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $location_id;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $moon_id;
 
     /**
      * @ORM\Column(type="smallint")
+     * @JMS\Expose()
      */
     protected $state;
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $state_timestamp;
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $online_timestamp;
 
     /**
      * @ORM\Column(type="bigint")
+     * @JMS\Expose()
      */
     protected $standing_owner_id;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $general_settings;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $combat_settings;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $fuel;
 
@@ -92,9 +103,24 @@ class Starbase
     protected $corporation;
 
     /**
+     * @JMS\Expose()
+     */
+    protected $descriptors;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $created_at;
+
+    public function setDescriptors(array $desc){
+        $this->descriptors = $desc;
+
+        return $this;
+    }
+
+    public function getDescriptors(){
+        return $this->descriptors;
+    }
 
     public function __construct(){
         $this->created_at = new \DateTime();
