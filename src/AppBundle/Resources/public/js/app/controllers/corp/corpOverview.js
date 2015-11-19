@@ -16,8 +16,6 @@ angular.module('eveTool')
             $scope.buy_orders = [];
             $scope.journal_transactions = [];
             $scope.sell_orders = [];
-            $scope.totalBalance = 0;
-            $scope.grossProfit = 0;
         }
 
         function refreshView (val, refresh){
@@ -245,6 +243,8 @@ angular.module('eveTool')
             $scope.selected_corp = val;
 
             resetParams();
+            $scope.totalBalance = 0;
+            $scope.grossProfit = 0;
             $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 1 })).then(function(data){
                 var data = data.data;
                 if (data !== null){
