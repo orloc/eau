@@ -3,24 +3,13 @@
 namespace AppBundle\Service\Manager;
 
 use AppBundle\Entity\ApiCredentials;
-use AppBundle\Entity\Corporation;
 use AppBundle\Exception\InvalidAccessMaskException;
 use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\ParameterBag;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class ApiKeyManager implements DataManagerInterface {
-
-    private $pheal;
-
-    private $doctrine;
-
-    public function __construct(PhealFactory $pheal, Registry $doctrine) {
-        $this->pheal = $pheal;
-        $this->doctrine = $doctrine;
-    }
+class ApiKeyManager extends AbstractManager implements DataManagerInterface {
 
     public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false) {
         $client = $this->getClient($entity, 'account');
@@ -74,14 +63,8 @@ class ApiKeyManager implements DataManagerInterface {
         return $creds;
     }
 
-    public function getClient(ApiCredentials $credentials, $scope = 'corp'){
-        $client = $this->pheal->createEveOnline(
-            $credentials->getApiKey(),
-            $credentials->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
+    public static function getName(){
+        return 'api_key_manager';
     }
+
 }

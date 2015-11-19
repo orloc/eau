@@ -14,25 +14,16 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class JournalTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    protected $pheal;
-
     protected $log;
 
-    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine, Logger $log)
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, Logger $log)
     {
-        parent::__construct($doctrine, $registry);
-        $this->pheal = $pheal;
+        parent::__construct($pheal, $doctrine, $registry);
         $this->log = $log;
     }
 
     public function updateJournalTransactions(Corporation $corporation, $fromID = null){
-        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
-            ->getActiveKey($corporation);
-
-        if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
-
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
 
@@ -90,15 +81,8 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
     }
 
 
-    public function getClient(ApiCredentials $key, $scope = 'corp'){
 
-        $client = $this->pheal->createEveOnline(
-            $key->getApiKey(),
-            $key->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
+    public static function getName(){
+        return 'journal_transaction_manager';
     }
 }

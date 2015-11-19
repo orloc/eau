@@ -8,22 +8,21 @@ use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationDetail;
 use AppBundle\Entity\CorporationMember;
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use EveBundle\Repository\Registry as EveRegistry;
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class CorporationManager implements DataManagerInterface {
+class CorporationManager extends AbstractManager implements DataManagerInterface {
 
-    private $pheal;
-    private $doctrine;
     private $api_manager;
     private $log;
 
-    public function __construct(PhealFactory $pheal, Registry $registry, ApiKeyManager $apiManager, Logger $logger){
-        $this->pheal = $pheal;
-        $this->doctrine = $registry;
+    public function __construct(PhealFactory $pheal, Registry $registry, EveRegistry $eveRegistry, ApiKeyManager $apiManager, Logger $logger){
+        parent::__construct($pheal, $registry, $eveRegistry);
         $this->api_manager = $apiManager;
         $this->log = $logger;
+
     }
 
     public function createNewCorporation(ApiCredentials $key){
@@ -147,29 +146,8 @@ class CorporationManager implements DataManagerInterface {
         }
     }
 
-    public function getClient(ApiCredentials $key, $scope = 'corp'){
-
-        $client = $this->pheal->createEveOnline(
-            $key->getApiKey(),
-            $key->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
-
-    }
-
-    protected function getApiKey(Corporation $entity){
-
-        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
-            ->getActiveKey($entity);
-
-        if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $entity->getId() .' found');
-        }
-
-        return $apiKey;
+    public static function getName(){
+        return 'corporation_manager';
     }
 
 }

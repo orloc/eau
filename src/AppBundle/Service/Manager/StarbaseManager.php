@@ -11,23 +11,9 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 class StarbaseManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface
 {
 
-    protected $pheal;
-
-    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine)
-    {
-        parent::__construct($doctrine, $registry);
-        $this->pheal = $pheal;
-    }
-
     public function getStarbases(Corporation $c){
 
-        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
-            ->getActiveKey($c);
-
-        if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $c->getId() .' found');
-        }
-
+        $apiKey = $this->getApiKey($c);
         $client = $this->getClient($apiKey);
 
         /*
@@ -48,14 +34,8 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
 
     }
 
-    public function getClient(ApiCredentials $credentials, $scope = null){
-        $client = $this->pheal->createEveOnline(
-            $credentials->getApiKey(),
-            $credentials->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
+    public static function getName(){
+        return 'starbase_manager';
     }
+
 }

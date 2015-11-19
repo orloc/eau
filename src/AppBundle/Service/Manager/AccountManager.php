@@ -11,25 +11,11 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class AccountManager implements DataManagerInterface, MappableDataManagerInterface {
-
-    private $pheal;
-
-    private $doctrine;
-
-    public function __construct(PhealFactory $pheal, Registry $doctrine){
-        $this->pheal = $pheal;
-        $this->doctrine = $doctrine;
-    }
+class AccountManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
     public function updateAccounts(Corporation $corporation){
 
-        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
-            ->getActiveKey($corporation);
-
-        if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
 
@@ -107,16 +93,8 @@ class AccountManager implements DataManagerInterface, MappableDataManagerInterfa
         }
     }
 
-    public function getClient(ApiCredentials $key, $scope = 'corp'){
-
-        $client = $this->pheal->createEveOnline(
-            $key->getApiKey(),
-            $key->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
+    public static function getName(){
+        return 'account_manager';
     }
 
 }

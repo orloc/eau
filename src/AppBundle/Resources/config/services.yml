@@ -55,59 +55,84 @@ services:
       tags:
           - { name: app.task.subscriber }
 
+  # this is probably going to be depricated
   app.task.belated_listener:
       class: AppBundle\EventListener\BelatedTaskListener
       arguments: [ "@app.task.dispatcher" ]
       tags:
         - { name: kernel.event_subscriber }
 
+  #registries
+  app.evedata.registry:
+    class: AppBundle\Service\DataManagerRegistry
+
   # Manager
+
   app.corporation.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@app.apikey.manager", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@app.apikey.manager", "@logger" ]
       class: AppBundle\Service\Manager\CorporationManager
+      tags:
+        - { name: eve.manager }
 
   app.markettransaction.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@evedata.registry","@doctrine",  "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine","@evedata.registry",  "@logger" ]
       class: AppBundle\Service\Manager\MarketTransactionManager
+      tags:
+        - { name: eve.manager }
 
   app.journaltransaction.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@evedata.registry", "@doctrine", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\Manager\JournalTransactionManager
+      tags:
+        - { name: eve.manager }
 
   app.apikey.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
       class: AppBundle\Service\Manager\ApiKeyManager
+      tags:
+        - { name: eve.manager }
 
   app.account.manager:
-      arguments: [ "@tarioch.pheal.factory", "@doctrine" ]
+      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry" ]
       class: AppBundle\Service\Manager\AccountManager
+      tags:
+        - { name: eve.manager }
 
   app.character.manager:
       arguments: [ "@logger", "@app.apikey.manager" ]
       class: AppBundle\Service\Manager\CharacterManager
+      # @TODO Remove me when im implemented correctly
+      #tags:
+      #  - { name: eve.manager }
 
   app.starbase.manager:
-      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
       class: AppBundle\Service\Manager\StarbaseManager
+      tags:
+        - { name: eve.manager }
+
+  app.marketorder.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      class: AppBundle\Service\Manager\MarketOrderManager
+      tags:
+        - { name: eve.manager }
+
+  app.asset.manager:
+      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@app.itemdetail.manager", "@app.price.manager" ]
+      class: AppBundle\Service\Manager\AssetManager
+      tags:
+        - { name: eve.manager }
 
   app.price.manager:
-      arguments: [ "@doctrine", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
       class: AppBundle\Service\PriceUpdateManager
 
   app.itemdetail.manager:
       arguments: [ "@evedata.registry" , "@doctrine"]
       class: AppBundle\Service\AssetDetailUpdateManager
 
-  app.marketorder.manager:
-      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine" ]
-      class: AppBundle\Service\Manager\MarketOrderManager
-
-  app.asset.manager:
-      arguments: [ "@tarioch.pheal.factory", "@evedata.registry", "@doctrine", "@app.itemdetail.manager", "@app.price.manager" ]
-      class: AppBundle\Service\Manager\AssetManager
-
   app.evedataupdate.service:
-      arguments: [ "@app.corporation.manager", "@app.account.manager", "@app.marketorder.manager", "@app.asset.manager", "@app.journaltransaction.manager", "@app.markettransaction.manager",  "@app.starbase.manager", "@doctrine", "@logger"]
+      arguments: [ "@app.evedata.registry", "@doctrine", "@logger"]
       class: AppBundle\Service\EveDataUpdateService
 
 

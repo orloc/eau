@@ -16,31 +16,22 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class AssetManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    protected $pheal;
     protected $item_manager;
     protected $price_manager;
-    protected $mapper;
 
 
-    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine, AssetDetailUpdateManager $itemManager, PriceUpdateManager $priceManager)
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, AssetDetailUpdateManager $itemManager, PriceUpdateManager $priceManager)
     {
-        parent::__construct($doctrine, $registry);
-        $this->pheal = $pheal;
+        parent::__construct($pheal, $doctrine, $registry);
         $this->item_manager = $itemManager;
         $this->price_manager = $priceManager;
     }
 
     public function generateAssetList(Corporation $corporation){
 
-        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
-            ->getActiveKey($corporation);
-
-        if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
-
         $result = $client->AssetList();
 
         $list = $result->assets;
@@ -131,15 +122,7 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
         }
     }
 
-    public function getClient(ApiCredentials $key, $scope = 'corp'){
-
-        $client = $this->pheal->createEveOnline(
-            $key->getApiKey(),
-            $key->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
+    public static function getName(){
+        return 'asset_manager';
     }
 }

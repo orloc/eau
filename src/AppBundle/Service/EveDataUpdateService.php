@@ -19,31 +19,13 @@ class EveDataUpdateService {
 
     protected $doctrine;
 
-    protected $corp_manager;
-
-    protected $acc_manager;
-
-    protected $marketorder_manager;
-
-    protected $asset_manager;
-
-    protected $journal_manager;
-
-    protected $transaction_manager;
-
-    protected $starbase_manager;
+    protected $registry;
 
     protected $log;
 
-    public function __construct(CorporationManager $cMan, AccountManager $aMan, MarketOrderManager $moMan, AssetManager $assMan, JournalTransactionManager $jMan, MarketTransactionManager $mtMan, StarbaseManager $stMan, Registry $doctrine, Logger $log){
+    public function __construct(DataManagerRegistry $registry, Registry $doctrine, Logger $log){
         $this->doctrine = $doctrine;
-        $this->corp_manager = $cMan;
-        $this->acc_manager = $aMan;
-        $this->marketorder_manager = $moMan;
-        $this->asset_manager =  $assMan;
-        $this->journal_manager = $jMan;
-        $this->transaction_manager = $mtMan;
-        $this->starbase_manager = $stMan;
+        $this->registry = $registry;
         $this->log = $log;
     }
 
@@ -67,10 +49,10 @@ class EveDataUpdateService {
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
-            'acc_manager' => 'updateAccounts',
-            'corp_manager' => ['getCorporationSheet', 'getMembers'],
-            'journal_manager' => 'updateJournalTransactions',
-            'transaction_manager' => 'updateMarketTransactions',
+            AccountManager::getName() => 'updateAccounts',
+            CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
+            JournalTransactionManager::getName() => 'updateJournalTransactions',
+            MarketTransactionManager::getName() => 'updateMarketTransactions',
             //'starbase_manager' => 'getStarbases'
         ];
 
@@ -91,8 +73,8 @@ class EveDataUpdateService {
 
     public function updateLongTimerCalls(Corporation $c, $force = false){
         $calls = [
-            'asset_manager' => 'generateAssetList',
-            'marketorder_manager' => 'getMarketOrders'
+            AssetManager::getName() => 'generateAssetList',
+            MarketOrderManager::getName() => 'getMarketOrders'
         ];
 
         foreach ($calls as $manager => $call){
@@ -115,7 +97,8 @@ class EveDataUpdateService {
 
     public function updateAssetCache(Corporation $c){
         $this->log->debug(sprintf("Updating asset group cache for"));
-        $this->asset_manager->updateAssetGroupCache($c);
+        $this->registry->get(AssetManager::getName())
+            ->updateAssetGroupCache($c);
     }
 
 
@@ -148,7 +131,9 @@ class EveDataUpdateService {
 
     protected function tryCall($manager, $function, $arg){
         try {
-            $this->$manager->$function($arg);
+            $this->registry
+                ->get($manager)
+                ->$function($arg);
 
             return true;
         } catch (\Exception $e){

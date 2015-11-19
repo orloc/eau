@@ -7,20 +7,19 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-// probably going to be depricated
-class DispatcherCompilerPass implements CompilerPassInterface {
+class DataRegistryCompilerPass implements CompilerPassInterface {
 
     public function process(ContainerBuilder $container){
 
-        if (!$container->hasDefinition('app.task.dispatcher')){
+        if (!$container->hasDefinition('app.evedata.registry')){
             return;
         }
 
-        $definition = $container->getDefinition('app.task.dispatcher');
-        $subscribers = $container->findTaggedServiceIds('app.task.subscriber');
+        $definition = $container->getDefinition('app.evedata.registry');
+        $subscribers = $container->findTaggedServiceIds('eve.manager');
 
         foreach ($subscribers as $id => $attr){
-            $definition->addMethodCall('addSubscriber', [new Reference($id)] );
+            $definition->addMethodCall('set', [new Reference($id)]);
         }
     }
 }

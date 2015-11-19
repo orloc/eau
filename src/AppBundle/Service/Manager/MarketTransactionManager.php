@@ -16,23 +16,15 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
 
     protected $pheal;
 
-    protected $log;
-
-    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine, Logger $log)
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, Logger $log)
     {
-        parent::__construct($doctrine, $registry);
-        $this->pheal = $pheal;
+        parent::__construct($pheal, $doctrine, $registry);
         $this->log = $log;
     }
 
     public function updateMarketTransactions(Corporation $corporation, $fromID = null) {
-        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
-            ->getActiveKey($corporation);
+        $apiKey = $this->getApiKey($corporation);
 
-        if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
-
-        }
         $client = $this->getClient($apiKey);
 
         $accounts = $corporation->getAccounts();
@@ -91,17 +83,8 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
         return $trans;
     }
 
-
-    public function getClient(ApiCredentials $key, $scope = 'corp'){
-
-        $client = $this->pheal->createEveOnline(
-            $key->getApiKey(),
-            $key->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
+    public static function getName(){
+        return 'market_transaction_manager';
     }
 
 }

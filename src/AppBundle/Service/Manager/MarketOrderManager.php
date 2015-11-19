@@ -2,31 +2,16 @@
 
 namespace AppBundle\Service\Manager;
 
-use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrder;
 use AppBundle\Entity\MarketOrderGroup;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use \EveBundle\Repository\Registry as EveRegistry;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class MarketOrderManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    protected $pheal;
-
-    public function __construct(PhealFactory $pheal, EveRegistry $registry, Registry $doctrine){
-        parent::__construct($doctrine, $registry);
-        $this->pheal = $pheal;
-    }
-
     public function getMarketOrders(Corporation $corporation){
 
-        $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
-            ->getActiveKey($corporation);
-
-        if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $corporation->getId() .' found');
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
 
@@ -48,7 +33,7 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
         $corp = $options['corp'] ? $options['corp'] : false;
 
         if (!$corp instanceof Corporation){
-            throw new \OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
+            throw new \Exception(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
 
         foreach ($orders as $o){
@@ -82,14 +67,7 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
 
     }
 
-    public function getClient(ApiCredentials $key, $scope = 'corp'){
-        $client = $this->pheal->createEveOnline(
-            $key->getApiKey(),
-            $key->getVerificationCode()
-        );
-
-        $client->scope = $scope;
-
-        return $client;
+    public static function getName(){
+        return 'market_order_manager';
     }
 }
