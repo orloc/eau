@@ -12,11 +12,12 @@
                                 <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}<br>
                                 <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i><br>
                                 {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
-                                <br>
-                                <span class="small muted" ng-show="updated_at">
-                                    <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i><br>
-                                    <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
-                                </span>
+
+                                <div class="row" ng-show="updated_at">
+                                    <div class="small muted circle-ticker">
+                                        <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
+                                    </div>
+                                </div>
                             </div>
                             <div class="graphs col-xs-9" ng-hide="not_enough_data"></div>
                             <div class="col-xs-9" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
@@ -53,14 +54,24 @@
             <div ng-show="page == 'buy'">
                 <h5 class="text-danger">Buy Orders - <span class="small">Total: {{ '{{  sumOrders(buy_orders) | currency:"ISK" }}' }}</span>
                     <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
+                    <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
                 </h5>
             </div>
 
             <div ng-show="page == 'sell'">
                 <h5 class="text-success">Sell Orders - <span class="small">Total: {{ '{{  sumOrders(sell_orders) | currency:"ISK" }}' }}</span>
                     <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
+                    <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
                 </h5>
             </div>
+
+            <div ng-show="page == 'journal'">
+                <h5 class="text-success">Journal Transactions <span class="small">Change: {{ '{{ getJournalDifference() | currency:"ISK" }}' }}</span>
+                    <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
+                    <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
+                </h5>
+            </div>
+
             <div class="col-xs-9" ng-show="selected_account && page == 'buy'">
                 <div class="table-responsive">
                     <table class="table table-striped data-table table-condensed table-hover">
@@ -102,8 +113,10 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
 
-                <div class="col-xs-9" ng-show="selected_account && page == 'sell'">
+            <div class="col-xs-9" ng-show="selected_account && page == 'sell'">
+                <div class="table-responsive">
                     <table class="table table-striped data-table table-condensed table-hover">
                         <thead>
                         <th>Item</th>
@@ -139,6 +152,36 @@
                         <tr ng-show="sell_orders.length == 0">
                             <td colspan="6" class="text-center text-danger">
                                 No Sell Orders Found.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-xs-9" ng-show="selected_account && page == 'journal'">
+                <div class="table-responsive">
+                    <table class="table table-striped data-table table-condensed table-hover">
+                        <thead>
+                        <th>Date</th>
+                        <th>Issuer</th>
+                        <th>Recipient</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Balance</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-class="{ 'danger': j.amount < 0,'success': j.amount > 0}" ng-show="journal_transactions.length > 0 " ng-repeat="j in journal_transactions | orderBy:'date':true">
+                            <td>{{ '{{ j.date | date:"yyyy.MM.dd H:mm:ss" }}' }}</td>
+                            <td>{{ '{{  j.owner_name1 }}' }}</td>
+                            <td>{{ '{{  j.owner_name2 }}' }}</td>
+                            <td></td>
+                            <td>{{ '{{  j.amount | currency:"ISK" }}' }}</td>
+                            <td>{{ '{{  j.balance | currency:"ISK"}}' }}</td>
+                        </tr>
+                        <tr ng-show="journal_transactions.length === 0">
+                            <td colspan="5" class="text-center text-danger">
+                                No Journal Transactions found
                             </td>
                         </tr>
                         </tbody>

@@ -4,19 +4,29 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Entity\Account;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityRepository;
 
 class JournalTransactionRepository extends EntityRepository {
 
-    public function getLatestTransactionForAccount(Account $account){
+    public function getTransactionsByAccount(Account $account,Carbon $date){
+        $start = $date->copy();
+        $start->setTime(0,0,0);
+
+        $end = $start->copy();
+        $end->setTime(23,59,59);
+
         return $this->createQueryBuilder('jt')
             ->select('jt')
-            ->leftJoin('jt.account', 'acc')
-            ->andWhere('acc = :acc')
-            ->orderBy('jt.date', 'DESC')
-            ->setMaxResults(1)
-            ->setParameter('acc', $account)
-            ->getQuery()->getOneOrNullResult();
+            ->where('jt.account = :account')
+            ->andWhere('jt.date >= :start')
+            ->andWhere('jt.date <= :end')
+            ->setParameters([
+                'account' => $account,
+                'start' => $start,
+                'end' => $end
+            ])
+            ->getQuery()->getResult();
     }
 
     public function hasTransaction(Account $acc, $refId, $amount){

@@ -27,8 +27,8 @@ class MarketTransactionRepository extends EntityRepository {
         return $this->getTotalByTypeDate('sell', $acc, $date)->getQuery()->getResult();
     }
 
-    protected function getTotalByTypeDate($type, Account $acc, CArbon $date){
-        $start = clone($date);
+    protected function getTotalByTypeDate($type, Account $acc, Carbon $date){
+        $start = $date->copy();
         $start->setTime(0,0,0);
 
         $end = $start->copy();

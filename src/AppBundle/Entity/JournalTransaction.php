@@ -28,6 +28,7 @@ class JournalTransaction {
 
     /**
      * @ORM\Column(type="datetime")
+     * @JMS\Expose()
      */
     protected $date;
 
@@ -43,62 +44,74 @@ class JournalTransaction {
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $owner_name1;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected $owner_id1;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $owner_name2;
 
     /**
      * @ORM\Column(type="integer")
+     * @JMS\Expose()
      */
     protected  $owner_id2;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $arg_name1;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @JMS\Expose()
      */
     protected $arg_id1;
 
     /**
      * @ORM\Column(type="decimal", precision=16, scale=2)
+     * @JMS\Expose()
      */
     protected $amount;
 
     /**
      * @ORM\Column(type="decimal", precision=16, scale=2)
+     * @JMS\Expose()
      */
     protected $balance;
 
     /**
      * @ORM\Column(type="text")
+     * @JMS\Expose()
      */
     protected $reason;
 
     /**
      * @ORM\Column(type="string")
+     * @JMS\Expose()
      */
     protected $owner1_type_id;
 
     /**
      * @ORM\Column(type="string")
+     * @JMS\Expose()
      */
     protected $owner2_type_id;
 
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="journal_transactions")
+     * @JMS\Expose()
      */
     protected $account;
 
