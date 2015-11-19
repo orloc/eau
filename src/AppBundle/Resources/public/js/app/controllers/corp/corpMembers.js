@@ -23,7 +23,10 @@ angular.module('eveTool')
             };
 
             $http.get(Routing.generate('api.corporation.members', { id: val.id})).then(function(data){
-                $scope.members = data.data;
+
+                $scope.members = _.filter(data.data, function(d){
+                    return typeof d.disbanded_at === 'undefined';
+                });
             });
         });
     }]);

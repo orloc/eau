@@ -58,7 +58,7 @@ class EveSSOController extends Controller
         $session->remove('eve_sso_nonce');
 
         if (!StringUtils::equals($nonce, $state)){
-            $session->getFlashBag()->add('danger', 'Authentication Nonce does not match - your request may have been intercepted by a malicious 4th party.');
+            $session->getFlashBag()->add('danger', 'Invalid CSRF Token - Refresh the page.');
             return $this->redirect($this->generateUrl('default'));
         }
 

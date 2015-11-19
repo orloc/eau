@@ -30,7 +30,7 @@
                         </td>
                         <td>{{ '{{ u.username }}' }}</td>
                         <td>{{ '{{ u.email }}' }}</td>
-                        <td>{{ '{{ u.roles }}' }}</td>
+                        <td>{{ '{{ getRole(u) }}' }}</td>
                         <td class="text-center">{{ '{{ u.last_login | date:"M/d/yy" }}' }}<br>
                             <span class="small">{{ '{{ u.last_login | date:"shortTime" }}' }}</span>
                         </td>

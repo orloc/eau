@@ -6,7 +6,8 @@ security:
 
   role_hierarchy:
       ROLE_CORP_MEMBER: ROLE_USER
-      ROLE_ADMIN: ROLE_CORP_MEMBER
+      ROLE_CEO: ROLE_CORP_MEMBER
+      ROLE_ADMIN: ROLE_CEO
       ROLE_SUPER_ADMIN: ROLE_ADMIN
 
 

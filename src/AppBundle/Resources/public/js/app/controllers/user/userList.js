@@ -22,11 +22,46 @@ angular.module('eveTool')
             u.main_id = main;
         });
 
-        console.log(data.data);
-
 
         $scope.users = data.data;
     });
+
+   $scope.getRole = function(u){
+        var weights = {
+            ROLE_CORP_MEMBER : {
+                name: 'Corp Member',
+                weight: 0
+            },
+            ROLE_CEO : {
+                name: 'CEO',
+                weight: 1
+            },
+            ROLE_ADMIN : {
+                name: 'Admin',
+                weight: 2
+            },
+            ROLE_SUPER_ADMIN : {
+                name: 'Super Admin',
+                weight: 3
+            }
+        };
+
+       var topRole = null;
+
+       for (var i = 0; i <= u.roles.length-1; i++) {
+            var role = u.roles[i];
+
+            if (topRole === null) {
+                topRole = weights[role];
+            } else if (weights[role].weight > topRole.weight){
+                topRole = weights[role];
+            }
+
+       }
+
+       return topRole !== null ? topRole.name : 'N/A';
+
+   };
 
     $scope.hasApiKey = function(u){
         if (typeof u.characters === 'undefined' || u.characters.length <= 0){

@@ -62,6 +62,7 @@ class AccountController extends AbstractController implements ApiControllerInter
 
         $accountData = [];
 
+        // roll up our data for the graph
         foreach ($accounts as $acc){
 
             if (null === $date){
