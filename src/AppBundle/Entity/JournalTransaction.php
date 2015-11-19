@@ -43,6 +43,11 @@ class JournalTransaction {
     protected $ref_type_id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RefType")
+     */
+    protected $ref_type;
+
+    /**
      * @ORM\Column(type="string", length=255)
      * @JMS\Expose()
      */
@@ -502,5 +507,28 @@ class JournalTransaction {
     public function getOwner2TypeId()
     {
         return $this->owner2_type_id;
+    }
+
+    /**
+     * Set ref_type
+     *
+     * @param \AppBundle\Entity\RefType $refType
+     * @return JournalTransaction
+     */
+    public function setRefType(\AppBundle\Entity\RefType $refType = null)
+    {
+        $this->ref_type = $refType;
+
+        return $this;
+    }
+
+    /**
+     * Get ref_type
+     *
+     * @return \AppBundle\Entity\RefType 
+     */
+    public function getRefType()
+    {
+        return $this->ref_type;
     }
 }

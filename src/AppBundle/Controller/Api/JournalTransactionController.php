@@ -35,6 +35,10 @@ class JournalTransactionController extends AbstractController implements ApiCont
         $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
             ->getTransactionsByAccount($account, $dt);
 
+        foreach ($transactions as $t){
+
+        }
+
         $json = $this->get('serializer')->serialize($transactions, 'json');
 
         return $this->jsonResponse($json);

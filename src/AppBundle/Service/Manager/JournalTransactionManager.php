@@ -6,6 +6,7 @@ use AppBundle\Entity\Account;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\JournalTransaction;
+use AppBundle\Entity\RefType;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Bridge\Monolog\Logger;
 use EveBundle\Repository\Registry as EveRegistry;
@@ -41,6 +42,8 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
         $corp = isset($options['corp']) ? $options['corp'] : false;
         $acc = isset($options['acc']) ? $options['acc']: false;
 
+        $em  = $this->doctrine->getManager();
+
         if (!$corp instanceof Corporation || !$acc instanceof Account) {
             throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
@@ -55,13 +58,32 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
                 $acc->addJournalTransaction($jTran);
 
             } else  {
-                $this->log->info(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corp->getCorporationDetails()->getName()));
+                if ($exists->getRefType() === null){
+                    $refType = $this->doctrine->getRepository('AppBundle:RefType')
+                        ->findOneBy(['ref_type_id' => $exists->getRefTypeId()]);
+
+                    if ($refType instanceof RefType){
+                        $exists->setRefType($refType);
+                        $em->persist($exists);
+                    }
+                }
+                $this->log->debug(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corp->getCorporationDetails()->getName()));
             }
         }
+
+        $em->persist($acc);
     }
 
     public function mapItem($item){
         $jTran = new JournalTransaction();
+
+        $refType = $this->doctrine->getRepository('AppBundle:RefType')
+            ->findOneBy(['ref_type_id' => $item->refTypeID]);
+
+        if ($refType instanceof RefType){
+            $jTran->setRefType($refType);
+        }
+
         $jTran->setDate(new \DateTime($item->date))
             ->setRefId($item->refID)
             ->setRefTypeId($item->refTypeID)
