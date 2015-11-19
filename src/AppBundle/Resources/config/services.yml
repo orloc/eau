@@ -117,6 +117,18 @@ services:
       tags:
         - { name: eve.manager }
 
+  app.reftype.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      class: AppBundle\Service\Manager\RefTypeManager
+      tags:
+        - { name: eve.manager }
+
+  app.conquerable_station.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      class: AppBundle\Service\Manager\ConquerableStationManager
+      tags:
+        - { name: eve.manager }
+
   app.asset.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@app.itemdetail.manager", "@app.price.manager" ]
       class: AppBundle\Service\Manager\AssetManager

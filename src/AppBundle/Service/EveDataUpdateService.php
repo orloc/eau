@@ -7,10 +7,12 @@ use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationDetail;
 use AppBundle\Service\Manager\AccountManager;
 use AppBundle\Service\Manager\AssetManager;
+use AppBundle\Service\Manager\ConquerableStationManager;
 use AppBundle\Service\Manager\CorporationManager;
 use AppBundle\Service\Manager\JournalTransactionManager;
 use AppBundle\Service\Manager\MarketOrderManager;
 use AppBundle\Service\Manager\MarketTransactionManager;
+use AppBundle\Service\Manager\RefTypeManager;
 use AppBundle\Service\Manager\StarbaseManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
@@ -53,7 +55,6 @@ class EveDataUpdateService {
             CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
             JournalTransactionManager::getName() => 'updateJournalTransactions',
             MarketTransactionManager::getName() => 'updateMarketTransactions',
-            //'starbase_manager' => 'getStarbases'
         ];
 
         foreach ($calls as $manager => $call){
@@ -165,6 +166,10 @@ class EveDataUpdateService {
                 return ApiUpdate::CORP_MEMBERS;
             case 'getCorporationSheet':
                 return ApiUpdate::CORP_DETAILS;
+            case 'updateRefTypes':
+                return ApiUpdate::REF_TYPES;
+            case 'updateConquerableStations':
+                return ApiUpdate::CONQUERABLE_STATIONS;
         }
     }
 }

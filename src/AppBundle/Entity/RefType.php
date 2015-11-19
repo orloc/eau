@@ -8,7 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="ref_types")
+ * @ORM\Table(name="ref_types", uniqueConstraints={
+    @ORM\UniqueConstraint(name="refIDidx", columns={"ref_type_id"}),
+ * })
  * @JMS\ExclusionPolicy("all")
  *
  * @package AppBundle\Entity

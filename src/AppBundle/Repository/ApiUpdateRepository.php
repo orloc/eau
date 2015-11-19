@@ -19,6 +19,24 @@ class ApiUpdateRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
+    public function getLastUpdate(){
+        return $this->createQueryBuilder('au')
+            ->select('au')
+            ->orderBy('au.created_at', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+    }
+
+    public function getLastUpdateByType($type){
+        return $this->createQueryBuilder('au')
+            ->select('au')
+            ->where('au.type = :type')
+            ->setParameter('type', $type)
+            ->orderBy('au.created_at', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+    }
+
     public function getShortTimerExpired(Corporation $entity, $call){
         $now = Carbon::create()->subMinutes(10);
 

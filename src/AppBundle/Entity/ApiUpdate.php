@@ -33,6 +33,9 @@ class ApiUpdate
           CORP_DETAILS = 10,
           CORP_MEMBERS = 11;
 
+    const REF_TYPES = 12,
+          CONQUERABLE_STATIONS = 13;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
