@@ -46,6 +46,12 @@ a.eve {
   font-family: $roboto;
 }
 
+.progress {
+  margin-bottom: 10px;
+  span {
+    color: $offGrey;
+  }
+}
 
 
 a.navbar-brand {

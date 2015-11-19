@@ -29,8 +29,20 @@ class StarbaseController extends AbstractController implements ApiControllerInte
             ->findBy(['corporation' => $corp]);
 
         $loctionRepo = $this->get('app.itemdetail.manager');
+
+        $typeRepo = $this->get('evedata.registry')->get('EveBundle:ItemType');
         foreach ($stations as $s){
-            $descriptors = $loctionRepo->determineLocationDetails($s->getLocationId());
+            $descriptors = array_merge(
+                $loctionRepo->determineLocationDetails($s->getLocationId()),
+                $typeRepo->getItemTypeData($s->getTypeId()),
+                [
+                    'fuel' => array_map(function($d) use ($typeRepo){
+                        $data = $typeRepo->getItemTypeData($d['typeID']);
+
+                        return ['type' => $data, 'typeID' => $d['typeID'],'quantity' => $d['quantity']];
+                    }, $s->getFuel())
+                ]
+            );
 
             $s->setDescriptors($descriptors);
         }

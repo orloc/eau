@@ -1,13 +1,14 @@
 <div ng-controller="structureController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
         <div class="table-responsive">
-            <table class="table data-table table-striped table-condensed">
+            <table class="table data-table table-striped table-hover table-condensed">
                 <thead>
                 <th>
                 </th>
                 <th>
                     Location
                 </th>
+                <th>Type</th>
                 <th>
                     Fuel Level
                 </th>
@@ -20,6 +21,7 @@
                 <th>
                     Alliance Access?
                 </th>
+                <th>Cost Per Day</th>
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in bases" ng-if="bases.length">
@@ -30,7 +32,21 @@
                         {{ '{{ item.descriptors.itemName }}' }}
                     </td>
                     <td>
-                        {{ '{{ item.fuel }}' }}
+                        {{ '{{ item.descriptors.name }}' }}
+                    </td>
+                    <td width="400">
+                        <div class='row' ng-repeat="i in item.descriptors.fuel">
+                            <div class="col-xs-2">
+                                <eve-image image-type="'Type'" object-id="i.typeID" img-width="32" override-width="16"></eve-image>
+                            </div>
+                            <div class="col-xs-10">
+                                <div class="progress">
+                                  <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                                    <span class="sr-only">40% Complete (success)</span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                     <td>
                         <label class="label" ng-class="{ 'label-info': item.state === 4, 'label-warning': item.state === 1 || item.state === 2, 'label-danger': item.state === 0 || item.state === 3}">
@@ -39,6 +55,7 @@
                     </td>
                     <td> <i ng-class="{ 'fa fa-check': hasCorpAccess(item.general_settings), 'fa fa-minus': !hasCorpAccess(item.general_settings) }"></i></td>
                     <td> <i ng-class="{ 'fa fa-check': hasAllianceAccess(item.general_settings), 'fa fa-minus': !hasAllianceAccess(item.general_settings) }"></i></td>
+                    <td></td>
                 </tr>
                 </tbody>
             </table>
