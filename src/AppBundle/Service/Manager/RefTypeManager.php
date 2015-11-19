@@ -17,13 +17,6 @@ class RefTypeManager extends AbstractManager implements DataManagerInterface, Ma
         $response = $client->RefTypes()
             ->toArray();
 
-        $existing = $this->doctrine->getRepository('AppBundle:RefType')
-            ->findAll();
-
-        foreach ($existing as $exists){
-            $this->doctrine->getManager()->remove($exists);
-        }
-
         $this->mapList($response['result']['refTypes'], []);
 
     }
@@ -32,8 +25,11 @@ class RefTypeManager extends AbstractManager implements DataManagerInterface, Ma
     public function mapList($items, array $options){
         $em = $this->doctrine->getManager();
         foreach ($items as $i){
-            $objectItem = $this->mapItem($i);
-            $em->persist($objectItem);
+            $exists = $em->getRepository('AppBundle:RefType')->findOneBy(['ref_type_id' => $i['refTypeID']]);
+            if (!$exists instanceof RefType){
+                $objectItem = $this->mapItem($i);
+                $em->persist($objectItem);
+            }
         }
     }
 

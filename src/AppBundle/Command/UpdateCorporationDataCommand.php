@@ -47,14 +47,18 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $updateRegistry->get(ConquerableStationManager::getName())
                 ->updateConquerableStations();
 
-            $dataUpdateService->createApiUpdate(ApiUpdate::CONQUERABLE_STATIONS, 'updateConquerableStations', true);
+            $update = $dataUpdateService->createApiUpdate(ApiUpdate::CACHE_STYLE_LONG, ApiUpdate::CONQUERABLE_STATIONS, true);
+
+            $em->persist($update);
         }
 
         if ($refTypeLastUpdate === null || $now->diff(Carbon::instance($refTypeLastUpdate->getCreatedAt()))) {
             $updateRegistry->get(RefTypeManager::getName())
                 ->updateRefTypes();
 
-            $dataUpdateService->createApiUpdate(ApiUpdate::REF_TYPES, 'updateRefTypes', true);
+            $update = $dataUpdateService->createApiUpdate(ApiUpdate::CACHE_STYLE_LONG, ApiUpdate::REF_TYPES, true);
+
+            $em->persist($update);
         }
 
         $em->flush();

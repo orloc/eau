@@ -21,9 +21,13 @@ class ConquerableStationManager extends AbstractManager implements DataManagerIn
         $existing = $this->doctrine->getRepository('AppBundle:ConquerableStation')
             ->findAll();
 
+        $doctrine = $this->doctrine->getManager();
+
         foreach ($existing as $exists){
-            $this->doctrine->getManager()->remove($exists);
+            $doctrine->remove($exists);
         }
+
+        $doctrine->flush();
 
         $this->mapList($response['result']['outposts'], []);
 
