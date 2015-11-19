@@ -44,6 +44,7 @@ class JournalTransaction {
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\RefType")
+     * @JMS\Expose()
      */
     protected $ref_type;
 

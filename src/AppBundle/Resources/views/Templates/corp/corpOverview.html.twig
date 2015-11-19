@@ -66,7 +66,7 @@
             </div>
 
             <div ng-show="page == 'journal'">
-                <h5 class="text-success">Journal Transactions <span class="small">Change: {{ '{{ getJournalDifference() | currency:"ISK" }}' }}</span>
+                <h5>Journal Transactions <span class="small" ng-class="{ 'text-success': getJournalDifference() > 0.0, 'text-danger': getJournalDifference() < 0.0 }">Change: {{ '{{ getJournalDifference() | currency:"ISK" }}' }}</span>
                     <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
                     <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
                 </h5>
@@ -175,7 +175,7 @@
                             <td>{{ '{{ j.date | date:"yyyy.MM.dd H:mm:ss" }}' }}</td>
                             <td>{{ '{{  j.owner_name1 }}' }}</td>
                             <td>{{ '{{  j.owner_name2 }}' }}</td>
-                            <td></td>
+                            <td> {{ '{{ j.ref_type.ref_type_name }}' }}</td>
                             <td>{{ '{{  j.amount | currency:"ISK" }}' }}</td>
                             <td>{{ '{{  j.balance | currency:"ISK"}}' }}</td>
                         </tr>

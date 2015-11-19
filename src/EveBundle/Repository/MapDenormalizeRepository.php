@@ -15,6 +15,18 @@ class MapDenormalizeRepository extends AbstractDbalRepository implements Reposit
         return 'mapDenormalize';
     }
 
+    public function getLocationInfoBySolarSystem($id){
+        $sql = "SELECT
+                *
+                FROM {$this->getTableName()}
+                WHERE solarSystemID = :id ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        return $stmt->fetch();
+    }
+
     public function getLocationInfoById($typeId){
 
         $sql = "SELECT

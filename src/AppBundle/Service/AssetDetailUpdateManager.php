@@ -118,12 +118,19 @@ class AssetDetailUpdateManager {
         $id = (int)$i;
         $mapDenormalize = $this->registry->get('EveBundle:MapDenormalize');
         $stationRepo = $this->registry->get('EveBundle:StaStations');
+        $conqRepo = $this->doctrine->getRepository('AppBundle:ConquerableStation');
 
         if ($id < 60000000) {
             return $mapDenormalize->getLocationInfoById($id);
         }
 
-        if ($id >= 60014861 && $id  <=60014928){
+        if ($id >= 60014861 && $id  <= 60014928){
+
+            $station = $conqRepo->findOneBy(['station_id' => $id]);
+
+            $location = $mapDenormalize->getLocationInfoBySolarSystem($station->getSolarSystemId());
+
+            return $location;
             // conqStation lookup
         }
 
@@ -133,6 +140,9 @@ class AssetDetailUpdateManager {
 
         if ($id >= 66014934 && $id <= 67999999){
             // conqStation lookup - 6000000
+            $station = $conqRepo->findOneBy(['station_id' => $id - 6000000]);
+            $location = $mapDenormalize->getLocationInfoBySolarSystem($station->getSolarSystemId());
+            return $location;
         }
 
         if ($id >= 60000000 && $id <= 61000000){

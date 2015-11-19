@@ -21,7 +21,6 @@ class RefTypeManager extends AbstractManager implements DataManagerInterface, Ma
 
     }
 
-
     public function mapList($items, array $options){
         $em = $this->doctrine->getManager();
         foreach ($items as $i){

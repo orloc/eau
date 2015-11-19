@@ -33,7 +33,6 @@ class ConquerableStationManager extends AbstractManager implements DataManagerIn
 
     }
 
-
     public function mapList($items, array $options){
         $em = $this->doctrine->getManager();
 
