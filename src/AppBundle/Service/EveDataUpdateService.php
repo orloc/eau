@@ -49,10 +49,10 @@ class EveDataUpdateService {
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
-            #AccountManager::getName() => 'updateAccounts',
-            #CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
+            AccountManager::getName() => 'updateAccounts',
+            CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
             JournalTransactionManager::getName() => 'updateJournalTransactions',
-            #MarketTransactionManager::getName() => 'updateMarketTransactions',
+            MarketTransactionManager::getName() => 'updateMarketTransactions',
             //'starbase_manager' => 'getStarbases'
         ];
 
@@ -73,8 +73,8 @@ class EveDataUpdateService {
 
     public function updateLongTimerCalls(Corporation $c, $force = false){
         $calls = [
-            #AssetManager::getName() => 'generateAssetList',
-            #MarketOrderManager::getName() => 'getMarketOrders'
+            AssetManager::getName() => 'generateAssetList',
+            MarketOrderManager::getName() => 'getMarketOrders'
         ];
 
         foreach ($calls as $manager => $call){

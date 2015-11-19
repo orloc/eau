@@ -6,14 +6,14 @@ namespace AppBundle\Service\Manager;
 use AppBundle\Entity\ApiCredentials;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
-class ConquerableStationManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
+class RefTypeManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    public function updateConquerableStations(){
+    public function updateRefTypes(){
         $nullKey = new ApiCredentials();
 
         $client = $this->getClient($nullKey);
 
-        $response = $client->ConquerableStationList();
+        $response = $client->RefTypes();
 
         var_dump($response);die;
     }
