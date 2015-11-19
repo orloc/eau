@@ -1,35 +1,36 @@
 <div ng-controller="corpMembersController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <table class="table data-table table-striped table-condensed">
-            <thead>
-            <th>
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Joined on
-            </th>
-            <th>
-                Time in corp
-            </th>
-            <th>Is Registered</th>
-            </thead>
-            <tbody>
-            <tr ng-repeat="m in members | orderBy:'start_time':true">
-                <td width="50px">
-                    <eve-image image-type="'Character'" object-id="m.character_id" img-width="256"></eve-image>
-                </td>
-                <td>
-                    {{ '{{ m.character_name }}' }}
-                </td>
-                <td>
-                    {{ '{{ m.start_time | date:"longDate" }}' }}
-                </td>
-                <td>
-                    {{ '{{ getTimeWith(m) }}' }} Days
-                </td>
-                <td>
+        <div class="table-responsive">
+            <table class="table data-table table-striped table-condensed">
+                <thead>
+                <th>
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Joined on
+                </th>
+                <th>
+                    Time in corp
+                </th>
+                <th>Is Registered</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="m in members | orderBy:'start_time':true">
+                    <td width="50px">
+                        <eve-image image-type="'Character'" object-id="m.character_id" img-width="256"></eve-image>
+                    </td>
+                    <td>
+                        {{ '{{ m.character_name }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ m.start_time | date:"longDate" }}' }}
+                    </td>
+                    <td>
+                        {{ '{{ getTimeWith(m) }}' }} Days
+                    </td>
+                    <td>
                     <span ng-show="hasApiKey(m)" class="api-key small">
                         Key: {{ '{{  m.api_key.api_key }}' }}<br>
                         Code: {{ '{{  m.api_key.verification_code }}' }}<br>
@@ -40,10 +41,11 @@
                             NO API KEY
                         </div>
                     </span>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>
 </div>

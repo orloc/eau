@@ -7,66 +7,70 @@
                 <slide-button open-type="new"></slide-button>
             </h3>
             <div ng-controller="characterListController">
-                <div class="col-xs-4" ng-cloak="">
-                    <table class="table table-condensed table-hover data-table" ng-cloak>
-                        <thead>
-                        <th></th>
-                        <th>Name</th>
-                        <th>Corporation</th>
-                        <th>Has Key</th>
-                        <th>Is Main</th>
-                        <th>Created At</th>
-                        <th><i class="fa fa-cogs"></i></th>
-                        </thead>
-                        <tbody>
-                        <tr ng-class="{ 'info': selected_character.id == c.id}" ng-repeat="c in characters" ng-show="characters.length > 0" ng-cloak>
-                            <td width="64">
-                                <eve-image image-type="'Character'" object-id="c.eve_id" img-width="256"></eve-image>
-                            </td>
-                            <td>{{ '{{ c.name }}' }}</td>
-                            <td>{{ '{{ c.corporation_name }}' }}</td>
-                            <td>
-                                <label class="label" ng-class="{ 'label-danger': !c.has_key, 'label-success': c.has_key }">
-                                    <i class="fa" ng-class="{ 'fa-check': c.has_key, 'fa-times': !c.has_key }"></i>
-                                </label>
-                            <td>
-                                <label class="label" ng-class="{ 'label-warning': !c.is_main, 'label-success': c.is_main }">
-                                    <i class="fa" ng-class="{ 'fa-check': c.is_main, 'fa-times': !c.is_main }"></i>
-                                </label>
-                            </td>
-                            <td> {{ '{{  c.created_at | date:"shortDate" }}' }}</td>
-                            <td>
-                                <button class="btn btn-sm btn-default" ng-click="selectCharacter(c)" ng-show="selected_character == null"><i class="fa fa-cog"></i></button>
-                                <button class="btn btn-sm btn-danger" ng-show="selected_character !== null && selected_character.id === c.id" ng-click="removeChar()"><i class="fa fa-times"></i></button>
-                            </td>
-                        </tr>
+                <div class="row">
+                    <div class="col-md-12" ng-cloak="">
+                        <table class="table table-condensed table-hover data-table" ng-cloak>
+                            <thead>
+                            <th></th>
+                            <th>Name</th>
+                            <th>Corporation</th>
+                            <th>Has Key</th>
+                            <th>Is Main</th>
+                            <th>Created At</th>
+                            <th><i class="fa fa-cogs"></i></th>
+                            </thead>
+                            <tbody>
+                            <tr ng-class="{ 'info': selected_character.id == c.id}" ng-repeat="c in characters" ng-show="characters.length > 0" ng-cloak>
+                                <td width="64">
+                                    <eve-image image-type="'Character'" object-id="c.eve_id" img-width="256"></eve-image>
+                                </td>
+                                <td>{{ '{{ c.name }}' }}</td>
+                                <td>{{ '{{ c.corporation_name }}' }}</td>
+                                <td>
+                                    <label class="label" ng-class="{ 'label-danger': !c.has_key, 'label-success': c.has_key }">
+                                        <i class="fa" ng-class="{ 'fa-check': c.has_key, 'fa-times': !c.has_key }"></i>
+                                    </label>
+                                <td>
+                                    <label class="label" ng-class="{ 'label-warning': !c.is_main, 'label-success': c.is_main }">
+                                        <i class="fa" ng-class="{ 'fa-check': c.is_main, 'fa-times': !c.is_main }"></i>
+                                    </label>
+                                </td>
+                                <td> {{ '{{  c.created_at | date:"shortDate" }}' }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-default" ng-click="selectCharacter(c)" ng-show="selected_character == null"><i class="fa fa-cog"></i></button>
+                                    <button class="btn btn-sm btn-danger" ng-show="selected_character !== null && selected_character.id === c.id" ng-click="removeChar()"><i class="fa fa-times"></i></button>
+                                </td>
+                            </tr>
 
-                        <tr ng-show="characters.length == 0" ng-cloak>
-                            <td colspan="7" class=" text-center" ng-cloak>
-                                <h3 style="font-family: 'roboto';" class="text-danger">No characters found</h3>
-                                <p style="color: black;">You will <b>need to add or update</b> a character with a valid api key prior to being able to use this application.</p>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            <tr ng-show="characters.length == 0" ng-cloak>
+                                <td colspan="7" class=" text-center" ng-cloak>
+                                    <h3 style="font-family: 'roboto';" class="text-danger">No characters found</h3>
+                                    <p style="color: black;">You will <b>need to add or update</b> a character with a valid api key prior to being able to use this application.</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-                </div>
-                <div class="col-xs-8" ng-cloak>
-                    <div class="well">
-                        <h3 class="text-center" style="font-family: 'roboto'; color: black;" ng-show="!selected_character">Select a Character</h3>
+                    </div>
+                    {#
+                    <div class="col-md-8" ng-cloak>
+                        <div class="well">
+                            <h3 class="text-center" style="font-family: 'roboto'; color: black;" ng-show="!selected_character">Select a Character</h3>
 
-                        <div class="row" ng-show="selected_character != null">
-                            <div class="col-sm-6">
-                                <eve-image ng-if="selected_character != null" image-type="'Character'" override-width="image_size" object-id="selected_character.eve_id" img-width="256" ng-init="image_size = 256"></eve-image>
-                            </div>
-                            <div class="col-sm-6">
-                                <h3 style="font-family: 'roboto'; color: black;" class="text-center">More details coming soon.</h3>
-                            </div>
-                            <div class="col-xs-12">
+                            <div class="row" ng-show="selected_character != null">
+                                <div class="col-sm-6">
+                                    <eve-image ng-if="selected_character != null" image-type="'Character'" override-width="image_size" object-id="selected_character.eve_id" img-width="256" ng-init="image_size = 256"></eve-image>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h3 style="font-family: 'roboto'; color: black;" class="text-center">More details coming soon.</h3>
+                                </div>
+                                <div class="col-xs-12">
+                                </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
+                    #}
                 </div>
             </div>
             {% include '@App/Admin/Character/new.html.twig' %}

@@ -55,6 +55,7 @@ class EveDataUpdateService {
             CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
             JournalTransactionManager::getName() => 'updateJournalTransactions',
             MarketTransactionManager::getName() => 'updateMarketTransactions',
+            StarbaseManager::getName() => 'getStarbases'
         ];
 
         foreach ($calls as $manager => $call){

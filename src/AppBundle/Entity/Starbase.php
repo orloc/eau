@@ -17,6 +17,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Starbase
 {
 
+    const STATE_UNANCHORED = 0,
+          STATE_OFFLINE = 1,
+          STATE_ONLINING = 2,
+          STATE_REINFORCED = 3,
+          STATE_ONLINE = 4;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -34,6 +40,11 @@ class Starbase
      * @ORM\Column(type="bigint")
      */
     protected $type_id;
+
+    /**
+     * @ORM\Column(type="bigint")
+     */
+    protected $location_id;
 
     /**
      * @ORM\Column(type="bigint")
@@ -59,6 +70,21 @@ class Starbase
      * @ORM\Column(type="bigint")
      */
     protected $standing_owner_id;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $general_settings;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $combat_settings;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    protected $fuel;
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="starbases")
@@ -289,5 +315,97 @@ class Starbase
     public function getCorporation()
     {
         return $this->corporation;
+    }
+
+    /**
+     * Set location_id
+     *
+     * @param integer $locationId
+     * @return Starbase
+     */
+    public function setLocationId($locationId)
+    {
+        $this->location_id = $locationId;
+
+        return $this;
+    }
+
+    /**
+     * Get location_id
+     *
+     * @return integer 
+     */
+    public function getLocationId()
+    {
+        return $this->location_id;
+    }
+
+    /**
+     * Set general_settings
+     *
+     * @param array $generalSettings
+     * @return Starbase
+     */
+    public function setGeneralSettings($generalSettings)
+    {
+        $this->general_settings = $generalSettings;
+
+        return $this;
+    }
+
+    /**
+     * Get general_settings
+     *
+     * @return array 
+     */
+    public function getGeneralSettings()
+    {
+        return $this->general_settings;
+    }
+
+    /**
+     * Set combat_settings
+     *
+     * @param array $combatSettings
+     * @return Starbase
+     */
+    public function setCombatSettings($combatSettings)
+    {
+        $this->combat_settings = $combatSettings;
+
+        return $this;
+    }
+
+    /**
+     * Get combat_settings
+     *
+     * @return array 
+     */
+    public function getCombatSettings()
+    {
+        return $this->combat_settings;
+    }
+
+    /**
+     * Set fuel
+     *
+     * @param array $fuel
+     * @return Starbase
+     */
+    public function setFuel($fuel)
+    {
+        $this->fuel = $fuel;
+
+        return $this;
+    }
+
+    /**
+     * Get fuel
+     *
+     * @return array 
+     */
+    public function getFuel()
+    {
+        return $this->fuel;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Corporation;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class StarBaseRepository extends EntityRepository
 {
+
+    public function hasPOS(Corporation $corp, $moonId){
+
+        return $this->createQueryBuilder('sb')
+            ->select('sb')
+            ->where('sb.corporation = :corp')
+            ->andWhere('sb.moon_id = :moon_id')
+            ->setParameters([
+                'corp' => $corp,
+                'moon_id' => $moonId
+            ])
+            ->setMaxResults(1)
+            ->getQuery()->getOneOrNullResult();
+
+    }
 }
