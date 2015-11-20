@@ -103,6 +103,8 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $names = array_map(function($d){ return $d['name']; }, $data);
 
         $eveReg = $this->get('evedata.registry');
+        $priceManager = $this->get('app.price.manager');
+        $itemPriceRepo = $this->getRepository('EveBundle:ItemPrice', 'eve_data');
         $items = $eveReg->get('EveBundle:ItemType')
             ->findTypesByName($names);
 
@@ -121,44 +123,63 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ['eve_id' => $mainCharacter->getEveCorporationId() ]
         );
 
+
+        $itemIds = array_map(function($i){
+            return intval($i['typeID']);
+        }, $items);
+
+
         if ($corp instanceof $corp){
+
+            $regionPrices = [];
+            $global = 0;
+            $specifics = [];
+
             foreach ($types as $t){
                 $configs = $this->getDoctrine()->getRepository('AppBundle:BuybackConfiguration')
                     ->findConfigByType($corp, $t);
 
                 if ($t === BuybackConfiguration::TYPE_REGION){
+                    $regionPrices = $itemPriceRepo->getItems(10000002, $itemIds);
+                }
 
-                    $regionPrices =
+                if ($t === BuybackConfiguration::TYPE_GLOBAL){
+                    $config = array_pop($configs);
+                    $global = $config->getBaseMarkDown();
+                }
+
+                if ($t === BuybackConfiguration::TYPE_SINGLE){
+                    foreach ($configs as $c){
+                        $specifics[$c->getSingleItem()] = [
+                            'type_id' => $c->getSingleItem(),
+                            'override' => $c->getOverride()
+                        ];
+                    }
                 }
             }
+
+            $numberedPrices = [];
+            foreach ($regionPrices as $p){
+                $numberedPrices[$p->getTypeId()] = $p;
+            }
+            unset($regionPrices);
+
+            foreach ($items as $k => $i){
+                if (!isset($specifics[$i['typeID']]) ){
+                    $prePrice = floatval($numberedPrices[$i['typeID']]->getAvgPrice());
+                    $items[$k]['price'] = $prePrice - ($prePrice * ($global / 100));
+                } else {
+                    $items[$k]['price'] = $specifics[$i['typeID']];
+                }
+            }
+        } else {
+            $items = $priceManager->updatePrices($items);
         }
-
-
-        $priceManager = $this->get('app.price.manager');
-        $items = $priceManager->updatePrices($items);
 
         $json = $this->get('serializer')->serialize($items, 'json');
 
         return $this->jsonResponse($json);
 
-
-        /*
-        $ore_groups = $this->get('evedata.registry')->get('EveBundle:MarketGroup')
-            ->getOreGroups();
-
-        $item_repo = $this->get('evedata.registry')->get('EveBundle:ItemType') ;
-
-        $oreTypes = [];
-        foreach($ore_groups as $ore){
-            $res = $item_repo->findTypesByGroupId($ore['marketGroupID']);
-            $oreTypes[$ore['marketGroupName']] = $res;
-        }
-
-
-        $json = $this->get('serializer')->serialize($oreTypes, 'json');
-
-        return $this->jsonResponse($json);
-        */
     }
 
     /**

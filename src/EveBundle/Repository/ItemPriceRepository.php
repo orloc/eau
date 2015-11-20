@@ -20,5 +20,32 @@ class ItemPriceRepository extends EntityRepository {
 
     }
 
+    public function getItem($region_id, $item_id){
+        return $this->createQueryBuilder('ip')
+            ->select('ip')
+            ->andWhere('ip.region_id = :region')
+            ->andWhere('ip.type_id = :type_id')
+            ->orderBy('ip.date', 'DESC')
+            ->setMaxResults(1)
+            ->setParameters([
+                'type_id' => $item_id,
+                'region' => $region_id
+            ])->getQuery()->getOneOrNullResult();
+    }
+
+    public function getItems($region_id, array $items){
+        return $this->createQueryBuilder('ip')
+            ->select('ip')
+            ->andWhere('ip.region_id = :region')
+            ->andWhere('ip.type_id IN ( :type_ids )')
+            ->orderBy('ip.date', 'DESC')
+            ->addGroupBy('ip.type_id')
+            ->setParameters([
+                'type_ids' => $items,
+                'region' => $region_id
+            ])->getQuery()->getResult();
+
+    }
+
 }
 
