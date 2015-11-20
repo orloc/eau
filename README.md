@@ -23,6 +23,16 @@ We are close to approaching a stable, feature rich point where more focus will b
 
 ### User Features
 * Streamlined *anything* buyback form
+* ...
+
+### TODO
+* Sorting and filters on most data views
+* Finish pagination on most data views
+* Sort out bugs with location resolution
+* Restructure / enforce data restriction based on corporate roles e.g. Alliance Leader / CEO / Member / Non-Alliance-User etc..
+* Unit / functional testing 
+* CI integration
+* much more..
 
 
 
