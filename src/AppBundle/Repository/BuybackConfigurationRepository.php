@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Corporation;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class BuybackConfigurationRepository extends EntityRepository
 {
+
+    public function findConfigByType(Corporation $corp, $type){
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->where('c.corporation = :corp')
+            ->andWhere('c.type = :type')
+            ->setParameters(['corp' => $corp, 'type' => $type])
+            ->getQuery()->getResult();
+    }
 }

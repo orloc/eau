@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
+use AppBundle\Entity\BuybackConfiguration;
 use AppBundle\Entity\Corporation;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
@@ -105,13 +106,36 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $items = $eveReg->get('EveBundle:ItemType')
             ->findTypesByName($names);
 
-        $configs = $this->getDoctrine()->getRepository('AppBundle:BuybackConfiguration')
-            ->findAll();
+        $types = [
+            BuybackConfiguration::TYPE_REGION,
+            BuybackConfiguration::TYPE_GLOBAL,
+            BuybackConfiguration::TYPE_SINGLE,
+        ];
 
         $user = $this->getUser();
 
+        $mainCharacter = $this->getRepository('AppBundle:Character')
+            ->findOneBy(['user' => $user, 'is_main' => true]);
+
+        $corp = $this->getRepository('AppBundle:Corporation')->findOneBy(
+            ['eve_id' => $mainCharacter->getEveCorporationId() ]
+        );
+
+        if ($corp instanceof $corp){
+            foreach ($types as $t){
+                $configs = $this->getDoctrine()->getRepository('AppBundle:BuybackConfiguration')
+                    ->findConfigByType($corp, $t);
+
+                if ($t === BuybackConfiguration::TYPE_REGION){
+
+                    $regionPrices =
+                }
+            }
+        }
+
+
         $priceManager = $this->get('app.price.manager');
-        $priceManager->updatePrices($items);
+        $items = $priceManager->updatePrices($items);
 
         $json = $this->get('serializer')->serialize($items, 'json');
 
