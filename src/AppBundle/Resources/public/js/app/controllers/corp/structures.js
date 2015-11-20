@@ -4,24 +4,26 @@ angular.module('eveTool')
     .controller('structureController', ['$scope', '$http', 'selectedCorpManager', function($scope, $http, selectedCorpManager){
 
         $scope.getTowerFuelQuantities = function(fuel, tower){
+            console.log(fuel);
             if (typeof fuel !== 'undefined' && typeof tower !== 'undefined'){
                 var fuelVolume = parseInt(fuel.quantity) * parseFloat(fuel.type.volume);
 
-                return (function(tower){
+                var actualSize =  fuel.typeID === "16275" ? 50000 :140000;
+
+                var percentage = (function(tower){
                     var size = _.find(tower.descriptors.attributes, function(d){
                         return d.attributeID === '1031';
 
                     }).valueInt;
 
                     if (typeof size !== 'undefined'){
-                        var actualSize = 140000;
                         switch(parseInt(size)){
-                            case 1:
+                            case 3:
                                 break;
                             case 2:
                                 actualSize = actualSize  / 2;
                                 break;
-                            case 3:
+                            case 1:
                                 actualSize = actualSize / 4;
                                 break;
 
@@ -32,6 +34,8 @@ angular.module('eveTool')
 
                     return 0;
                 })(tower);
+
+                return { 'percentage': percentage, 'max': actualSize, 'actual': fuelVolume };
             }
         };
 
