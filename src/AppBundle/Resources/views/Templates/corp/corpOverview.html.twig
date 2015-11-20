@@ -55,11 +55,21 @@
                 <h5 class="text-danger">Buy Orders - <span class="small">Total: {{ '{{  sumOrders(buy_orders) | currency:"ISK" }}' }}</span>
                     <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
                     <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
+                    <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
                 </h5>
             </div>
 
             <div ng-show="page == 'sell'">
                 <h5 class="text-success">Sell Orders - <span class="small">Total: {{ '{{  sumOrders(sell_orders) | currency:"ISK" }}' }}</span>
+                    <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
+                    <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
+                    <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
+                </h5>
+            </div>
+
+            <div ng-show="page == 'stats'">
+                <h5 class="text-success">Aggregations </span>
+                    <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
                     <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
                     <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
                 </h5>
@@ -69,6 +79,7 @@
                 <h5>Journal Transactions <span class="small" ng-class="{ 'text-success': getJournalDifference() > 0.0, 'text-danger': getJournalDifference() < 0.0 }">Change: {{ '{{ getJournalDifference() | currency:"ISK" }}' }}</span>
                     <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
                     <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
+                    <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
                 </h5>
             </div>
 
@@ -156,6 +167,29 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="col-xs-9 aggregates" ng-show="selected_account && page == 'stats'" >
+                {# make me a directive #}
+                <div class="row" ng-controller="journalBreakdownController">
+                    <h4>Transaction Breakdown - {{ '{{ sumTransactions() | currency:" ISK" }}' }}</h4>
+                    <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
+                    <div class="col-sm-4" ng-repeat="s in segments">
+                        <table class="table tabled-hover table-stripped data-table">
+                            <thead>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            </thead>
+                            <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
+                                <td>
+                                {{ '{{ r.type.ref_type_name }}' }}
+                                </td>
+                                <td>
+                                    {{ '{{ r.total | currency:"ISK" }}' }}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
 

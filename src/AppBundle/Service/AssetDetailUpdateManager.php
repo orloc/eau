@@ -109,7 +109,7 @@ class AssetDetailUpdateManager {
                 : (isset($itemData['itemName']) ? $itemData['itemName'] : null),
             'constellation' => isset($itemData['constellationID']) ? $itemData['constellationID']['name'] : null,
             'stationName' => isset($itemData['stationName']) ? $itemData['stationName'] : null,
-            'region' => isset($itemData['regionID']) ? $itemData['regionID']['name'] : null
+            'region' => isset($itemData['regionID']) ? $itemData['regionID']['regionName'] : null
         ];
 
     }

@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Entity\Account;
+use AppBundle\Entity\Corporation;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityRepository;
 
@@ -27,6 +28,30 @@ class JournalTransactionRepository extends EntityRepository {
                 'end' => $end
             ])
             ->getQuery()->getResult();
+    }
+
+    public function getTransactionsByType(Corporation $corp, $type, Carbon $date){
+        $start = $date->copy();
+        $start->subWeek()->setTime(0,0,0);
+
+        $end = $date->copy();
+        $end->setTime(23,59,59);
+
+        return $this->createQueryBuilder('jt')
+            ->select('jt')
+            ->leftJoin('jt.account', 'acc')
+            ->where('acc.corporation = :corp')
+            ->andWhere('jt.ref_type_id = :ref_type')
+            ->andWhere('jt.date >= :start')
+            ->andWhere('jt.date <= :end')
+            ->setParameters([
+                'corp' => $corp,
+                'ref_type' => $type,
+                'start' => $start,
+                'end' => $end
+            ])
+            ->getQuery()->getResult();
+
     }
 
     public function hasTransaction(Account $acc, $refId, $amount){

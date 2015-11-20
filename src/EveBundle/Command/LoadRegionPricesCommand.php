@@ -57,12 +57,12 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         foreach ($neededRegions as $r){
             $r = $eveRegistry->get('EveBundle:Region')->getRegionById($r);
             $progress->setMessage("Processing Region {$r['regionName']}");
-            foreach ($items as $i){
+            foreach ($items as $k => $i){
                 $url = $this->getCrestUrl($r['regionID'], $i['typeID']);
                 try {
                     $response = $client->get($url);
                     $obj = json_decode($response->getBody()->getContents(), true);
-                    $processableItems = array_slice(array_reverse($obj['items']), 0, 5);
+                    $processableItems = array_slice(array_reverse($obj['items']), 0, 2);
 
                     foreach ($processableItems as $idx => $item){
                         $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
@@ -84,10 +84,14 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                 }
 
                 $progress->advance();
+
+                if ($k % 500 === 0){
+                    $em->flush();
+                    $em->clear();
+                }
             }
         }
         $em->flush();
-
         $em->clear();
 
         $progress->finish();
