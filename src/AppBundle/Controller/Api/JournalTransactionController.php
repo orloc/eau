@@ -75,7 +75,42 @@ class JournalTransactionController extends AbstractController implements ApiCont
         $json = $this->get('jms_serializer')->serialize($populatedTrans, 'json');
 
         return $this->jsonResponse($json);
-
-
     }
+
+    /**
+     * @Route("/corporation/{id}/journal_user_aggregate", name="api.corporation.journal.user_aggregate", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_ADMIN")
+     * @Method("GET")
+     */
+    public function getByUserAction(Request $request, Corporation $corp){
+
+        $date = $request->get('date', null);
+
+        if ($date === null){
+            $dt = Carbon::now();
+        } else {
+            $dt = Carbon::createFromTimestamp($date);
+        }
+
+        $members = $this->getRepository('AppBundle:CorporationMember')
+            ->findBy(['corporation' => $corp, 'disbanded_at' => null]);
+
+        $populatedTrans = [];
+        foreach ($members as $m){
+            $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
+                ->getTransactionsByMember($corp, $m, $dt);
+
+            if (count($transactions)){
+                $populatedTrans[] = [
+                    'user' => $m, 'trans' => $transactions
+                ];
+            }
+        }
+
+        $json = $this->get('jms_serializer')->serialize($populatedTrans, 'json');
+
+        return $this->jsonResponse($json);
+    }
+
 }

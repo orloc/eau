@@ -172,23 +172,49 @@
             <div class="col-xs-9 aggregates" ng-show="selected_account && page == 'stats'" >
                 {# make me a directive #}
                 <div class="row" ng-controller="journalBreakdownController">
-                    <h4>Transaction Breakdown - {{ '{{ sumTransactions() | currency:" ISK" }}' }}</h4>
-                    <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
-                    <div class="col-sm-4" ng-repeat="s in segments">
-                        <table class="table tabled-hover table-stripped data-table">
-                            <thead>
-                            <th>Type</th>
-                            <th>Amount</th>
-                            </thead>
-                            <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
-                                <td>
-                                {{ '{{ r.type.ref_type_name }}' }}
-                                </td>
-                                <td>
-                                    {{ '{{ r.total | currency:"ISK" }}' }}
-                                </td>
-                            </tr>
-                        </table>
+
+                    <div class="col-xs-12">
+                        <h4>Transaction Breakdown - {{ '{{ sumTransactions() | currency:" ISK" }}' }}</h4>
+                        <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
+                        <div class="col-sm-6" ng-repeat="s in segments">
+                            <table class="table tabled-hover table-stripped data-table">
+                                <thead>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                </thead>
+                                <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
+                                    <td>
+                                        {{ '{{ r.type.ref_type_name }}' }}
+                                    </td>
+                                    <td>
+                                        {{ '{{ r.total | currency:"ISK" }}' }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <h4>Member Contributions  </h4>
+                        <div class="col-sm-6" ng-repeat="s in member_segments">
+                            <table class="table tabled-hover table-stripped data-table">
+                                <thead>
+                                <th></th>
+                                <th>Name</th>
+                                <th>Amount</th>
+                                </thead>
+                                <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
+                                    <td>
+                                        <eve-image image-type="'Character'" object-id="r.user.character_id" img-width="256"></eve-image>
+                                    </td>
+                                    <td>
+                                        {{ '{{ r.user.character_name }}' }}
+                                    </td>
+                                    <td>
+                                        {{ '{{ r.total | currency:"ISK" }}' }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
