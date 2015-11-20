@@ -1,6 +1,10 @@
 # Eve Alliance Utility
 A platform for alliance management in eve. If you are  unfamiliar with eve I encourage you to [check it out](https://wiki.eveonline.com/en/wiki/About_EVE_Online).
 
+This project is VERY MUCH a work in progress - there are lots of bugs and large ambitions.
+
+We are close to approaching a stable, feature rich point where more focus will be paid to testing and accommodating other parties wishing to contribute.
+
 ##Current Features
 ###General Features
 * Restricted User Access / Registration workflow
@@ -18,7 +22,7 @@ A platform for alliance management in eve. If you are  unfamiliar with eve I enc
 * Per Corporation member registration status // api key registry
 
 ### User Features
-* ...
+* Streamlined *anything* buyback form
 
 
 
