@@ -12,32 +12,40 @@ angular.module('eveTool')
             $scope.loading = true;
             $scope.selected_corp = val;
 
-            var date = moment($scope.current_date).format('X');
-
-            $http.get(Routing.generate('api.corporation.journal.aggregate', { id: val.id, date: date })).then(function(data) {
-                $scope.ref_types = data.data;
-
-                angular.forEach($scope.ref_types, function(ref, i){
-                    var sum = _.reduce(_.pluck(ref.trans, 'amount'), function(init, carry){
-                        return init + carry;
-                    });
-
-                    $scope.ref_types[i]['total'] = sum;
-              });
-
-                $scope.segments = $scope.getSegments($scope.ref_types, 6);
-            });
-
-            $scope.sumTransactions = function(){
-                return _.reduce(_.pluck($scope.ref_types, 'total'), function(init, carry){
-                    return init + carry;
-                });
-            };
-
-            $scope.getSegments = function(list, size){
-                return _.chunk(list, size);
-            };
+            update(val);
         });
 
+        $scope.$watch('current_date', function(){
+            update($scope.selected_corp);
+        });
 
+        $scope.sumTransactions = function(){
+            return _.reduce(_.pluck($scope.ref_types, 'total'), function(init, carry){
+                return init + carry;
+            });
+        };
+
+        $scope.getSegments = function(list, size){
+            return _.chunk(list, size);
+        };
+
+        function update(val){
+            var date = moment($scope.current_date).format('X');
+
+            if (typeof val !== 'undefined'){
+                $http.get(Routing.generate('api.corporation.journal.aggregate', { id: val.id, date: date })).then(function(data) {
+                    $scope.ref_types = data.data;
+
+                    angular.forEach($scope.ref_types, function(ref, i){
+                        var sum = _.reduce(_.pluck(ref.trans, 'amount'), function(init, carry){
+                            return init + carry;
+                        });
+
+                        $scope.ref_types[i]['total'] = sum;
+                    });
+
+                    $scope.segments = $scope.getSegments($scope.ref_types, 6);
+                });
+            }
+        }
     }]);
