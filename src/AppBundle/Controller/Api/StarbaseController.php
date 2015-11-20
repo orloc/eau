@@ -31,21 +31,47 @@ class StarbaseController extends AbstractController implements ApiControllerInte
         $loctionRepo = $this->get('app.itemdetail.manager');
 
         $typeRepo = $this->get('evedata.registry')->get('EveBundle:ItemType');
+        $attributeRepo = $this->get('evedata.registry')->get('EveBundle:ItemAttribute');
+
         foreach ($stations as $s){
+
+            $attributeData = $attributeRepo->getItemAttributes($s->getTypeId());
+
+            $ids = array_map(function($i){
+                return intval($i['attributeID']);
+            }, $attributeData);
+
+            $attrDetails = $attributeRepo->getAttributes($ids);
+
+            $mergedData = [];
+            foreach ($attributeData as $k => $d){
+                foreach ($attrDetails as $m){
+                    if ($d['attributeID'] === $m['attributeID']){
+                        $mergedData[] = array_merge($attributeData[$k], $m);
+                    }
+                }
+            }
+
             $descriptors = array_merge(
+                ['attributes' => $mergedData ],
                 $loctionRepo->determineLocationDetails($s->getLocationId()),
                 $typeRepo->getItemTypeData($s->getTypeId()),
                 [
-                    'fuel' => array_map(function($d) use ($typeRepo){
+                    'fuel' => array_map(function($d) use ($typeRepo, $attributeRepo){
                         $data = $typeRepo->getItemTypeData($d['typeID']);
 
-                        return ['type' => $data, 'typeID' => $d['typeID'],'quantity' => $d['quantity']];
+                        return [
+                            'type' => $data,
+                            'typeID' => $d['typeID'],
+                            'quantity' => $d['quantity']
+                        ];
                     }, $s->getFuel())
                 ]
             );
 
             $s->setDescriptors($descriptors);
         }
+
 
         $json = $this->get('serializer')->serialize($stations, 'json');
 
