@@ -53,8 +53,6 @@ angular.module('eveTool')
                 return f.typeID !== "16275";
             });
 
-            console.log(block);
-
             return consumption * block.price;
         };
 

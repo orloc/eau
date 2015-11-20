@@ -16,8 +16,7 @@ angular.module('eveTool')
                             scope.server_status = data.data;
                         },
                         function(data){
-                            console.log(data);
-                            working = false;
+                            window.location = '/login';
                         });
                     }
                 }, 1000*60);

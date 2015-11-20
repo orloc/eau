@@ -60,8 +60,6 @@ angular.module('eveTool')
         };
 
         $scope.$on('new_char_api', function(event, data){
-
-            console.log(data);
             $scope.current_char = data;
         });
 

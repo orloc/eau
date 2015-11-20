@@ -28,8 +28,7 @@ angular.module('eveTool')
 
 
             });
-            console.log($scope.new_key);
-        }
+        };
 
         $scope.enable = function(api_key){
             angular.forEach($scope.api_keys, function(i){

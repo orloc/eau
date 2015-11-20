@@ -12,7 +12,6 @@ angular.module('eveTool')
             $scope.loading = true;
             var inputs = $scope.input_data.split("\n");
 
-            console.log(inputs);
             var r = /\d{1,3}(,\d{3})*(\.\d+)?(?=\s)/;
             var data = [];
 
