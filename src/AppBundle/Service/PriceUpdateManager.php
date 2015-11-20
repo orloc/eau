@@ -52,13 +52,13 @@ class PriceUpdateManager extends AbstractManager {
         if (!$this->hasItem($typeId)){
             $price = $prices->getAveragePriceByType($typeId);
             if ($price instanceof AveragePrice){
-                $this->cacheItem($typeId, $price->getAveragePrice());
+                $this->cacheItem($typeId, $price);
 
                 return $this->updateItemPrice($i, $price, $descriptors);
             }
         }
 
-        return $this->updateItemPrice($i, $this->cache[$typeId], $descriptors);
+        return $this->updateItemPrice($i, $this->getItem($typeId), $descriptors);
     }
 
     protected function updateItemPrice($i, $price = null, array &$descriptors = []){

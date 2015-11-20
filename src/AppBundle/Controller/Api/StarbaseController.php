@@ -69,6 +69,10 @@ class StarbaseController extends AbstractController implements ApiControllerInte
                 ]
             );
 
+            $fuels = $this->get('app.price.manager')->updatePrices($descriptors['fuel']);
+
+            $descriptors['fuel'] = $fuels;
+
             $s->setDescriptors($descriptors);
         }
 

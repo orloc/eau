@@ -55,7 +55,7 @@
                     </td>
                     <td> <i ng-class="{ 'fa fa-check': hasCorpAccess(item.general_settings), 'fa fa-minus': !hasCorpAccess(item.general_settings) }"></i></td>
                     <td> <i ng-class="{ 'fa fa-check': hasAllianceAccess(item.general_settings), 'fa fa-minus': !hasAllianceAccess(item.general_settings) }"></i></td>
-                    <td></td>
+                    <td>{{ '{{ getTowerCost(item) | currency:"ISK" }}' }}</td>
                 </tr>
                 </tbody>
             </table>
