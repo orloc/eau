@@ -32,9 +32,13 @@
                     </td>
                     <td>
                     <span ng-show="hasApiKey(m)" class="api-key small">
+                        {#
                         Key: {{ '{{  m.api_key.api_key }}' }}<br>
                         Code: {{ '{{  m.api_key.verification_code }}' }}<br>
                         Mask: {{ '{{  m.api_key.access_mask }}' }}
+
+                        #}
+                        Hidden
                     </span>
                     <span ng-show="!hasApiKey(m)" >
                         <div class="label label-danger">

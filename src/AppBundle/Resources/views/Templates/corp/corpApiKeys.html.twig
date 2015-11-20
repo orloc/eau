@@ -39,9 +39,12 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="i in api_keys" ng-show="!loading">
+                    <td colspan="3"> Hidden </td>
+                    {#
                     <td>{{ '{{ i.id }}' }}</td>
                     <td>{{ '{{ i.api_key }}' }}</td>
                     <td>{{ '{{ i.verification_code }}' }}</td>
+                    #}
                     <td>
                         <label class="label" ng-class="{ 'label-success': i.is_active, 'label-danger': !i.is_active }">
                             <span ng-if="i.is_active">Yes</span>

@@ -5,7 +5,7 @@ This project is VERY MUCH a work in progress - there are lots of bugs and large 
 
 We are close to approaching a stable, feature rich point where more focus will be paid to testing and accommodating other parties wishing to contribute.
 
-##Current Features
+##Features
 ###General Features
 * Restricted User Access / Registration workflow
 * Character Registration
