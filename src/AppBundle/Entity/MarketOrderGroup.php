@@ -26,12 +26,12 @@ class MarketOrderGroup
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketOrder", mappedBy="order_grouping", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\MarketOrder", mappedBy="market_order_group", cascade={"persist"})
      */
     protected $market_orders;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="asset_groupings")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="market_order_groups")
      */
     protected $corporation;
 
@@ -64,7 +64,7 @@ class MarketOrderGroup
     {
         return $this->id;
     }
-    
+
     /**
      * Add assets
      *
@@ -98,7 +98,7 @@ class MarketOrderGroup
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -118,7 +118,7 @@ class MarketOrderGroup
     /**
      * Get market_orders
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMarketOrders()
     {
@@ -141,7 +141,7 @@ class MarketOrderGroup
     /**
      * Get corporation
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -164,7 +164,7 @@ class MarketOrderGroup
     /**
      * Get has_been_updated
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getHasBeenUpdated()
     {

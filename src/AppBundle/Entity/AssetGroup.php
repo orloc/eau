@@ -26,12 +26,12 @@ class AssetGroup
     protected $id;
 
     /**
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Asset", mappedBy="asset_grouping", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Asset", mappedBy="asset_group", cascade={"persist"})
      */
     protected $assets;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="asset_groupings")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="asset_groups")
      */
     protected $corporation;
 
@@ -63,7 +63,7 @@ class AssetGroup
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -99,7 +99,7 @@ class AssetGroup
     /**
      * Get assets
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAssets()
     {
@@ -122,7 +122,7 @@ class AssetGroup
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -145,7 +145,7 @@ class AssetGroup
     /**
      * Get corporation
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -168,7 +168,7 @@ class AssetGroup
     /**
      * Get asset_sum
      *
-     * @return string 
+     * @return string
      */
     public function getAssetSum()
     {
@@ -191,7 +191,7 @@ class AssetGroup
     /**
      * Get has_been_updated
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getHasBeenUpdated()
     {

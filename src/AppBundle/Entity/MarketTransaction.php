@@ -120,7 +120,7 @@ class MarketTransaction
     protected $client_type_id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="transactions")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="market_transactions")
      */
     protected $account;
 
@@ -136,7 +136,7 @@ class MarketTransaction
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -159,7 +159,7 @@ class MarketTransaction
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -182,7 +182,7 @@ class MarketTransaction
     /**
      * Get transaction_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getTransactionId()
     {
@@ -205,7 +205,7 @@ class MarketTransaction
     /**
      * Get quantity
      *
-     * @return integer 
+     * @return integer
      */
     public function getQuantity()
     {
@@ -228,7 +228,7 @@ class MarketTransaction
     /**
      * Get item_name
      *
-     * @return string 
+     * @return string
      */
     public function getItemName()
     {
@@ -251,7 +251,7 @@ class MarketTransaction
     /**
      * Get item_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getItemId()
     {
@@ -274,7 +274,7 @@ class MarketTransaction
     /**
      * Get price
      *
-     * @return string 
+     * @return string
      */
     public function getPrice()
     {
@@ -297,7 +297,7 @@ class MarketTransaction
     /**
      * Get client_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getClientId()
     {
@@ -320,7 +320,7 @@ class MarketTransaction
     /**
      * Get client_name
      *
-     * @return string 
+     * @return string
      */
     public function getClientName()
     {
@@ -343,7 +343,7 @@ class MarketTransaction
     /**
      * Get station_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getStationId()
     {
@@ -366,7 +366,7 @@ class MarketTransaction
     /**
      * Get station_name
      *
-     * @return string 
+     * @return string
      */
     public function getStationName()
     {
@@ -389,7 +389,7 @@ class MarketTransaction
     /**
      * Get transaction_type
      *
-     * @return string 
+     * @return string
      */
     public function getTransactionType()
     {
@@ -412,7 +412,7 @@ class MarketTransaction
     /**
      * Get transaction_for
      *
-     * @return string 
+     * @return string
      */
     public function getTransactionFor()
     {
@@ -435,7 +435,7 @@ class MarketTransaction
     /**
      * Get journal_transaction_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getJournalTransactionId()
     {
@@ -458,7 +458,7 @@ class MarketTransaction
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -481,7 +481,7 @@ class MarketTransaction
     /**
      * Get account
      *
-     * @return \AppBundle\Entity\Account 
+     * @return \AppBundle\Entity\Account
      */
     public function getAccount()
     {
@@ -504,7 +504,7 @@ class MarketTransaction
     /**
      * Get character_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getCharacterId()
     {
@@ -527,7 +527,7 @@ class MarketTransaction
     /**
      * Get character_name
      *
-     * @return string 
+     * @return string
      */
     public function getCharacterName()
     {
@@ -550,7 +550,7 @@ class MarketTransaction
     /**
      * Get client_type_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getClientTypeId()
     {

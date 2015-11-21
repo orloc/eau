@@ -30,7 +30,7 @@ class BuybackConfiguration
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="buyback_configurations")
      * @JMS\Expose()
      */
     protected $corporation;
@@ -82,7 +82,7 @@ class BuybackConfiguration
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -105,7 +105,7 @@ class BuybackConfiguration
     /**
      * Get regions
      *
-     * @return array 
+     * @return array
      */
     public function getRegions()
     {
@@ -128,7 +128,7 @@ class BuybackConfiguration
     /**
      * Get type
      *
-     * @return integer 
+     * @return integer
      */
     public function getType()
     {
@@ -151,7 +151,7 @@ class BuybackConfiguration
     /**
      * Get override
      *
-     * @return string 
+     * @return string
      */
     public function getOverride()
     {
@@ -174,7 +174,7 @@ class BuybackConfiguration
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -197,7 +197,7 @@ class BuybackConfiguration
     /**
      * Get corporation
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -220,7 +220,7 @@ class BuybackConfiguration
     /**
      * Get single_item
      *
-     * @return integer 
+     * @return integer
      */
     public function getSingleItem()
     {
@@ -243,7 +243,7 @@ class BuybackConfiguration
     /**
      * Get base_markdown
      *
-     * @return string 
+     * @return string
      */
     public function getBaseMarkdown()
     {

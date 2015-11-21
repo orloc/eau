@@ -1,3 +1,4 @@
-gem 'capistrano', '~> 3.1'
-gem 'capistrano-bower'
-gem 'capistrano-symfony', '~> 0.1', :github => 'capistrano/symfony'
+source 'https://rubygems.org'
+
+
+gem 'compass', '1.0.3'
