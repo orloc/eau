@@ -4,18 +4,23 @@ angular.module('eveTool')
     .controller('userNewController', ['$scope', '$http','dataDispatcher', function($scope, $http, dataDispatcher){
         $scope.submitLoading = false;
         $scope.newUser = {};
+
         $scope.roles = [
+            {
+                role: 'ROLE_CEO',
+                name:'CEO'
+            },
             {
                 role: 'ROLE_ADMIN',
                 name:'Admin'
             },
             {
-                role: 'ROLE_USER',
-                name:'User'
+                role: 'ROLE_CORP_MEMBER',
+                name:'Corp Member'
             },
             {
-                role: 'ROLE_SUPER_ADMIN',
-                name:'Super Admin'
+                role: 'ROLE_ALLIANCE_LEADER',
+                name:'Alliance Leader'
             }
         ];
 

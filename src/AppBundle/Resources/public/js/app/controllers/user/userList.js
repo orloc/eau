@@ -36,6 +36,10 @@ angular.module('eveTool')
                 name: 'CEO',
                 weight: 1
             },
+            ROLE_ALLIANCE_LEADER : {
+                name: 'Alliance Leader',
+                weight: 1
+            },
             ROLE_ADMIN : {
                 name: 'Admin',
                 weight: 2
