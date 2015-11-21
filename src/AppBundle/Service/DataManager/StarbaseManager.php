@@ -1,14 +1,11 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
-use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\Starbase;
 use Carbon\Carbon;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use \EveBundle\Repository\Registry as EveRegistry;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class StarbaseManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface
 {

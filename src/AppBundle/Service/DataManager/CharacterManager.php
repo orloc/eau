@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\Character;
+
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\ParameterBag;
 
 class CharacterManager {
 

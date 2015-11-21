@@ -1,9 +1,8 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\Account;
-use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\JournalTransaction;
 use AppBundle\Entity\RefType;

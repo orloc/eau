@@ -1,10 +1,9 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
 
 use AppBundle\Entity\ApiCredentials;
-use AppBundle\Entity\ApiUpdate;
 use AppBundle\Entity\ConquerableStation;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 

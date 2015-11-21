@@ -1,13 +1,11 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
-use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
 use AppBundle\Entity\Corporation;
 use AppBundle\Service\AssetDetailUpdateManager;
-use AppBundle\Service\EBSDataMapper;
 use AppBundle\Service\PriceUpdateManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;

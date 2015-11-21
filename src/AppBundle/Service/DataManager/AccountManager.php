@@ -1,15 +1,13 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
 
 use AppBundle\Entity\Account;
 use AppBundle\Entity\AccountBalance;
-use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class AccountManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 

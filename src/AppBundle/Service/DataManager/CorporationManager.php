@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\Account;
 use AppBundle\Entity\ApiCredentials;
@@ -10,7 +10,6 @@ use AppBundle\Entity\CorporationMember;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use EveBundle\Repository\Registry as EveRegistry;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class CorporationManager extends AbstractManager implements DataManagerInterface {

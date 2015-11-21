@@ -70,68 +70,68 @@ services:
 
   app.corporation.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@app.apikey.manager", "@logger" ]
-      class: AppBundle\Service\Manager\CorporationManager
+      class: AppBundle\Service\DataManager\CorporationManager
       tags:
         - { name: eve.manager }
 
   app.markettransaction.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine","@evedata.registry",  "@logger" ]
-      class: AppBundle\Service\Manager\MarketTransactionManager
+      class: AppBundle\Service\DataManager\MarketTransactionManager
       tags:
         - { name: eve.manager }
 
   app.journaltransaction.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@logger" ]
-      class: AppBundle\Service\Manager\JournalTransactionManager
+      class: AppBundle\Service\DataManager\JournalTransactionManager
       tags:
         - { name: eve.manager }
 
   app.apikey.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
-      class: AppBundle\Service\Manager\ApiKeyManager
+      class: AppBundle\Service\DataManager\ApiKeyManager
       tags:
         - { name: eve.manager }
 
   app.account.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry" ]
-      class: AppBundle\Service\Manager\AccountManager
+      class: AppBundle\Service\DataManager\AccountManager
       tags:
         - { name: eve.manager }
 
   app.character.manager:
       arguments: [ "@logger", "@app.apikey.manager" ]
-      class: AppBundle\Service\Manager\CharacterManager
+      class: AppBundle\Service\DataManager\CharacterManager
       # @TODO Remove me when im implemented correctly
       #tags:
       #  - { name: eve.manager }
 
   app.starbase.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
-      class: AppBundle\Service\Manager\StarbaseManager
+      class: AppBundle\Service\DataManager\StarbaseManager
       tags:
         - { name: eve.manager }
 
   app.marketorder.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
-      class: AppBundle\Service\Manager\MarketOrderManager
+      class: AppBundle\Service\DataManager\MarketOrderManager
       tags:
         - { name: eve.manager }
 
   app.reftype.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
-      class: AppBundle\Service\Manager\RefTypeManager
+      class: AppBundle\Service\DataManager\RefTypeManager
       tags:
         - { name: eve.manager }
 
   app.conquerable_station.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
-      class: AppBundle\Service\Manager\ConquerableStationManager
+      class: AppBundle\Service\DataManager\ConquerableStationManager
       tags:
         - { name: eve.manager }
 
   app.asset.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@app.itemdetail.manager", "@app.price.manager" ]
-      class: AppBundle\Service\Manager\AssetManager
+      class: AppBundle\Service\DataManager\AssetManager
       tags:
         - { name: eve.manager }
 

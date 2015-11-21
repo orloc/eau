@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\Manager;
+namespace AppBundle\Service\DataManager;
 
 
 use AppBundle\Entity\ApiCredentials;
