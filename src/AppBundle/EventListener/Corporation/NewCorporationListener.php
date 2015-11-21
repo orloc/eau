@@ -3,13 +3,9 @@
 namespace AppBundle\EventListener\Corporation;
 
 
-use AppBundle\Entity\ApiUpdate;
 use AppBundle\Event\CorporationEvents;
 use AppBundle\Event\NewCorporationEvent;
 use AppBundle\Service\EveDataUpdateService;
-use AppBundle\Service\Manager\ApiKeyManager;
-use AppBundle\Service\Manager\CorporationManager;
-use AppBundle\Service\Manager\AssetManager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

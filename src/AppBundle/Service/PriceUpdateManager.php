@@ -3,19 +3,18 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Service\Manager\AbstractManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
 use EveBundle\Entity\AveragePrice;
-use EveBundle\Repository\Registry as EveRegistry;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-class PriceUpdateManager extends AbstractManager {
+class PriceUpdateManager  {
 
     private $cache;
 
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry){
-        parent::__construct($pheal, $doctrine, $registry);
+    private $doctrine;
+
+    public function __construct(Registry $doctrine){
+        $this->doctrine = $doctrine;
 
         $this->cache = new ArrayCollection();
     }

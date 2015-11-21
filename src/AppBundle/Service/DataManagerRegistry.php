@@ -3,7 +3,7 @@
 namespace AppBundle\Service;
 
 
-use AppBundle\Service\Manager\DataManagerInterface;
+use AppBundle\Service\DataManager\DataManagerInterface;
 
 class DataManagerRegistry {
 

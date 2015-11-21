@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Subscriber;
+namespace AppBundle\EventListener;
 
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\User;

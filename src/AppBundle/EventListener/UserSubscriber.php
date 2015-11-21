@@ -1,9 +1,9 @@
 <?php
 
-namespace AppBundle\Subscriber;
+namespace AppBundle\EventListener;
 
 use AppBundle\Entity\User;
-use AppBundle\Service\Manager\CharacterManager;
+use AppBundle\Service\DataManager\CharacterManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\HttpFoundation\Session\Session;

@@ -4,7 +4,6 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Controller\AbstractController;
 use JMS\SecurityExtraBundle\Annotation\Secure;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 

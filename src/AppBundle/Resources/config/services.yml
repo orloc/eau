@@ -18,28 +18,22 @@ services:
      tags:
          - { name: kernel.event_listener, event: kernel.request, method: onRequest }
 
-  # Validators
-  app.validator.duplicate_email:
-     class: AppBundle\Validator\DuplicateEmailConstraintValidator
-     arguments: [ "@doctrine.orm.entity_manager" ]
-     tags:
-          - { name: validator.constraint_validator, alias: duplicate_email_validator }
 
   # Doctrine Subscribers
   app.corporation.subscriber:
-      class: AppBundle\Subscriber\CorporationSubscriber
+      class: AppBundle\EventListener\CorporationSubscriber
       arguments: [ "@security.token_storage" ]
       tags:
           - { name: doctrine.event_subscriber, connection: default }
 
   app.api_credentials.subscriber:
-      class: AppBundle\Subscriber\ApiCredentialsSubscriber
+      class: AppBundle\EventListener\ApiCredentialsSubscriber
       arguments: [ "@security.token_storage" ]
       tags:
           - { name: doctrine.event_subscriber, connection: default }
 
   app.user.subscriber:
-      class: AppBundle\Subscriber\UserSubscriber
+      class: AppBundle\EventListener\UserSubscriber
       arguments: [ "@app.character.manager", "@session" ]
       tags:
           - { name: doctrine.event_subscriber, connection: default }
@@ -47,6 +41,7 @@ services:
   # Dispatchers
   app.task.dispatcher:
       class: AppBundle\EventListener\Dispatcher
+
 
   # Task Events
   app.task.coporation.new:
@@ -62,6 +57,12 @@ services:
       tags:
         - { name: kernel.event_subscriber }
 
+  # Validators
+  app.validator.duplicate_email:
+     class: AppBundle\Validator\DuplicateEmailConstraintValidator
+     arguments: [ "@doctrine.orm.entity_manager" ]
+     tags:
+          - { name: validator.constraint_validator, alias: duplicate_email_validator }
   #registries
   app.evedata.registry:
     class: AppBundle\Service\DataManagerRegistry
@@ -136,7 +137,7 @@ services:
         - { name: eve.manager }
 
   app.price.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      arguments: [ "@doctrine" ]
       class: AppBundle\Service\PriceUpdateManager
 
   app.itemdetail.manager:

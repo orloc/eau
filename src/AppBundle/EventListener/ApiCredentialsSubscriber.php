@@ -1,9 +1,8 @@
 <?php
 
-namespace AppBundle\Subscriber;
+namespace AppBundle\EventListener;
 
 use AppBundle\Entity\ApiCredentials;
-use AppBundle\Service\Manager\ApiKeyManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
