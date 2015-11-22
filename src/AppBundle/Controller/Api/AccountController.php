@@ -7,6 +7,7 @@ use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use Carbon\Carbon;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -30,7 +31,7 @@ class AccountController extends AbstractController implements ApiControllerInter
 
         $date = $request->query->get('date', false);
 
-        $this->denyAccessUnlessGranted('view', $corp, 'Unauthorized access!');
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
             ->findBy(['corporation' => $corp]);
@@ -54,6 +55,8 @@ class AccountController extends AbstractController implements ApiControllerInter
     public function dataAllAction(Request $request, Corporation $corp){
 
         $date = $request->get('date', null);
+
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
             ->findBy(['corporation' => $corp]);

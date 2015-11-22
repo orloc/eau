@@ -7,6 +7,7 @@ use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use Doctrine\DBAL\DBALException;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,6 +29,8 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     public function indexAction(Request $request, Corporation $corp)
     {
 
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+
         $credentials = $this->getDoctrine()->getManager()
             ->getRepository('AppBundle:ApiCredentials')
             ->findBy(['corporation' => $corp]);
@@ -41,10 +44,12 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     /**
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.post", options={"expose"=true})
      * @ParamConverter(name="corporation", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      * @Method("POST")
      */
     public function newAction(Request $request,  Corporation $corporation){
+
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corporation, 'Unauthorized access!');
 
         $content = $request->request;
 
@@ -92,6 +97,9 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      * @Secure(roles="ROLE_CORP_MEMBER")
      */
     public function getCharacterKeys(Request $request, Character $character){
+
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $character, 'Unauthorized access!');
+
         $user = $this->getUser();
 
         if (!$user->getCharacters()->contains($character) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
@@ -113,6 +121,9 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      * @Secure(roles="ROLE_CORP_MEMBER")
      */
     public function addCharacterKey(Request $request, Character $character){
+
+        $this->denyAccessUnlessGranted(AccessTypes::EDIT, $character, 'Unauthorized access!');
+
         $user = $this->getUser();
 
         if (!$user->getCharacters()->contains($character) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
@@ -166,6 +177,8 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      */
     public function updateAction(Request $request, ApiCredentials $credentials)
     {
+
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $credentials->getCorporation(), 'Unauthorized access!');
 
         //@TODO clean this up please
         $em = $this->getDoctrine()->getManager();

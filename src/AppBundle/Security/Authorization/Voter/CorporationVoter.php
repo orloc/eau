@@ -5,10 +5,13 @@ namespace AppBundle\Security\Authorization\Voter;
 
 use AppBundle\Entity\User;
 use AppBundle\Security\AccessTypes;
+use AppBundle\Security\Authorization\SecurityVoterTrait;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
 class CorporationVoter extends AbstractVoter {
+
+     use SecurityVoterTrait;
 
      private $doctrine;
 
@@ -42,16 +45,7 @@ class CorporationVoter extends AbstractVoter {
                         ->getMainCharacter($user);
 
                     if ($user->hasRole('ROLE_ALLIANCE_LEADER')) {
-                         $leaderCorp = $this->doctrine->getRepository('AppBundle:Corporation')
-                             ->findByCorpName($char->getCorporationName());
-
-                         if ($leaderCorp === null){
-                              // this is bad
-                              return false;
-                         }
-
-                         $registeredAllianceCorps = $this->doctrine->getRepository('AppBundle:Corporation')
-                             ->findCorporationsByAlliance($leaderCorp->getCorporationDetails()->getAllianceName());
+                         $registeredAllianceCorps = $this->getAllianceCorps($char, $this->doctrine);
 
                          // is this corp in this alliance?
                          foreach ($registeredAllianceCorps as $registeredAllianceCorp) {
@@ -89,6 +83,19 @@ class CorporationVoter extends AbstractVoter {
 
                   break;
                case AccessTypes::EDIT:
+
+                    if ($user->hasRole('ROLE_CEO')){
+                         $char = $this->doctrine->getRepository('AppBundle:Character')
+                             ->getMainCharacter($user);
+
+                         $corp = $this->doctrine->getRepository('AppBundle:Corporation')
+                             ->findByCorpName($char->getCorporationName());
+
+                         return $corp instanceof $corp && $corp->getId() === $object->getId();
+                    }
+
+                    return false;
+
                   break;
           }
 
