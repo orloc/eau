@@ -16,7 +16,7 @@ class RegionController extends AbstractController implements ApiControllerInterf
 
     /**
      * @Route("/regions", name="api.regions", options={"expose"=true})
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("GET")
      */
     public function indexAction(Request $request)

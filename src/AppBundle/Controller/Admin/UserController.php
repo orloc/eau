@@ -18,7 +18,7 @@ class UserController extends AbstractController
      * @Route("", name="user")
      * @Route("/")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      */
     public function indexAction()
     {

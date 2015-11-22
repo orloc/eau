@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CharacterRepository")
  * @ORM\Table(name="characters", uniqueConstraints={
     @ORM\UniqueConstraint(name="unique_name", columns={"eve_id"})
  * })
@@ -101,7 +101,7 @@ class Character
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -124,7 +124,7 @@ class Character
     /**
      * Get eve_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getEveId()
     {
@@ -147,7 +147,7 @@ class Character
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -170,7 +170,7 @@ class Character
     /**
      * Get created_at
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -193,7 +193,7 @@ class Character
     /**
      * Get user
      *
-     * @return \AppBundle\Entity\User 
+     * @return \AppBundle\Entity\User
      */
     public function getUser()
     {
@@ -229,7 +229,7 @@ class Character
     /**
      * Get api_credentials
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getApiCredentials()
     {
@@ -252,7 +252,7 @@ class Character
     /**
      * Get eve_corporation_id
      *
-     * @return integer 
+     * @return integer
      */
     public function getEveCorporationId()
     {
@@ -275,7 +275,7 @@ class Character
     /**
      * Get corporation_name
      *
-     * @return string 
+     * @return string
      */
     public function getCorporationName()
     {
@@ -298,7 +298,7 @@ class Character
     /**
      * Get is_main
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsMain()
     {

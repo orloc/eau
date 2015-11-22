@@ -22,7 +22,7 @@ class MarketOrderController extends AbstractController implements ApiControllerI
      * @Route("/corporation/{id}/marketorders", name="api.corporation.marketorders", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function indexAction(Corporation $corp)
     {

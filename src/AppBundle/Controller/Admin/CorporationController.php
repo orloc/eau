@@ -18,7 +18,7 @@ class CorporationController extends AbstractController
      * @Route("", name="corporation")
      * @Route("/")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function indexAction()
     {

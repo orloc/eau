@@ -23,7 +23,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * Lists all User entities.
      *
      * @Route("/", name="api.users")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      * @Method("GET")
      */
     public function indexAction()
@@ -40,7 +40,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * Creates a new User entity.
      *
      * @Route("/", name="api.user_create")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      * @Method("POST")
      */
     public function createAction(Request $request)
@@ -73,7 +73,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      *
      * @Route("/{id}", name="api.user_show")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @ParamConverter("user", class="AppBundle:User")
      */
     public function showAction($id, User $user)
@@ -87,7 +87,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * @Route("/{id}", name="api.user_update")
      * @ParamConverter("user", class="AppBundle:User")
      * @Method("PUT")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      */
     public function updateAction(Request $request, User $user)
     {
@@ -115,7 +115,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      *
      * @Route("/{id}", name="api.user_delete")
      * @Method("DELETE")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      * @ParamConverter("user", class="AppBundle:User")
      */
     public function deleteAction(Request $request, User $user)

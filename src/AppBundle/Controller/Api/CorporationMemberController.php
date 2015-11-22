@@ -22,7 +22,7 @@ class CorporationMemberController extends AbstractController implements ApiContr
      * @Route("/corporation/{id}/members", name="api.corporation.members", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function indexAction(Request $request, Corporation $corp)
     {

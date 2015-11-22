@@ -22,7 +22,7 @@ class AccountController extends AbstractController implements ApiControllerInter
     /**
      * @Route("/corporation/{id}/account", name="api.corporation.account", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp)
@@ -30,12 +30,12 @@ class AccountController extends AbstractController implements ApiControllerInter
 
         $date = $request->query->get('date', false);
 
+        $this->denyAccessUnlessGranted('view', $corp, 'Unauthorized access!');
+
         $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
             ->findBy(['corporation' => $corp]);
 
-        if ($date){
-            $date = new \DateTime($date);
-        }
+        $date = $date ? new \DateTime($date) : new \DateTime();
 
         $this->get('app.account.manager')->updateLatestBalances($accounts, $date);
 
@@ -48,7 +48,7 @@ class AccountController extends AbstractController implements ApiControllerInter
     /**
      * @Route("/corporation/{id}/account/data", name="api.corporation.account_data", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      * @Method("GET")
      */
     public function dataAllAction(Request $request, Corporation $corp){

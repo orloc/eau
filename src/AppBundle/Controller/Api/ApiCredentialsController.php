@@ -23,7 +23,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function indexAction(Request $request, Corporation $corp)
     {
@@ -41,7 +41,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     /**
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.post", options={"expose"=true})
      * @ParamConverter(name="corporation", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      * @Method("POST")
      */
     public function newAction(Request $request,  Corporation $corporation){
@@ -89,7 +89,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      * @Route("/character/{id}/api_credentials", name="api.character.apicredentials", options={"expose"=true})
      * @ParamConverter(name="character", class="AppBundle:Character")
      * @Method("GET")
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      */
     public function getCharacterKeys(Request $request, Character $character){
         $user = $this->getUser();
@@ -110,7 +110,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      * @Route("/character/{id}/api_credentials", name="api.character.apicredentials.update", options={"expose"=true})
      * @ParamConverter(name="character", class="AppBundle:Character")
      * @Method("POST")
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      */
     public function addCharacterKey(Request $request, Character $character){
         $user = $this->getUser();
@@ -161,7 +161,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     /**
      * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.update", options={"expose"=true})
      * @ParamConverter(name="credentials", class="AppBundle:ApiCredentials")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      * @Method("PATCH")
      */
     public function updateAction(Request $request, ApiCredentials $credentials)

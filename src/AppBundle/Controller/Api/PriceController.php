@@ -16,7 +16,7 @@ class PriceController extends AbstractController implements ApiControllerInterfa
 
     /**
      * @Route("/prices/{id}", name="api.price.average", options={"expose"=true})
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("GET")
      */
     public function indexAction(Request $request, $id)
@@ -34,7 +34,7 @@ class PriceController extends AbstractController implements ApiControllerInterfa
 
     /**
      * @Route("/prices", name="api.price.averagelist", options={"expose"=true})
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("GET")
      */
     public function getListAction(Request $request){

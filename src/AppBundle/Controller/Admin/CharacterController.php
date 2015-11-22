@@ -18,7 +18,7 @@ class CharacterController extends AbstractController
      * @Route("", name="characters")
      * @Route("/")
      * @Method("GET")
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      */
     public function indexAction()
     {

@@ -18,7 +18,7 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
     /**
      * @Route("/characters", name="api.characters", options={"expose"=true})
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("GET")
      */
     public function indexAction(Request $request)
@@ -39,7 +39,7 @@ class CharacterController extends AbstractController implements ApiControllerInt
      * Creates a new character entity.
      *
      * @Route("/characters", name="api.character_create.validate", options={"expose"=true})
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("POST")
      */
     public function createAction(Request $request)
@@ -86,10 +86,10 @@ class CharacterController extends AbstractController implements ApiControllerInt
     }
 
     /**
-     * Creates a new character entity.
+     * Creates a new character entity step 2.
      *
      * @Route("/characters/final", name="api.character_create.finalize", options={"expose"=true})
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("POST")
      */
     public function createFinalAction(Request $request){

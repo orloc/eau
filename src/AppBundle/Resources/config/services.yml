@@ -1,5 +1,12 @@
 
 services:
+  # Security  Voters
+  security.access.post_voter:
+      class:      AppBundle\Security\Authorization\Voter\CorporationVoter
+      arguments: [ '@doctrine' ]
+      public:     false
+      tags:
+          - { name: security.voter }
   # Api Listeners
   app.api.request_listener:
      class: AppBundle\EventListener\ApiRequestListener

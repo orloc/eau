@@ -17,7 +17,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
     /**
      * @Route("/buyback_configuration", name="api.buyback_configuration", options={"expose"=true})
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function getAllAction(Request $request)
     {
@@ -34,7 +34,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
     /**
      * @Route("/buyback_configuration", name="api.buyback_configuration.new", options={"expose"=true})
      * @Method("POST")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function postAction(Request $request)
     {
@@ -82,7 +82,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
      * @Route("/buyback_configuration/{id}", name="api.buyback_configuration.patch", options={"expose"=true})
      * @ParamConverter(name="config", class="AppBundle:BuybackConfiguration")
      * @Method("PATCH")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function patchAction(Request $request, BuybackConfiguration $config)
     {
@@ -111,7 +111,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
      * @Route("/buyback_configuration/{id}", name="api.buyback_configuration.delete", options={"expose"=true})
      * @ParamConverter(name="config", class="AppBundle:BuybackConfiguration")
      * @Method("DELETE")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function deleteAction(Request $request, BuybackConfiguration $config){
 

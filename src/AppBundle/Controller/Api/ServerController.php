@@ -17,7 +17,7 @@ class ServerController extends AbstractController implements ApiControllerInterf
 
     /**
      * @Route("/status", name="api.server.status")
-     * @Secure(roles="ROLE_USER")
+     * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("GET")
      */
     public function indexAction()

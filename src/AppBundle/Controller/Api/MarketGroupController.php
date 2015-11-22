@@ -19,7 +19,8 @@ class MarketGroupController extends AbstractController implements ApiControllerI
     /**
      * @Route("/market_groups", name="api.marketgroups", options={"expose"=true})
      * @Method("GET")
-     * @Secure(roles="ROLE_USER")
+     * @TODO NOT USED
+     * @Secure(roles="ROLE_ADMIN")
      */
     public function indexAction(Request $requst)
     {

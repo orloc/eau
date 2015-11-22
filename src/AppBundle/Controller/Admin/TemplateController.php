@@ -62,7 +62,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/corpoverview", name="template.corpoverview")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpOverViewAction(){
         return $this->render('AppBundle:Templates:corp/corpOverview.html.twig');
@@ -70,7 +70,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/corpinventory", name="template.corpinventory")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpInventoryAction(){
         return $this->render('AppBundle:Templates:corp/corpInventory.html.twig');
@@ -78,7 +78,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/corpdeliveries", name="template.corpdeliveries")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpDeliveryAction(){
         return $this->render('AppBundle:Templates:corp/corpDeliveries.html.twig');
@@ -86,7 +86,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/corp_market_orders", name="template.marketorders")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpMarketOrdersAction()
     {
@@ -95,7 +95,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/api_keys", name="template.apikeys")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpApiKeyAction()
     {
@@ -104,7 +104,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/corp_towers", name="template.corptowers")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpTowerAction()
     {
@@ -113,7 +113,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/corp_members", name="template.corpmembers")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpMemberAction()
     {

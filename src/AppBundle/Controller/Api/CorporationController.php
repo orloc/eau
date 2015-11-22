@@ -24,7 +24,7 @@ class CorporationController extends AbstractController implements ApiControllerI
     /**
      * @Route("/", name="api.corps")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      */
     public function indexAction()
     {
@@ -40,7 +40,8 @@ class CorporationController extends AbstractController implements ApiControllerI
     /**
      * @Route("/needsUpdate", name="api.corp.needs_update")
      * @Method("GET")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
+     * @TODO RETHINK THIS
      */
     public function needsUpdateAction()
     {
@@ -57,7 +58,7 @@ class CorporationController extends AbstractController implements ApiControllerI
      * Creates a new User entity.
      *
      * @Route("/", name="api.corp_create")
-     * @Secure(roles="ROLE_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      * @Method("POST")
      */
     public function createAction(Request $request)
@@ -65,7 +66,6 @@ class CorporationController extends AbstractController implements ApiControllerI
         $content = $request->request;
 
         $keyManager = $this->get('app.apikey.manager');
-
         $key = $keyManager->buildInstanceFromRequest($content);
 
         $validator = $this->get('validator');
