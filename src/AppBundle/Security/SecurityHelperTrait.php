@@ -1,11 +1,11 @@
 <?php
 
-namespace AppBundle\Security\Authorization;
+namespace AppBundle\Security;
 
 use AppBundle\Entity\Character;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 
-trait SecurityVoterTrait {
+trait SecurityHelperTrait {
 
     public function getAllianceCorps(Character $char, Registry $doctrine){
         $leaderCorp = $doctrine->getRepository('AppBundle:Corporation')

@@ -28,11 +28,9 @@ class AccountController extends AbstractController implements ApiControllerInter
      */
     public function indexAction(Request $request, Corporation $corp)
     {
-
-        $date = $request->query->get('date', false);
-
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
+        $date = $request->query->get('date', false);
         $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
             ->findBy(['corporation' => $corp]);
 
@@ -54,10 +52,9 @@ class AccountController extends AbstractController implements ApiControllerInter
      */
     public function dataAllAction(Request $request, Corporation $corp){
 
-        $date = $request->get('date', null);
-
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
+        $date = $request->get('date', null);
         $accounts = $this->getDoctrine()->getRepository('AppBundle:Account')
             ->findBy(['corporation' => $corp]);
 

@@ -8,6 +8,7 @@ parameters:
     app_data.database_user: root
     app_data.database_password: null
 
+	security.exception_listener.class : AppBundle\Security\Firewall\ExceptionListener
 
     eve_data.database_host: 127.0.0.1
     eve_data.database_port: null

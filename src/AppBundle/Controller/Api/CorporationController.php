@@ -28,10 +28,35 @@ class CorporationController extends AbstractController implements ApiControllerI
      */
     public function indexAction()
     {
-        $corp = $this->getDoctrine()->getRepository('AppBundle:Corporation')
-            ->findAllUpdatedCorporations();
 
-        $json = $this->get('jms_serializer')->serialize($corp, 'json');
+        $user = $this->getUser();
+        $corpRepo = $this->getDoctrine()->getRepository('AppBundle:Corporation');
+        $corps = [];
+
+        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN')){
+            $corps = $corpRepo->findAllUpdatedCorporations();
+        }
+
+        if ($user->hasRole('ROLE_ALLIANCE_LEADER')){
+            $main = $this->getDoctrine()->getRepository('AppBundle:Character')
+                ->getMainCharacter($user);
+
+            $corp = $corpRepo->findByCorpName($main->getCorporationName());
+            $corps = $corpRepo->findCorporationsByAlliance($corp->getCorporationDetails()->getAllianceName());
+        }
+
+        if ($user->hasRole('ROLE_CEO')) {
+            $characters = $this->getDoctrine()->getRepository('AppBundle:Character')->findBy(['user' => $user]);
+            // Todo check director roles
+
+            $names = array_map(function($c){
+                return $c->getName();
+            }, $characters);
+
+            $corps = $corpRepo->findCorpByCeoList($names);
+        }
+
+        $json = $this->get('jms_serializer')->serialize($corps, 'json');
 
         return $this->jsonResponse($json);
 

@@ -37,4 +37,5 @@ class ServerController extends AbstractController implements ApiControllerInterf
         return $this->jsonResponse($json);
 
     }
+
 }

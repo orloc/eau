@@ -5,13 +5,13 @@ namespace AppBundle\Security\Authorization\Voter;
 
 use AppBundle\Entity\User;
 use AppBundle\Security\AccessTypes;
-use AppBundle\Security\Authorization\SecurityVoterTrait;
+use AppBundle\Security\SecurityHelperTrait;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
 class CorporationVoter extends AbstractVoter {
 
-     use SecurityVoterTrait;
+     use SecurityHelperTrait;
 
      private $doctrine;
 
@@ -35,14 +35,15 @@ class CorporationVoter extends AbstractVoter {
                return false;
           }
 
+          $char = $this->doctrine->getRepository('AppBundle:Character')
+              ->getMainCharacter($user);
+
+
           switch ($attribute){
                case AccessTypes::VIEW:
                     if ($user->hasRole('ROLE_SUPER_ADMIN') || $user->hasRole('ROLE_ADMIN') ){
                          return  true;
                     }
-
-                    $char = $this->doctrine->getRepository('AppBundle:Character')
-                        ->getMainCharacter($user);
 
                     if ($user->hasRole('ROLE_ALLIANCE_LEADER')) {
                          $registeredAllianceCorps = $this->getAllianceCorps($char, $this->doctrine);
@@ -83,11 +84,7 @@ class CorporationVoter extends AbstractVoter {
 
                   break;
                case AccessTypes::EDIT:
-
                     if ($user->hasRole('ROLE_CEO')){
-                         $char = $this->doctrine->getRepository('AppBundle:Character')
-                             ->getMainCharacter($user);
-
                          $corp = $this->doctrine->getRepository('AppBundle:Corporation')
                              ->findByCorpName($char->getCorporationName());
 

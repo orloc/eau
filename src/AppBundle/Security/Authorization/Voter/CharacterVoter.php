@@ -7,13 +7,13 @@ use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\User;
 use AppBundle\Security\AccessTypes;
-use AppBundle\Security\Authorization\SecurityVoterTrait;
+use AppBundle\Security\SecurityHelperTrait;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\Security\Core\Authorization\Voter\AbstractVoter;
 
 class CharacterVoter extends AbstractVoter {
 
-     use SecurityVoterTrait;
+     use SecurityHelperTrait;
 
      private $doctrine;
 

@@ -49,7 +49,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      */
     public function newAction(Request $request,  Corporation $corporation){
 
-        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corporation, 'Unauthorized access!');
+        $this->denyAccessUnlessGranted(AccessTypes::EDIT, $corporation, 'Unauthorized access!');
 
         $content = $request->request;
 
@@ -178,7 +178,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     public function updateAction(Request $request, ApiCredentials $credentials)
     {
 
-        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $credentials->getCorporation(), 'Unauthorized access!');
+        $this->denyAccessUnlessGranted(AccessTypes::EDIT, $credentials->getCorporation(), 'Unauthorized access!');
 
         //@TODO clean this up please
         $em = $this->getDoctrine()->getManager();

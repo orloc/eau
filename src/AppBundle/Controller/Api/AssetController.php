@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\BuybackConfiguration;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -25,6 +26,8 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      */
     public function indexAction(Request $request, Corporation $corp)
     {
+
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $group = $this->getRepository('AppBundle:AssetGroup')
             ->getLatestAssetGroup($corp);
@@ -57,6 +60,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      */
     public function deliveriesAction(Request $request, Corporation $corp)
     {
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $group = $this->getRepository('AppBundle:AssetGroup')
             ->getLatestAssetGroup($corp);

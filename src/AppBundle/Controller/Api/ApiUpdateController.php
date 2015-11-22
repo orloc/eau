@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -25,6 +26,7 @@ class ApiUpdateController extends AbstractController implements ApiControllerInt
      */
     public function indexAction(Request $request, Corporation $corp)
     {
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $types = [
             ApiUpdate::CORP_ACC_BALANCES,

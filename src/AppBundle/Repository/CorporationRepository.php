@@ -28,7 +28,8 @@ class CorporationRepository extends EntityRepository {
         return $this->createQueryBuilder('c')
             ->select('c')
             ->leftJoin('c.corporation_details', 'cd')
-            ->where('cd.alliance_name = :allianceName')
+            ->where('cd IS NOT NULL')
+            ->andWhere('cd.alliance_name = :allianceName')
             ->setParameter('allianceName' , $allianceName)
             ->getQuery()->getResult();
     }
@@ -37,9 +38,19 @@ class CorporationRepository extends EntityRepository {
         return $this->createQueryBuilder('c')
             ->select('c')
             ->leftJoin('c.corporation_details', 'cd')
-            ->where('cd.name = :corpName')
+            ->where('cd IS NOT NULL')
+            ->andWhere('cd.name = :corpName')
             ->setParameter('corpName' , $corpName)
             ->getQuery()->getOneOrNullResult();
+    }
+
+    public function findCorpByCeoList(array $list){
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->leftJoin('c.corporation_details', 'cd')
+            ->where('cd.ceo_name IN (:names)')
+            ->setParameter('names', $list)
+            ->getQuery()->getResult();
     }
 
 
