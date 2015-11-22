@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('corpOverviewController', ['$scope', '$http', '$q', 'selectedCorpManager', function($scope, $http, $q, selectedCorpManager){
+    .controller('corpOverviewController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.selected_account = null;
         $scope.buy_orders = [];
         $scope.journal_transactions = [];
@@ -12,64 +12,33 @@ angular.module('eveTool')
         $scope.page = 'journal';
         $scope.current_date = moment().format('MM/DD/YY');
 
-        function resetParams (){
-            $scope.buy_orders = [];
-            $scope.journal_transactions = [];
-            $scope.sell_orders = [];
-        }
+        $scope.$watch('accounts', function(val){
+            if (typeof val !== 'undefined' && val.length > 0){
+                $scope.selectAccount($scope.accounts[0]);
+            }
+        });
 
-        function refreshView (val, refresh){
-            if (val === null || val === undefined){
+        $scope.$watch('selected_account', function(val){
+            if (typeof val !== null) {
+                $scope.switchPage($scope.page);
+            }
+        });
+
+        $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
+            if (typeof val.id === 'undefined'){
                 return;
             }
 
             $scope.loading = true;
-            $('svg').remove();
+            $scope.selected_corp = val;
 
-            return updateAccountBalances(val).then(function(){
-                $scope.selectAccount($scope.accounts[0]);
-            }).then(function(){
-                updateData(refresh);
-            }).then(function(){
-                $scope.loading = false;
-            });
+            $scope.totalBalance = 0;
+            $scope.grossProfit = 0;
 
+            resetParams();
 
-        }
-
-        /**
-         * @TODO split this into reactive calls based on user input
-         * @param draw
-         */
-        function updateData(draw){
-            var date = moment($scope.current_date).format('X');
-
-            $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'buy'})).then(function(data){
-                $scope.buy_orders = data.data;
-
-            }).then(function(){
-                $http.get(Routing.generate('api.corporation.account.markettransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date, type: 'sell'})).then(function(data){
-                    $scope.sell_orders = data.data;
-                });
-            }).then(function(){
-
-                $http.get(Routing.generate('api.corporation.account.journaltransactions', { id: $scope.selected_corp.id, acc_id: $scope.selected_account.id, date: date})).then(function(data){
-                    $scope.journal_transactions = data.data;
-                });
-
-            }).then(function(){
-                if (typeof draw !== 'undefined' && draw == true){
-                    updateSVG();
-                }
-                $scope.loading = false;
-            });
-
-        }
-
-        function updateAccountBalances(val){
-
-            return $http.get(Routing.generate('api.corporation.account', { id: val.id , date: $scope.current_date})).then(function(data){
-                $scope.accounts = data.data;
+            corporationDataManager.getAccounts(val, $scope.current_date).then(function(data){
+                $scope.accounts = data;
 
                 var total = 0;
                 var lastDay = 0;
@@ -80,7 +49,128 @@ angular.module('eveTool')
 
                 $scope.totalBalance = total;
                 $scope.percentChangeBalance = { percent: ((total - lastDay) / lastDay) * 100, diff: total - lastDay }
+            }).then(function(){
+                updateSVG();
             });
+
+            corporationDataManager.getLastUpdate(val, 1).then(function(data){
+                if (data !== null){
+                    $scope.updated_at = moment(data.created_at).format('x');
+                    $scope.update_succeeded = data.succeeded;
+                    $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
+                }
+            });
+
+        });
+
+        $scope.switchPage = function(page){
+            var date = moment($scope.current_date).format('X');
+            if ($scope.selected_account !== null ){
+                switch (page){
+                    case 'buy':
+                        corporationDataManager.getMarketTransactions($scope.selected_corp, $scope.selected_account, date, 'buy').then(function(data){
+                            $scope.buy_orders = data;
+                            $scope.loading = false;
+                        });
+                        break;
+                    case 'sell':
+                        corporationDataManager.getMarketTransactions($scope.selected_corp, $scope.selected_account, date, 'sell').then(function(data){
+                            $scope.sell_orders = data;
+                            $scope.loading = false;
+                        });
+                        break;
+                    case 'journal':
+                        corporationDataManager.getJournalTransactions($scope.selected_corp, $scope.selected_account, date).then(function(data){
+                            $scope.journal_transactions = data;
+                            $scope.loading = false;
+
+                        });
+                        break;
+                    case 'stats':
+                }
+                $scope.page = page;
+            }
+        };
+
+        $scope.back = function(){
+            $scope.loading = true;
+            $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
+            resetParams();
+
+            var start = moment($scope.svg_start_date);
+
+            if ($scope.page.length){
+                $scope.switchPage($scope.page);
+            }
+
+            if (start.diff($scope.current_date, 'days') == 5){
+                updateSVG();
+            }
+
+        };
+
+        $scope.forward = function(){
+            $scope.loading = true;
+            $scope.current_date = moment($scope.current_date).add(1,'day').format('MM/DD/YY');
+
+            if ($scope.page.length){
+                $scope.switchPage($scope.page);
+            }
+
+            updateSVG();
+
+        };
+
+        $scope.selectAccount = function(acc){
+
+            if ($scope.selected_account === null
+                || $scope.selected_account.id !== acc.id){
+                $scope.loading = true;
+                resetParams();
+                $scope.selected_account = acc;
+
+                $scope.switchPage($scope.page);
+
+            }
+        };
+
+        $scope.sumOrders = function(orders){
+            var sum = 0;
+
+            angular.forEach(orders, function(o){
+                sum+= o.price * o.quantity;
+            });
+
+            return sum;
+        };
+
+        $scope.getJournalDifference = function(){
+            if (typeof $scope.journal_transactions !== 'undefined' && $scope.journal_transactions.length){
+                var sorted = _.sortBy($scope.journal_transactions, 'date');
+
+                return parseFloat(sorted[sorted.length-1].balance) - parseFloat(sorted[0].balance);
+            }
+
+            return 0;
+        };
+
+        $scope.findGross = function(){
+            if (typeof $scope.buy_orders !== 'undefined' && $scope.buy_orders.length > 0
+                && typeof $scope.sell_orders !== 'undefined' && $scope.sell_orders.length > 0){
+
+                var buy = $scope.sumOrders($scope.buy_orders);
+                var sell = $scope.sumOrders($scope.sell_orders);
+
+                return sell - buy;
+            }
+
+            return 0;
+        };
+
+        function resetParams (){
+            $scope.buy_orders = [];
+            $scope.journal_transactions = [];
+            $scope.sell_orders = [];
         }
 
         /**
@@ -233,94 +323,5 @@ angular.module('eveTool')
         /**
          * End D3
          */
-
-        $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
-            if (typeof val.id === 'undefined'){
-                return;
-            }
-
-            $scope.loading = true;
-            $scope.selected_corp = val;
-
-            resetParams();
-            $scope.totalBalance = 0;
-            $scope.grossProfit = 0;
-            $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 1 })).then(function(data){
-                var data = data.data;
-                if (data !== null){
-                    $scope.updated_at = moment(data.created_at).format('x');
-                    $scope.update_succeeded = data.succeeded;
-                    $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
-                }
-            }).then(function(){
-                refreshView(val, true);
-            });
-        });
-
-        $scope.switchPage = function(page){
-            $scope.page = page;
-        };
-
-        $scope.back = function(){
-            $scope.loading = true;
-            $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
-            resetParams();
-
-            refreshView($scope.selected_corp, false).then(function(){
-                var start = moment($scope.svg_start_date);
-                if (start.diff($scope.current_date, 'days') == 5){
-                    updateSVG();
-                }
-            });
-
-        };
-
-        $scope.forward = function(){
-            $scope.loading = true;
-            $scope.current_date = moment($scope.current_date).add(1,'day').format('MM/DD/YY');
-            resetParams();
-
-            refreshView($scope.selected_corp, true);
-        };
-
-        $scope.selectAccount = function(acc){
-
-            if ($scope.selected_account === null
-                || $scope.selected_account.id !== acc.id){
-                $scope.loading = true;
-                resetParams();
-                $scope.selected_account = acc;
-
-                updateData();
-            }
-        };
-
-        $scope.sumOrders = function(orders){
-            var sum = 0;
-
-            angular.forEach(orders, function(o){
-                sum+= o.price * o.quantity;
-            });
-
-            return sum;
-        };
-
-        $scope.getJournalDifference = function(){
-
-            if ($scope.journal_transactions.length){
-                var sorted = _.sortBy($scope.journal_transactions, 'date');
-
-                return parseFloat(sorted[sorted.length-1].balance) - parseFloat(sorted[0].balance);
-            }
-
-            return 0;
-        };
-
-        $scope.findGross = function(){
-            var buy = $scope.sumOrders($scope.buy_orders);
-            var sell = $scope.sumOrders($scope.sell_orders);
-
-            return sell - buy;
-        };
 
     }]);

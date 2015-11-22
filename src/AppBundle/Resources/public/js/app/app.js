@@ -6,7 +6,11 @@ angular.module('eveTool', [
     'ngAnimate',
     'ui.bootstrap',
     'localytics.directives'
-]);
+]).run(['$http', '$rootScope', function($http, $rootScope){
+    $http.get(Routing.generate('api.auth')).then(function(data){
+        $rootScope.user_roles = data.data.roles;
+    });
+}]);
 
 
 Array.prototype.unique = function(){
