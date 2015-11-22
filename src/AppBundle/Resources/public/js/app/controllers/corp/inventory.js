@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('inventoryController', ['$scope', '$http', '$q', 'selectedCorpManager', function($scope, $http, $q, selectedCorpManager){
+    .controller('inventoryController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.loading = true;
         $scope.predicate = 'total_price';
         $scope.reverse = true;
@@ -15,17 +15,15 @@ angular.module('eveTool')
             $scope.assets = [];
             $scope.loading = true;
 
-            $http.get(Routing.generate('api.corporation.assets', { id: val.id})).then(function(data){
-                return data.data.items;
+            corporationDataManager.getCorpInventory(val).then(function(data){
+                return data.items;
             }).then(function(items){
                 $scope.assets = items.items;
                 $scope.total_price = items.total_price;
                 $scope.loading = false;
             });
 
-            $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 2 })).then(function(data){
-                var data = data.data;
-
+            corporationDataManager.getLastUpdate(val, 2).then(function(data){
                 $scope.updated_at = moment(data.created_at).format('x');
                 $scope.update_succeeded = data.succeeded;
                 $scope.next_update = moment(data.created_at).add(10, 'hours').format('x');

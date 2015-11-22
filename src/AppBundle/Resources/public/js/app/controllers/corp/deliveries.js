@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('deliveryController', ['$scope', '$http','$q','selectedCorpManager', function($scope, $http, $q, selectedCorpManager){
+    .controller('deliveryController', ['$scope', 'corporationDataManager','selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.loading = true;
         $scope.assets = [];
         $scope.filter = '*';
@@ -10,36 +10,6 @@ angular.module('eveTool')
 
         $scope.filtered_assets = [];
 
-        var refreshView = function(val){
-            if (val === null || typeof val === 'undefined'){
-                return;
-            }
-
-            $scope.price_reference = [];
-            $scope.loading = true;
-            $scope.assets = [];
-            $scope.filtered_assets = [];
-
-            $http.get(Routing.generate('api.corporation.deliveries', { id: val.id})).then(function(data){
-                return data.data;
-            }).then(function(items){
-                $scope.assets = items.items;
-                $scope.total_price = items.total_price;
-                $scope.filtered_assets = $scope.filterBy("*");
-                $scope.loading = false;
-            });
-
-            $http.get(Routing.generate('api.corporation.apiupdate', { id: val.id, type: 2 })).then(function(data){
-                var data = data.data;
-
-                $scope.updated_at = moment(data.created_at).format('x');
-                $scope.update_succeeded = data.succeeded;
-                $scope.next_update = moment(data.created_at).add(10, 'hours').format('x');
-            });
-
-        };
-
-
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
             if (typeof val.id === 'undefined') {
                 return;
@@ -47,7 +17,23 @@ angular.module('eveTool')
 
             $scope.selected_corp = val;
 
-            refreshView(val);
+            $scope.price_reference = [];
+            $scope.loading = true;
+            $scope.assets = [];
+            $scope.filtered_assets = [];
+
+            corporationDataManager.getCorpDeliveries(val).then(function(items){
+                $scope.assets = items.items;
+                $scope.total_price = items.total_price;
+                $scope.filtered_assets = $scope.filterBy("*");
+                $scope.loading = false;
+            });
+
+            corporationDataManager.getLastUpdate(val, 2).then(function(data){
+                $scope.updated_at = moment(data.created_at).format('x');
+                $scope.update_succeeded = data.succeeded;
+                $scope.next_update = moment(data.created_at).add(10, 'hours').format('x');
+            });
         });
 
         $scope.getRowClass = function(item){

@@ -14,9 +14,10 @@ angular.module('eveTool')
                     if (working) {
                         $http.get(Routing.generate('api.server.status')).then(function(data){
                             scope.server_status = data.data;
-                        },
-                        function(data){
-                            window.location = '/login';
+                        }, function(data){
+                            if (data.data.code === 403){
+                                window.location.replace(Routing.generate('eve.login.redirect',{}, true));
+                            }
                         });
                     }
                 }, 1000*60);

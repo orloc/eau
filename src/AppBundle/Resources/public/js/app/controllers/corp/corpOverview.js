@@ -4,6 +4,8 @@ angular.module('eveTool')
     .controller('corpOverviewController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.selected_account = null;
         $scope.buy_orders = [];
+        $scope.members = [];
+        $scope.ref_types = [];
         $scope.journal_transactions = [];
         $scope.totalBalance = 0;
         $scope.grossProfit = 0;
@@ -20,7 +22,9 @@ angular.module('eveTool')
 
         $scope.$watch('selected_account', function(val){
             if (typeof val !== null) {
-                $scope.switchPage($scope.page);
+                if ($scope.page !== 'stats'){
+                    $scope.switchPage($scope.page);
+                }
             }
         });
 
@@ -85,6 +89,18 @@ angular.module('eveTool')
                                 $scope.journal_transactions = data;
 
                             });
+                        case 'stats':
+                            return corporationDataManager.getJournalTypeAggregate($scope.selected_corp, date).then(function(data){
+                                $scope.ref_types = sumTotals(data);
+                                $scope.segments = $scope.getSegments($scope.ref_types, ($scope.ref_types.length / 2) + 1 );
+
+                            }).then(function(){
+                                corporationDataManager.getJournalUserAggregate($scope.selected_corp,date).then(function(data) {
+                                    $scope.members = sumTotals(data);
+                                    $scope.member_segments = $scope.getSegments($scope.members, ($scope.members.length / 2) + 1 );
+                                });
+                            });
+
                     }
 
                     return { then: function(func) { return func(); }};
@@ -171,10 +187,35 @@ angular.module('eveTool')
             return 0;
         };
 
+        $scope.sumTransactions = function(){
+            return _.reduce(_.pluck($scope.ref_types, 'total'), function(init, carry){
+                return init + carry;
+            });
+        };
+
+        $scope.getSegments = function(list, size){
+            return _.chunk(list, size);
+        };
+
+        var sumTotals = function (list){
+            angular.forEach(list, function(ref, i){
+                var sum = _.reduce(_.pluck(ref.trans, 'amount'), function(init, carry){
+                    return init + carry;
+                });
+
+                list[i]['total'] = sum;
+            });
+
+            return list;
+
+        };
+
         function resetParams (){
             $scope.buy_orders = [];
             $scope.journal_transactions = [];
             $scope.sell_orders = [];
+            $scope.members = [];
+            $scope.ref_types = [];
         }
 
         /**

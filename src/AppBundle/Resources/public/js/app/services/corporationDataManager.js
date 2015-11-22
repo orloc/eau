@@ -5,36 +5,31 @@ angular.module('eveTool')
 
         var deferredStack = {};
 
-        var loading = false;
-
         function getDeferred(route){
 
             var deferred = $q.defer();
-            if (typeof deferredStack[route] !== 'undefined'){
-                deferredStack[route].reject();
-            } else {
-                deferredStack[route] = deferred;
+            if (typeof deferredStack[route] !== 'undefined' && deferredStack[route] !== null){
+                deferredStack[route].resolve();
             }
 
-            loading = true;
+            deferredStack[route] = deferred;
 
-            $http.get(route)
+            $http.get(route, { timeout: deferredStack[route] })
                 .success(function(data){
-                    loading = false;
                     deferred.resolve(data);
+                    deferredStack[route] = null;
                 })
                 .error(function(err){
-                    loading = false;
-                    deferred.reject(err);
+                    deferred.reject(err.message);
+                    if (err.code === 403){
+                        window.location.replace(Routing.generate('eve.login.redirect',{}, true));
+                    }
                 });
 
             return deferred.promise;
         }
 
         return {
-            isLoading: function(){
-                return loading;
-            },
             getAll: function () {
                 return getDeferred(Routing.generate('api.corps'));
             },
@@ -79,7 +74,16 @@ angular.module('eveTool')
                     id: corp.id,
                     date: date
                 }));
-
+            },
+            getStructures: function(corp){
+                return getDeferred(Routing.generate('api.corporation.starbases', { id: corp.id}));
+            },
+            getCorpInventory: function(corp){
+                return getDeferred(Routing.generate('api.corporation.assets', { id: corp.id}));
+            },
+            getCorpDeliveries: function(corp){
+                return getDeferred(Routing.generate('api.corporation.deliveries', { id: corp.id}));
             }
+
         };
  }]);

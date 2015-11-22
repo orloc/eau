@@ -1,29 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('structureController', ['$scope', '$http', 'selectedCorpManager', function($scope, $http, selectedCorpManager){
-
-        function resolveTowerSize(tower, scale){
-            var size = _.find(tower.descriptors.attributes, function(d){
-                return d.attributeID === '1031';
-
-            }).valueInt;
-
-            if (typeof size !== 'undefined'){
-                switch(parseInt(size)){
-                    case 3:
-                        break;
-                    case 2:
-                        scale = scale  / 2;
-                        break;
-                    case 1:
-                        scale = scale / 4;
-                        break;
-                }
-            }
-
-            return scale;
-        }
+    .controller('structureController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
 
         $scope.getTowerFuelQuantities = function(fuel, tower){
             if (typeof fuel !== 'undefined' && typeof tower !== 'undefined'){
@@ -69,8 +47,8 @@ angular.module('eveTool')
             }
             $scope.selected_corp = val;
 
-            $http.get(Routing.generate('api.corporation.starbases', { id: val.id})).then(function(data){
-                $scope.bases = data.data;
+            corporationDataManager.getStructures(val).then(function(data){
+                $scope.bases = data;
             });
 
         });
@@ -100,4 +78,27 @@ angular.module('eveTool')
                     return 'Online';
             }
         }
+
+        function resolveTowerSize(tower, scale){
+            var size = _.find(tower.descriptors.attributes, function(d){
+                return d.attributeID === '1031';
+
+            }).valueInt;
+
+            if (typeof size !== 'undefined'){
+                switch(parseInt(size)){
+                    case 3:
+                        break;
+                    case 2:
+                        scale = scale  / 2;
+                        break;
+                    case 1:
+                        scale = scale / 4;
+                        break;
+                }
+            }
+
+            return scale;
+        }
+
     }]);

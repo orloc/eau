@@ -18,6 +18,13 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/login_redirect", name="eve.login.redirect", options={"expose": true })
+     */
+    public function loginRedirect(){
+        return $this->redirectToRoute('fos_user_security_login');
+    }
+
+    /**
      * @Route("/registration", name="eve.register")
      */
     public function eveRegistration(Request $request){

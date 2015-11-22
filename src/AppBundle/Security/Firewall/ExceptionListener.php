@@ -19,7 +19,7 @@ class ExceptionListener extends BaseListener {
             return $accepts ? $accepts : $contentType;
         };
 
-        if ($responseType() === 'application/json'){
+        if (strstr($responseType(), 'application/json') !== false){
             $exception = $event->getException();
             $response = new JsonResponse(['code' => 403, 'message' => $exception->getMessage()], 403);
 
