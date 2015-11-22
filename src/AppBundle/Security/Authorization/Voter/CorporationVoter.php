@@ -38,17 +38,53 @@ class CorporationVoter extends AbstractVoter {
                          return  true;
                     }
 
+                    $char = $this->doctrine->getRepository('AppBundle:Character')
+                        ->getMainCharacter($user);
 
                     if ($user->hasRole('ROLE_ALLIANCE_LEADER')) {
-                         $char = $this->doctrine->getRepository('AppBundle:Character')
-                             ->getMainCharacter($user);
+                         $leaderCorp = $this->doctrine->getRepository('AppBundle:Corporation')
+                             ->findByCorpName($char->getCorporationName());
 
-                         var_dump($char);die;
-                         // is this corp in the alliance?
+                         if ($leaderCorp === null){
+                              // this is bad
+                              return false;
+                         }
+
+                         $registeredAllianceCorps = $this->doctrine->getRepository('AppBundle:Corporation')
+                             ->findCorporationsByAlliance($leaderCorp->getCorporationDetails()->getAllianceName());
+
+                         // is this corp in this alliance?
+                         foreach ($registeredAllianceCorps as $registeredAllianceCorp) {
+                              if ($registeredAllianceCorp->getId() === $object->getId()){
+                                   return true;
+                              }
+                         }
                     }
 
                     if ($user->hasRole('ROLE_CEO')){
+                         // is the main character the CEO of this corp?
+                         $corpCeo = $object->getCorporationDetails()
+                             ->getCeoName();
 
+                         $charIsCeo = strcmp($corpCeo, $char->getName()) === 0;
+                         $accHasChar = false;
+
+                         // well they got the role somehow
+                         if (!$charIsCeo){
+                              // @TODO implement an additonal flag
+                              $charIsCeo = true;
+                         }
+
+                         // @TODO Test me when you implement that flag as this never gets run atm
+                         if (!$charIsCeo){
+                              // check if this account has a character this IS the CEO of this corp
+                              foreach ($user->getCharacters() as $c){
+                                   if ($accHasChar){ continue; }
+                                   $accHasChar = strcmp($corpCeo, $char->getName()) === 0;
+                              }
+                         }
+
+                         return $charIsCeo || $accHasChar;
                     }
 
                   break;

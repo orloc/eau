@@ -142,9 +142,9 @@ class UserController extends AbstractController implements ApiControllerInterfac
             $user->setPlainPassword($content->get('plainPassword'));
         }
 
-        if ($user->getId() === null){
-            $user->addRole($content->get('role'));
-        }
+        // @TODO we should only remove roles lower than the role assigned
+        $user->setRoles([]);
+        $user->addRole($content->get('role'));
 
         $validator = $this->get('validator');
 

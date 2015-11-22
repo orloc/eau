@@ -42,6 +42,8 @@
                 <li>
                     <a href="{{ path('user') }}"><i class="fa fa-user fa-fw"></i> Users</a>
                 </li>
+                {% endif %}
+                {%  if is_granted('ROLE_CEO') %}
                 <li>
                     <a href="{{ path('corporation') }}"><i class="fa fa-gavel fa-fw"></i> Corporations</a>
                 </li>

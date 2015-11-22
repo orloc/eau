@@ -24,5 +24,23 @@ class CorporationRepository extends EntityRepository {
 
     }
 
+    public function findCorporationsByAlliance($allianceName){
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->leftJoin('c.corporation_details', 'cd')
+            ->where('cd.alliance_name = :allianceName')
+            ->setParameter('allianceName' , $allianceName)
+            ->getQuery()->getResult();
+    }
+
+    public function findByCorpName($corpName){
+        return $this->createQueryBuilder('c')
+            ->select('c')
+            ->leftJoin('c.corporation_details', 'cd')
+            ->where('cd.name = :corpName')
+            ->setParameter('corpName' , $corpName)
+            ->getQuery()->getOneOrNullResult();
+    }
+
 
 }
