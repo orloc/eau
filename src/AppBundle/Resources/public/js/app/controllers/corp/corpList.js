@@ -12,6 +12,11 @@ angular.module('eveTool')
 
         corporationDataManager.getAll().then(function(d) {
             $scope.corps = d;
+
+            if($scope.corps.length === 1){
+                $scope.selected_corp = $scope.corps[0];
+            }
+
         }).then(function(){
             corporationDataManager.getNeedsUpdate().then(function(d){
                 $scope.needs_update = d;

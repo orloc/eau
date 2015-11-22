@@ -37,14 +37,6 @@ class TemplateController extends Controller
     }
 
     /**
-     * @Route("/loading_spinner", name="template.loading.spinner")
-     */
-    public function loadingSpinnerAction(Request $request)
-    {
-        return $this->render('AppBundle:Templates:loadingSpinner.html.twig');
-    }
-
-    /**
      * @Route("/evetabs", name="template.evetabs")
      */
     public function evetabAction(Request $request)

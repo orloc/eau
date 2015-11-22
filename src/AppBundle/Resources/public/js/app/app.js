@@ -4,6 +4,7 @@ angular.module('eveTool', [
     'ngMessages',
     'angular-ladda',
     'ngAnimate',
+    'angular-spinkit',
     'ui.bootstrap',
     'localytics.directives'
 ]).run(['$http', '$rootScope', function($http, $rootScope){

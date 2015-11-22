@@ -27,8 +27,8 @@
                         <span class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span>
                         <br>
                         <div class="btn-group-sm pull-right controls">
-                            <button  class="btn btn-sm" type="button" ng-click="back()" ng-disabled="!selected_account"><i class="fa fa-chevron-left"></i></button>
-                            <button class="btn btn-sm" type="button" ng-click="forward()" ng-disabled="!selected_account"><i class="fa fa-chevron-right"></i></button>
+                            <button  class="btn btn-sm" type="button" ng-click="back()" ng-hide="loading === true"><i class="fa fa-chevron-left"></i></button>
+                            <button class="btn btn-sm" type="button" ng-click="forward()" ng-hide="loading === true"><i class="fa fa-chevron-right"></i></button>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,6 @@
                     <li ng-repeat="acc in accounts" ng-class="{ 'list-group-item active': selected_account.id == acc.id, 'list-group-item': selected_account.id != acc.id}" ng-click="selectAccount(acc)">
                         <p>
                             <b>{{ '{{ acc.name }}' }}</b>: {{ '{{ acc.current_balance | currency:"ISK" }}' }}
-                            <loading-spinner class="spinner-inline" style="color: #c7ddef" ng-show="loading && selected_account.id == acc.id"></loading-spinner>
                         </p>
                         <p ng-show="selected_account.id == acc.id">
                             <b>Division Change:</b>&nbsp;&nbsp;&nbsp; <i ng-class="{ 'fa fa-chevron-up text-success': findGross() > 0, 'fa fa-chevron-down text-danger': findGross() < 0 }"></i>
@@ -51,203 +50,216 @@
                     </li>
                 </ul>
             </div>
-            <div ng-show="page == 'buy'">
-                <h5 class="text-danger">Buy Orders - <span class="small">Total: {{ '{{  sumOrders(buy_orders) | currency:"ISK" }}' }}</span>
-                    <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
-                </h5>
-            </div>
-
-            <div ng-show="page == 'sell'">
-                <h5 class="text-success">Sell Orders - <span class="small">Total: {{ '{{  sumOrders(sell_orders) | currency:"ISK" }}' }}</span>
-                    <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
-                </h5>
-            </div>
-
-            <div ng-show="page == 'stats'">
-                <h5 class="text-success">Aggregations </span>
-                    <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
-                </h5>
-            </div>
-
-            <div ng-show="page == 'journal'">
-                <h5>Journal Transactions <span class="small" ng-class="{ 'text-success': getJournalDifference() > 0.0, 'text-danger': getJournalDifference() < 0.0 }">Change: {{ '{{ getJournalDifference() | currency:"ISK" }}' }}</span>
-                    <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
-                    <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
-                </h5>
-            </div>
-
-            <div class="col-xs-9" ng-show="selected_account && page == 'buy'">
-                <div class="table-responsive">
-                    <table class="table table-striped data-table table-condensed table-hover">
-                        <thead>
-                        <th>Item</th>
-                        <th>Volume</th>
-                        <th>Price Per</th>
-                        <th>Gross</th>
-                        <th>Seller</th>
-                        <th>Client</th>
-                        </thead>
-                        <tbody>
-                        <tr ng-show="buy_orders.length > 0 " ng-repeat="b in buy_orders | filter:orderBy:'price * quantity'">
-                            <td>
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <eve-image image-type="'Type'" object-id="b.item_id" img-width="32"></eve-image>
-                                    </div>
-                                    <div class="col-xs-9">
-                                        {{ '{{ b.item_name }}' }}
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ '{{ b.quantity }}' }}</td>
-                            <td>{{ '{{ b.price | currency:"ISK" }}' }}</td>
-                            <td>{{ '{{ b.price * b.quantity | currency:"ISK"}}' }}</td>
-                            <td width="35">
-                                <eve-image image-type="'Character'" object-id="b.character_id" img-width="256"></eve-image> {{ '{{ b.character_name }}' }}
-                            </td>
-                            <td width="35">
-                                <eve-image image-type="'Character'" object-id="b.client_id" img-width="256"></eve-image> {{ '{{ b.client_name }}' }}
-                            </td>
-                        </tr>
-                        <tr ng-show="buy_orders.length == 0">
-                            <td colspan="6" class="text-center text-danger">
-                                No Buy Orders Found.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="col-xs-9">
+                <div ng-if="loading">
+                    <cube-grid-spinner></cube-grid-spinner>
                 </div>
-            </div>
 
-            <div class="col-xs-9" ng-show="selected_account && page == 'sell'">
-                <div class="table-responsive">
-                    <table class="table table-striped data-table table-condensed table-hover">
-                        <thead>
-                        <th>Item</th>
-                        <th>Volume</th>
-                        <th>Price Per</th>
-                        <th>Gross</th>
-                        <th>Seller</th>
-                        <th>Client</th>
-                        </thead>
-                        <tbody>
-
-                        <tr ng-show="sell_orders.length> 0 " ng-repeat="s in sell_orders">
-                            <td>
-                                <div class="row">
-                                    <div class="col-xs-5">
-                                        <eve-image image-type="'Type'" object-id="s.item_id" img-width="32"></eve-image>
-                                    </div>
-                                    <div class="col-xs-7">
-                                        {{ '{{ s.item_name }}' }}
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ '{{ s.quantity }}' }}</td>
-                            <td>{{ '{{ s.price | currency:"ISK" }}' }}</td>
-                            <td>{{ '{{ s.price * s.quantity | currency:"ISK"}}' }}</td>
-                            <td width="35">
-                                <eve-image image-type="'Character'" object-id="s.character_id" img-width="256"></eve-image> {{ '{{ s.character_name }}' }}
-                            </td>
-                            <td width="35">
-                                <eve-image image-type="'Character'" object-id="s.client_id" img-width="256"></eve-image> {{ '{{ s.client_name }}' }}
-                            </td>
-                        </tr>
-                        <tr ng-show="sell_orders.length == 0">
-                            <td colspan="6" class="text-center text-danger">
-                                No Sell Orders Found.
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-xs-9 aggregates" ng-show="selected_account && page == 'stats'" >
-                {# make me a directive #}
-                <div class="row" ng-controller="journalBreakdownController">
-
-                    <div class="col-xs-12">
-                        <h4>Transaction Breakdown - {{ '{{ sumTransactions() | currency:" ISK" }}' }}</h4>
-                        <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
-                        <div class="col-sm-6" ng-repeat="s in segments">
-                            <table class="table tabled-hover table-stripped data-table">
-                                <thead>
-                                <th>Type</th>
-                                <th>Amount</th>
-                                </thead>
-                                <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
-                                    <td>
-                                        {{ '{{ r.type.ref_type_name }}' }}
-                                    </td>
-                                    <td>
-                                        {{ '{{ r.total | currency:"ISK" }}' }}
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+                <div ng-if="!loading">
+                    <div ng-show="page == 'buy'">
+                        <h5 class="text-danger">Buy Orders - <span class="small">Total: {{ '{{  sumOrders(buy_orders) | currency:"ISK" }}' }}</span>
+                            <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
+                        </h5>
                     </div>
-                    <div class="col-xs-12">
-                        <h4>Member Contributions  </h4>
-                        <div class="col-sm-6" ng-repeat="s in member_segments">
-                            <table class="table tabled-hover table-stripped data-table">
-                                <thead>
-                                <th></th>
-                                <th>Name</th>
-                                <th>Amount</th>
-                                </thead>
-                                <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
-                                    <td>
-                                        <eve-image image-type="'Character'" object-id="r.user.character_id" img-width="256"></eve-image>
-                                    </td>
-                                    <td>
-                                        {{ '{{ r.user.character_name }}' }}
-                                    </td>
-                                    <td>
-                                        {{ '{{ r.total | currency:"ISK" }}' }}
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+
+                    <div ng-show="page == 'sell'">
+                        <h5 class="text-success">Sell Orders - <span class="small">Total: {{ '{{  sumOrders(sell_orders) | currency:"ISK" }}' }}</span>
+                            <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
+                        </h5>
+                    </div>
+
+                    <div ng-show="page == 'stats'">
+                        <h5 class="text-success">Aggregations
+                            <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('journal')">Journal</button>
+                        </h5>
+                    </div>
+
+                    <div ng-show="page == 'journal'">
+                        <h5>Journal Transactions <span class="small" ng-class="{ 'text-success': getJournalDifference() > 0.0, 'text-danger': getJournalDifference() < 0.0 }">Change: {{ '{{ getJournalDifference() | currency:"ISK" }}' }}</span>
+                            <button class="btn-link pull-right" ng-click="switchPage('buy')">Buy Orders</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('sell')">Sell Orders</button>
+                            <button class="btn-link pull-right" ng-click="switchPage('stats')">Aggregations</button>
+                        </h5>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-xs-9" ng-show="selected_account && page == 'journal'">
-                <div class="table-responsive">
-                    <table class="table table-striped data-table table-condensed table-hover">
-                        <thead>
-                        <th>Date</th>
-                        <th>Issuer</th>
-                        <th>Recipient</th>
-                        <th>Type</th>
-                        <th>Amount</th>
-                        <th>Balance</th>
-                        </thead>
-                        <tbody>
-                        <tr ng-class="{ 'danger': j.amount < 0,'success': j.amount > 0}" ng-show="journal_transactions.length > 0 " ng-repeat="j in journal_transactions | orderBy:'date':true">
-                            <td>{{ '{{ j.date | date:"yyyy.MM.dd H:mm:ss" }}' }}</td>
-                            <td>{{ '{{  j.owner_name1 }}' }}</td>
-                            <td>{{ '{{  j.owner_name2 }}' }}</td>
-                            <td> {{ '{{ j.ref_type.ref_type_name }}' }}</td>
-                            <td>{{ '{{  j.amount | currency:"ISK" }}' }}</td>
-                            <td>{{ '{{  j.balance | currency:"ISK"}}' }}</td>
-                        </tr>
-                        <tr ng-show="journal_transactions.length === 0">
-                            <td colspan="5" class="text-center text-danger">
-                                No Journal Transactions found
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            </div>
+            <div ng-if="!loading">
+                <div class="col-xs-9" ng-show="selected_account && page == 'buy'">
+                    <div class="table-responsive">
+                        <table class="table table-striped data-table table-condensed table-hover">
+                            <thead>
+                            <th>Item</th>
+                            <th>Volume</th>
+                            <th>Price Per</th>
+                            <th>Gross</th>
+                            <th>Seller</th>
+                            <th>Client</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-show="buy_orders.length > 0 " ng-repeat="b in buy_orders | filter:orderBy:'price * quantity'">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-xs-3">
+                                            <eve-image image-type="'Type'" object-id="b.item_id" img-width="32"></eve-image>
+                                        </div>
+                                        <div class="col-xs-9">
+                                            {{ '{{ b.item_name }}' }}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ '{{ b.quantity }}' }}</td>
+                                <td>{{ '{{ b.price | currency:"ISK" }}' }}</td>
+                                <td>{{ '{{ b.price * b.quantity | currency:"ISK"}}' }}</td>
+                                <td width="35">
+                                    <eve-image image-type="'Character'" object-id="b.character_id" img-width="256"></eve-image> {{ '{{ b.character_name }}' }}
+                                </td>
+                                <td width="35">
+                                    <eve-image image-type="'Character'" object-id="b.client_id" img-width="256"></eve-image> {{ '{{ b.client_name }}' }}
+                                </td>
+                            </tr>
+                            <tr ng-show="buy_orders.length == 0">
+                                <td colspan="6" class="text-center text-danger">
+                                    No Buy Orders Found.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-xs-9" ng-show="selected_account && page == 'sell'">
+                    <div class="table-responsive">
+                        <table class="table table-striped data-table table-condensed table-hover">
+                            <thead>
+                            <th>Item</th>
+                            <th>Volume</th>
+                            <th>Price Per</th>
+                            <th>Gross</th>
+                            <th>Seller</th>
+                            <th>Client</th>
+                            </thead>
+                            <tbody>
+
+                            <tr ng-show="sell_orders.length> 0 " ng-repeat="s in sell_orders">
+                                <td>
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <eve-image image-type="'Type'" object-id="s.item_id" img-width="32"></eve-image>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            {{ '{{ s.item_name }}' }}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ '{{ s.quantity }}' }}</td>
+                                <td>{{ '{{ s.price | currency:"ISK" }}' }}</td>
+                                <td>{{ '{{ s.price * s.quantity | currency:"ISK"}}' }}</td>
+                                <td width="35">
+                                    <eve-image image-type="'Character'" object-id="s.character_id" img-width="256"></eve-image> {{ '{{ s.character_name }}' }}
+                                </td>
+                                <td width="35">
+                                    <eve-image image-type="'Character'" object-id="s.client_id" img-width="256"></eve-image> {{ '{{ s.client_name }}' }}
+                                </td>
+                            </tr>
+                            <tr ng-show="sell_orders.length == 0">
+                                <td colspan="6" class="text-center text-danger">
+                                    No Sell Orders Found.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xs-9 aggregates" ng-show="selected_account && page == 'stats'" >
+                    {# make me a directive #}
+                    <div class="row" ng-controller="journalBreakdownController">
+                        <div ng-if="loading">
+                            <cube-grid-spinner></cube-grid-spinner>
+                        </div>
+                        <div class="col-xs-12" ng-if="!loading">
+                            <h4>Transaction Breakdown - {{ '{{ sumTransactions() | currency:" ISK" }}' }}</h4>
+                            <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
+                            <div class="col-sm-6" ng-repeat="s in segments">
+                                <table class="table tabled-hover table-stripped data-table">
+                                    <thead>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    </thead>
+                                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
+                                        <td>
+                                            {{ '{{ r.type.ref_type_name }}' }}
+                                        </td>
+                                        <td>
+                                            {{ '{{ r.total | currency:"ISK" }}' }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" ng-if="!loading">
+                            <h4>Member Contributions  </h4>
+                            <div class="col-sm-6" ng-repeat="s in member_segments">
+                                <table class="table tabled-hover table-stripped data-table">
+                                    <thead>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Amount</th>
+                                    </thead>
+                                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
+                                        <td>
+                                            <eve-image image-type="'Character'" object-id="r.user.character_id" img-width="256"></eve-image>
+                                        </td>
+                                        <td>
+                                            {{ '{{ r.user.character_name }}' }}
+                                        </td>
+                                        <td>
+                                            {{ '{{ r.total | currency:"ISK" }}' }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-9" ng-show="selected_account && page == 'journal'">
+                    <div class="table-responsive">
+                        <table class="table table-striped data-table table-condensed table-hover">
+                            <thead>
+                            <th>Date</th>
+                            <th>Issuer</th>
+                            <th>Recipient</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Balance</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-class="{ 'danger': j.amount < 0,'success': j.amount > 0}" ng-show="journal_transactions.length > 0 " ng-repeat="j in journal_transactions | orderBy:'date':true">
+                                <td>{{ '{{ j.date | date:"yyyy.MM.dd H:mm:ss" }}' }}</td>
+                                <td>{{ '{{  j.owner_name1 }}' }}</td>
+                                <td>{{ '{{  j.owner_name2 }}' }}</td>
+                                <td> {{ '{{ j.ref_type.ref_type_name }}' }}</td>
+                                <td>{{ '{{  j.amount | currency:"ISK" }}' }}</td>
+                                <td>{{ '{{  j.balance | currency:"ISK"}}' }}</td>
+                            </tr>
+                            <tr ng-show="journal_transactions.length === 0">
+                                <td colspan="5" class="text-center text-danger">
+                                    No Journal Transactions found
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

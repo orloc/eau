@@ -8,7 +8,6 @@
 @import '_partials/_tables.scss';
 @import '_partials/_sidemenu.scss';
 @import '_partials/_onlineWidget.scss';
-@import '_partials/_spinner.scss';
 @import '_partials/_walletoverview.scss';
 @import '_partials/_orebuyback.scss';
 @import '_partials/_aggregates.scss';
@@ -24,7 +23,7 @@ body {
   font-family: $roboto;
 }
 
-h1, h2, h3, {
+h1, h2, h3 {
   font-family: 'eve_alphabold', sans-serif;
   color: white;
 }

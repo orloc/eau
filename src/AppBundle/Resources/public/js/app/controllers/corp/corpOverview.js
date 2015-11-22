@@ -9,7 +9,7 @@ angular.module('eveTool')
         $scope.grossProfit = 0;
         $scope.sell_orders = [];
         $scope.loading = false;
-        $scope.page = 'journal';
+        $scope.page = 'stats';
         $scope.current_date = moment().format('MM/DD/YY');
 
         $scope.$watch('accounts', function(val){
@@ -37,6 +37,15 @@ angular.module('eveTool')
 
             resetParams();
 
+            corporationDataManager.getLastUpdate(val, 1).then(function(data){
+                if (data !== null){
+                    $scope.updated_at = moment(data.created_at).format('x');
+                    $scope.update_succeeded = data.succeeded;
+                    $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
+                }
+
+            });
+
             corporationDataManager.getAccounts(val, $scope.current_date).then(function(data){
                 $scope.accounts = data;
 
@@ -51,49 +60,45 @@ angular.module('eveTool')
                 $scope.percentChangeBalance = { percent: ((total - lastDay) / lastDay) * 100, diff: total - lastDay }
             }).then(function(){
                 updateSVG();
+                $scope.loading = false;
             });
 
-            corporationDataManager.getLastUpdate(val, 1).then(function(data){
-                if (data !== null){
-                    $scope.updated_at = moment(data.created_at).format('x');
-                    $scope.update_succeeded = data.succeeded;
-                    $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
-                }
-            });
 
         });
 
         $scope.switchPage = function(page){
             var date = moment($scope.current_date).format('X');
+            $scope.loading = true;
             if ($scope.selected_account !== null ){
-                switch (page){
-                    case 'buy':
-                        corporationDataManager.getMarketTransactions($scope.selected_corp, $scope.selected_account, date, 'buy').then(function(data){
-                            $scope.buy_orders = data;
-                            $scope.loading = false;
-                        });
-                        break;
-                    case 'sell':
-                        corporationDataManager.getMarketTransactions($scope.selected_corp, $scope.selected_account, date, 'sell').then(function(data){
-                            $scope.sell_orders = data;
-                            $scope.loading = false;
-                        });
-                        break;
-                    case 'journal':
-                        corporationDataManager.getJournalTransactions($scope.selected_corp, $scope.selected_account, date).then(function(data){
-                            $scope.journal_transactions = data;
-                            $scope.loading = false;
+                var ret = (function(date){
+                    switch (page) {
+                        case 'buy':
+                            return corporationDataManager.getMarketTransactions($scope.selected_corp, $scope.selected_account, date, 'buy').then(function (data) {
+                                $scope.buy_orders = data;
+                            });
+                        case 'sell':
+                            return corporationDataManager.getMarketTransactions($scope.selected_corp, $scope.selected_account, date, 'sell').then(function (data) {
+                                $scope.sell_orders = data;
+                            });
+                        case 'journal':
+                            return corporationDataManager.getJournalTransactions($scope.selected_corp, $scope.selected_account, date).then(function (data) {
+                                $scope.journal_transactions = data;
 
-                        });
-                        break;
-                    case 'stats':
-                }
-                $scope.page = page;
+                            });
+                    }
+
+                    return { then: function(func) { return func(); }};
+                })(date);
+
+                ret.then(function(){
+                    $scope.loading = false;
+                    $scope.page = page;
+                });
+
             }
         };
 
         $scope.back = function(){
-            $scope.loading = true;
             $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
             resetParams();
 
@@ -110,7 +115,6 @@ angular.module('eveTool')
         };
 
         $scope.forward = function(){
-            $scope.loading = true;
             $scope.current_date = moment($scope.current_date).add(1,'day').format('MM/DD/YY');
 
             if ($scope.page.length){
