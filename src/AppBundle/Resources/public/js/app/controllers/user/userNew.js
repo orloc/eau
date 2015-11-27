@@ -1,28 +1,12 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('userNewController', ['$scope', '$http','dataDispatcher', function($scope, $http, dataDispatcher){
+    .controller('userNewController', ['$scope', '$http','dataDispatcher', 'userRoleManager', function($scope, $http, dataDispatcher, userRoleManager){
         $scope.submitLoading = false;
         $scope.newUser = {};
 
-        $scope.roles = [
-            {
-                role: 'ROLE_CEO',
-                name:'CEO'
-            },
-            {
-                role: 'ROLE_ADMIN',
-                name:'Admin'
-            },
-            {
-                role: 'ROLE_CORP_MEMBER',
-                name:'Corp Member'
-            },
-            {
-                role: 'ROLE_ALLIANCE_LEADER',
-                name:'Alliance Leader'
-            }
-        ];
+        // if user auth has the right roles get all of them
+        $scope.roles = userRoleManager.getRoles();
 
         $scope.submit = function(){
             $scope.submitLoading = true;
