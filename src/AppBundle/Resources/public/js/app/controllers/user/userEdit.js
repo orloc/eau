@@ -9,7 +9,8 @@ angular.module('eveTool')
         $scope.roles = userRoleManager.getRoles();
 
         $scope.$on('update_user', function(event, item){
-            $scope.editUser = item;
+            $scope.editUser = item.user;
+            $scope.current_index = item.index;
         });
 
         $scope.update = function(){

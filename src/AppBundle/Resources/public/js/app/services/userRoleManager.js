@@ -57,7 +57,7 @@ angular.module('eveTool')
         }
 
         function getRoles(asHash, allRoles){
-            var newRoles = roles;
+            var newRoles = _.clone(roles);
 
             if(typeof allRoles !== 'undefined' && allRoles === true){
                 for(var n = 0; n <= privateRoles.length - 1; n++){
@@ -80,7 +80,7 @@ angular.module('eveTool')
 
         return {
             getRoles: function(asHash, allRoles){
-                return getRoles(asHash, getRoles);
+                return getRoles(asHash, allRoles);
             },
             getTopRole: function(roles){
                 return getTopRole(roles);

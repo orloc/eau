@@ -12,22 +12,19 @@ angular.module('eveTool')
                     id = c.eve_id;
                 }
             });
-
             return id;
         };
 
         angular.forEach(data.data, function(u){
-            var main = getMain(u.characters);
-
-            u.main_id = main;
+            u.main_id = getMain(u.characters);
+            u.named_role = userRoleManager.getTopRole(u.roles);
         });
-
 
         $scope.users = data.data;
     });
 
    $scope.getRole = function(u){
-       return userRoleManager.getTopRole(u.roles);
+       return u.named_role;
    };
 
     $scope.hasApiKey = function(u){
@@ -36,7 +33,6 @@ angular.module('eveTool')
         }
 
         var hasKey = false;
-
         angular.forEach(u.characters, function(c){
             if (c.has_key){ hasKey = true; }
         });
@@ -44,9 +40,8 @@ angular.module('eveTool')
         return hasKey;
     };
 
-    $scope.populateEdit = function(user){
-
-        dataDispatcher.addEvent('update_user', user);
+    $scope.populateEdit = function(user, index){
+        dataDispatcher.addEvent('update_user', { user:user, index:index});
     };
 
     $scope.$on('update_list', function(event, item){

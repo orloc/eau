@@ -47,7 +47,7 @@
                         <td><i ng-class="{'fa fa-check text-success': u.locked, 'fa fa-times text-danger': !u.locked}"></i> </td>
                         <td><i ng-class="{'fa fa-check text-success': hasApiKey(u), 'fa fa-times text-danger': !hasApiKey(u)}"></i> </td>
                         <td class="text-center">
-                            <slide-button open-type="edit" ng-click="populateEdit(u)"></slide-button>
+                            <slide-button open-type="edit" ng-click="populateEdit(u, $index)"></slide-button>
                         </td>
                     </tr>
                 </tbody>
