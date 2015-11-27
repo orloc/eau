@@ -23,4 +23,12 @@ class CharacterRepository extends EntityRepository
             ->setMaxResults(1)
             ->getQuery()->getOneOrNullResult();
     }
+
+    public function getCharNamesByCorpName($name){
+        return $this->createQueryBuilder('c')
+            ->select('c.name')
+            ->where('c.corporation_name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()->getResult();
+    }
 }

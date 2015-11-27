@@ -23,13 +23,34 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * Lists all User entities.
      *
      * @Route("/", name="api.users")
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_CEO")
      * @Method("GET")
      */
     public function indexAction()
     {
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')
-            ->getUsers();
+        $currentUser = $this->getUser();
+        $doctrine = $this->getDoctrine();
+
+        $userRepo = $doctrine->getRepository('AppBundle:User');
+        $charRepo = $doctrine->getRepository('AppBundle:Character');
+
+        $userRepo = $doctrine->getRepository('AppBundle:User');
+
+        if ($this->isGranted('ROLE_SUPER_ADMIN') || $this->isGranted('ROLE_ADMIN')){
+            return $userRepo->getUsers();
+        }
+
+        if ($this->isGranted('ROLE_ALLIANCE_LEADER')){
+            //@TODO implement me
+            return [];
+        }
+
+        if ($this->isGranted('ROLE_CEO')){
+            $main = $charRepo->getMainCharacter($currentUser);
+            $names = $charRepo->getCharNamesByCorpName($main->getCorporationName());
+
+            $users = $userRepo->findAllByCharacterNames($names);
+        }
 
         $json = $this->get('jms_serializer')->serialize($users, 'json');
 
@@ -40,7 +61,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * Creates a new User entity.
      *
      * @Route("/", name="api.user_create")
-     * @Secure(roles="ROLE_SUPER_ADMIN")
+     * @Secure(roles="ROLE_ADMIN")
      * @Method("POST")
      */
     public function createAction(Request $request)
@@ -78,6 +99,8 @@ class UserController extends AbstractController implements ApiControllerInterfac
      */
     public function showAction($id, User $user)
     {
+
+        // TODO implement user checks
         return $this->jsonResponse($this->get('serializer')->serialize($user, 'json'), 200);
     }
 
@@ -91,6 +114,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      */
     public function updateAction(Request $request, User $user)
     {
+        // TODO implement user checks
         $errors = $this->processRequest($user, $request->request, false);
 
         if (count($errors) > 0 ){
@@ -120,6 +144,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
      */
     public function deleteAction(Request $request, User $user)
     {
+        // imeplemnt user checks
         $user->setDeletedAt(new \DateTime());
         $em = $this->getDoctrine()->getManager();
 

@@ -2,8 +2,8 @@
 
 namespace AppBundle\Repository;
 
-
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 class UserRepository extends EntityRepository {
 
@@ -15,7 +15,14 @@ class UserRepository extends EntityRepository {
 
     }
 
-    public function findUserBy(array $criteria){
+    public function findAllByCharacterNames(array $list){
+
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->leftJoin('u.characters', 'c')
+            ->where('c.name IN ( :name_list )')
+            ->setParameter('name_list', $list)
+            ->getQuery()->getResult();
 
     }
 

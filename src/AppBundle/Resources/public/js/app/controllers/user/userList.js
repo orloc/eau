@@ -4,6 +4,25 @@ angular.module('eveTool')
 .controller('userListController', ['$scope', '$http','dataDispatcher', 'userRoleManager',  function($scope, $http, dataDispatcher, userRoleManager){
     $scope.users = [];
 
+    $scope.currentRoles = userRoleManager.getCurrentRoles();
+
+    $scope.hasRole = function(role){
+        return userRoleManager.hasRole(role, $scope.currentRoles) === true;
+    };
+
+    if (userRoleManager.hasRole('ROLE_ADMIN', $scope.currentRoles) === true){
+        $scope.populateEdit = function(user, index){
+            dataDispatcher.addEvent('update_user', { user:user, index:index});
+        };
+
+        $scope.$on('update_list', function(event, item){
+            $http.get(Routing.generate('api.users')).then(function(data){
+                $scope.users = data.data;
+            });
+
+        });
+    }
+
     $http.get(Routing.generate('api.users')).then(function(data){
         var getMain = function(chars){
             var id = false;
@@ -40,15 +59,5 @@ angular.module('eveTool')
         return hasKey;
     };
 
-    $scope.populateEdit = function(user, index){
-        dataDispatcher.addEvent('update_user', { user:user, index:index});
-    };
-
-    $scope.$on('update_list', function(event, item){
-        $http.get(Routing.generate('api.users')).then(function(data){
-            $scope.users = data.data;
-        });
-
-    });
 
 }]);
