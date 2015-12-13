@@ -13,14 +13,6 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class MarketTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    protected $pheal;
-
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, Logger $log)
-    {
-        parent::__construct($pheal, $doctrine, $registry);
-        $this->log = $log;
-    }
-
     public function updateMarketTransactions(Corporation $corporation, $fromID = null) {
         $apiKey = $this->getApiKey($corporation);
 

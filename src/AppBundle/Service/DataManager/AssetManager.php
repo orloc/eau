@@ -9,6 +9,7 @@ use AppBundle\Service\AssetDetailUpdateManager;
 use AppBundle\Service\PriceUpdateManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use \EveBundle\Repository\Registry as EveRegistry;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
@@ -18,9 +19,9 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
     protected $price_manager;
 
 
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, AssetDetailUpdateManager $itemManager, PriceUpdateManager $priceManager)
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, LoggerInterface $logger, AssetDetailUpdateManager $itemManager, PriceUpdateManager $priceManager)
     {
-        parent::__construct($pheal, $doctrine, $registry);
+        parent::__construct($pheal, $doctrine, $registry, $logger);
         $this->item_manager = $itemManager;
         $this->price_manager = $priceManager;
     }

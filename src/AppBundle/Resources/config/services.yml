@@ -103,13 +103,13 @@ services:
         - { name: eve.manager }
 
   app.apikey.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\ApiKeyManager
       tags:
         - { name: eve.manager }
 
   app.account.manager:
-      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\AccountManager
       tags:
         - { name: eve.manager }
@@ -122,31 +122,31 @@ services:
       #  - { name: eve.manager }
 
   app.starbase.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\StarbaseManager
       tags:
         - { name: eve.manager }
 
   app.marketorder.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\MarketOrderManager
       tags:
         - { name: eve.manager }
 
   app.reftype.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\RefTypeManager
       tags:
         - { name: eve.manager }
 
   app.conquerable_station.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\ConquerableStationManager
       tags:
         - { name: eve.manager }
 
   app.asset.manager:
-      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@app.itemdetail.manager", "@app.price.manager" ]
+      arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@logger","@app.itemdetail.manager", "@app.price.manager" ]
       class: AppBundle\Service\DataManager\AssetManager
       tags:
         - { name: eve.manager }

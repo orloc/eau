@@ -97,16 +97,16 @@ class JournalTransactionController extends AbstractController implements ApiCont
     public function getByUserAction(Request $request, Corporation $corp){
 
         $date = $request->get('date', null);
-
-        if ($date === null){
-            $dt = Carbon::now();
-        } else {
-            $dt = Carbon::createFromTimestamp($date);
-        }
+        $dt = $date === null
+            ? Carbon::now()
+            : Carbon::createFromTimestamp($date);
 
         $members = $this->getRepository('AppBundle:CorporationMember')
             ->findBy(['corporation' => $corp, 'disbanded_at' => null]);
 
+        /**
+         * @TODO Refactor this so we dont have N queries happening
+         */
         $populatedTrans = [];
         foreach ($members as $m){
             $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
@@ -123,5 +123,4 @@ class JournalTransactionController extends AbstractController implements ApiCont
 
         return $this->jsonResponse($json);
     }
-
 }

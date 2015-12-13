@@ -7,6 +7,7 @@ use AppBundle\Entity\Corporation;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use AppBundle\Entity\ApiCredentials;
 use EveBundle\Repository\Registry as EveRegistry;
+use Psr\Log\LoggerInterface;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 abstract class AbstractManager {
@@ -17,10 +18,13 @@ abstract class AbstractManager {
 
     protected $pheal;
 
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry){
+    protected $log;
+
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, LoggerInterface $logger){
         $this->pheal = $pheal;
         $this->doctrine = $doctrine;
         $this->registry = $registry;
+        $this->log = $logger;
     }
 
     public function buildTransactionParams(Account $acc, $fromID = null){

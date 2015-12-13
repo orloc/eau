@@ -22,15 +22,20 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
         $starbases = $c->getStarbases();
 
         foreach ($starbases as $b){
-            $this->updateStarbaseDetail($b, $client);
+            try {
+                $this->updateStarbaseDetail($b, $client);
+            } catch (\Exception $e){
+                $this->log->error(sprintf("Error: %s on object %s",$e->getMessage(), $b->getItemId()));
+            }
         }
     }
 
     public function updateStarbaseDetail(Starbase $base, $client){
 
-        $detail = $client->StarbaseDetail(['itemID' => (int)$base->getItemId()])
+        $detail = $client->StarbaseDetail(['itemID' => intval($base->getItemId())])
             ->toArray()['result'];
 
+        var_dump($detail);
         $base->setGeneralSettings($detail['generalSettings'])
             ->setCombatSettings($detail['combatSettings'])
             ->setFuel($detail['fuel']);
@@ -45,26 +50,21 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
         $repo = $em->getRepository('AppBundle:Starbase');
 
         foreach ($items as $i){
-            if (!($exists = $repo->hasPOS($corp, $i['moonID'])) instanceof Starbase){
-                $obj = $this->mapItem($i);
-            }
+            $exists = $repo->hasPOS($corp, $i['moonID']);
+            $obj = $this->mapItem($i, $exists instanceof Starbase ? $exists : false);
 
-            if (isset($obj)){
+            if (!$exists instanceof Starbase){
                 $corp->addStarbase($obj);
-                $exists = $obj;
             }
 
-            if ($exists->getState() !== (int)$i['state']){
-                $exists->setState((int)$i['state']);
-                $em->persist($exists);
-            }
+            $em->persist($obj);
         }
 
     }
 
-    public function mapItem($item){
+    public function mapItem($item, Starbase $existing = null){
 
-        $obj = new Starbase();
+        $obj = !$existing ? new Starbase() : $existing;
         $obj->setItemId((int)$item['itemID'])
             ->setTypeId((int)$item['typeID'])
             ->setLocationId((int)$item['locationID'])

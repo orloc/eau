@@ -34,7 +34,6 @@ class StarbaseController extends AbstractController implements ApiControllerInte
         $attributeRepo = $this->get('evedata.registry')->get('EveBundle:ItemAttribute');
 
         foreach ($stations as $s){
-
             $attributeData = $attributeRepo->getItemAttributes($s->getTypeId());
 
             $ids = array_map(function($i){
@@ -57,17 +56,21 @@ class StarbaseController extends AbstractController implements ApiControllerInte
                 $loctionRepo->determineLocationDetails($s->getLocationId()),
                 $typeRepo->getItemTypeData($s->getTypeId()),
                 [
-                    'fuel' => array_map(function($d) use ($typeRepo, $attributeRepo){
-                        $data = $typeRepo->getItemTypeData($d['typeID']);
+                    'fuel' => is_array($s->getFuel())
+                        ? array_map(function($d) use ($typeRepo, $attributeRepo){
+                            $data = $typeRepo->getItemTypeData($d['typeID']);
 
-                        return [
-                            'type' => $data,
-                            'typeID' => $d['typeID'],
-                            'quantity' => $d['quantity']
-                        ];
-                    }, $s->getFuel())
+                            return [
+                                'type' => $data,
+                                'typeID' => $d['typeID'],
+                                'quantity' => $d['quantity']
+                            ];
+                        }, $s->getFuel())
+                        : []
                 ]
             );
+
+            var_dump($s->getFuel());
 
             $fuels = $this->get('app.price.manager')->updatePrices($descriptors['fuel']);
 

@@ -15,22 +15,17 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 class CorporationManager extends AbstractManager implements DataManagerInterface {
 
     private $api_manager;
-    private $log;
 
-    public function __construct(PhealFactory $pheal, Registry $registry, EveRegistry $eveRegistry, ApiKeyManager $apiManager, Logger $logger){
-        parent::__construct($pheal, $registry, $eveRegistry);
+    public function __construct(PhealFactory $pheal, Registry $registry, EveRegistry $eveRegistry, Logger $logger, ApiKeyManager $apiManager ){
+        parent::__construct($pheal, $registry, $eveRegistry, $logger);
         $this->api_manager = $apiManager;
-        $this->log = $logger;
-
     }
 
     public function createNewCorporation(ApiCredentials $key){
         $corp  = new Corporation();
-
         $corp->addApiCredential($key);
 
         return $corp;
-
     }
 
     public function getCorporationDetails(Corporation $corporation){

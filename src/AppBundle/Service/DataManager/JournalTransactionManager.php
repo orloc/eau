@@ -14,14 +14,6 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class JournalTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
-    protected $log;
-
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, Logger $log)
-    {
-        parent::__construct($pheal, $doctrine, $registry);
-        $this->log = $log;
-    }
-
     public function updateJournalTransactions(Corporation $corporation, $fromID = null){
         $apiKey = $this->getApiKey($corporation);
 
