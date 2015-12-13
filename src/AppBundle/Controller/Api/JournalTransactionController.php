@@ -48,30 +48,42 @@ class JournalTransactionController extends AbstractController implements ApiCont
      * @Method("GET")
      */
     public function getByTypeAction(Request $request, Corporation $corp){
-
         $date = $request->get('date', null);
 
-        if ($date === null){
-            $dt = Carbon::now();
-        } else {
-            $dt = Carbon::createFromTimestamp($date);
-        }
+        $dt = $date === null
+            ? Carbon::now()
+            : Carbon::createFromTimestamp($date);
 
         $typeList = $this->getDoctrine()->getRepository('AppBundle:RefType')->getRefTypeIds();
 
-        var_dump($typeList);die;
+        $typeIds =  array_map(function($d){
+            return intval($d->getRefTypeId());
+        }, $typeList);
 
         $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
-            ->getTransactionsByType($corp, $typeList, $dt);
+            ->getTransactionsByTypes($corp, $typeIds, $dt);
 
-        $populatedTrans = [];
-        if (count($transactions)){
-            $populatedTrans[] = [
-                'type' => $t, 'trans' => $transactions
+        $mapped = [];
+        foreach ($typeList as $t){
+            $mapped[$t->getRefTypeId()] = [
+                'type' => $t,
+                'trans' => []
             ];
         }
 
-        $json = $this->get('jms_serializer')->serialize($populatedTrans, 'json');
+        foreach ($transactions as $trans) {
+            $id = $trans->getRefTypeId();
+            if (isset($mapped[$id])){
+                array_push($mapped[$id]['trans'], $trans);
+            }
+        }
+        foreach ($mapped as $i => $m){
+            if (count($m['trans']) == 0){
+                unset($mapped[$i]);
+            }
+        }
+
+        $json = $this->get('jms_serializer')->serialize(array_values($mapped), 'json');
 
         return $this->jsonResponse($json);
     }

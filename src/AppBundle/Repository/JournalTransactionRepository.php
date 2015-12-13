@@ -31,14 +31,15 @@ class JournalTransactionRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
-    public function getTransactionsByTypes(Corporation $corp, array $type, Carbon $date){
+    public function getTransactionsByTypes(Corporation $corp, array $types, Carbon $date){
         $start = $date->copy();
         $start->subWeek()->setTime(0,0,0);
 
         $end = $date->copy();
         $end->setTime(23,59,59);
 
-        return $this->createQueryBuilder('jt')
+
+        $results = $this->createQueryBuilder('jt')
             ->select('jt')
             ->leftJoin('jt.account', 'acc')
             ->where('acc.corporation = :corp')
@@ -47,12 +48,12 @@ class JournalTransactionRepository extends EntityRepository {
             ->andWhere('jt.date <= :end')
             ->setParameters([
                 'corp' => $corp,
-                'ref_type' => $type,
+                'ref_type' => $types,
                 'start' => $start,
                 'end' => $end
-            ])
-            ->getQuery()->getResult();
+            ])->getQuery()->getResult();
 
+        return $results;
     }
 
     public function getTransactionsByMember(Corporation $corp, CorporationMember $member, Carbon $date){

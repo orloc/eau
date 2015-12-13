@@ -6,13 +6,13 @@
     command: compass compile --force chdir={{symfony2_project_root}}/releases/{{symfony2_project_release}}
 
   - name: Fixing Permissions
-    file: dest={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/cache mode=0777 recurse=true owner=ubuntu
+    file: dest={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/cache mode=0777 recurse=true owner={{ server_user }}
     sudo: yes
 
   - name: Restarting php-fpm
     sudo: yes
     service: name=php5-fpm state=restarted
 
-  - name: Restarting apache
+  - name: Restarting nginx
     sudo: yes
-    service: name=apache2 state=restarted
+    service: name=nginx state=restarted

@@ -14,8 +14,11 @@ class RefTypeRepository extends EntityRepository
 {
 
     public function getRefTypeIds(){
-        return $this->createQueryBuilder('rt')
-            ->select('rt.ref_type_id')
+        $data = $this->createQueryBuilder('rt')
+            ->select('rt')
+            ->groupBy('rt.ref_type_id')
             ->getQuery()->getResult();
+
+        return $data;
     }
 }
