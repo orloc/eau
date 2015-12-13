@@ -85,7 +85,7 @@ services:
   # Manager
 
   app.corporation.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@app.apikey.manager", "@logger" ]
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger", "@app.apikey.manager" ]
       class: AppBundle\Service\DataManager\CorporationManager
       tags:
         - { name: eve.manager }

@@ -25,17 +25,16 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
             try {
                 $this->updateStarbaseDetail($b, $client);
             } catch (\Exception $e){
-                $this->log->error(sprintf("Error: %s on object %s",$e->getMessage(), $b->getItemId()));
+                $this->log->error(sprintf("Error: %s on object %s of type %s",$e->getMessage(), $b->getItemId(), $b->getTypeId()));
             }
         }
     }
 
     public function updateStarbaseDetail(Starbase $base, $client){
 
-        $detail = $client->StarbaseDetail(['itemID' => intval($base->getItemId())])
+        $detail = $client->StarbaseDetail(['itemID' => floatval($base->getItemId())])
             ->toArray()['result'];
 
-        var_dump($detail);
         $base->setGeneralSettings($detail['generalSettings'])
             ->setCombatSettings($detail['combatSettings'])
             ->setFuel($detail['fuel']);
