@@ -45,13 +45,16 @@ class CorporationController extends AbstractController implements ApiControllerI
             $corps = $corpRepo->findCorporationsByAlliance($corp->getCorporationDetails()->getAllianceName());
         }
 
-        if ($user->hasRole('ROLE_CEO')) {
+        if ($user->hasRole('ROLE_CEO') || $user->hasRole('ROLE_DIRECTOR')) {
             $characters = $this->getDoctrine()->getRepository('AppBundle:Character')->findBy(['user' => $user]);
-            // Todo check director roles
-
             $names = array_map(function($c){
                 return $c->getName();
             }, $characters);
+            if ($user->hasRole('ROLE_DIRECTOR')){
+                $main = $this->getDoctrine()->getRepository('AppBundle:Character')
+                    ->getMainCharacter($user);
+                $names[] = $main->getName();
+            }
 
             $corps = $corpRepo->findCorpByCeoList($names);
         }
