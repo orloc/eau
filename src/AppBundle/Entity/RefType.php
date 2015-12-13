@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RefTypeRepository")
  * @ORM\Table(name="ref_types", uniqueConstraints={
     @ORM\UniqueConstraint(name="refIDidx", columns={"ref_type_id"}),
  * })

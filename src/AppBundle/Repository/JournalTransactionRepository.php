@@ -31,7 +31,7 @@ class JournalTransactionRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
-    public function getTransactionsByType(Corporation $corp, $type, Carbon $date){
+    public function getTransactionsByTypes(Corporation $corp, array $type, Carbon $date){
         $start = $date->copy();
         $start->subWeek()->setTime(0,0,0);
 
@@ -42,7 +42,7 @@ class JournalTransactionRepository extends EntityRepository {
             ->select('jt')
             ->leftJoin('jt.account', 'acc')
             ->where('acc.corporation = :corp')
-            ->andWhere('jt.ref_type_id = :ref_type')
+            ->andWhere('jt.ref_type_id IN (:ref_type)')
             ->andWhere('jt.date >= :start')
             ->andWhere('jt.date <= :end')
             ->setParameters([

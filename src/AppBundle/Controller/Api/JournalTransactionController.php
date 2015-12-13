@@ -57,19 +57,18 @@ class JournalTransactionController extends AbstractController implements ApiCont
             $dt = Carbon::createFromTimestamp($date);
         }
 
-        $types = $this->getRepository('AppBundle:RefType')
-            ->findAll();
+        $typeList = $this->getDoctrine()->getRepository('AppBundle:RefType')->getRefTypeIds();
+
+        var_dump($typeList);die;
+
+        $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
+            ->getTransactionsByType($corp, $typeList, $dt);
 
         $populatedTrans = [];
-        foreach ($types as $t){
-            $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
-                ->getTransactionsByType($corp, $t->getRefTypeId(), $dt);
-
-            if (count($transactions)){
-                $populatedTrans[] = [
-                    'type' => $t, 'trans' => $transactions
-                ];
-            }
+        if (count($transactions)){
+            $populatedTrans[] = [
+                'type' => $t, 'trans' => $transactions
+            ];
         }
 
         $json = $this->get('jms_serializer')->serialize($populatedTrans, 'json');

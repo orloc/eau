@@ -2,9 +2,10 @@
 
 namespace AppBundle\EventListener;
 
-use JMS\Serializer\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ExceptionListener {
 
@@ -15,9 +16,21 @@ class ExceptionListener {
 
         $response = new Response();
 
-        if ($e instanceof RuntimeException && in_array($request->getMethod(), ['POST', 'PUT', 'PATCH']) && strtolower($request->getContentType()) == 'json'){
-            $response->setStatusCode(400)
-                ->setContent(json_encode(['error' => $e->getMessage(), 'code' => 400], true));
+        if (strtolower($request->getContentType()) === 'json'){
+            $code = 500;
+            if ($e instanceof NotFoundHttpException){
+                $code = 404;
+            }
+
+            if ($e instanceof AccessDeniedException){
+                $code = 403;
+            }
+            $response->setContent(json_encode([
+                'error' => $e->getMessage(),
+                'code' => $code
+            ], true))
+            ->setStatusCode($code);
+
 
             $event->setResponse($response);
         }
