@@ -22,7 +22,7 @@ angular.module('eveTool')
                 .error(function(err){
                     deferred.reject(err.message);
                     if (err.code === 403){
-                        window.location.replace(Routing.generate('eve.login.redirect',{}, true));
+                      //  window.location.replace(Routing.generate('eve.login.redirect',{}, true));
                     }
                 });
 
@@ -78,8 +78,8 @@ angular.module('eveTool')
             getStructures: function(corp){
                 return getDeferred(Routing.generate('api.corporation.starbases', { id: corp.id}));
             },
-            getCorpInventory: function(corp){
-                return getDeferred(Routing.generate('api.corporation.assets', { id: corp.id}));
+            getCorpInventory: function(corp, page, per_page){
+                return getDeferred(Routing.generate('api.corporation.assets', { id: corp.id, page: page, per_page: per_page }));
             },
             getCorpDeliveries: function(corp){
                 return getDeferred(Routing.generate('api.corporation.deliveries', { id: corp.id}));

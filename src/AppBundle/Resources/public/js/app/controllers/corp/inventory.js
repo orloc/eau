@@ -6,6 +6,18 @@ angular.module('eveTool')
         $scope.predicate = 'total_price';
         $scope.reverse = true;
         $scope.image_width = 32;
+        $scope.max_size = 15;
+        $scope.per_page = 5;
+        $scope.page = 1;
+
+        $scope.per_page_selection = [
+            { label: '5', value: 5},
+            { label: '10', value: 10},
+            { label: '15', value: 15},
+            { label: '25', value: 25},
+            { label: '50', value: 50},
+            { label: '100', value: 100}
+        ];
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
             if (typeof val.id === 'undefined'){
@@ -16,12 +28,34 @@ angular.module('eveTool')
             $scope.assets = [];
             $scope.loading = true;
 
-            corporationDataManager.getCorpInventory(val).then(function(data){
-                return data.items;
-            }).then(function(items){
+            corporationDataManager.getCorpInventory(val, $scope.page, $scope.per_page).then(function(data){
+                var items = data.items;
                 $scope.assets = items.items;
                 $scope.total_price = items.total_price;
+                $scope.total_items = data.total_count;
+                $scope.per_page = data.num_items_per_page;
+                $scope.page = data.current_page_number;
                 $scope.loading = false;
+            }).then(function(){
+                function updateInventory(){
+                    $scope.assets = [];
+                    $scope.loading = true;
+                    corporationDataManager.getCorpInventory($scope.selected_corp, $scope.page, $scope.per_page).then(function(data){
+                        var items = data.items;
+                        $scope.assets = items.items;
+                        $scope.per_page = data.num_items_per_page;
+                        $scope.page = data.current_page_number;
+                        $scope.loading = false;
+                    });
+                }
+
+                $scope.pageChanged = function(){
+                    updateInventory();
+                };
+
+                $scope.$watch('per_page', function(){
+                    updateInventory();
+                });
             });
 
             corporationDataManager.getLastUpdate(val, 2).then(function(data){
@@ -30,6 +64,7 @@ angular.module('eveTool')
                 $scope.next_update = moment(data.created_at).add(10, 'hours').format('x');
             });
         });
+
 
         $scope.totalM3 = function(){
             var total = 0;
@@ -50,7 +85,6 @@ angular.module('eveTool')
             if (!$scope.price_reference.length){
                 return 0;
             }
-
             var total = 0;
             angular.forEach($scope.assets, function(item){
                 var price = $scope.getPrice(item);
@@ -59,9 +93,7 @@ angular.module('eveTool')
                     total += price.average_price * item.quantity;
                 }
             });
-
             return total;
-
         };
 
 
@@ -69,14 +101,11 @@ angular.module('eveTool')
             if (typeof type === 'undefined'){
                 return;
             }
-
             return type.descriptors.total_price;
-
         };
 
         $scope.order = function(predicate){
             $scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
             $scope.predicate = predicate;
         };
-
     }]);
