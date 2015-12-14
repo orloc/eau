@@ -1,13 +1,16 @@
 {% extends '::base.html.twig' %}
 
 {% block stylesheets %}
-    <link href="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css') }}" rel="stylesheet">
-    <link href="{{ asset('/bower_components/angular-chosen-localytics/chosen-spinner.css') }}" rel="stylesheet">
-    <link href="{{ asset('/bower_components/angular-bootstrap/ui-bootstrap-csp.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('/bower_components/angular-spinkit/build/angular-spinkit.min.css') }}">
-
-    <link href="{{ asset('/bundles/app/css/admin.css')}}" rel="stylesheet" type="text/css">
+    {% stylesheets
+        'bower_components/metisMenu/dist/metisMenu.min.css'
+        'bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css'
+        'bower_components/angular-chosen-localytics/chosen-spinner.css'
+        'bower_components/angular-bootstrap/ui-bootstrap-csp.css'
+        'bower_components/angular-spinkit/build/angular-spinkit.min.css'
+        'bundles/app/css/admin.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylsheets %}
 {% endblock %}
 {% block body %}
 <div id="wrapper" ng-app="eveTool">
@@ -41,22 +44,19 @@
         var logged_in_user_roles = {{ app.getUser().getRoles() | json_encode | raw }};
     </script>
 
-    <script src="{{ asset('/bower_components/angularjs/angular.js') }}"></script>
-    <script src="{{ asset('/bower_components/AngularSlideables/angularSlideables.js') }}"></script>
-    <script src="{{ asset('/bower_components/angular-bootstrap/ui-bootstrap.js') }}"></script>
-    <script src="{{ asset('/bower_components/angular-bootstrap/ui-bootstrap-tpls.js') }}"></script>
-    <script src="{{ asset('/bower_components/angular-ladda/dist/angular-ladda.js') }}"></script>
-    <script src="{{ asset('/bower_components/angular-messages/angular-messages.js') }}"></script>
-    <script src="{{ asset('/bower_components/angular-animate/angular-animate.js') }}"></script>
-    <script src="{{ asset('/bower_components/angular-spinkit/build/angular-spinkit.min.js') }}"></script>
-
-    <script src="{{ asset('/bower_components/angular-chosen-localytics/chosen.js') }}"></script>
-    <script src="{{ asset('/bower_components/metisMenu/dist/metisMenu.min.js') }}"></script>
-    <script src="{{ asset('/bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js') }}"></script>
-    <script src="{{ asset('/bower_components/d3/d3.js') }}"></script>
-    <!-- -->
-
     {% javascripts
+        'bower_components/angularjs/angular.js'
+        'bower_components/AngularSlideables/angularSlideables.js'
+        'bower_components/angular-bootstrap/ui-bootstrap.js'
+        'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'
+        'bower_components/angular-ladda/dist/angular-ladda.js'
+        'bower_components/angular-messages/angular-messages.js'
+        'bower_components/angular-animate/angular-animate.js'
+        'bower_components/angular-spinkit/build/angular-spinkit.min.js'
+        'bower_components/angular-chosen-localytics/chosen.js'
+        'bower_components/metisMenu/dist/metisMenu.min.js'
+        'bower_components/startbootstrap-sb-admin-2/dist/js/sb-admin-2.js'
+        'bower_components/d3/d3.js'
         '@AppBundle/Resources/public/js/app/app.js'
         '@AppBundle/Resources/public/js/app/directives/compareTo.js'
         '@AppBundle/Resources/public/js/app/directives/serverStatus.js'
