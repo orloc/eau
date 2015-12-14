@@ -27,7 +27,8 @@
     "angular-chosen-localytics": "~1.0.7",
     "chosen": "~1.4.2",
     "angular-bootstrap": "~0.14.1",
-    "angular-spinkit": "~0.3.3"
+    "angular-spinkit": "~0.3.3",
+    "AngularSlideables": "*"
   },
   "resolutions": {
     "font-awesome": "~4.4.0",

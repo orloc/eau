@@ -11,14 +11,52 @@
             &nbsp;
             <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
         </span>
-        <div class="row">
+        <div class="row" ng-show="!loading">
             <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
+            <button slide-toggle="#advanced_options" style="margin-top: 20px;" class="btn btn-sm">Advanced Filters</button>
             <div class="pull-right">
                 <span class="small muted">Per Page</span>
                 <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
                     <option val="">{{ '{{ per_page }}' }}</option>
                 </select>
             </div>
+        </div>
+        <div id="advanced_options" class="slideable">
+            <div class="row">
+                <div class="col-sm-3">
+                    <label class="small label">Market Group</label>
+                    <select ng-model="filters.market_group" style="width: 170px;" class="form-control" ng-options="group.marketGroupID as group.marketGroupName for group in market_groups">
+                        <option val="">Filter by Market Group</option>
+                    </select>
+                </div>
+                <div class="col-sm-2">
+                    <div class="btn-group-vertical">
+                        <button ng-click="addFilter({name: 'ore', value: [0]})" class="btn btn-sm">Only Ore</button>
+                        <button ng-click="addFilter({name: 'minerals', value: [1]})" class="btn btn-sm">Only Minerals</button>
+                        <button ng-click="addFilter({name: 'ammunition', value: [2]})" class="btn btn-sm">Ammunition</button>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="btn-group-vertical">
+                        <button ng-click="addFilter({name: 'fuel', value: [3]})" class="btn btn-sm">POS Fuel</button>
+                        <button ng-click="addFilter({name: 'ships', value: [4]})" class="btn btn-sm">Ships</button>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <form name="search-form">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                            <input name="search" placeholder="Search..." type="text" class="form-control"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Search</button>
+                    </form>
+
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="row active-filters">
+            <label class="label label-info"  ng-repeat="f in getActiveFilters()">{{ '{{ f.name }}' }}</label>
         </div>
         <div class="row">
             <div class="table-responsive">
@@ -50,7 +88,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in assets | orderBy:'descriptors.total_price':true" ng-show="!loading">
-                        <td width="50px">
+                        <td width="75px">
                             <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
                             {{ '{{ item.descriptors.name }}' }}
                         </td>
@@ -87,7 +125,7 @@
 
             </div>
         </div>
-        <div class="row">
+        <div class="row" ng-show="!loading">
             <uib-pagination  ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
             <div class="pull-right">
                 <span class="small muted">Per Page</span>

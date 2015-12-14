@@ -203,5 +203,20 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
     }
 
+    /**
+     * @Route("/market_groups", name="api.market_groups", options={"expose"=true})
+     * @Method("GET")
+     * @Secure(roles="ROLE_CEO")
+     */
+    public function getTopLevelMarketGroups(Request $request){
+        $items = $this->get('evedata.registry')
+            ->get('EveBundle:MarketGroup')
+            ->getTopLevelGroups();
+
+        $json = json_encode($items);
+
+        return $this->jsonResponse($json);
+    }
+
 
 }

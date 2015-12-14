@@ -83,6 +83,9 @@ angular.module('eveTool')
             },
             getCorpDeliveries: function(corp){
                 return getDeferred(Routing.generate('api.corporation.deliveries', { id: corp.id}));
+            },
+            getMarketGroups: function(){
+                return getDeferred(Routing.generate('api.market_groups'));
             }
 
         };

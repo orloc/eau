@@ -9,7 +9,10 @@ angular.module('eveTool')
         $scope.max_size = 15;
         $scope.per_page = 5;
         $scope.page = 1;
-
+        $scope.filters = {
+            market_group: null,
+            list: []
+        };
         $scope.per_page_selection = [
             { label: '5', value: 5},
             { label: '10', value: 10},
@@ -19,6 +22,22 @@ angular.module('eveTool')
             { label: '100', value: 100}
         ];
 
+        $scope.addFilter = function(filter){
+            $scope.filters.list.push({
+                name: filter.name,
+                type: 1,
+                value: filter.value
+            });
+        };
+
+        $scope.getActiveFilters = function(){
+            var activeFilters = [];
+            for(var i = 0 ; i <= $scope.filters.list.length - 1; i++){
+                activeFilters.push($scope.filters.list[i]);
+            }
+            return activeFilters;
+        };
+
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
             if (typeof val.id === 'undefined'){
                 return;
@@ -27,6 +46,10 @@ angular.module('eveTool')
             $scope.selected_corp = val;
             $scope.assets = [];
             $scope.loading = true;
+
+            corporationDataManager.getMarketGroups().then(function(val){
+                $scope.market_groups = val;
+            });
 
             corporationDataManager.getCorpInventory(val, $scope.page, $scope.per_page).then(function(data){
                 var items = data.items;

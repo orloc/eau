@@ -6,6 +6,7 @@ angular.module('eveTool', [
     'ngAnimate',
     'angular-spinkit',
     'ui.bootstrap',
+    'angularSlideables',
     'localytics.directives'
 ]).run(['$http', '$rootScope', function($http, $rootScope){
     $http.get(Routing.generate('api.auth')).then(function(data){
