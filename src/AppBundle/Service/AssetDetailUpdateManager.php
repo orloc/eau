@@ -75,7 +75,6 @@ class AssetDetailUpdateManager {
 
                 if ($location['solarSystemID'] !== null){
                     $location['solarSystemID'] = $solarsystems->getSolarSystemById($location['solarSystemID']);
-
                 }
 
                 $this->cacheItem('location', $locId, $location);
@@ -126,12 +125,10 @@ class AssetDetailUpdateManager {
         }
 
         if ($id >= 60014861 && $id  <= 60014928){
-
             $station = $conqRepo->findOneBy(['station_id' => $id]);
-
             $location = $mapDenormalize->getLocationInfoBySolarSystem($station->getSolarSystemId());
 
-            return $location;
+            return array_merge($location, [ 'stationName' => $station->getStationName()]);
             // conqStation lookup
         }
 
@@ -143,14 +140,19 @@ class AssetDetailUpdateManager {
             // conqStation lookup - 6000000
             $station = $conqRepo->findOneBy(['station_id' => $id - 6000000]);
             $location = $mapDenormalize->getLocationInfoBySolarSystem($station->getSolarSystemId());
-            return $location;
+            return array_merge($location, [ 'stationName' => $station->getStationName()]);
         }
 
         if ($id >= 60000000 && $id <= 61000000){
             return $stationRepo->getStationById($id);
         }
 
+        if ($id >= 61000000){
+            $station = $conqRepo->findOneBy(['station_id' => $id ]);
+            $location = $mapDenormalize->getLocationInfoBySolarSystem($station->getSolarSystemId());
 
+            return array_merge($location, [ 'stationName' => $station->getStationName()]);
+        }
     }
 
     protected function cacheItem($type, $item, $value){

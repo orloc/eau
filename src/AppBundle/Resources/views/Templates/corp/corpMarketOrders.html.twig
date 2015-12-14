@@ -14,8 +14,6 @@
         <div class="table-responsive">
             <table class="table data-table table-striped table-hover table-condensed">
                 <thead>
-                <th>
-                </th>
                 <th >
                     Name
                 </th>
@@ -38,10 +36,8 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="item in orders | orderBy:'price':true" ng-show="!loading">
-                    <td width="75px">
+                    <td width="175px">
                         <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                    </td>
-                    <td>
                         {{ '{{ item.descriptors.name }}' }}
                     </td>
                     <td>
@@ -66,10 +62,10 @@
                         {{ '{{ item.descriptors.constellation  }}' }}
                     </td>
                     <td>
-                        {{ '{{ item.descriptors.solar_system  }}' }}
+                        {{ '{{ item.descriptors.system  }}' }}
                     </td>
                     <td>
-                        {{ '{{ item.descriptors.station  }}' }}
+                        {{ '{{ item.descriptors.stationName  }}' }}
                     </td>
                     <td width="100px">
                         <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
