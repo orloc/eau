@@ -7,6 +7,20 @@
                 <slide-button open-type="new"></slide-button>
             </h3>
             <div ng-controller="characterListController">
+                {% if is_granted('ROLE_CEO') %}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="btn-group">
+                            <button class="btn btn-sm active btn-default">My Characters</button>
+                            {% if is_granted('ROLE_ALLIANCE_LEADER') %}
+                                <button class="btn btn-sm btn-default">Alliance Characters</button>
+                            {% else %}
+                            <button class="btn btn-sm btn-default">Corporation Characters</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
                 <div class="row">
                     <div class="col-md-12" ng-cloak="">
                         <table class="table table-condensed table-hover data-table" ng-cloak>

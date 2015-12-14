@@ -39,7 +39,7 @@ h1, h2, h3, h4, h5, p, {
 }
 
 #intro.intro2 {
-  background: url('../img/moon-station.png');
+  background: url('/bundles/app/img/moon-station.png');
   background-attachment: fixed;
   min-height: 850px;
 }
@@ -85,7 +85,7 @@ h1, h2, h3, h4, h5, p, {
 
 .legal-container,.login-container{
   height: 100%;
-  background: url('../img/moon-station.png');
+  background: url('/bundles/app/img/moon-station.png');
   background-attachment: fixed;
 }
 

@@ -1,15 +1,18 @@
 {% extends 'AppBundle::layout.html.twig' %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('bundles/app/theme/js/slick/slick.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('bundles/app/theme/js/flex-slider/flexslider.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('bundles/app/theme/js/owl-carousel/owl.carousel.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('bundles/app/theme/js/owl-carousel/owl.theme.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('bundles/app/theme/js/owl-carousel/owl.transitions.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('bundles/app/theme/css/prettyphoto.css') }}">
-    <link rel="stylesheet" href="{{ asset('bundles/app/theme/css/style.css') }}">
-    <!-- SKIN -->
-    <link rel="stylesheet" title="blue" href="{{ asset('bundles/app/theme/css/colors/skin-blue.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('bundles/app/css/themeOverrides.css') }}">
+    {% stylesheets
+         'bundles/app/theme/js/slick/slick.css'
+         'bundles/app/theme/js/flex-slider/flexslider.css'
+         'bundles/app/theme/js/owl-carousel/owl.carousel.css'
+         'bundles/app/theme/js/owl-carousel/owl.theme.css'
+         'bundles/app/theme/js/owl-carousel/owl.transitions.css'
+         'bundles/app/theme/css/prettyphoto.css'
+         'bundles/app/theme/css/style.css'
+         'bundles/app/theme/css/colors/skin-blue.css'
+         'bundles/app/css/themeOverrides.css'
+    %}
+    <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
 
     <script src="{{ asset('bundles/app/theme/js/modernizr.custom.js') }}"></script>
 {% endblock %}
@@ -30,7 +33,7 @@
                                 <div class="col-md-12">
                                     <h2><span>E</span>ve <span>A</span>lliance <span>U</span>tility</h2>
                                     <p>
-                                        <span>EAU</span> is a third party tool for Eve Online&copy;, providing alliance or corporation financial managment and an assortment of industrial tools.<br>
+                                        <span>EAU</span> is a third party tool for Eve Online&copy;, providing alliance or corporation financial management and an assortment of industrial tools.<br>
                                         Currently under heavy development. We are in an alpha and internal use only stage. Feel free to contact us if you have questions or suggestions.</p>
                                     <div class="dual-btns">
                                         <a href="{{ path('eve.register') }}">Register</a>
@@ -67,14 +70,18 @@
 {% endblock %}
 
 {% block extra_javascript %}
-    <script src="{{ asset('bundles/app/theme/js/jquery.easing.min.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/flex-slider/jquery.flexslider.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/owl-carousel/owl.carousel.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/slick/slick.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/jquery.prettyphoto.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/contact.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/mc/jquery.ketchup.all.min.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/mc/main.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/jquery.countdown.min.js') }}"></script>
-    <script src="{{ asset('bundles/app/theme/js/main.js') }}"></script>
+    {% javascripts
+        "bundles/app/theme/js/jquery.easing.min.js"
+        'bundles/app/theme/js/flex-slider/jquery.flexslider.js'
+        'bundles/app/theme/js/owl-carousel/owl.carousel.js'
+        'bundles/app/theme/js/slick/slick.js'
+        'bundles/app/theme/js/jquery.prettyphoto.js'
+        'bundles/app/theme/js/contact.js'
+        'bundles/app/theme/js/mc/jquery.ketchup.all.min.js'
+        'bundles/app/theme/js/mc/main.js'
+        'bundles/app/theme/js/jquery.countdown.min.js'
+        'bundles/app/theme/js/main.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
