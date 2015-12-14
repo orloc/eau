@@ -33,12 +33,20 @@ class UserController extends AbstractController implements ApiControllerInterfac
 
         $charRepo = $doctrine->getRepository('AppBundle:Character');
         $userRepo = $doctrine->getRepository('AppBundle:User');
+        $corpRepo = $doctrine->getRepository('AppBundle:Corporation');
 
         if ($this->isGranted('ROLE_SUPER_ADMIN') || $this->isGranted('ROLE_ADMIN')){
             $users = $userRepo->getUsers();
         } else if ($this->isGranted('ROLE_ALLIANCE_LEADER')){
-            //@TODO implement me
-            $users = [];
+            $main = $charRepo->getMainCharacter($currentUser);
+            $corp =  $corpRepo->findByCorpName($main->getCorporationName());
+            $corps = $corpRepo->findCorporationsByAlliance($corp->getCorporationDetails()->getAllianceName());
+
+            $ids = array_map(function($c){
+                return $c->getEveId();
+            }, $corps);
+
+            $users = $userRepo->findAllByCorporationIds($ids);
         } else if ($this->isGranted('ROLE_CEO')){
             $main = $charRepo->getMainCharacter($currentUser);
             $names = $charRepo->getCharNamesByCorpName($main->getCorporationName());

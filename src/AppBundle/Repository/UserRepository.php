@@ -26,4 +26,15 @@ class UserRepository extends EntityRepository {
 
     }
 
+    public function findAllByCorporationIds(array $list){
+
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->leftJoin('u.characters', 'c')
+            ->where('c.eve_corporation_id IN ( :id_list )')
+            ->setParameter('id_list', $list)
+            ->getQuery()->getResult();
+
+    }
+
 }
