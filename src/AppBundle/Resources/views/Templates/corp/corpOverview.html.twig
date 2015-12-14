@@ -105,14 +105,8 @@
                             <tbody>
                             <tr ng-show="buy_orders.length > 0 " ng-repeat="b in buy_orders | filter:orderBy:'price * quantity'">
                                 <td>
-                                    <div class="row">
-                                        <div class="col-xs-3">
-                                            <eve-image image-type="'Type'" object-id="b.item_id" img-width="32"></eve-image>
-                                        </div>
-                                        <div class="col-xs-9">
-                                            {{ '{{ b.item_name }}' }}
-                                        </div>
-                                    </div>
+                                    <eve-image image-type="'Type'" object-id="b.item_id" img-width="32"></eve-image>
+                                    {{ '{{ b.item_name }}' }}
                                 </td>
                                 <td>{{ '{{ b.quantity }}' }}</td>
                                 <td>{{ '{{ b.price | currency:"ISK" }}' }}</td>
@@ -149,14 +143,8 @@
 
                             <tr ng-show="sell_orders.length> 0 " ng-repeat="s in sell_orders">
                                 <td>
-                                    <div class="row">
-                                        <div class="col-xs-5">
-                                            <eve-image image-type="'Type'" object-id="s.item_id" img-width="32"></eve-image>
-                                        </div>
-                                        <div class="col-xs-7">
-                                            {{ '{{ s.item_name }}' }}
-                                        </div>
-                                    </div>
+                                    <eve-image image-type="'Type'" object-id="s.item_id" img-width="32"> </eve-image>
+                                    {{ '{{ s.item_name }}' }}
                                 </td>
                                 <td>{{ '{{ s.quantity }}' }}</td>
                                 <td>{{ '{{ s.price | currency:"ISK" }}' }}</td>
@@ -184,7 +172,9 @@
                             <cube-grid-spinner></cube-grid-spinner>
                         </div>
                         <div class="col-xs-12" ng-if="!loading">
-                            <h4>Transaction Breakdown - {{ '{{ sumTransactions() | currency:" ISK" }}' }}</h4>
+                            <h4>Transaction Breakdown <span class="pull-right">
+                                    <i ng-init="transSum = sumTransactions()" ng-class="{ 'text-success fa-chevron-up': transSum > 0, 'text-danger fa-chevron-down': transSum < 0 }" class="fa"></i> {{ '{{ transSum | currency:" ISK" }}' }}
+                                </span> </h4>
                             <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
                             <div class="col-sm-6" ng-repeat="s in segments">
                                 <table class="table tabled-hover table-stripped data-table">
@@ -209,18 +199,20 @@
                                 <table class="table tabled-hover table-stripped data-table">
                                     <thead>
                                     <th></th>
-                                    <th>Name</th>
                                     <th>Amount</th>
                                     </thead>
                                     <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
                                         <td>
                                             <eve-image image-type="'Character'" object-id="r.user.character_id" img-width="256"></eve-image>
-                                        </td>
-                                        <td>
                                             {{ '{{ r.user.character_name }}' }}
                                         </td>
                                         <td>
                                             {{ '{{ r.total | currency:"ISK" }}' }}
+                                            <ul class="list-unstyled">
+                                                <li class="small" ng-repeat="type in r.distribution">
+                                                    {{ '{{ type[0].ref_type.ref_type_name }} : {{ sumTrans(type) | currency }}' }}
+                                                </li>
+                                            </ul>
                                         </td>
                                     </tr>
                                 </table>

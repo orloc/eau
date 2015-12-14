@@ -66,9 +66,24 @@ angular.module('eveTool')
                 updateSVG();
                 $scope.loading = false;
             });
-
-
         });
+
+        var getMemberTransactionDistribution = function(member){
+            var trans = member.trans;
+            var res = _.groupBy(trans, 'ref_type.ref_type_id');
+
+            return Object.keys(res).map(function(key){
+                return res[key];
+            });
+
+
+        };
+
+        $scope.sumTrans = function(trans){
+            return _.reduce(_.pluck(trans, 'amount'), function(init, carry){
+                return init + carry;
+            });
+        };
 
         $scope.switchPage = function(page){
             var date = moment($scope.current_date).format('X');
@@ -97,6 +112,10 @@ angular.module('eveTool')
                             }).then(function(){
                                 corporationDataManager.getJournalUserAggregate($scope.selected_corp,date).then(function(data) {
                                     $scope.members = sumTotals(data);
+                                    angular.forEach($scope.members, function(m, i){
+                                        var dist = getMemberTransactionDistribution(m);
+                                        $scope.members[i].distribution = dist;
+                                    });
                                     $scope.member_segments = $scope.getSegments($scope.members, ($scope.members.length / 2) + 1 );
                                 });
                             });

@@ -5,6 +5,7 @@ angular.module('eveTool')
         $scope.loading = true;
         $scope.predicate = 'total_price';
         $scope.reverse = true;
+        $scope.image_width = 32;
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
             if (typeof val.id === 'undefined'){

@@ -103,6 +103,7 @@ class AssetDetailUpdateManager {
 
         return [
             'name' => isset($itemData['name']) ? $itemData['name'] : null,
+            'volume' => isset($itemData['volume']) ? $itemData['volume'] : null,
             'description' => isset($itemData['description']) ? $itemData['description'] : null,
             'system' => isset($itemData['solarSystemID'])
                 ? $itemData['solarSystemID']['name']

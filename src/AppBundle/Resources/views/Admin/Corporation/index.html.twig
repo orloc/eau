@@ -9,12 +9,13 @@
                     <b class="text-danger">{{ '{{ needs_update.length }}' }}</b> Corporation(s) Pending Initial Update
                 </span>
                 <div class="row">
-                   <div class="col-xs-3">
+                   <div class="col-xs-9">
+                       <h4 class="text-info">{{ '{{ selected_corp.corporation_details.name  }}' }}</h4>
                        <select width="150px" class="form-control" ng-options="c as getLabel(c) for c in corps" ng-show="corps.length > 1" ng-model="selected_corp">
                            <option>Select A Corporation</option>
                        </select>
                    </div>
-                    <div class="col-xs-9">
+                    <div class="col-xs-3">
                         <slide-button open-type="new"></slide-button>
                     </div>
                 </div>

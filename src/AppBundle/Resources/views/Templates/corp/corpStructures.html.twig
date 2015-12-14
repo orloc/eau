@@ -4,8 +4,6 @@
             <table class="table data-table table-striped table-hover table-condensed">
                 <thead>
                 <th>
-                </th>
-                <th>
                     Location
                 </th>
                 <th>Type</th>
@@ -27,8 +25,6 @@
                 <tr ng-repeat="item in bases" ng-if="bases.length">
                     <td>
                         <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                    </td>
-                    <td>
                         {{ '{{ item.descriptors.itemName }}' }}
                     </td>
                     <td>
