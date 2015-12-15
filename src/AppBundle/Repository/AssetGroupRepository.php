@@ -18,4 +18,16 @@ class AssetGroupRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
 
     }
+
+    public function getLatestNeedsUpdateAssetGroupByIds(array $ids){
+
+        return $this->createQueryBuilder('ag')
+            ->select('ag')
+            ->where('ag.corporation in (:corporation_ids)')
+            ->andWhere('ag.has_been_updated = 0')
+            ->orderBy('ag.created_at', 'DESC')
+            ->setParameter('corporation_ids', $ids)
+            ->getQuery()->getResult();
+
+    }
 }

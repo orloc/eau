@@ -45,7 +45,6 @@ class EveDataUpdateService {
         }
 
         $em->persist($c);
-        $em->flush();
     }
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
@@ -96,8 +95,7 @@ class EveDataUpdateService {
             ->getLongTimerExpired($c, $call);
     }
 
-    public function updateAssetCache(Corporation $c){
-        $this->log->debug(sprintf("Updating asset group cache for"));
+    public function updateAssetCache(array $c){
         $this->registry->get(AssetManager::getName())
             ->updateAssetGroupCache($c);
     }
@@ -134,7 +132,6 @@ class EveDataUpdateService {
         $c->addApiUpdate($update);
 
         $em->persist($c);
-        $em->flush();
 
         $end = microtime(true) - $start;
         $this->log->info(sprintf("Done Executing %s in %s seconds", $call, $end));

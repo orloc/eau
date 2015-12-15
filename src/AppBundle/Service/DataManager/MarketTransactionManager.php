@@ -6,10 +6,8 @@ use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketTransaction;
 use Doctrine\Bundle\DoctrineBundle\Registry;
-use EveBundle\Repository\Registry as EveRegistry;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class MarketTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
@@ -38,7 +36,14 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
             throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
 
-        foreach ($items->transactions as $t){
+        $count = 0;
+        $notValid = false;
+        while (!$notValid || $count <= count($items->entries)-1) {
+            $t = isset($items->transactions[$count]) ? $items->transactions[$count] : false;
+            if ($t === false){
+                $notValid = true;
+            }
+
             $exists = $this->doctrine->getRepository('AppBundle:MarketTransaction')
                 ->hasTransaction($acc, $t->transactionID, $t->journalTransactionID);
 
@@ -47,9 +52,11 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
                 $acc->addMarketTransaction($trans);
 
             } else  {
-                $this->log->info(sprintf("Conflicting Market Transaction %s for %s %s", $t->transactionID, $acc->getDivision(), $corp->getCorporationDetails()->getName()));
+                $notValid = true;
             }
+            $count++;
         }
+        $this->log->info(sprintf("Done in %s", $count));
     }
 
     public function mapItem($item){

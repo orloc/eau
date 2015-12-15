@@ -50,6 +50,7 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
         // remove the thing we dont want anymore
         if ($existing->count() !== count($items)){
             $rev = [];
+            $needsFlush = false;
             foreach ($existing as $e){
                 $found = false;
                 foreach ($items as $i){
@@ -57,11 +58,13 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
                         $found = true;
                     }
                 }
-
                 if (!$found){
+                    $needsFlush = true;
                     $em->remove($e);
-                    $em->flush();
                 }
+            }
+            if ($needsFlush){
+                $em->flush();
             }
         }
 

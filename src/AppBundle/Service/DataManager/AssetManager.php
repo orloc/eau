@@ -78,9 +78,11 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
         return $item;
     }
 
-    public function updateAssetGroupCache(Corporation $corp){
-        $group = $this->doctrine->getRepository('AppBundle:AssetGroup')
-            ->getLatestAssetGroup($corp);
+    public function updateAssetGroupCache(array $corp_ids){
+        $groups = $this->doctrine->getRepository('AppBundle:AssetGroup')
+            ->getLatestNeedsUpdateAssetGroupByIds($corp_ids);
+
+        var_dump($groups);die;
 
         if ($group instanceof AssetGroup){
             if (!$group->getHasBeenUpdated()){

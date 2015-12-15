@@ -8,9 +8,7 @@ use AppBundle\Entity\JournalTransaction;
 use AppBundle\Entity\RefType;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Bridge\Monolog\Logger;
-use EveBundle\Repository\Registry as EveRegistry;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
-use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class JournalTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
@@ -39,8 +37,14 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
             throw new OptionDefinitionException(sprintf('Option corp required and must by of type %s', get_class(new Corporation())));
         }
 
-        foreach ($items->entries as $t){
-            $this->log->debug("processing {$t->refID}");
+        $count = 0;
+        $notValid = false;
+        while (!$notValid || $count <= count($items->entries)-1) {
+            $t = isset($items->entries[$count]) ? $items->entires[$count] : false;
+            if ($t === false){
+                $notValid = true;
+            }
+
             $exists = $this->doctrine->getRepository('AppBundle:JournalTransaction')
                 ->hasTransaction($acc, $t->refID, $t->amount);
 
@@ -58,9 +62,14 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
                         $em->persist($exists);
                     }
                 }
-                $this->log->debug(sprintf("Conflicting Journal Ref %s for %s %s", $t->refID, $acc->getDivision(), $corp->getCorporationDetails()->getName()));
+
+                $notValid = true;
             }
+
+            $count++;
         }
+
+        $this->log->info(sprintf("Done in %s", $count));
 
         $em->persist($acc);
     }

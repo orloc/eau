@@ -73,11 +73,22 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $em->flush();
         }
 
+        $corp_ids = [];
         foreach ($corps as $c){
+            $log->info("Starting Update {$c->getCorporationDetails()->getName()}\n\n");
             $dataUpdateService->checkCorporationDetails($c);
+            $em->flush();
             $dataUpdateService->updateShortTimerCalls($c, $force);
+            $em->flush();
             $dataUpdateService->updateLongTimerCalls($c, $force);
-            $dataUpdateService->updateAssetCache($c);
+            $corp_ids[] = $c->getId();
+            /*
+            $em->flush();
+            $em->clear();
+            */
+
+            $log->info("Finished Updated {$c->getCorporationDetails()->getName()}");
         }
+        $dataUpdateService->updateAssetCache($corp_ids);
     }
 }
