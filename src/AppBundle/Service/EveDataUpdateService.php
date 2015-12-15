@@ -49,10 +49,10 @@ class EveDataUpdateService {
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
-            AccountManager::getName() => 'updateAccounts',
-            CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
-            JournalTransactionManager::getName() => 'updateJournalTransactions',
-            MarketTransactionManager::getName() => 'updateMarketTransactions',
+            #AccountManager::getName() => 'updateAccounts',
+            #CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
+            #JournalTransactionManager::getName() => 'updateJournalTransactions',
+            #MarketTransactionManager::getName() => 'updateMarketTransactions',
             StarbaseManager::getName() => 'getStarbases'
         ];
 

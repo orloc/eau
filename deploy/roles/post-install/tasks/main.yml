@@ -1,9 +1,4 @@
 ---
-  - name: Run bower
-    bower: path={{symfony2_project_root}}/releases/{{symfony2_project_release}} state=latest
-
-  - name: Compiling CSS
-    command: compass compile --force chdir={{symfony2_project_root}}/releases/{{symfony2_project_release}}
 
   - name: Fixing Permissions
     file: dest={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/cache mode=0777 recurse=true owner={{ server_user }}
@@ -16,3 +11,4 @@
   - name: Restarting nginx
     sudo: yes
     service: name=nginx state=restarted
+    when: sys.stat nginx is defined

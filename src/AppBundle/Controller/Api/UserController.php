@@ -99,8 +99,14 @@ class UserController extends AbstractController implements ApiControllerInterfac
      * @Secure(roles="ROLE_CORP_MEMBER")
      * @ParamConverter("user", class="AppBundle:User")
      */
-    public function showAction($id, User $user)
+    public function showAction(Request $request, User $user)
     {
+        $auth = $this->get('security.authorization_checker');
+
+        if ($auth->isGranted('ROLE_ADMIN') || $auth->isGranted('ROLE_SUPER_ADMIN')){
+
+        }
+
 
         // TODO implement user checks
         return $this->jsonResponse($this->get('serializer')->serialize($user, 'json'), 200);

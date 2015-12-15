@@ -35,7 +35,7 @@
                 </th>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in orders | orderBy:'price':true" ng-show="!loading">
+                <tr ng-repeat="item in orders | orderBy:'price':true" ng-show="!loading" ng-class="{ 'danger': }">
                     <td width="175px">
                         <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         {{ '{{ item.descriptors.name }}' }}

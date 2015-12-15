@@ -3,15 +3,30 @@
 angular.module('eveTool')
     .controller('userEditController', ['$scope', '$http', 'dataDispatcher', 'userRoleManager',  function($scope, $http, dataDispatcher, userRoleManager){
         $scope.submitLoading = false;
+        $scope.edit_password = false;
         $scope.editUser = {};
 
         // if user auth has the right roles get all of them
         $scope.roles = userRoleManager.getRoles();
+        var canAccess = function(){
+            var myId = userRoleManager.getUserId();
+            return myId === $scope.editUser.id;
+        };
+
 
         $scope.$on('update_user', function(event, item){
             $scope.editUser = item.user;
+            $scope.hasAccess = canAccess();
+            $scope.editUser.role = userRoleManager.getHighestFromMap(
+                userRoleManager.mapRoles(item.user.roles)
+            ).role;
             $scope.current_index = item.index;
+
         });
+
+        $scope.toggleEditPassword = function(){
+            $scope.edit_password = !$scope.edit_password;
+        };
 
         $scope.update = function(){
             $scope.submitLoading = true;

@@ -5,23 +5,31 @@ angular.module('eveTool')
     $scope.users = [];
 
     $scope.currentRoles = userRoleManager.getCurrentRoles();
+    $scope.my_highest_role = userRoleManager.getHighestFromMap($scope.currentRoles);
 
     $scope.hasRole = function(role){
-        return userRoleManager.hasRole(role, $scope.currentRoles) === true;
+        return userRoleManager.isGranted(role, $scope.currentRoles);
     };
 
-    if (userRoleManager.hasRole('ROLE_ADMIN', $scope.currentRoles) === true){
-        $scope.populateEdit = function(user, index){
-            dataDispatcher.addEvent('update_user', { user:user, index:index});
-        };
+    $scope.compareRoles = function(user){
+        if (user.id === userRoleManager.getUserId()){ return true; }
 
-        $scope.$on('update_list', function(event, item){
-            $http.get(Routing.generate('api.users')).then(function(data){
-                $scope.users = data.data;
-            });
+        var roles = userRoleManager.mapRoles(user.roles);
+        var highest = userRoleManager.getHighestFromMap(roles);
 
+        return highest.weight < $scope.my_highest_role.weight;
+    };
+
+    $scope.populateEdit = function(user, index){
+        dataDispatcher.addEvent('update_user', { user:user, index:index});
+    };
+
+    $scope.$on('update_list', function(event, item){
+        $http.get(Routing.generate('api.users')).then(function(data){
+            $scope.users = data.data;
         });
-    }
+
+    });
 
     $http.get(Routing.generate('api.users')).then(function(data){
         var getMain = function(chars){

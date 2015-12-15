@@ -10,7 +10,6 @@
     - { path: "{{symfony2_project_root}}/shared" }
     - { path: "{{symfony2_project_root}}/shared/app/config" }
     - { path: "{{symfony2_project_root}}/shared/app/logs" }
-    - { path: "{{symfony2_project_root}}/shared/web/uploads" }
 
 - name: Pull sources from the repository.
   git: repo={{symfony2_project_repo}} dest={{symfony2_project_root}}/releases/{{symfony2_project_release}} version={{symfony2_project_branch}} accept_hostkey=yes
@@ -60,11 +59,28 @@
 - name: Run composer install.
   shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release}} && export SYMFONY_ENV={{symfony2_project_env}} && {{symfony2_project_php_path}} {{symfony2_project_composer_path}}/composer.phar install {{symfony2_project_composer_opts}}
 
+- name: Check if bower exists
+  stat: path=/usr/local/bin/bower
+  register: bower_file
+
+- name: Run bower
+  bower: path={{symfony2_project_root}}/releases/{{symfony2_project_release}} state=latest
+  when: bower_file.stat.exists == true
+
+- name: Check if Compass exists
+  stat: path=/usr/local/bin/compass
+  register: compass_file
+
+- name: Compiling CSS
+  command: compass compile --force chdir={{symfony2_project_root}}/releases/{{symfony2_project_release}}
+  when: compass_file.stat.exists == true
+
 - name: Dump assets.
   shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release}} && {{symfony2_project_php_path}} app/console assetic:dump --env={{symfony2_project_env}} {{symfony2_project_console_opts}}
+  when: compass_file.stat.exists == true and bower_file.stat.exists == true
 
 - name: Run migrations.
-  shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release}} && if $(grep doctrine-migrations-bundle composer.json); then {{symfony2_project_php_path}} app/console doctrine:migrations:migrate -n; fi
+  ses/{{symfony2_project_release}} && if $(grep doctrine-migrations-bundle composer.json); then {{symfony2_project_php_path}} app/console doctrine:migrations:migrate -n; fi
   when: symfony2_fire_migrations == true
 
 - name: Run mongodb schema update.

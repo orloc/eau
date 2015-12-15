@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {% stylesheets
+        'bower_components/metisMenu/dist/metisMenu.min.css'
         'bower_components/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css'
         'bower_components/angular-chosen-localytics/chosen-spinner.css'
         'bower_components/angular-bootstrap/ui-bootstrap-csp.css'
@@ -41,6 +42,7 @@
 
     <script>
         var logged_in_user_roles = {{ app.getUser().getRoles() | json_encode | raw }};
+        var current_user = {{ app.getUser().getId() | json_encode | raw }};
     </script>
 
     {% javascripts

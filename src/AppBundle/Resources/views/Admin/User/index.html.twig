@@ -4,7 +4,7 @@
     <div class="row" ng-controller="userListController">
         <side-menu-container ng-transclude>
             <h3>User <span class="muted small">LIST</span>
-                <slide-button ng-if="hasRole('ROLE_ADMIN')" ng-cloak style="color: grey;" open-type="new"></slide-button>
+                <slide-button ng-if="hasRole('ROLE_CEO')" ng-cloak style="color: grey;" open-type="new"></slide-button>
             </h3>
             <br>
             <table class="table data-table table-hover table-condensed" ng-cloak>
@@ -13,14 +13,14 @@
                     <th>Username</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Last Login</th>
                     <th>Characters</th>
+                    <th>Last Login</th>
                     <th>Created At</th>
                     <th>Updated At</th>
                     <th>Enabled</th>
                     <th>Locked</th>
                     <th>API</th>
-                    <th ng-if="hasRole('ROLE_ADMIN')"><i class="fa fa-gears"></i></th>
+                    <th ng-if="hasRole('ROLE_CEO')"><i class="fa fa-gears"></i></th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="u in users">
@@ -31,11 +31,11 @@
                         <td>{{ '{{ u.username }}' }}</td>
                         <td>{{ '{{ u.email }}' }}</td>
                         <td>{{ '{{ getRole(u) }}' }}</td>
-                        <td class="text-center">{{ '{{ u.last_login | date:"M/d/yy" }}' }}<br>
-                            <span class="small">{{ '{{ u.last_login | date:"shortTime" }}' }}</span>
-                        </td>
                         <td>
                             {{ '{{ u.characters.length }}' }}
+                        </td>
+                        <td class="text-center">{{ '{{ u.last_login | date:"M/d/yy" }}' }}<br>
+                            <span class="small">{{ '{{ u.last_login | date:"shortTime" }}' }}</span>
                         </td>
                         <td class="text-center">{{ '{{ u.created_at | date:"M/d/yy" }}' }}<br>
                             <span class="small">{{ '{{ u.created_at | date:"shortTime" }}' }}</span>
@@ -46,8 +46,10 @@
                         <td><i ng-class="{'fa fa-check text-success': u.enabled, 'fa fa-times text-danger': !u.enabled}"></i> </td>
                         <td><i ng-class="{'fa fa-check text-success': u.locked, 'fa fa-times text-danger': !u.locked}"></i> </td>
                         <td><i ng-class="{'fa fa-check text-success': hasApiKey(u), 'fa fa-times text-danger': !hasApiKey(u)}"></i> </td>
-                        <td ng-if="hasRole('ROLE_ADMIN')" class="text-center">
+                        <td ng-if="hasRole('ROLE_CEO') && compareRoles(u)" class="text-center">
                             <slide-button open-type="edit" ng-click="populateEdit(u, $index)"></slide-button>
+                        </td>
+                        <td ng-if="!hasRole('ROLE_CEO') || !compareRoles(u)" class="text-center">
                         </td>
                     </tr>
                 </tbody>

@@ -12,13 +12,13 @@
 
     {% stylesheets
         'bower_components/bootstrap/dist/css/bootstrap.min.css'
-        'bower_components/font-awesome/css/font-awesome.min.css'
         'bower_components/chosen/chosen.min.css'
         'bower_components/ladda/dist/ladda-themeless.min.css'
         'https://fonts.googleapis.com/css?family=Roboto:400,700|Knewave'
     %}
     <link rel="stylesheet" href="{{ asset_url }}" />
     {% endstylesheets %}
+    <link rel="stylesheet" href="{{ asset('bower_components/font-awesome/css/font-awesome.min.css') }}">
     {% block stylesheets %}{% endblock %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

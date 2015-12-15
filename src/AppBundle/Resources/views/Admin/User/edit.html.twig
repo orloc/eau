@@ -6,6 +6,7 @@
 
     <div ng-controller="userEditController">
         <button style="position: absolute; bottom: 0; right: 0; margin: 10px;" class="btn btn-sm btn-danger" ng-click="delete(editUser.id)">Delete</button>
+
         <form name="editUserForm">
             <table class="table-form">
                 <tbody>
@@ -19,7 +20,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-if="hasAccess === true">
                     <td>
                         <i ng-class="{ 'text-danger fa fa-times': editUserForm.username.$invalid, 'text-success fa fa-check': editUserForm.username.$valid}"></i>
                     </td>
@@ -36,7 +37,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-if="hasAccess === true">
                     <td>
                         <i ng-class="{ 'text-danger fa fa-times': editUserForm.email.$invalid, 'text-success fa fa-check': editUserForm.email.$valid}"></i>
                     </td>
@@ -54,6 +55,28 @@
                 </tr>
                 <tr>
                     <td>
+                        <i ng-class="{ 'text-danger fa fa-times': editUserForm.role.$invalid, 'text-success fa fa-check': editUserForm.role.$valid}"></i>
+                    </td>
+                    <td>
+                        <select class="form-control"
+                                name="role"
+                                ng-required="true"
+                                ng-model="editUser.role"
+                                ng-options="item.role as item.name for item in roles">
+                            <option value="">Select a Role</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr ng-if="hasAccess === true">
+                    <td>
+                    </td>
+                    <td>
+                        <button class="btn-block btn btn-sm btn-warning" ng-click="toggleEditPassword()">Change Password</button>
+                        <br>
+                    </td>
+                </tr>
+                <tr ng-if="hasAccess === true && edit_password">
+                    <td>
                         <i ng-class="{ 'text-danger fa fa-times': editUserForm.password.$invalid, 'text-success fa fa-check': editUserForm.password.$valid}"></i>
                     </td>
                     <td>
@@ -69,7 +92,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-if="hasAccess === true && edit_password">
                     <td>
                         <i ng-class="{ 'text-danger fa fa-times': editUserForm.password_confirmation.$invalid, 'text-success fa fa-check': editUserForm.password_confirmation.$valid}"></i>
                     </td>
@@ -85,20 +108,6 @@
                                    ng-model="editUser.password_confirmation"
                                     />
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <i ng-class="{ 'text-danger fa fa-times': editUserForm.role.$invalid, 'text-success fa fa-check': editUserForm.role.$valid}"></i>
-                    </td>
-                    <td>
-                        <select class="form-control"
-                                name="role"
-                                ng-required="true"
-                                ng-model="editUser.role"
-                                ng-options="item.role as item.name for item in roles">
-                            <option value="">Select a Role</option>
-                        </select>
                     </td>
                 </tr>
                 <tr>

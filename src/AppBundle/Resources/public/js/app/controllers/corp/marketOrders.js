@@ -34,6 +34,10 @@ angular.module('eveTool')
             });
         });
 
+        $scope.getFillRatio = function(item){
+            console.log(item);
+
+        };
 
         $scope.percentFinished = function(item){
             return  100 - ((item.volume_remaining / item.total_volume)  * 100);
