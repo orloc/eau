@@ -35,7 +35,7 @@
                 </th>
                 </thead>
                 <tbody>
-                <tr ng-repeat="item in orders | orderBy:'price':true" ng-show="!loading" ng-class="{ 'danger': }">
+                <tr ng-repeat="item in orders | orderBy:'ratio':false" ng-show="!loading" ng-class="{ 'danger': item.ratio <= 20, 'warning': item.ratio <= 50 }">
                     <td width="175px">
                         <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         {{ '{{ item.descriptors.name }}' }}
@@ -69,9 +69,6 @@
                     </td>
                     <td width="100px">
                         <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
-                    </td>
-                    <td>
-                        {{ '{{ item.descriptors.total_price | currency:"ISK" }}' }}
                     </td>
                 </tr>
                 <tr ng-show="loading">

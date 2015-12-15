@@ -19,7 +19,7 @@ angular.module('eveTool')
             $http.get(Routing.generate('api.corporation.marketorders', { id: val.id})).then(function(data){
                 return data.data;
             }).then(function(items){
-                $scope.orders = items.items;
+                $scope.orders = mapFillRatio(items.items);
                 $scope.total_escrow = items.total_escrow;
                 $scope.total_sales = items.total_on_market;
                 $scope.loading = false;
@@ -34,10 +34,16 @@ angular.module('eveTool')
             });
         });
 
-        $scope.getFillRatio = function(item){
-            console.log(item);
+        function mapFillRatio(items){
+            var getFillRatio = function(item){
+                return (item.volume_remaining / item.total_volume) * 100;
+            };
 
-        };
+            for(var i = 0; i <= items.length -1 ; i ++){
+                items[i].ratio = getFillRatio(items[i]);
+            }
+            return items;
+        }
 
         $scope.percentFinished = function(item){
             return  100 - ((item.volume_remaining / item.total_volume)  * 100);

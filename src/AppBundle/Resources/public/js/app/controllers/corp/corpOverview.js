@@ -117,7 +117,6 @@ angular.module('eveTool')
                                         $scope.members[i].distribution = dist;
                                     });
 
-                                    console.log($scope.members);
                                     $scope.member_segments = $scope.getSegments($scope.members, ($scope.members.length / 2) + 1 );
                                 });
                             });

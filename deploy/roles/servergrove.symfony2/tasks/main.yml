@@ -79,14 +79,6 @@
   shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release}} && {{symfony2_project_php_path}} app/console assetic:dump --env={{symfony2_project_env}} {{symfony2_project_console_opts}}
   when: compass_file.stat.exists == true and bower_file.stat.exists == true
 
-- name: Run migrations.
-  ses/{{symfony2_project_release}} && if $(grep doctrine-migrations-bundle composer.json); then {{symfony2_project_php_path}} app/console doctrine:migrations:migrate -n; fi
-  when: symfony2_fire_migrations == true
-
-- name: Run mongodb schema update.
-  shell: cd {{symfony2_project_root}}/releases/{{symfony2_project_release}} && if $(grep mongodb-odm composer.json); then {{symfony2_project_php_path}} app/console doctrine:mongodb:schema:update --no-interaction; fi
-  when: symfony2_fire_schema_update == true
-
 - name: Create symlink.
   file: state=link src={{symfony2_project_root}}/releases/{{symfony2_project_release}} path={{symfony2_project_root}}/current
 
