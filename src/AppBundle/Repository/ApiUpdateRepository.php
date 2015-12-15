@@ -30,7 +30,7 @@ class ApiUpdateRepository extends EntityRepository {
     public function getLastUpdateByType($type){
         return $this->createQueryBuilder('au')
             ->select('au')
-            ->where('au.type = :type')
+            ->where('au.api_call = :type')
             ->setParameter('type', $type)
             ->orderBy('au.created_at', 'DESC')
             ->setMaxResults(1)
@@ -38,15 +38,16 @@ class ApiUpdateRepository extends EntityRepository {
     }
 
     public function getShortTimerExpired(Corporation $entity, $call){
-        $now = Carbon::create()->subMinutes(60);
+        $now = Carbon::now()->subMinutes(60);
 
         return (bool)$this->getTimeExpiredBuilder($entity, $now, $call);
     }
 
     public function getLongTimerExpired(Corporation $entity, $call){
-        $now = Carbon::create()->subHours(23);
+        $now = Carbon::now()->subHours(23);
 
         return (bool)$this->getTimeExpiredBuilder($entity, $now, $call);
+
     }
 
     public function getLastUpdateByCorpType(Corporation $entity, $type){
@@ -73,9 +74,8 @@ class ApiUpdateRepository extends EntityRepository {
                 'corp' => $entity , 'now' => $now, 'call' => $call
             ])->getQuery()->getOneOrNullResult();
 
-
         if (isset($is_cached['is_cached'])){
-            return $is_cached['is_cached'];
+            return intval($is_cached['is_cached']);
         }
 
         return true;

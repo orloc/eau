@@ -4,7 +4,7 @@
         <b class="text-info">Total On Market:</b> {{ '{{ total_sales | currency:"ISK" }}' }}
         &nbsp;
         &nbsp;
-        <span class="small muted" ng-show="updated_at">
+        <span class="small muted pull-right" ng-show="updated_at">
             <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
             &nbsp;
             &nbsp;

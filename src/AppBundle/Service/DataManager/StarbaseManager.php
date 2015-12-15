@@ -44,7 +44,26 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
     public function mapList($items, array $options = []){
 
         $corp = $options['corp'];
+        $existing = $corp->getStarBases();
+
         $em = $this->doctrine->getManager();
+        // remove the thing we dont want anymore
+        if ($existing->count() !== count($items)){
+            $rev = [];
+            foreach ($existing as $e){
+                $found = false;
+                foreach ($items as $i){
+                    if ($e->getItemId() == $i['itemID']) {
+                        $found = true;
+                    }
+                }
+
+                if (!$found){
+                    $em->remove($e);
+                    $em->flush();
+                }
+            }
+        }
 
         $repo = $em->getRepository('AppBundle:Starbase');
 

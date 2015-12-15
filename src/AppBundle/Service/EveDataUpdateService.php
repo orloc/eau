@@ -32,6 +32,7 @@ class EveDataUpdateService {
     public function checkCorporationDetails(Corporation $c){
         $em = $this->doctrine->getManager();
         if ($c->getEveId() === null){
+            $this->log->warning("Updating corp details");
             $result = $this->corp_manager->getCorporationDetails($c);
 
             $c->setEveId($result['id']);
@@ -49,22 +50,22 @@ class EveDataUpdateService {
 
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
-            #AccountManager::getName() => 'updateAccounts',
-            #CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
-            #JournalTransactionManager::getName() => 'updateJournalTransactions',
-            #MarketTransactionManager::getName() => 'updateMarketTransactions',
+            AccountManager::getName() => 'updateAccounts',
+            CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
+            JournalTransactionManager::getName() => 'updateJournalTransactions',
+            MarketTransactionManager::getName() => 'updateMarketTransactions',
             StarbaseManager::getName() => 'getStarbases'
         ];
 
         foreach ($calls as $manager => $call){
             if (is_array($call)){
                 foreach ($call as $ic){
-                    if(!$this->checkShortTimer($c, $ic) || $force === true) {
+                    if(!$this->checkShortTimer($c, $this->resolveCall($ic)) || $force === true) {
                         $this->doUpdate($manager, $ic, $c, ApiUpdate::CACHE_STYLE_SHORT);
                     }
                 }
             } else {
-                if(!$this->checkShortTimer($c, $call) || $force === true) {
+                if(!$this->checkShortTimer($c, $this->resolveCall($call)) || $force === true) {
                     $this->doUpdate($manager, $call, $c, ApiUpdate::CACHE_STYLE_SHORT);
                 }
             }
@@ -78,7 +79,7 @@ class EveDataUpdateService {
         ];
 
         foreach ($calls as $manager => $call){
-            if(!$this->checkLongTimer($c, $call) || $force === true){
+            if(!$this->checkLongTimer($c, $this->resolveCall($call)) || $force === true){
                 $this->doUpdate($manager, $call, $c, ApiUpdate::CACHE_STYLE_LONG);
             }
         }
@@ -102,17 +103,23 @@ class EveDataUpdateService {
     }
 
 
-    public function createApiUpdate($type, $call, $success){
+    public function createApiUpdate($type, $call, $success, Corporation $corp = null){
         $access = new ApiUpdate();
 
         $access->setType($type)
             ->setApiCall($call)
             ->setSucceeded($success);
 
+        if ($corp){
+            $access->setCorporation($corp);
+        }
+
         return $access;
     }
 
     protected function doUpdate($manager, $call, Corporation $c, $cache_style){
+        $this->log->warning(sprintf("Executing %s", $call));
+        $start = microtime(true) ;
         $success = $this->tryCall($manager, $call, $c);
 
         $em = $this->doctrine->getManager();
@@ -120,13 +127,17 @@ class EveDataUpdateService {
         $update = $this->createApiUpdate(
             $cache_style,
             $this->resolveCall($call),
-            $success
+            $success,
+            $c
         );
 
         $c->addApiUpdate($update);
 
         $em->persist($c);
         $em->flush();
+
+        $end = microtime(true) - $start;
+        $this->log->info(sprintf("Done Executing %s in %s seconds", $call, $end));
     }
 
     protected function tryCall($manager, $function, $arg){

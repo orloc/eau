@@ -24,13 +24,16 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $force = $input->getOption('force');
+        $force = $input->getOption('force', false);
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+        $log = $this->getContainer()->get('logger');
         $dataUpdateService = $this->getContainer()->get('app.evedataupdate.service');
 
         $updateRegistry = $this->getContainer()->get('app.evedata.registry');
 
+
+        $log->info('Preparing Reference Data');
         $corps = $em->getRepository('AppBundle:Corporation')
             ->findAll();
 
@@ -42,26 +45,33 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
         $refTypeLastUpdate = $em->getRepository('AppBundle:ApiUpdate')
             ->getLastUpdateByType(ApiUpdate::REF_TYPES);
 
-
-        if ($stationLastUpdate === null || $now->diff(Carbon::instance($stationLastUpdate->getCreatedAt()))) {
+        $update = false;
+        if ($stationLastUpdate === null || $now->diffInHours(Carbon::instance($stationLastUpdate->getCreatedAt())) > 24) {
+            $log->info('Updating Conquerable Stations');
             $updateRegistry->get(ConquerableStationManager::getName())
                 ->updateConquerableStations();
 
             $update = $dataUpdateService->createApiUpdate(ApiUpdate::CACHE_STYLE_LONG, ApiUpdate::CONQUERABLE_STATIONS, true);
 
             $em->persist($update);
+            $update = true;
         }
 
-        if ($refTypeLastUpdate === null || $now->diff(Carbon::instance($refTypeLastUpdate->getCreatedAt()))) {
+        if ($refTypeLastUpdate === null || $now->diffInHours(Carbon::Instance($refTypeLastUpdate->getCreatedAt())) > 24) {
+            $log->info('Updating Reference Types');
             $updateRegistry->get(RefTypeManager::getName())
                 ->updateRefTypes();
 
             $update = $dataUpdateService->createApiUpdate(ApiUpdate::CACHE_STYLE_LONG, ApiUpdate::REF_TYPES, true);
 
             $em->persist($update);
+            $update = true;
         }
 
-        $em->flush();
+        if ($update){
+            $log->info('Flushing Data');
+            $em->flush();
+        }
 
         foreach ($corps as $c){
             $dataUpdateService->checkCorporationDetails($c);
@@ -69,7 +79,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $dataUpdateService->updateShortTimerCalls($c, $force);
             $dataUpdateService->updateLongTimerCalls($c, $force);
 
-            $dataUpdateService->updateAssetCache($c);
         }
+        $dataUpdateService->updateAssetCache($c);
     }
 }
