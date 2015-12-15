@@ -50,13 +50,20 @@ class CorporationController extends AbstractController implements ApiControllerI
             $names = array_map(function($c){
                 return $c->getName();
             }, $characters);
-            if ($user->hasRole('ROLE_DIRECTOR')){
-                $main = $this->getDoctrine()->getRepository('AppBundle:Character')
-                    ->getMainCharacter($user);
-                $names[] = $main->getName();
-            }
+            $main = $this->getDoctrine()->getRepository('AppBundle:Character')
+                ->getMainCharacter($user);
 
             $corps = $corpRepo->findCorpByCeoList($names);
+            $hasAllCorps = false;
+            foreach ($corps as $c){
+                if ($c->getCorporationDetails()->getName() === $main->getCorporationName()){
+                    $hasAllCorps = true;
+                    break;
+                }
+            }
+            if (!$hasAllCorps){
+                $corps[] = $corpRepo->findByCorpName($main->getCorporationName());
+            }
         }
 
         $json = $this->get('jms_serializer')->serialize($corps, 'json');

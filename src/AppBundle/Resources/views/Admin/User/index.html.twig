@@ -23,7 +23,7 @@
                     <th ng-if="hasRole('ROLE_CEO')"><i class="fa fa-gears"></i></th>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="u in users">
+                    <tr ng-repeat="u in users" ng-class="{ 'info': u.id == my_id}">
                         <td ng-if="u.characters.length === 0">{{ '{{ u.id }}' }}</td>
                         <td ng-if="u.characters.length !== 0">
                             <eve-image image-type="'Character'" object-id="u.main_id" img-width="256"></eve-image>
@@ -50,6 +50,7 @@
                             <slide-button open-type="edit" ng-click="populateEdit(u, $index)"></slide-button>
                         </td>
                         <td ng-if="!hasRole('ROLE_CEO') || !compareRoles(u)" class="text-center">
+                            <button class="btn btn-small btn-default" disabled="true"><i class="fa fa-times"></i></button>
                         </td>
                     </tr>
                 </tbody>

@@ -6,6 +6,7 @@ angular.module('eveTool')
 
     $scope.currentRoles = userRoleManager.getCurrentRoles();
     $scope.my_highest_role = userRoleManager.getHighestFromMap($scope.currentRoles);
+    $scope.my_id = userRoleManager.getUserId();
 
     $scope.hasRole = function(role){
         return userRoleManager.isGranted(role, $scope.currentRoles);

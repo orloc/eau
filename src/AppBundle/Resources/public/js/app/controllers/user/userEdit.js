@@ -5,12 +5,12 @@ angular.module('eveTool')
         $scope.submitLoading = false;
         $scope.edit_password = false;
         $scope.editUser = {};
+        $scope.my_id = userRoleManager.getUserId();
 
         // if user auth has the right roles get all of them
         $scope.roles = userRoleManager.getRoles();
         var canAccess = function(){
-            var myId = userRoleManager.getUserId();
-            return myId === $scope.editUser.id;
+            return $scope.my_id === $scope.editUser.id;
         };
 
 
