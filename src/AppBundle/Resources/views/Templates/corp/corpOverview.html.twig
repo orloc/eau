@@ -182,12 +182,12 @@
                                     <th>Type</th>
                                     <th>Amount</th>
                                     </thead>
-                                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
+                                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.trans[0].total_amount <= 0, 'success': r.trans[0].total_amount > 0 }">
                                         <td>
                                             {{ '{{ r.type.ref_type_name }}' }}
                                         </td>
                                         <td>
-                                            {{ '{{ r.total | currency:"ISK" }}' }}
+                                            {{ '{{ r.trans[0].total_amount | currency:"ISK" }}' }}
                                         </td>
                                     </tr>
                                 </table>

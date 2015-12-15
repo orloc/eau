@@ -63,27 +63,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
         $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
             ->getTransactionsByTypes($corp, $typeIds, $dt);
 
-        $mapped = [];
-        foreach ($typeList as $t){
-            $mapped[$t->getRefTypeId()] = [
-                'type' => $t,
-                'trans' => []
-            ];
-        }
-
-        foreach ($transactions as $trans) {
-            $id = $trans->getRefTypeId();
-            if (isset($mapped[$id])){
-                array_push($mapped[$id]['trans'], $trans);
-            }
-        }
-        foreach ($mapped as $i => $m){
-            if (count($m['trans']) == 0){
-                unset($mapped[$i]);
-            }
-        }
-
-        $json = $this->get('jms_serializer')->serialize(array_values($mapped), 'json');
+        $json = $this->get('jms_serializer')->serialize($transactions, 'json');
 
         return $this->jsonResponse($json);
     }

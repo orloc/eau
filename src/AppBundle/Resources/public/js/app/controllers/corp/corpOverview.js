@@ -106,7 +106,7 @@ angular.module('eveTool')
                             });
                         case 'stats':
                             return corporationDataManager.getJournalTypeAggregate($scope.selected_corp, date).then(function(data){
-                                $scope.ref_types = sumTotals(data);
+                                $scope.ref_types = data;
                                 $scope.segments = $scope.getSegments($scope.ref_types, ($scope.ref_types.length / 2) + 1 );
 
                             }).then(function(){

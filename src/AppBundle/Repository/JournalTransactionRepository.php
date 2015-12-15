@@ -7,7 +7,11 @@ use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationMember;
 use Carbon\Carbon;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class JournalTransactionRepository extends EntityRepository {
 
@@ -38,22 +42,46 @@ class JournalTransactionRepository extends EntityRepository {
         $end = $date->copy();
         $end->setTime(23,59,59);
 
+        $sql = "SELECT jt.ref_type_id, group_concat(jt.id) as ids
+             FROM journal_transactions as jt
+             LEFT JOIN accounts as acc on jt.account_id=acc.id
+             WHERE acc.corporation_id = :corp_id
+             AND jt.ref_type_id IN ( :ref_types )
+             AND jt.date >= :start_date
+             AND jt.date <= :end_date
+             GROUP BY jt.ref_type_id";
 
-        $results = $this->createQueryBuilder('jt')
-            ->select('jt')
-            ->leftJoin('jt.account', 'acc')
-            ->where('acc.corporation = :corp')
-            ->andWhere('jt.ref_type_id IN (:ref_type)')
-            ->andWhere('jt.date >= :start')
-            ->andWhere('jt.date <= :end')
-            ->setParameters([
-                'corp' => $corp,
-                'ref_type' => $types,
-                'start' => $start,
-                'end' => $end
-            ])->getQuery()->getResult();
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\JournalTransaction', 'jt');
+        $rsm->addFieldResult('jt', 'ref_type_id', 'ref_type_id');
+        $rsm->addFieldResult('jt', 'ids', 'id');
+        $q = $this->getEntityManager()->createNativeQuery($sql, $rsm);
 
-        return $results;
+        $q->setParameter('corp_id' ,$corp->getId());
+        $q->setParameter('ref_types' ,$types, Connection::PARAM_INT_ARRAY);
+        $q->setParameter('start_date' ,$start);
+        $q->setParameter('end_date' ,$end);
+
+        $results = $q->getResult();
+
+        $real_res = [];
+        foreach ($results as $res){
+            $ids = explode(",",$res->getId());
+
+            $r = $this->createQueryBuilder('jt')
+                ->select('sum(jt.amount) as total_amount')
+                ->where('jt.id in (:j_ids)')
+                ->setParameter('j_ids', $ids)
+                ->getQuery()->getResult();
+
+            $real_res[] = [
+                'type' => $res->getRefType(),
+                'trans' => $r,
+                'orig_ids' => $ids
+            ];
+        }
+
+        return $real_res;
     }
 
     public function getTransactionsByMember(Corporation $corp, CorporationMember $member, Carbon $date){
