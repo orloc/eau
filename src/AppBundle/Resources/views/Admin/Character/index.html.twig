@@ -21,6 +21,7 @@
                     </div>
                 </div>
                 {% endif %}
+                <div class="row"></div>
                 <div class="row">
                     <div class="col-md-12" ng-cloak="">
                         <table class="table table-condensed table-hover data-table" ng-cloak>
@@ -28,9 +29,12 @@
                             <th></th>
                             <th>Name</th>
                             <th>Corporation</th>
-                            <th>Has Key</th>
                             <th>Is Main</th>
-                            <th>Created At</th>
+                            <th>Skill Queue End</th>
+                            <th>SkillPoints</th>
+                            <th>Ship Type</th>
+                            <th>Last Known Location</th>
+                            <th>Has Key</th>
                             <th><i class="fa fa-cogs"></i></th>
                             </thead>
                             <tbody>
@@ -41,15 +45,19 @@
                                 <td>{{ '{{ c.name }}' }}</td>
                                 <td>{{ '{{ c.corporation_name }}' }}</td>
                                 <td>
-                                    <label class="label" ng-class="{ 'label-danger': !c.has_key, 'label-success': c.has_key }">
-                                        <i class="fa" ng-class="{ 'fa-check': c.has_key, 'fa-times': !c.has_key }"></i>
-                                    </label>
-                                <td>
                                     <label class="label" ng-class="{ 'label-warning': !c.is_main, 'label-success': c.is_main }">
                                         <i class="fa" ng-class="{ 'fa-check': c.is_main, 'fa-times': !c.is_main }"></i>
                                     </label>
                                 </td>
-                                <td> {{ '{{  c.created_at | date:"shortDate" }}' }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <label class="label" ng-class="{ 'label-danger': !c.has_key, 'label-success': c.has_key }">
+                                        <i class="fa" ng-class="{ 'fa-check': c.has_key, 'fa-times': !c.has_key }"></i>
+                                    </label>
+                                </td>
                                 <td>
                                     <button class="btn btn-sm btn-default" ng-click="selectCharacter(c)" ng-show="selected_character == null"><i class="fa fa-cog"></i></button>
                                     <button class="btn btn-sm btn-danger" ng-show="selected_character !== null && selected_character.id === c.id" ng-click="removeChar()"><i class="fa fa-times"></i></button>
@@ -57,7 +65,7 @@
                             </tr>
 
                             <tr ng-show="characters.length == 0" ng-cloak>
-                                <td colspan="7" class=" text-center" ng-cloak>
+                                <td colspan="11" class=" text-center" ng-cloak>
                                     <h3 style="font-family: 'roboto';" class="text-danger">No characters found</h3>
                                     <p style="color: black;">You will <b>need to add or update</b> a character with a valid api key prior to being able to use this application.</p>
                                 </td>
