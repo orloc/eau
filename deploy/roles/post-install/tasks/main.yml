@@ -8,7 +8,11 @@
     sudo: yes
     service: name=php5-fpm state=restarted
 
+  - name: Check if nginx exists
+    stat: path=/usr/sbin/nginx
+    register: nginx_file
+
   - name: Restarting nginx
     sudo: yes
     service: name=nginx state=restarted
-    when: sys.stat nginx is defined
+    when: nginx_file.stat.exists == true

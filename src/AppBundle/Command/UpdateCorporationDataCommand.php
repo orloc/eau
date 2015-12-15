@@ -75,11 +75,9 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
         foreach ($corps as $c){
             $dataUpdateService->checkCorporationDetails($c);
-
             $dataUpdateService->updateShortTimerCalls($c, $force);
             $dataUpdateService->updateLongTimerCalls($c, $force);
-
+            $dataUpdateService->updateAssetCache($c);
         }
-        $dataUpdateService->updateAssetCache($c);
     }
 }

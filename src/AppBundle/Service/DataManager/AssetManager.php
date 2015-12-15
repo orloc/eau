@@ -82,42 +82,44 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
         $group = $this->doctrine->getRepository('AppBundle:AssetGroup')
             ->getLatestAssetGroup($corp);
 
-        if (!$group->getHasBeenUpdated()){
-            $query = $this->doctrine->getRepository('AppBundle:Asset')
-                ->getAllByGroup($group);
+        if ($group instanceof AssetGroup){
+            if (!$group->getHasBeenUpdated()){
+                $query = $this->doctrine->getRepository('AppBundle:Asset')
+                    ->getAllByGroup($group);
 
-            $allItems = $query->getResult();
+                $allItems = $query->getResult();
 
-            $updatedItems = $this->price_manager->updatePrices(
-                $this->item_manager->updateDetails($allItems)
-            );
+                $updatedItems = $this->price_manager->updatePrices(
+                    $this->item_manager->updateDetails($allItems)
+                );
 
-            $filteredList = array_filter($updatedItems, function($i) {
-                if (!isset($i->getDescriptors()['name'])) {
-                    return false;
-                }
+                $filteredList = array_filter($updatedItems, function($i) {
+                    if (!isset($i->getDescriptors()['name'])) {
+                        return false;
+                    }
 
-                $name = $i->getDescriptors()['name'];
-                $t = strstr($name, 'Blueprint');
+                    $name = $i->getDescriptors()['name'];
+                    $t = strstr($name, 'Blueprint');
 
-                return $t === false;
-            });
+                    return $t === false;
+                });
 
-            $total_price = array_reduce($filteredList, function($carry, $data){
-                if ($carry === null){
-                    return $data->getDescriptors()['total_price'];
-                }
+                $total_price = array_reduce($filteredList, function($carry, $data){
+                    if ($carry === null){
+                        return $data->getDescriptors()['total_price'];
+                    }
 
-                return $carry + $data->getDescriptors()['total_price'];
-            });
+                    return $carry + $data->getDescriptors()['total_price'];
+                });
 
-            $group->setAssetSum($total_price)
-                ->setHasBeenUpdated(true);
+                $group->setAssetSum($total_price)
+                    ->setHasBeenUpdated(true);
 
-            $em = $this->doctrine->getManager();
-            $em->persist($group);
+                $em = $this->doctrine->getManager();
+                $em->persist($group);
 
-            $em->flush();
+                $em->flush();
+            }
         }
     }
 

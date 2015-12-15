@@ -32,7 +32,7 @@ class EveDataUpdateService {
     public function checkCorporationDetails(Corporation $c){
         $em = $this->doctrine->getManager();
         if ($c->getEveId() === null){
-            $this->log->warning("Updating corp details");
+            $this->log->info("Updating corp details");
             $result = $this->corp_manager->getCorporationDetails($c);
 
             $c->setEveId($result['id']);
@@ -118,7 +118,7 @@ class EveDataUpdateService {
     }
 
     protected function doUpdate($manager, $call, Corporation $c, $cache_style){
-        $this->log->warning(sprintf("Executing %s", $call));
+        $this->log->info(sprintf("Executing %s", $call));
         $start = microtime(true) ;
         $success = $this->tryCall($manager, $call, $c);
 
