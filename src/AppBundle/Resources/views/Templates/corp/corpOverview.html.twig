@@ -196,18 +196,18 @@
                         <div class="col-xs-12" ng-if="!loading">
                             <h4>Member Contributions  </h4>
                             <div class="col-sm-6" ng-repeat="s in member_segments">
-                                <table class="table tabled-hover table-stripped data-table">
+                                <table class="table tabled-hover table-stripped data-table ">
                                     <thead>
                                     <th></th>
                                     <th>Amount</th>
                                     </thead>
-                                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.total <= 0, 'success': r.total > 0 }">
+                                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.total[0].total_amount <= 0, 'success': r.total[0].total_amount > 0 }">
                                         <td>
                                             <eve-image image-type="'Character'" object-id="r.user.character_id" img-width="256"></eve-image>
-                                            {{ '{{ r.user.character_name }}' }}
+                                            <span class="small">{{ '{{ r.user.character_name }}' }}</span>
                                         </td>
                                         <td>
-                                            {{ '{{ r.total | currency:"ISK" }}' }}
+                                            <h4>{{ '{{ r.total[0].total_amount | currency:"ISK" }}' }}</h4>
                                             <ul class="list-unstyled">
                                                 <li class="small" ng-repeat="type in r.distribution">
                                                     {{ '{{ type[0].ref_type.ref_type_name }} : {{ sumTrans(type) | currency }}' }}

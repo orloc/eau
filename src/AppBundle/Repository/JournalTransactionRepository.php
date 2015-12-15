@@ -84,7 +84,7 @@ class JournalTransactionRepository extends EntityRepository {
         return $real_res;
     }
 
-    public function getTransactionsByMember(Corporation $corp, CorporationMember $member, Carbon $date){
+    public function getTransactionsByMember(Corporation $corp, array $member_ids, Carbon $date){
 
         $start = $date->copy();
         $start->subWeek()->setTime(0,0,0);
@@ -92,21 +92,52 @@ class JournalTransactionRepository extends EntityRepository {
         $end = $date->copy();
         $end->setTime(23,59,59);
 
-        return $this->createQueryBuilder('jt')
-            ->select('jt')
-            ->leftJoin('jt.account', 'acc')
-            ->where('acc.corporation = :corp')
-            ->andWhere('jt.owner_id2 = :owner2')
-            ->andWhere('jt.date >= :start')
-            ->andWhere('jt.date <= :end')
-            ->setParameters([
-                'corp' => $corp,
-                'owner2' => $member->getCharacterId(),
-                'start' => $start,
-                'end' => $end
-            ])
-            ->getQuery()->getResult();
+        $sql = "SELECT jt.owner_id2, group_concat(jt.id) as ids
+            FROM journal_transactions as jt
+            LEFT JOIN accounts as acc on jt.account_id=acc.id
+            WHERE  acc.corporation_id = :corp_id
+            AND jt.owner_id2 in ( :owner_ids )
+            AND jt.date >= :start_date
+            AND jt.date <= :end_date
+            GROUP BY jt.owner_id2";
 
+        $rsm = new ResultSetMappingBuilder($this->getEntityManager());
+        $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\JournalTransaction', 'jt');
+        $rsm->addFieldResult('jt', 'owner_id2', 'owner_id2');
+        $rsm->addFieldResult('jt', 'ids', 'id');
+        $q = $this->getEntityManager()->createNativeQuery($sql, $rsm);
+
+        $q->setParameter('corp_id' ,$corp->getId());
+        $q->setParameter('owner_ids' ,$member_ids, Connection::PARAM_INT_ARRAY);
+        $q->setParameter('start_date' ,$start);
+        $q->setParameter('end_date' ,$end);
+
+        $results = $q->getResult();
+
+        $real_res = [];
+        foreach ($results as $res){
+            $ids = explode(",",$res->getId());
+
+            $rt = $this->createQueryBuilder('jt')
+                ->select('sum(jt.amount) as total_amount')
+                ->where('jt.id in (:j_ids)')
+                ->setParameter('j_ids', $ids)
+                ->getQuery()->getResult();
+            $r = $this->createQueryBuilder('jt')
+                ->select('jt')
+                ->where('jt.id in (:j_ids)')
+                ->setParameter('j_ids', $ids)
+                ->getQuery()->getResult();
+
+
+            $real_res[] = [
+                'user' => $res->getOwnerId2(),
+                'total' => $rt,
+                'orig_ids' => $r
+            ];
+        }
+
+        return  $real_res;
     }
 
     public function hasTransaction(Account $acc, $refId, $amount){

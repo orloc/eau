@@ -84,22 +84,20 @@ class JournalTransactionController extends AbstractController implements ApiCont
         $members = $this->getRepository('AppBundle:CorporationMember')
             ->findBy(['corporation' => $corp, 'disbanded_at' => null]);
 
-        /**
-         * @TODO Refactor this so we dont have N queries happening
-         */
-        $populatedTrans = [];
-        foreach ($members as $m){
-            $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
-                ->getTransactionsByMember($corp, $m, $dt);
+        $memberIds =  array_map(function($d){
+            return intval($d->getCharacterId());
+        }, $members);
 
-            if (count($transactions)){
-                $populatedTrans[] = [
-                    'user' => $m, 'trans' => $transactions
-                ];
-            }
+        $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
+            ->getTransactionsByMember($corp, $memberIds, $dt);
+
+        foreach ($transactions as $k => $t){
+            $u = $this->getRepository('AppBundle:CorporationMember')
+                ->findOneBy(['character_id' => $t['user']]);
+            $transactions[$k]['user'] = $u;
         }
 
-        $json = $this->get('jms_serializer')->serialize($populatedTrans, 'json');
+        $json = $this->get('jms_serializer')->serialize($transactions, 'json');
 
         return $this->jsonResponse($json);
     }
