@@ -5,6 +5,7 @@ angular.module('eveTool', [
     'angular-ladda',
     'ngAnimate',
     'angular-spinkit',
+    'timer',
     'ui.bootstrap',
     'angularSlideables',
     'localytics.directives'

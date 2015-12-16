@@ -13,6 +13,7 @@
                 <th>
                     State
                 </th>
+                <th>Offline In</th>
                 <th>
                     Corporate Access?
                 </th>
@@ -56,6 +57,9 @@
                         <label class="label" ng-class="{ 'label-info': item.state === 4, 'label-warning': item.state === 1 || item.state === 2, 'label-danger': item.state === 0 || item.state === 3}">
                             {{ '{{ resolveState(item.state) }}' }}
                         </label>
+                    </td>
+                    <td>
+                        <timer end-time="item.timeToOffline">{{ '{{ hours }}'}} h, {{ '{{ minutes }}' }} m, {{ '{{ seconds }}'}} s</timer>
                     </td>
                     <td> <i ng-class="{ 'fa fa-check': hasCorpAccess(item.general_settings), 'fa fa-minus': !hasCorpAccess(item.general_settings) }"></i></td>
                     <td> <i ng-class="{ 'fa fa-check': hasAllianceAccess(item.general_settings), 'fa fa-minus': !hasAllianceAccess(item.general_settings) }"></i></td>

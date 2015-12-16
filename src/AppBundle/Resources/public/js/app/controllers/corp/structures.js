@@ -1,8 +1,6 @@
 'use strict';
-
 angular.module('eveTool')
     .controller('structureController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
-
         $scope.loading = true;
         $scope.getTowerFuelQuantities = function(fuel, tower){
             if (typeof fuel !== 'undefined' && typeof tower !== 'undefined'){
@@ -10,9 +8,7 @@ angular.module('eveTool')
                 var actualSize =  fuel.typeID === "16275" ? 50000 :140000;
                 var percentage = (function(tower){
                     actualSize = resolveTowerSize(tower, actualSize);
-
                     return ((fuelVolume/parseFloat(actualSize)) * 100).toPrecision(2);
-
                 })(tower);
 
                 return { 'percentage': percentage, 'max': actualSize, 'actual': fuelVolume };
@@ -29,9 +25,19 @@ angular.module('eveTool')
             return consumption * block.price;
         };
 
+        var getTimeToOffline = function(tower){
+            var consumption = resolveTowerSize(tower, 160),
+                date = moment(),
+                fuel = _.find(tower.fuel, function(f){
+                return f.typeID !== "16275";
+            });
+
+            var remaining = (parseFloat(fuel.quantity) / consumption);
+            date.add(remaining, 'hours');
+            return parseFloat(date.format('x'));
+        };
 
         $scope.selected_corp = null;
-
         $scope.image = {
             width: 16
         };
@@ -44,20 +50,20 @@ angular.module('eveTool')
 
             corporationDataManager.getStructures(val).then(function(data){
                 $scope.bases = data;
+                angular.forEach($scope.bases, function(b, k){
+                    $scope.bases[k].timeToOffline = getTimeToOffline(b);
+                });
                 $scope.loading = false;
             });
-
         });
 
 
         $scope.hasAllianceAccess = function(settings){
             return  settings.allowAllianceMembers === '1';
-
         };
 
         $scope.hasCorpAccess = function(settings){
             return settings.allowCorporationMembers === '1';
-
         };
 
         $scope.resolveState = function(state){
@@ -78,7 +84,6 @@ angular.module('eveTool')
         function resolveTowerSize(tower, scale){
             var size = _.find(tower.descriptors.attributes, function(d){
                 return d.attributeID === '1031';
-
             }).valueInt;
 
             if (typeof size !== 'undefined'){

@@ -28,10 +28,14 @@
     "chosen": "~1.4.2",
     "angular-bootstrap": "~0.14.1",
     "angular-spinkit": "~0.3.3",
-    "AngularSlideables": "*"
+    "AngularSlideables": "*",
+    "angular-timer": "~1.3.3",
+    "humanize-duration": "~3.4.0"
   },
   "resolutions": {
     "font-awesome": "~4.4.0",
-    "chosen": "~1.4.2"
+    "chosen": "~1.4.2",
+    "momentjs": "~2.10.6",
+    "humanize-duration": "~3.4.0"
   }
 }

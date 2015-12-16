@@ -75,7 +75,6 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
         $corp_ids = [];
         foreach ($corps as $c){
-            /*
             $log->info("Starting Update {$c->getCorporationDetails()->getName()}\n\n");
             $dataUpdateService->checkCorporationDetails($c);
             $em->flush();
@@ -83,7 +82,6 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $em->flush();
             $dataUpdateService->updateLongTimerCalls($c, $force);
             $em->flush();
-            */
 
             $corp_ids[] = $c->getId();
             $log->info("Finished Updated {$c->getCorporationDetails()->getName()}");
