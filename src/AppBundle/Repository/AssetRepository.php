@@ -57,11 +57,29 @@ class AssetRepository extends EntityRepository {
     public function getDeliveriesByGroup(AssetGroup $group){
         return $this->createQueryBuilder('a')
             ->select('a')
-            ->where('a.asset_group = :group')
+            ->where('a.asset_group = :agroup')
             ->andWhere('a.flag_id = :flag')
-            ->setParameter('group', $group)
+            ->setParameter('agroup', $group)
             ->setParameter('flag', 62) // does not equal deliveries
             ->getQuery();
     }
 
+    public function getLocationsByAssetGroup(AssetGroup $group){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.asset_group = :a_group')
+            ->groupBy('a.locationId')
+            ->setParameter('a_group', $group)
+            ->getQuery()->getResult();
+    }
+
+    public function getAssetsByLocation(AssetGroup $group, $locaitonId){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.asset_group = :a_group')
+            ->andWhere('a.locationId = :locid')
+            ->setParameter('a_group', $group)
+            ->setParameter('locid', $locaitonId)
+            ->getQuery()->getResult();
+    }
 }

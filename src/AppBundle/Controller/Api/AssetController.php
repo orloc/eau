@@ -67,13 +67,57 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $group = $this->getRepository('AppBundle:AssetGroup')
             ->getLatestAssetGroup($corp);
+        $repo = $this->getRepository('AppBundle:Asset');
 
-        $query = $this->getRepository('AppBundle:Asset')
-            ->getAllByGroup($group);
+        switch ($sort){
+            case 'location':
+                $results = $repo->getLocationsByAssetGroup($group);
+                $locations = [];
+                $updatedResults = $this->get('app.itemdetail.manager')
+                    ->updateDetails($results);
 
-        $allItems = $query->getResult();
+                foreach ($updatedResults as $r){
+                    $locations[$r->getLocationId()] = [
+                        'name' => $r->getDescriptors()['stationName'],
+                        'id' => $r->getLocationId(),
+                    ];
+                }
 
-        var_dump($allItems);die;
+                return $this->jsonResponse(json_encode(array_values($locations)), 200);
+
+                break;
+            case 'category':
+                break;
+        }
+    }
+
+    /**
+     * @Route("/corporation/{id}/location_assets", name="api.corporation.location_assets", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_CEO")
+     * @Method("GET")
+     */
+    public function locationAssetsAction(Request $request, Corporation $corp){
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+        $loc = $request->query->get('location', false);
+        if (!$loc){
+            return $this->jsonResponse(json_encode(['error' => 'invalid']), 400);
+        }
+
+        $group = $this->getRepository('AppBundle:AssetGroup')
+            ->getLatestAssetGroup($corp);
+
+        $repo = $this->getRepository('AppBundle:Asset');
+        $assets = $repo->getAssetsByLocation($group, $loc);
+
+        $priceManager = $this->get('app.price.manager');
+
+        $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($assets);
+        $priceManager->updatePrices($updatedItems);
+
+        $json =  $this->get('jms_serializer')->serialize($updatedItems, 'json');
+        return $this->jsonResponse($json, 200);
+
     }
 
     /**

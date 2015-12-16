@@ -10,6 +10,7 @@ angular.module('eveTool')
         $scope.max_size = 10;
         $scope.per_page = 10;
         $scope.page = 1;
+        $scope.open_items = [];
         $scope.filters = {
             market_group: null,
             list: []
@@ -19,8 +20,8 @@ angular.module('eveTool')
             if ($scope.view_type === view){
                 return;
             }
-
             $scope.view_type = view;
+            renderView($scope.selected_corp);
         };
 
         $scope.per_page_selection = [
@@ -47,6 +48,27 @@ angular.module('eveTool')
             return activeFilters;
         };
 
+        $scope.openedLocation = function(loc){
+            if (loc.assets === null){
+                corporationDataManager.getCorpLocationAssets($scope.selected_corp, loc.id).then(function(data){
+                    loc.assets = data;
+                });
+            }
+        };
+
+        $scope.openContents = function (item){
+            if ($scope.isOpen(item) === true){
+                delete $scope.open_items[item.id];
+            } else {
+                $scope.open_items[item.id] = item;
+            }
+        };
+
+        $scope.isOpen = function(item){
+            var ret =  typeof $scope.open_items[item.id] !== 'undefined';
+            return ret;
+        };
+
         function renderView(corp){
             var translateView = function(view){
                 if (view === 0){
@@ -59,7 +81,10 @@ angular.module('eveTool')
                 case 1:
                 case 2:
                     corporationDataManager.getCorpInventorySorted(corp, translateView($scope.view_type)).then(function(data){
-                        console.log(data);
+                        $scope.locations = data;
+                        angular.forEach($scope.locations, function(d, k){
+                            $scope.locations[k].assets = null;
+                        });
                     });
                     break;
                 case 0:

@@ -13,6 +13,34 @@
 @import '_partials/_aggregates.scss';
 @import '_partials/_corporation_item_pane.scss';
 
+.location-view {
+  ul li {
+    color: $offGrey;
+    font-weight: 400;
+    font-size: 12px;
+    border-top: 1px solid $offGrey;
+    &:first-child{
+      border: 0;
+    }
+
+    button { padding: 2px; }
+  }
+
+  .header {
+    border-bottom: 1px solid $offGrey;
+    font-weight: bold;
+    line-height: 12px;
+    margin-bottom: 10px;
+  }
+
+  .panel-heading {
+    background-color: $offGrey;
+    color: $offWhite;
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+}
+
 body {
   height: 100%;
   width: 100%;

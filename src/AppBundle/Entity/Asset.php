@@ -28,11 +28,13 @@ class Asset
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
+     * @JMS\Expose()
      */
     protected $itemId;
 
     /**
      * @ORM\Column(type="bigint", nullable=true)
+     * @JMS\Expose()
      */
     protected $locationId;
 
@@ -50,11 +52,13 @@ class Asset
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @JMS\Expose()
      */
     protected $flag_id;
 
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Asset", mappedBy="parent", cascade={"persist"})
+     * @JMS\Expose()
      */
     protected $contents;
 
