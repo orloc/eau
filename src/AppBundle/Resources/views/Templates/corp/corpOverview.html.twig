@@ -8,22 +8,30 @@
                 <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
                         {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
-
-                <d class="small muted circle-ticker pull-right">
+                <div class="small muted circle-ticker pull-right">
                     <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
                     &nbsp;
                     &nbsp;
                     <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}
-                </d            </div>
-
+                </div>
+            </div>
             <div class="graphs col-xs-10" ng-hide="not_enough_data"></div>
             <div class="col-xs-10" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
             <div class="col-xs-2 viewing-details" >
                 <span class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span>
                 <br>
-                <div class="btn-group-sm pull-right controls">
-                    <button  class="btn btn-sm" type="button" ng-click="back()" ng-hide="loading === true"><i class="fa fa-chevron-left"></i></button>
-                    <button class="btn btn-sm" type="button" ng-click="forward()" ng-hide="loading === true"><i class="fa fa-chevron-right"></i></button>
+                <div class=" pull-right controls">
+                    <div class="btn-group-sm">
+                        <button  class="btn btn-sm" type="button" ng-click="byWeek()" ng-hide="loading === true">Week</button>
+                        <button  class="btn btn-sm" type="button" ng-click="byMonth()" ng-hide="loading === true">Month</button>
+                        <button class="btn btn-sm" type="button" ng-click="byQuarter()" ng-hide="loading === true">Quarter</button>
+                    </div>
+                    <br>
+                    <div class="btn-group-sm">
+                        <button  class="btn btn-sm" type="button" ng-click="back()" ng-hide="loading === true"><i class="fa fa-chevron-left"></i></button>
+                        <button  class="btn btn-sm" type="button" ng-click="today()" ng-disabled="current_date === orig_date" ng-hide="loading === true"><i class="fa fa-dot-circle-o"></i></button>
+                        <button class="btn btn-sm" type="button" ng-click="forward()" ng-hide="loading === true"><i class="fa fa-chevron-right"></i></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -42,6 +50,7 @@
                         </p>
                     </li>
                 </ul>
+                <button ng-show="!loading" class="btn btn-block btn-default">Show All</button>
             </div>
             <div class="col-xs-9">
                 <div ng-if="loading">
@@ -165,11 +174,21 @@
                             <cube-grid-spinner></cube-grid-spinner>
                         </div>
                         <div class="col-xs-12" ng-if="!loading">
+                            <div class="button-group">
+                                <button class="btn btn-sm btn-default" ng-click="showView(0)" ng-class="{ 'active': selected === 0}">
+                                    <i class="fa fa-bank"></i> Transactions
+                                </button>
+                                <button class="btn btn-sm btn-default" ng-click="showView(1)" ng-class="{ 'active': selected === 1}">
+                                    <i class="fa fa-group"></i> Contributions
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" ng-show="!loading && selected === 0">
                             <h4>Transaction Breakdown <span class="pull-right">
                                     <i ng-init="transSum = sumTransactions()" ng-class="{ 'text-success fa-chevron-up': transSum > 0, 'text-danger fa-chevron-down': transSum < 0 }" class="fa"></i> {{ '{{ transSum | currency:" ISK" }}' }}
                                 </span> </h4>
                             <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
-                            <div class="col-sm-6" ng-repeat="s in segments">
+                            <div class="col-md-6" ng-repeat="s in segments">
                                 <table class="table tabled-hover table-stripped data-table">
                                     <thead>
                                     <th>Type</th>
@@ -186,15 +205,15 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-xs-12" ng-if="!loading">
+                        <div class="col-xs-12" ng-show="!loading && selected === 1">
                             <h4>Member Contributions  </h4>
-                            <div class="col-sm-6" ng-repeat="s in member_segments">
+                            <div class="col-md-6" ng-repeat="s in member_segments">
                                 <table class="table tabled-hover table-stripped data-table ">
                                     <thead>
                                     <th></th>
                                     <th>Amount</th>
                                     </thead>
-                                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.total[0].total_amount <= 0, 'success': r.total[0].total_amount > 0 }">
+                                    <tr ng-repeat="r in s | orderBy:'total[0].total_amount':false" ng-class="{ 'danger': r.total[0].total_amount <= 0, 'success': r.total[0].total_amount > 0 }">
                                         <td>
                                             <eve-image image-type="'Character'" object-id="r.user.character_id" img-width="256"></eve-image>
                                             <span class="small">{{ '{{ r.user.character_name }}' }}</span>

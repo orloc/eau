@@ -102,7 +102,6 @@ class ApiCredentials {
 
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
-     * @JMS\Expose()
      */
     protected $created_by;
 

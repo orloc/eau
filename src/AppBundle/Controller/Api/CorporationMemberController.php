@@ -36,9 +36,8 @@ class CorporationMemberController extends AbstractController implements ApiContr
 
             if ($found instanceof Character){
                 $m->setApiKey($found->getApiCredentials()->first());
+                $m->setAssociatedChars(array_values($found->associatedCharacters()));
             }
-
-
         }
         $json = $this->get('serializer')->serialize($members, 'json');
 

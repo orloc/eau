@@ -52,9 +52,15 @@
                             <td colspan="10" class="text-center"> No Orders found</td>
                         </tr>
                         <tr ng-repeat="item in orders | orderBy:'ratio':false" ng-show="!loading && orders.length > 0" ng-class="{ 'danger': item.ratio <= 20, 'warning': item.ratio <= 50 }">
-                            <td width="175px" class="text-center">
-                                <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                                {{ '{{ item.descriptors.name }}' }}
+                            <td>
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
+                                    </div>
+                                    <div class="col-xs-9">
+                                        {{ '{{ item.descriptors.name }}' }}
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 <label class="label" ng-class="{ 'label-danger': item.bid, 'label-success': !item.bid}">
@@ -83,8 +89,12 @@
                             <td>
                                 {{ '{{ item.descriptors.stationName  }}' }}
                             </td>
-                            <td width="100px">
-                                <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
+                            <td>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                         <tr ng-show="loading">

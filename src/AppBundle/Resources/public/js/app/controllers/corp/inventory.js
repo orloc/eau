@@ -7,14 +7,13 @@ angular.module('eveTool')
         $scope.reverse = true;
         $scope.image_width = 32;
         $scope.max_size = 15;
-        $scope.per_page = 5;
+        $scope.per_page = 10;
         $scope.page = 1;
         $scope.filters = {
             market_group: null,
             list: []
         };
         $scope.per_page_selection = [
-            { label: '5', value: 5},
             { label: '10', value: 10},
             { label: '15', value: 15},
             { label: '25', value: 25},

@@ -79,6 +79,11 @@ class CorporationMember
     /**
      * @JMS\Expose()
      */
+    protected $associated_chars = [];
+
+    /**
+     * @JMS\Expose()
+     */
     protected $mains_name;
 
     public function setApiKey(ApiCredentials $creds){
@@ -87,6 +92,14 @@ class CorporationMember
 
     public function setIsMain($bool){
         $this->is_main = $bool;
+    }
+
+    public function setAssociatedChars(array $chars){
+        $this->associated_chars = $chars;
+    }
+
+    public function getAssociatedChars(){
+        return $this->associated_chars;
     }
 
     public function __construct(){

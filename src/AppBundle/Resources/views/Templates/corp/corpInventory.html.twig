@@ -77,9 +77,15 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="item in assets | orderBy:'descriptors.total_price':true" ng-show="!loading">
-                        <td width="75px">
-                            <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
+                        <td>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
+                                </div>
+                                <div class="col-xs-8">
                             {{ '{{ item.descriptors.name }}' }}
+                                </div>
+                            </div>
                         </td>
                         <td>
                             {{ '{{ item.quantity }}' }}

@@ -3,6 +3,7 @@
 angular.module('eveTool')
     .controller('corpMembersController', ['$scope', '$http', 'selectedCorpManager', function($scope, $http, selectedCorpManager){
         $scope.selected_corp = null;
+        $scope.image_width = 32;
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
             if (typeof val === 'undefined' || typeof val.id === 'undefined') {
                 return;
@@ -16,6 +17,20 @@ angular.module('eveTool')
 
                 return  now.format('DDD')- time.format('DDD');
 
+            };
+
+            $scope.getAssocChars = function(m){
+                var c = m.associated_chars;
+                if (c.length === 0){
+                    return 'None';
+                }
+
+                var str = [];
+                angular.forEach(c, function(char){
+                    str.push(char.name);
+                });
+
+                return str.join(', ');
             };
 
             $scope.hasApiKey = function(char){

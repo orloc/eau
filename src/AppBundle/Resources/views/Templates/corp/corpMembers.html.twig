@@ -4,10 +4,9 @@
             <table class="table data-table table-striped table-condensed">
                 <thead>
                 <th>
-                </th>
-                <th>
                     Name
                 </th>
+                <th>Associated Chars</th>
                 <th>
                     Joined on
                 </th>
@@ -18,12 +17,17 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="m in members | orderBy:'start_time':true">
-                    <td width="50px">
-                        <eve-image image-type="'Character'" object-id="m.character_id" img-width="256"></eve-image>
+                    <td >
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <eve-image image-type="'Character'" override-width="image_width" object-id="m.character_id" img-width="256"></eve-image>
+                            </div>
+                            <div class="col-xs-8">
+                                {{ '{{ m.character_name }}' }}
+                            </div>
+                        </div>
                     </td>
-                    <td>
-                        {{ '{{ m.character_name }}' }}
-                    </td>
+                    <td>{{ '{{ getAssocChars(m)}}' }}</td>
                     <td>
                         {{ '{{ m.start_time | date:"longDate" }}' }}
                     </td>

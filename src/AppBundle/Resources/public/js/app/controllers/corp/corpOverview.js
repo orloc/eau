@@ -3,6 +3,7 @@
 angular.module('eveTool')
     .controller('corpOverviewController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.selected_account = null;
+        $scope.selected = 0;
         $scope.buy_orders = [];
         $scope.members = [];
         $scope.ref_types = [];
@@ -13,6 +14,7 @@ angular.module('eveTool')
         $scope.loading = false;
         $scope.page = 'stats';
         $scope.current_date = moment().format('MM/DD/YY');
+        $scope.orig_date = $scope.current_date;
 
         $scope.$watch('accounts', function(val){
             if (typeof val !== 'undefined' && val.length > 0){
@@ -27,6 +29,10 @@ angular.module('eveTool')
                 }
             }
         });
+
+        $scope.showView = function(view){
+            $scope.selected = view;
+        };
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
             if (typeof val.id === 'undefined'){
@@ -47,7 +53,6 @@ angular.module('eveTool')
                     $scope.update_succeeded = data.succeeded;
                     $scope.next_update = moment(data.created_at).add(10, 'minutes').format('x');
                 }
-
             });
 
             corporationDataManager.getAccounts(val, $scope.current_date).then(function(data){
@@ -75,8 +80,6 @@ angular.module('eveTool')
             return Object.keys(res).map(function(key){
                 return res[key];
             });
-
-
         };
 
         $scope.sumTrans = function(trans){
@@ -134,6 +137,15 @@ angular.module('eveTool')
             }
         };
 
+        $scope.today = function(){
+            $scope.current_date = $scope.orig_date;
+
+            if ($scope.page.length){
+                $scope.switchPage($scope.page);
+            }
+            updateSVG();
+        };
+
         $scope.back = function(){
             $scope.current_date = moment($scope.current_date).subtract(1,'day').format('MM/DD/YY');
             resetParams();
@@ -161,6 +173,16 @@ angular.module('eveTool')
 
         };
 
+        $scope.byWeek = function(){
+
+        };
+        $scope.byMonth = function(){
+
+        };
+
+        $scope.byQuarter = function(){
+
+        };
         $scope.selectAccount = function(acc){
 
             if ($scope.selected_account === null

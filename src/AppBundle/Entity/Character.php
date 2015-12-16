@@ -81,9 +81,21 @@ class Character
      * @JMS\VirtualProperty()
      */
     public function hasKey(){
-
         return $this->getApiCredentials()->count() ? true : false;
+    }
 
+    public function associatedCharacters(){
+        $chars = $this->getUser()->getCharacters();
+        $otherChars = array_filter($chars->toArray(), function($c){
+            return $c->getId() !== $this->getId();
+        });
+
+        $return = array_map(function($c) { return [
+            'name' => $c->getName(),
+            'id' => $c->getId() ];
+        }, $otherChars);
+
+        return $return;
     }
 
     public static function loadValidatorMetadata(ClassMetadata $metadata){

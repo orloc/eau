@@ -3,6 +3,7 @@
 angular.module('eveTool')
     .controller('marketOrderController', ['$scope', '$http','selectedCorpManager', function($scope, $http, selectedCorpManager){
         $scope.orders = [];
+        $scope.image_width = 32;
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
             if (typeof val === 'undefined' || typeof val.id === 'undefined') {
