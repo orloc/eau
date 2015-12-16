@@ -35,9 +35,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $query = $this->getRepository('AppBundle:Asset')
             ->getAllByGroup($group);
 
-        $allItems = $query->getResult();
-
-        $assets = $this->paginateResult($request, $allItems);
+        $assets = $this->paginateResult($request, $query);
 
         $newList = [
             'total_price' => $group->getAssetSum(),
@@ -50,6 +48,32 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         return $this->jsonResponse($json);
 
+    }
+
+    /**
+     * @Route("/corporation/{id}/assets/clustered", name="api.corporation.assets.clustered", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_CEO")
+     * @Method("GET")
+     */
+    public function getAssetsOrganizedAction(Request $request, Corporation $corp){
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+
+        $sort = $request->query->get('sort', false);
+
+        if (!$sort || !in_array($sort, ['location', 'category'])){
+            return $this->jsonResponse(json_encode(['error' => 'invalid sort']), 400);
+        }
+
+        $group = $this->getRepository('AppBundle:AssetGroup')
+            ->getLatestAssetGroup($corp);
+
+        $query = $this->getRepository('AppBundle:Asset')
+            ->getAllByGroup($group);
+
+        $allItems = $query->getResult();
+
+        var_dump($allItems);die;
     }
 
     /**

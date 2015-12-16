@@ -4,15 +4,25 @@ angular.module('eveTool')
     .controller('inventoryController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.loading = true;
         $scope.predicate = 'total_price';
+        $scope.view_type = 0;
         $scope.reverse = true;
         $scope.image_width = 32;
-        $scope.max_size = 15;
+        $scope.max_size = 10;
         $scope.per_page = 10;
         $scope.page = 1;
         $scope.filters = {
             market_group: null,
             list: []
         };
+
+        $scope.switchView = function(view){
+            if ($scope.view_type === view){
+                return;
+            }
+
+            $scope.view_type = view;
+        };
+
         $scope.per_page_selection = [
             { label: '10', value: 10},
             { label: '15', value: 15},
@@ -37,6 +47,55 @@ angular.module('eveTool')
             return activeFilters;
         };
 
+        function renderView(corp){
+            var translateView = function(view){
+                if (view === 0){
+                    return;
+                }
+                return view === 1 ? 'location' : 'category';
+            };
+
+            switch ($scope.view_type){
+                case 1:
+                case 2:
+                    corporationDataManager.getCorpInventorySorted(corp, translateView($scope.view_type)).then(function(data){
+                        console.log(data);
+                    });
+                    break;
+                case 0:
+                default:
+                    corporationDataManager.getCorpInventory(corp, $scope.page, $scope.per_page).then(function(data){
+                        var items = data.items;
+                        $scope.assets = items.items;
+                        $scope.total_price = items.total_price;
+                        $scope.total_items = data.total_count;
+                        $scope.per_page = data.num_items_per_page;
+                        $scope.page = data.current_page_number;
+                        $scope.loading = false;
+                    }).then(function(){
+                        function updateInventory(){
+                            $scope.assets = [];
+                            $scope.loading = true;
+                            corporationDataManager.getCorpInventory($scope.selected_corp, $scope.page, $scope.per_page).then(function(data){
+                                var items = data.items;
+                                $scope.assets = items.items;
+                                $scope.per_page = data.num_items_per_page;
+                                $scope.page = data.current_page_number;
+                                $scope.loading = false;
+                            });
+                        }
+
+                        $scope.pageChanged = function(){
+                            updateInventory();
+                        };
+
+                        $scope.$watch('per_page', function(){
+                            updateInventory();
+                        });
+                    });
+            }
+        }
+
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
             if (typeof val.id === 'undefined'){
                 return;
@@ -45,39 +104,9 @@ angular.module('eveTool')
             $scope.selected_corp = val;
             $scope.assets = [];
             $scope.loading = true;
-
+            renderView(val);
             corporationDataManager.getMarketGroups().then(function(val){
                 $scope.market_groups = val;
-            });
-
-            corporationDataManager.getCorpInventory(val, $scope.page, $scope.per_page).then(function(data){
-                var items = data.items;
-                $scope.assets = items.items;
-                $scope.total_price = items.total_price;
-                $scope.total_items = data.total_count;
-                $scope.per_page = data.num_items_per_page;
-                $scope.page = data.current_page_number;
-                $scope.loading = false;
-            }).then(function(){
-                function updateInventory(){
-                    $scope.assets = [];
-                    $scope.loading = true;
-                    corporationDataManager.getCorpInventory($scope.selected_corp, $scope.page, $scope.per_page).then(function(data){
-                        var items = data.items;
-                        $scope.assets = items.items;
-                        $scope.per_page = data.num_items_per_page;
-                        $scope.page = data.current_page_number;
-                        $scope.loading = false;
-                    });
-                }
-
-                $scope.pageChanged = function(){
-                    updateInventory();
-                };
-
-                $scope.$watch('per_page', function(){
-                    updateInventory();
-                });
             });
 
             corporationDataManager.getLastUpdate(val, 2).then(function(data){

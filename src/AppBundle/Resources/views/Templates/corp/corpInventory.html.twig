@@ -14,119 +14,122 @@
 
         <div class="row" ng-show="!loading">
             <div class="col-xs-12">
-                <form name="search-form" style="width: 50%; display: inline-block; padding: 0">
+                <form name="search-form" style="width: 50%; display: inline-block; padding: 0" ng-show="view_type === 0">
                     <div class="input-group">
                         <div class="input-group-addon"><i class="fa fa-search"></i></div>
                         <input name="search" placeholder="Search..." type="text" class="form-control"/>
                     </div>
                 </form>
                 <div class="btn-group pull-right">
-                    <button class="btn btn-sm btn-default"><i class="fa fa-archive"></i>&nbsp;&nbsp;By Category</button>
-                    <button class="btn btn-sm btn-default"><i class="fa fa-location-arrow"></i>&nbsp;&nbsp;By Location</button>
-                    <button class="btn btn-sm btn-default">All</button>
+                    <button class="btn btn-sm btn-default" ng-click="switchView(2)" ng-class="{'active': view_type === 2 }"><i class="fa fa-archive"></i>&nbsp;&nbsp;By Category</button>
+                    <button class="btn btn-sm btn-default" ng-click="switchView(1)" ng-class="{'active': view_type === 1 }"><i class="fa fa-location-arrow"></i>&nbsp;&nbsp;By Location</button>
+                    <button class="btn btn-sm btn-default" ng-click="switchView(0)" ng-class="{'active': view_type === 0 }">All</button>
                 </div>
             </div>
-            <div class="col-xs-9">
-                <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
+            <div ng-show="loading === true" class="col-xs-12 text-center">
+                    <cube-grid-spinner></cube-grid-spinner>
             </div>
-            <div class="col-xs-3">
-                <button slide-toggle="#advanced_options" style="margin-top: 20px;" class="btn btn-sm">Advanced Filters</button>
-                <div class="pull-right">
-                    <span class="small muted">Per Page</span>
-                    <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
-                        <option val="">{{ '{{ per_page }}' }}</option>
-                    </select>
+            <div class="col-xs-12" ng-show="view_type === 0">
+                <div class="row">
+                    <div class="col-xs-9" >
+                        <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
+                    </div>
+                    <div class="col-xs-3">
+                        <button slide-toggle="#advanced_options" style="margin-top: 20px;" class="btn btn-sm">Advanced Filters</button>
+                        <div class="pull-right">
+                            <span class="small muted">Per Page</span>
+                            <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
+                                <option val="">{{ '{{ per_page }}' }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="advanced_options" class="slideable">
+                        <div class="col-xs-12">
+                            <p>Here there will be instructions to configure complex filters</p>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 active-filters">
+                        <label class="label label-info"  ng-repeat="f in getActiveFilters()">{{ '{{ f.name }}' }}</label>
+                    </div>
+                    <div class="col-xs-12">
+                        <div class="table-responsive">
+                            <table class="table data-table table-striped table-condensed">
+                                <thead>
+                                <th >
+                                    Name
+                                </th>
+                                <th>
+                                    #
+                                </th>
+                                <th>
+                                    m<sup>3</sup>
+
+                                </th>
+                                <th>Region
+                                </th>
+                                <th>Constellation
+                                </th>
+                                <th>System
+                                </th>
+                                <th>Station
+                                </th>
+                                <th>Avg Market Price
+                                </th>
+                                <th>
+                                    Total Price
+                                </th>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in assets | orderBy:'descriptors.total_price':true" ng-show="!loading">
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
+                                            </div>
+                                            <div class="col-xs-8">
+                                                {{ '{{ item.descriptors.name }}' }}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ '{{ item.quantity }}' }}
+                                    </td>
+                                    <td> {{ '{{ getM3(item) | number:2}}' }}m<sup>3</sup></td>
+                                    <td>
+                                        {{ '{{ item.descriptors.region  }}' }}
+                                    </td>
+                                    <td>
+                                        {{ '{{ item.descriptors.constellation  }}' }}
+                                    </td>
+                                    <td>
+                                        {{ '{{ item.descriptors.system  }}' }}
+                                    </td>
+                                    <td>
+                                        {{ '{{ item.descriptors.stationName  }}' }}
+                                    </td>
+                                    <td>
+                                        {{ '{{ item.descriptors.price | currency:"ISK" }}' }}
+                                    </td>
+                                    <td>
+                                        {{ '{{ item.descriptors.total_price | currency:"ISK" }}' }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12" ng-show="!loading">
+                        <uib-pagination  ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
+                        <div class="pull-right">
+                            <span class="small muted">Per Page</span>
+                            <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
+                                <option val="">{{ '{{ per_page }}' }}</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div id="advanced_options" class="slideable">
-            <div class="row">
-            </div>
-            <hr>
-        </div>
-        <div class="row active-filters">
-            <label class="label label-info"  ng-repeat="f in getActiveFilters()">{{ '{{ f.name }}' }}</label>
-        </div>
-        <div class="row">
-            <div class="table-responsive">
-                <table class="table data-table table-striped table-condensed">
-                    <thead>
-                    <th >
-                        Name
-                    </th>
-                    <th>
-                        #
-                    </th>
-                    <th>
-                        m<sup>3</sup>
-
-                    </th>
-                    <th>Region
-                    </th>
-                    <th>Constellation
-                    </th>
-                    <th>System
-                    </th>
-                    <th>Station
-                    </th>
-                    <th>Avg Market Price
-                    </th>
-                    <th>
-                        Total Price
-                    </th>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="item in assets | orderBy:'descriptors.total_price':true" ng-show="!loading">
-                        <td>
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
-                                </div>
-                                <div class="col-xs-8">
-                            {{ '{{ item.descriptors.name }}' }}
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            {{ '{{ item.quantity }}' }}
-                        </td>
-                        <td> {{ '{{ getM3(item) | number:2}}' }}m<sup>3</sup></td>
-                        <td>
-                            {{ '{{ item.descriptors.region  }}' }}
-                        </td>
-                        <td>
-                            {{ '{{ item.descriptors.constellation  }}' }}
-                        </td>
-                        <td>
-                            {{ '{{ item.descriptors.system  }}' }}
-                        </td>
-                        <td>
-                            {{ '{{ item.descriptors.stationName  }}' }}
-                        </td>
-                        <td>
-                            {{ '{{ item.descriptors.price | currency:"ISK" }}' }}
-                        </td>
-                        <td>
-                            {{ '{{ item.descriptors.total_price | currency:"ISK" }}' }}
-                        </td>
-                    </tr>
-                    <tr ng-show="loading === true || assets.length <= 0">
-                        <td colspan="10" class="text-center">
-                            <cube-grid-spinner></cube-grid-spinner>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-        <div class="row" ng-show="!loading">
-            <uib-pagination  ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
-            <div class="pull-right">
-                <span class="small muted">Per Page</span>
-                <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
-                    <option val="">{{ '{{ per_page }}' }}</option>
-                </select>
             </div>
         </div>
     </div>
