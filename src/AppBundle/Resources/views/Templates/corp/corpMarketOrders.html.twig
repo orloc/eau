@@ -52,7 +52,7 @@
                             <td colspan="10" class="text-center"> No Orders found</td>
                         </tr>
                         <tr ng-repeat="item in orders | orderBy:'ratio':false" ng-show="!loading && orders.length > 0" ng-class="{ 'danger': item.ratio <= 20, 'warning': item.ratio <= 50 }">
-                            <td width="175px">
+                            <td width="175px" class="text-center">
                                 <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                                 {{ '{{ item.descriptors.name }}' }}
                             </td>
@@ -62,7 +62,7 @@
                                     <span ng-if="!item.bid">Sell</span>
                                 </label>
                             </td>
-                            <td width="175px">
+                            <td width="175px" class="text-center">
                             <span class="small muted">{{ '{{ item.volume_remaining }}' }} / {{ '{{  item.total_volume }}' }}
                                 <br>
                                 {{ '{{ percentFinished(item) | number:2}}% Completed' }}

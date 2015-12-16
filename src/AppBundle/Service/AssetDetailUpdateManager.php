@@ -36,6 +36,7 @@ class AssetDetailUpdateManager {
 
         foreach ($items as $i){
             $locId = $this->determineLocationId($i);
+
             $iData = $itemTypes->getItemTypeData($i->getTypeId());
 
             if ($locId !== null){
@@ -67,19 +68,18 @@ class AssetDetailUpdateManager {
     }
 
     protected  function checkAndGetLocation($i, $locId){
-        if (!$this->hasItem('location', $locId)){
-            $location = $this->determineLocationDetails($locId);
-            if ($location !== null){
-                $location['regionID'] = $this->tryFetchDetail('regionID', $location['regionID']);
-                $location['constellationID'] = $this->tryFetchDetail('constellationID',$location['constellationID']);
-                if ($location['solarSystemID'] !== null){
-                    $location['solarSystemID'] = $this->tryFetchDetail('solarSystemID', $location['solarSystemID']);
-                }
-                $this->cacheItem('location', $locId, $location);
+        $location = $this->determineLocationDetails($locId);
+
+        if ($location !== null){
+            $location['regionID'] = $this->tryFetchDetail('regionID', $location['regionID']);
+            $location['constellationID'] = $this->tryFetchDetail('constellationID',$location['constellationID']);
+            if ($location['solarSystemID'] !== null){
+                $location['solarSystemID'] = $this->tryFetchDetail('solarSystemID', $location['solarSystemID']);
             }
-        } else {
-            $location = $this->cache['location'][$locId];
+
+            $this->cacheItem('location', $locId, $location);
         }
+
         return $location;
     }
 
@@ -105,6 +105,7 @@ class AssetDetailUpdateManager {
     }
 
     protected function formatDescriptors($itemData){
+
         return [
             'name' => isset($itemData['name']) ? $itemData['name'] : null,
             'volume' => isset($itemData['volume']) ? $itemData['volume'] : null,

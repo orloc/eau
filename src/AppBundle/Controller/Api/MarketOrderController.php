@@ -55,12 +55,10 @@ class MarketOrderController extends AbstractController implements ApiControllerI
 
         $merged_orders = array_values(array_merge($orders, $sellorders));
 
-        if (!$newestGroup->getHasBeenUpdated()){
-            $updated_orders = $this->get('app.itemdetail.manager')
-                ->updateDetails($merged_orders);
+        $updated_orders = $this->get('app.itemdetail.manager')
+            ->updateDetails($merged_orders);
 
-            $merged_orders = $updated_orders;
-        }
+        $merged_orders = $updated_orders;
 
         $items = [
             'items' => $merged_orders,
