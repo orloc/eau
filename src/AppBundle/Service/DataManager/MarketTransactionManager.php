@@ -37,11 +37,10 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
         }
 
         $count = 0;
-        $notValid = false;
-        while (!$notValid || $count <= count($items->entries)-1) {
+        while ($count <= count($items->entries)-1) {
             $t = isset($items->transactions[$count]) ? $items->transactions[$count] : false;
             if ($t === false){
-                $notValid = true;
+                break;
             }
 
             $exists = $this->doctrine->getRepository('AppBundle:MarketTransaction')
@@ -52,7 +51,7 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
                 $acc->addMarketTransaction($trans);
 
             } else  {
-                $notValid = true;
+                break;
             }
             $count++;
         }

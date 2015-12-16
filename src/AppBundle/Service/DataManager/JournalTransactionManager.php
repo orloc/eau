@@ -38,11 +38,10 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
         }
 
         $count = 0;
-        $notValid = false;
-        while (!$notValid || $count <= count($items->entries)-1) {
-            $t = isset($items->entries[$count]) ? $items->entires[$count] : false;
+        while ($count <= count($items->entries)-1) {
+            $t = isset($items->entries[$count]) ? $items->entries[$count] : false;
             if ($t === false){
-                $notValid = true;
+                break;
             }
 
             $exists = $this->doctrine->getRepository('AppBundle:JournalTransaction')
@@ -51,21 +50,17 @@ class JournalTransactionManager extends AbstractManager implements DataManagerIn
             if ($exists === null){
                 $jTran = $this->mapItem($t);
                 $acc->addJournalTransaction($jTran);
-
             } else  {
                 if ($exists->getRefType() === null){
                     $refType = $this->doctrine->getRepository('AppBundle:RefType')
                         ->findOneBy(['ref_type_id' => $exists->getRefTypeId()]);
-
                     if ($refType instanceof RefType){
                         $exists->setRefType($refType);
                         $em->persist($exists);
                     }
                 }
-
-                $notValid = true;
+                break;
             }
-
             $count++;
         }
 
