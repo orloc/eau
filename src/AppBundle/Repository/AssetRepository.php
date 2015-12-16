@@ -19,6 +19,16 @@ class AssetRepository extends EntityRepository {
             ->getQuery();
     }
 
+    public function getAllByGroups(array $groups){
+        return $this->createQueryBuilder('a')
+            ->select('a')
+            ->where('a.asset_group in (:groups)')
+            ->andWhere('a.flag_id != :flag')
+            ->setParameter('groups', $groups)
+            ->setParameter('flag', 62) // does not equal deliveries
+            ->getQuery()->getResult();
+    }
+
     public function getTopLevelAssetsByGroup(AssetGroup $group){
         return $this->createQueryBuilder('a')
             ->select('a')

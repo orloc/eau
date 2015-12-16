@@ -79,50 +79,48 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
     }
 
     public function updateAssetGroupCache(array $corp_ids){
+        $start = microtime(true);
         $groups = $this->doctrine->getRepository('AppBundle:AssetGroup')
             ->getLatestNeedsUpdateAssetGroupByIds($corp_ids);
 
-        var_dump($groups);die;
+        $allItems = $this->doctrine->getRepository('AppBundle:Asset')
+            ->getAllByGroups($groups);
 
-        if ($group instanceof AssetGroup){
-            if (!$group->getHasBeenUpdated()){
-                $query = $this->doctrine->getRepository('AppBundle:Asset')
-                    ->getAllByGroup($group);
+        $updatedItems = $this->price_manager->updatePrices(
+            $this->item_manager->updateDetails($allItems)
+        );
 
-                $allItems = $query->getResult();
-
-                $updatedItems = $this->price_manager->updatePrices(
-                    $this->item_manager->updateDetails($allItems)
-                );
-
-                $filteredList = array_filter($updatedItems, function($i) {
-                    if (!isset($i->getDescriptors()['name'])) {
-                        return false;
-                    }
-
-                    $name = $i->getDescriptors()['name'];
-                    $t = strstr($name, 'Blueprint');
-
-                    return $t === false;
-                });
-
-                $total_price = array_reduce($filteredList, function($carry, $data){
-                    if ($carry === null){
-                        return $data->getDescriptors()['total_price'];
-                    }
-
-                    return $carry + $data->getDescriptors()['total_price'];
-                });
-
-                $group->setAssetSum($total_price)
-                    ->setHasBeenUpdated(true);
-
-                $em = $this->doctrine->getManager();
-                $em->persist($group);
-
-                $em->flush();
+        $this->log->info(sprintf("Done updating assets in %s", microtime(true) - $start));
+        $start = microtime(true);
+        $filteredList = array_filter($updatedItems, function($i) {
+            if (!isset($i->getDescriptors()['name'])) {
+                return false;
             }
+
+            $name = $i->getDescriptors()['name'];
+            $t = strstr($name, 'Blueprint');
+
+            return $t === false;
+        });
+
+        $this->log->info(sprintf("Blueprints removed from calculation list in %s", microtime(true) - $start));
+        $em = $this->doctrine->getManager();
+        $start = microtime(true);
+        foreach ($groups as $g){
+            $total_price = array_reduce($filteredList, function($carry, $data){
+                if ($carry === null){
+                    return $data->getDescriptors()['total_price'];
+                }
+                return $carry + $data->getDescriptors()['total_price'];
+            });
+            $g->setAssetSum($total_price)
+                ->setHasBeenUpdated(true);
+
+            $em->persist($g);
         }
+        $this->log->info(sprintf("Done with price cleanup in %s", microtime(true) - $start));
+
+        $em->flush();
     }
 
     public static function getName(){

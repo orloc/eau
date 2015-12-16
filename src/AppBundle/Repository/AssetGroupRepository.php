@@ -20,13 +20,21 @@ class AssetGroupRepository extends EntityRepository {
     }
 
     public function getLatestNeedsUpdateAssetGroupByIds(array $ids){
+        $res = $this->createQueryBuilder('ag')
+            ->select('max(ag.created_at) created_at')
+            ->where('ag.corporation IN ( :corporation_ids )')
+            ->andWhere('ag.has_been_updated = 0')
+            ->groupBy('ag.corporation')
+            ->setParameter('corporation_ids', $ids)
+            ->getQuery()->getResult();
+
+        $dates = array_map(function($r){
+            return $r['created_at'];
+        }, $res);
 
         return $this->createQueryBuilder('ag')
-            ->select('ag')
-            ->where('ag.corporation in (:corporation_ids)')
-            ->andWhere('ag.has_been_updated = 0')
-            ->orderBy('ag.created_at', 'DESC')
-            ->setParameter('corporation_ids', $ids)
+            ->where('ag.created_at in ( :dates ) ')
+            ->setParameter('dates', $dates)
             ->getQuery()->getResult();
 
     }

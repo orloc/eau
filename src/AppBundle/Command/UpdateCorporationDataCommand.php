@@ -81,14 +81,15 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $dataUpdateService->updateShortTimerCalls($c, $force);
             $em->flush();
             $dataUpdateService->updateLongTimerCalls($c, $force);
-            $corp_ids[] = $c->getId();
-            /*
             $em->flush();
             $em->clear();
-            */
+            $corp_ids[] = $c->getId();
 
             $log->info("Finished Updated {$c->getCorporationDetails()->getName()}");
         }
+        $log->info("Updating Compound Fields.");
+        $start = microtime(true);
         $dataUpdateService->updateAssetCache($corp_ids);
+        $log->info(sprintf("Done in %s", microtime(true) - $start));
     }
 }
