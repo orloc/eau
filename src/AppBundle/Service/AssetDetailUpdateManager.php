@@ -23,8 +23,6 @@ class AssetDetailUpdateManager {
         $this->registry = $registry;
         $this->doctrine = $doctrine;
         $this->cache = [];
-
-
     }
 
     public function updateDetails(array $items){
@@ -38,14 +36,12 @@ class AssetDetailUpdateManager {
 
         foreach ($items as $i){
             $locId = $this->determineLocationId($i);
-
             $iData = $itemTypes->getItemTypeData($i->getTypeId());
 
             if ($locId !== null){
                 $location = $this->checkAndGetLocation($i, $locId);
             } else {
                 $parent = $this->getTopMostParent($i);
-
                 $location = $this->checkAndGetLocation($parent, $this->determineLocationId($parent));
             }
 
@@ -55,7 +51,6 @@ class AssetDetailUpdateManager {
             ));
 
             $i->setDescriptors($descriptors);
-
             $em->persist($i);
         }
 
@@ -72,25 +67,20 @@ class AssetDetailUpdateManager {
     }
 
     protected  function checkAndGetLocation($i, $locId){
-
         if (!$this->hasItem('location', $locId)){
             $location = $this->determineLocationDetails($locId);
-
             if ($location !== null){
                 $location['regionID'] = $this->tryFetchDetail('regionID', $location['regionID']);
                 $location['constellationID'] = $this->tryFetchDetail('constellationID',$location['constellationID']);
                 if ($location['solarSystemID'] !== null){
                     $location['solarSystemID'] = $this->tryFetchDetail('solarSystemID', $location['solarSystemID']);
                 }
-
                 $this->cacheItem('location', $locId, $location);
             }
         } else {
             $location = $this->cache['location'][$locId];
         }
-
         return $location;
-
     }
 
     protected function tryFetchDetail($name, $id){
@@ -108,17 +98,13 @@ class AssetDetailUpdateManager {
 
     protected function getTopMostParent(Asset $i){
         $parent = $i->getParent();
-
         while ($parent->getParent() instanceof Asset){
             $parent = $parent->getParent();
         }
-
         return $parent;
-
     }
 
     protected function formatDescriptors($itemData){
-
         return [
             'name' => isset($itemData['name']) ? $itemData['name'] : null,
             'volume' => isset($itemData['volume']) ? $itemData['volume'] : null,
@@ -146,7 +132,6 @@ class AssetDetailUpdateManager {
         if ($id >= 60014861 && $id  <= 60014928){
             $station = $conqRepo->findOneBy(['station_id' => $id]);
             $location = $mapDenormalize->getLocationInfoBySolarSystem($station->getSolarSystemId());
-
             return array_merge($location, [ 'stationName' => $station->getStationName()]);
             // conqStation lookup
         }

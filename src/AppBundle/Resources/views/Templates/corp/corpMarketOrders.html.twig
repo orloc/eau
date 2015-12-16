@@ -10,74 +10,92 @@
             &nbsp;
             <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
         </span>
-        <br>
-        <div class="table-responsive">
-            <table class="table data-table table-striped table-hover table-condensed">
-                <thead>
-                <th >
-                    Name
-                </th>
-                <th>
-                    Type
-                </th>
-                <th >Filled / Total</th>
-                <th>Value Remaining</th>
-                <th>Region
-                </th>
-                <th>Constellation
-                </th>
-                <th>System
-                </th>
-                <th>Station
-                </th>
-                <th>
-                    Placed By
-                </th>
-                </thead>
-                <tbody>
-                <tr ng-repeat="item in orders | orderBy:'ratio':false" ng-show="!loading" ng-class="{ 'danger': item.ratio <= 20, 'warning': item.ratio <= 50 }">
-                    <td width="175px">
-                        <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                        {{ '{{ item.descriptors.name }}' }}
-                    </td>
-                    <td>
-                        <label class="label" ng-class="{ 'label-danger': item.bid, 'label-success': !item.bid}">
-                            <span ng-if="item.bid">Buy</span>
-                            <span ng-if="!item.bid">Sell</span>
-                        </label>
-                    </td>
-                    <td width="175px">
-                        <span class="small muted">{{ '{{ item.volume_remaining }}' }} / {{ '{{  item.total_volume }}' }}
-                            <br>
-                            {{ '{{ percentFinished(item) | number:2}}% Completed' }}
-                        </span>
-                    </td>
-                    <td>
-                        {{ '{{ item.volume_remaining  * item.price | currency:"ISK" }}' }}
-                    </td>
-                    <td>
-                        {{ '{{ item.descriptors.region  }}' }}
-                    </td>
-                    <td>
-                        {{ '{{ item.descriptors.constellation  }}' }}
-                    </td>
-                    <td>
-                        {{ '{{ item.descriptors.system  }}' }}
-                    </td>
-                    <td>
-                        {{ '{{ item.descriptors.stationName  }}' }}
-                    </td>
-                    <td width="100px">
-                        <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
-                    </td>
-                </tr>
-                <tr ng-show="loading">
-                    <td colspan="10" class="text-center">
-                        <loading-spinner></loading-spinner>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="btn-group pull-right">
+                    <button class="btn btn-sm btn-default"><i class="fa fa-archive"></i>&nbsp;&nbsp;By Category</button>
+                    <button class="btn btn-sm btn-default"><i class="fa fa-location-arrow"></i>&nbsp;&nbsp;By Location</button>
+                    <button class="btn btn-sm btn-default">All</button>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table data-table table-striped table-hover table-condensed">
+                        <thead>
+                        <th >
+                            Name
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th >Filled / Total</th>
+                        <th>Value Remaining</th>
+                        <th>Region
+                        </th>
+                        <th>Constellation
+                        </th>
+                        <th>System
+                        </th>
+                        <th>Station
+                        </th>
+                        <th>
+                            Placed By
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr ng-show="loading === true ">
+                            <td colspan="10" class="text-center">
+                                <cube-grid-spinner></cube-grid-spinner>
+                            </td>
+                        </tr>
+                        <tr ng-show="!loading && orders.length <= 0">
+                            <td colspan="10" class="text-center"> No Orders found</td>
+                        </tr>
+                        <tr ng-repeat="item in orders | orderBy:'ratio':false" ng-show="!loading && orders.length > 0" ng-class="{ 'danger': item.ratio <= 20, 'warning': item.ratio <= 50 }">
+                            <td width="175px">
+                                <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                                {{ '{{ item.descriptors.name }}' }}
+                            </td>
+                            <td>
+                                <label class="label" ng-class="{ 'label-danger': item.bid, 'label-success': !item.bid}">
+                                    <span ng-if="item.bid">Buy</span>
+                                    <span ng-if="!item.bid">Sell</span>
+                                </label>
+                            </td>
+                            <td width="175px">
+                            <span class="small muted">{{ '{{ item.volume_remaining }}' }} / {{ '{{  item.total_volume }}' }}
+                                <br>
+                                {{ '{{ percentFinished(item) | number:2}}% Completed' }}
+                            </span>
+                            </td>
+                            <td>
+                                {{ '{{ item.volume_remaining  * item.price | currency:"ISK" }}' }}
+                            </td>
+                            <td>
+                                {{ '{{ item.descriptors.region  }}' }}
+                            </td>
+                            <td>
+                                {{ '{{ item.descriptors.constellation  }}' }}
+                            </td>
+                            <td>
+                                {{ '{{ item.descriptors.system  }}' }}
+                            </td>
+                            <td>
+                                {{ '{{ item.descriptors.stationName  }}' }}
+                            </td>
+                            <td width="100px">
+                                <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
+                            </td>
+                        </tr>
+                        <tr ng-show="loading">
+                            <td colspan="10" class="text-center">
+                                <loading-spinner></loading-spinner>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>

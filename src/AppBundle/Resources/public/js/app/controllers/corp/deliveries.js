@@ -144,11 +144,11 @@ angular.module('eveTool')
                 case 'system':
                     $scope.order_by_value = 'actual_total';
                     angular.forEach($scope.assets, function(a){
-                        if (typeof(tmp[a.descriptors.solar_system]) != 'object'){
-                            tmp[a.descriptors.solar_system] = [];
+                        if (typeof(tmp[a.descriptors.system]) != 'object'){
+                            tmp[a.descriptors.system] = [];
                         }
 
-                        tmp[a.descriptors.solar_system].push(a);
+                        tmp[a.descriptors.system].push(a);
                     });
                     resetInternalArray(tmp);
 
@@ -158,11 +158,12 @@ angular.module('eveTool')
                 case 'station':
                     $scope.order_by_value = 'actual_total';
                     angular.forEach($scope.assets, function(a){
-                        if (typeof(tmp[a.descriptors.station]) != 'object'){
-                            tmp[a.descriptors.station] = [];
+                        console.log(a);
+                        if (typeof(tmp[a.descriptors.stationName]) != 'object'){
+                            tmp[a.descriptors.stationName] = [];
                         }
 
-                        tmp[a.descriptors.station].push(a);
+                        tmp[a.descriptors.stationName].push(a);
                     });
 
                     resetInternalArray(tmp);

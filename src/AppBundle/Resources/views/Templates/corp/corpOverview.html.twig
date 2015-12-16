@@ -4,33 +4,26 @@
     </div>
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
         <div class="row">
-            <div class="col-xs-12" ng-cloak>
-                <div class="row">
-                    <div class="summary-stats col-xs-11" ng-cloak>
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}<br>
-                                <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i><br>
-                                {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
+            <div class="summary-stats col-xs-12" ng-cloak>
+                <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
+                        {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
 
-                                <div class="row" ng-show="updated_at">
-                                    <div class="small muted circle-ticker">
-                                        <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="graphs col-xs-9" ng-hide="not_enough_data"></div>
-                            <div class="col-xs-9" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
-                        </div>
-                    </div>
-                    <div class="col-xs-1 viewing-details" >
-                        <span class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span>
-                        <br>
-                        <div class="btn-group-sm pull-right controls">
-                            <button  class="btn btn-sm" type="button" ng-click="back()" ng-hide="loading === true"><i class="fa fa-chevron-left"></i></button>
-                            <button class="btn btn-sm" type="button" ng-click="forward()" ng-hide="loading === true"><i class="fa fa-chevron-right"></i></button>
-                        </div>
-                    </div>
+                <d class="small muted circle-ticker pull-right">
+                    <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
+                    &nbsp;
+                    &nbsp;
+                    <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}
+                </d            </div>
+
+            <div class="graphs col-xs-10" ng-hide="not_enough_data"></div>
+            <div class="col-xs-10" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
+            <div class="col-xs-2 viewing-details" >
+                <span class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span>
+                <br>
+                <div class="btn-group-sm pull-right controls">
+                    <button  class="btn btn-sm" type="button" ng-click="back()" ng-hide="loading === true"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn btn-sm" type="button" ng-click="forward()" ng-hide="loading === true"><i class="fa fa-chevron-right"></i></button>
                 </div>
             </div>
         </div>

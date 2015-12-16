@@ -12,13 +12,20 @@
             <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
         </span>
 
-        <form name="search-form">
-            <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                <input name="search" placeholder="Search..." type="text" class="form-control"/>
-            </div>
-        </form>
         <div class="row" ng-show="!loading">
+            <div class="col-xs-12">
+                <form name="search-form" style="width: 50%; display: inline-block; padding: 0">
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                        <input name="search" placeholder="Search..." type="text" class="form-control"/>
+                    </div>
+                </form>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-sm btn-default"><i class="fa fa-archive"></i>&nbsp;&nbsp;By Category</button>
+                    <button class="btn btn-sm btn-default"><i class="fa fa-location-arrow"></i>&nbsp;&nbsp;By Location</button>
+                    <button class="btn btn-sm btn-default">All</button>
+                </div>
+            </div>
             <div class="col-xs-9">
                 <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
             </div>

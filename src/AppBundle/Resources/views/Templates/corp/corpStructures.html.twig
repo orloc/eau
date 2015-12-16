@@ -22,6 +22,14 @@
                 <th>Cost Per Day</th>
                 </thead>
                 <tbody>
+                <tr ng-show="loading === true ">
+                    <td colspan="10" class="text-center">
+                        <cube-grid-spinner></cube-grid-spinner>
+                    </td>
+                </tr>
+                <tr ng-show="!loading && bases.length <= 0">
+                    <td colspan="7" class="text-center"> No POS's found</td>
+                </tr>
                 <tr ng-repeat="item in bases" ng-if="bases.length">
                     <td>
                         <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
