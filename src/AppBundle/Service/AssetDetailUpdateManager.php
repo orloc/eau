@@ -17,7 +17,7 @@ class AssetDetailUpdateManager {
 
     protected $regions;
     protected $constellations;
-    protected $solarsystems;
+    protected $solarSystems;
 
     public function __construct(EveRegistry $registry, Registry $doctrine){
         $this->registry = $registry;
@@ -34,7 +34,7 @@ class AssetDetailUpdateManager {
 
         $this->regions = $this->registry->get('EveBundle:Region');
         $this->constellations = $this->registry->get('EveBundle:Constellation');
-        $this->solarsystems = $this->registry->get('EveBundle:SolarSystem');
+        $this->solarSystems = $this->registry->get('EveBundle:SolarSystem');
 
         foreach ($items as $i){
             $locId = $this->determineLocationId($i);
@@ -77,11 +77,10 @@ class AssetDetailUpdateManager {
             $location = $this->determineLocationDetails($locId);
 
             if ($location !== null){
-                $location['regionID'] = $this->tryFetchDetail('regionID');
-                $location['constellationID'] = $this->constellations->getConstellationById($location['constellationID']);
-
+                $location['regionID'] = $this->tryFetchDetail('regionID', $location['regionID']);
+                $location['constellationID'] = $this->tryFetchDetail('constellationID',$location['constellationID']);
                 if ($location['solarSystemID'] !== null){
-                    $location['solarSystemID'] = $this->solarsystems->getSolarSystemById($location['solarSystemID']);
+                    $location['solarSystemID'] = $this->tryFetchDetail('solarSystemID', $location['solarSystemID']);
                 }
 
                 $this->cacheItem('location', $locId, $location);
@@ -94,11 +93,17 @@ class AssetDetailUpdateManager {
 
     }
 
-    protected function tryFetchDetail($name){
-        $real_name = substr($name, strlen($name)-2);
-        var_dump($name, $real_name);
-
-        die;
+    protected function tryFetchDetail($name, $id){
+        $real_name = substr($name, 0,strlen($name)-2);
+        if (!$this->hasItem($real_name, $id)){
+            $fname = ucfirst($real_name);
+            $call = "get{$fname}ById";
+            $sig = "{$real_name}s";
+            $result = $this->$sig->$call($id);
+            $this->cacheItem($real_name, $id, $result);
+        } else {
+            return $this->cache[$real_name][$id];
+        }
     }
 
     protected function getTopMostParent(Asset $i){

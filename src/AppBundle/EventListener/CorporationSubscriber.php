@@ -26,7 +26,7 @@ class CorporationSubscriber implements EventSubscriber {
     public function prePersist(LifecycleEventArgs $args){
         $entity = $args->getObject();
 
-        if ($entity instanceof Corporation){
+        if ($entity instanceof Corporation && php_sapi_name() !== 'cli'){
             $user = $this->tokenManager->getToken()->getUser();
 
             if (!$user instanceof User){
