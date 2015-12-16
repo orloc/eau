@@ -1,13 +1,13 @@
 ---
-
-- name: Staging AWS Configuration for EAU
-  hosts: home
-  remote_user: ubuntu
+- name: Staging DO Configuration for EAU
+  hosts: eve_platform
+  remote_user: root
   roles:
+    - php
     - servergrove.symfony2
     - post-install
-
   vars:
+    server_user: deploy
     symfony2_project_root: /srv/eau
     symfony2_project_name: eau
     symfony2_project_composer_path: /srv/eau/shared
