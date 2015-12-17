@@ -32,6 +32,16 @@ class InvMarketGroupRepository extends AbstractDbalRepository implements Reposit
         return $stmt->fetchAll();
     }
 
+    public function getInList(array $list){
+        $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getTableName()} WHERE marketGroupID IN (?)",
+            array($list),
+            array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
+        );
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function getAllGroups(){
         $sql = "SELECT * FROM {$this->getTableName()}";
 

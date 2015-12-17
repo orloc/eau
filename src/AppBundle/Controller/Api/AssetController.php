@@ -82,7 +82,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
                     $desc = $r->getDescriptors();
                     $name =  $desc['stationName'] === null
-                        ? 'POS @ '.$desc['system']
+                        ? 'In Space @ '.$desc['system']
                         : $desc['stationName'];
 
                     $locations[$r->getLocationId()] = [
@@ -96,10 +96,48 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
                 break;
             case 'category':
+                $itemIds = array_map(function($i) {
+                    return $i['typeId'];
+                },$repo->getTypeIDSByAssetGroup($group));
+
+                $reg = $this->get('evedata.registry');
+
+                $types = $reg->get('EveBundle:ItemType')
+                    ->findAllByTypes($itemIds);
+
+                $map = $this->doMap($types);
+                return $this->jsonResponse(json_encode(array_values($map)), 200);
                 break;
         }
     }
 
+    protected function doMap(array $types){
+        $no_parents = false;
+        $reg = $this->get('evedata.registry');
+        while(!$no_parents){
+            $ref =[];
+            $marketGroupIds = array_unique(array_map(function($t) use (&$ref){
+                $refPoint = isset($t['typeID']) ? $t['marketGroupID'] : $t['parentGroupID'];
+                if (!isset($ref[$refPoint])){
+                    $ref[$refPoint][] = $t;
+                }
+                $ref[$refPoint][] = $t;
+                return $refPoint;
+            }, $types));
+
+            $types = $reg->get('EveBundle:MarketGroup')->getInList($marketGroupIds);
+
+            foreach ($types as $k => $t){
+                $types[$k]['children'] =  $ref[$t['marketGroupID']];
+            }
+
+            $no_parents = empty(array_filter($types, function($t){
+                return $t['parentGroupID'] !== null;
+            }));
+        }
+
+        return $types;
+    }
 
     /**
      * @Route("/corporation/{id}/location_assets", name="api.corporation.location_assets", options={"expose"=true})

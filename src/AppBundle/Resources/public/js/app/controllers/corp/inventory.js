@@ -20,6 +20,7 @@ angular.module('eveTool')
             if ($scope.view_type === view){
                 return;
             }
+            $scope.loading = true;
             $scope.view_type = view;
             renderView($scope.selected_corp);
         };
@@ -89,6 +90,7 @@ angular.module('eveTool')
                         angular.forEach($scope.locations, function(d, k){
                             $scope.locations[k].assets = null;
                         });
+                        $scope.loading = false;
                     });
                     break;
                 case 0:
@@ -104,7 +106,6 @@ angular.module('eveTool')
                     }).then(function(){
                         function updateInventory(){
                             $scope.assets = [];
-                            $scope.loading = true;
                             corporationDataManager.getCorpInventory($scope.selected_corp, $scope.page, $scope.per_page).then(function(data){
                                 var items = data.items;
                                 $scope.assets = items.items;

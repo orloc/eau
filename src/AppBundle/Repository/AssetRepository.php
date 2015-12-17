@@ -69,6 +69,14 @@ class AssetRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
+    public function getTypeIDSByAssetGroup(AssetGroup $group){
+        return $this->createQueryBuilder('a')
+            ->select('distinct a.typeId')
+            ->where('a.asset_group = :a_group')
+            ->setParameter('a_group', $group)
+            ->getQuery()->getResult();
+    }
+
     public function getAssetsByLocation(AssetGroup $group, $locaitonId){
         return $this->createQueryBuilder('a')
             ->select('a')
