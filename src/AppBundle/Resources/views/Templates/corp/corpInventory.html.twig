@@ -32,10 +32,10 @@
             <div class="col-xs-12 location-view" ng-show="view_type === 1">
                 <uib-accordion>
                     <uib-accordion-group
-                            heading="{{  '{{ loc.name }}' }}"
+                            heading="{{  '{{ getHeadingName(loc) }}' }}"
                             ng-repeat="loc in locations"
                             ng-click="openedLocation(loc)"
-                            ng-show="loc.name.length > 0">
+                            >
                         {# FIRST LEVEL#}
                         <div class="row header">
                             <div class="col-xs-4">

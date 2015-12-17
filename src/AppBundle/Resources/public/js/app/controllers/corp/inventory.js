@@ -69,6 +69,10 @@ angular.module('eveTool')
             return ret;
         };
 
+        $scope.getHeadingName = function(loc){
+            return (loc.name !== null && loc.name.length > 0) ? loc.name : 'Unknown Location';
+        };
+
         function renderView(corp){
             var translateView = function(view){
                 if (view === 0){

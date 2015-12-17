@@ -22,7 +22,7 @@ angular.module('eveTool')
                 .error(function(err){
                     deferred.reject(err.message);
                     if (err.code === 403){
-                      //  window.location.replace(Routing.generate('eve.login.redirect',{}, true));
+                        window.location.replace(Routing.generate('eve.login.redirect',{}, true));
                     }
                 });
 

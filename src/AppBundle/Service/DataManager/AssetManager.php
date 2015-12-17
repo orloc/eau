@@ -123,6 +123,24 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
         $em->flush();
     }
 
+    public function flattenAssets(Asset $asset){
+        $list = [$asset];
+        $this->helperFlatten($asset->getContents()->toArray(), $list);
+        return $list;
+    }
+
+    protected function helperFlatten(array $nodes, array &$list)
+    {
+        foreach ($nodes as $a){
+            $list[] = $a;
+            if (!count($a->getContents())) {
+                continue;
+            } else {
+                return $this->helperFlatten($a->getContents()->toArray(), $list);
+            }
+        }
+    }
+
     public static function getName(){
         return 'asset_manager';
     }

@@ -13,7 +13,6 @@ class AssetRepository extends EntityRepository {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group = :group')
-            ->andWhere('a.flag_id != :flag')
             ->setParameter('group', $group)
             ->getQuery();
     }
@@ -22,7 +21,6 @@ class AssetRepository extends EntityRepository {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group in (:groups)')
-            ->andWhere('a.flag_id != :flag')
             ->setParameter('groups', $groups)
             ->getQuery()->getResult();
     }
@@ -79,5 +77,16 @@ class AssetRepository extends EntityRepository {
             ->setParameter('a_group', $group)
             ->setParameter('locid', $locaitonId)
             ->getQuery()->getResult();
+    }
+
+    public function getAssetCountByLocation(AssetGroup $group, $locaitonId){
+        return $this->createQueryBuilder('a')
+            ->select('count(a)')
+            ->where('a.asset_group = :a_group')
+            ->andWhere('a.locationId = :locid')
+            ->setParameter('a_group', $group)
+            ->setParameter('locid', $locaitonId)
+            ->getQuery()->getResult();
+
     }
 }

@@ -69,6 +69,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getLatestAssetGroup($corp);
         $repo = $this->getRepository('AppBundle:Asset');
 
+
         switch ($sort){
             case 'location':
                 $results = $repo->getLocationsByAssetGroup($group);
@@ -77,11 +78,19 @@ class AssetController extends AbstractController implements ApiControllerInterfa
                     ->updateDetails($results);
 
                 foreach ($updatedResults as $r){
+                    if ($r->getLocationId() === null) { continue;}
+
+                    $desc = $r->getDescriptors();
+                    $name =  $desc['stationName'] === null
+                        ? 'POS @ '.$desc['system']
+                        : $desc['stationName'];
+
                     $locations[$r->getLocationId()] = [
-                        'name' => $r->getDescriptors()['stationName'],
-                        'id' => $r->getLocationId(),
+                        'name' => $name,
+                        'id' => $r->getLocationId()
                     ];
                 }
+
 
                 return $this->jsonResponse(json_encode(array_values($locations)), 200);
 
@@ -90,6 +99,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
                 break;
         }
     }
+
 
     /**
      * @Route("/corporation/{id}/location_assets", name="api.corporation.location_assets", options={"expose"=true})
