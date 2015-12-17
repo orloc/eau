@@ -3,18 +3,11 @@
 angular.module('eveTool')
     .controller('inventoryController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.loading = true;
-        $scope.predicate = 'total_price';
         $scope.view_type = 0;
-        $scope.reverse = true;
         $scope.image_width = 32;
-        $scope.max_size = 10;
-        $scope.per_page = 10;
-        $scope.page = 1;
+
         $scope.open_items = [];
-        $scope.filters = {
-            market_group: null,
-            list: []
-        };
+        $scope.open_categories = [];
 
         $scope.switchView = function(view){
             if ($scope.view_type === view){
@@ -25,29 +18,6 @@ angular.module('eveTool')
             renderView($scope.selected_corp);
         };
 
-        $scope.per_page_selection = [
-            { label: '10', value: 10},
-            { label: '15', value: 15},
-            { label: '25', value: 25},
-            { label: '50', value: 50},
-            { label: '100', value: 100}
-        ];
-
-        $scope.addFilter = function(filter){
-            $scope.filters.list.push({
-                name: filter.name,
-                type: 1,
-                value: filter.value
-            });
-        };
-
-        $scope.getActiveFilters = function(){
-            var activeFilters = [];
-            for(var i = 0 ; i <= $scope.filters.list.length - 1; i++){
-                activeFilters.push($scope.filters.list[i]);
-            }
-            return activeFilters;
-        };
 
         $scope.openedLocation = function(loc){
             if (loc.assets === null){
@@ -84,12 +54,18 @@ angular.module('eveTool')
 
             switch ($scope.view_type){
                 case 1:
-                case 2:
                     corporationDataManager.getCorpInventorySorted(corp, translateView($scope.view_type)).then(function(data){
                         $scope.locations = data;
                         angular.forEach($scope.locations, function(d, k){
                             $scope.locations[k].assets = null;
                         });
+                        $scope.loading = false;
+                    });
+                    break;
+                case 2:
+                    corporationDataManager.getCorpInventorySorted(corp, translateView($scope.view_type)).then(function(data){
+                        $scope.category_tree = data;
+                        console.log(data);
                         $scope.loading = false;
                     });
                     break;

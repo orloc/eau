@@ -1,0 +1,159 @@
+{# LOCATION VIEW = 1 #}
+<div class="col-xs-12 location-view" ng-show="view_type === 1 && !loading">
+    <uib-accordion>
+        <uib-accordion-group
+                heading="{{  '{{ getHeadingName(loc) }}' }}"
+                ng-repeat="loc in locations"
+                ng-click="openedLocation(loc)"
+                >
+            {# FIRST LEVEL#}
+            <div class="row header">
+                <div class="col-xs-4">
+                    <h5>Name</h5>
+                </div>
+                <div class="col-xs-2">
+                    <h5>Vol</h5>
+                </div>
+                <div class="col-xs-1">
+                    <h5>Quant.</h5>
+                </div>
+                <div class="col-xs-2">
+                    <h5>Price</h5>
+                </div>
+                <div class="col-xs-2">
+                    <h5>Total</h5>
+                </div>
+            </div>
+            <ul class="list-unstyled">
+                <li ng-repeat="item in loc.assets">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"> </eve-image>
+                                </div>
+                                <div class="col-xs-8">
+                                    {{ '{{ item.descriptors.name }}' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            {{ '{{ item.descriptors.volume }}' }}m<sup>3</sup> / unit
+                        </div>
+                        <div class="col-xs-1">
+                            {{ '{{ item.quantity }}' }}
+                        </div>
+                        <div class="col-xs-2">
+                            {{ '{{ item.descriptors.price | currency:"ISK"  }}' }}
+                        </div>
+                        <div class="col-xs-2">
+                            {{ '{{ item.descriptors.total_price | currency:"ISK" }}' }}
+                        </div>
+                        <div class="col-xs-1">
+                            <button ng-click="openContents(item)" ng-show="item.contents.length > 0" class="btn btn-sm btn-default"><i class="fa" ng-class="{ 'fa-chevron-up': isOpen(item) === true, 'fa-chevron-down': isOpen(item) === false }"></i></button>
+                        </div>
+                        {# SECOND LEVEL#}
+                        <div class="col-xs-11 col-xs-offset-1" ng-show="isOpen(item) === true">
+                            <div class="row header">
+                                <div class="col-xs-4">
+                                    <h5>Name</h5>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h5>Vol</h5>
+                                </div>
+                                <div class="col-xs-1">
+                                    <h5>Quant.</h5>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h5>Price</h5>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h5>Total</h5>
+                                </div>
+                            </div>
+                            <ul class="list-unstyled">
+                                <li ng-repeat="it in item.contents">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <div class="row">
+                                                <div class="col-xs-4">
+                                                    <eve-image image-type="'Type'" override-width="image_width" object-id="it.type_id" img-width="32"> </eve-image>
+                                                </div>
+                                                <div class="col-xs-8">
+                                                    {{ '{{ it.descriptors.name }}' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2">
+                                            {{ '{{ it.descriptors.volume }}' }}m<sup>3</sup> / unit
+                                        </div>
+                                        <div class="col-xs-1">
+                                            {{ '{{ it.quantity }}' }}
+                                        </div>
+                                        <div class="col-xs-2">
+                                            {{ '{{ it.descriptors.price | currency:"ISK"  }}' }}
+                                        </div>
+                                        <div class="col-xs-2">
+                                            {{ '{{ it.descriptors.total_price | currency:"ISK" }}' }}
+                                        </div>
+                                        <div class="col-xs-1">
+                                            <button ng-click="openContents(it)" ng-show="it.contents.length > 0" class="btn btn-sm btn-default"><i class="fa" ng-class="{ 'fa-chevron-up': isOpen(it) === true, 'fa-chevron-down': isOpen(it) ===false }"></i></button>
+                                        </div>
+                                        {# Third LEVEL#}
+                                        <div class="col-xs-10 col-xs-offset-2" ng-show="isOpen(it) === true">
+                                            <div class="row header">
+                                                <div class="col-xs-4">
+                                                    <h5>Name</h5>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <h5>Vol</h5>
+                                                </div>
+                                                <div class="col-xs-1">
+                                                    <h5>Quant.</h5>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <h5>Price</h5>
+                                                </div>
+                                                <div class="col-xs-2">
+                                                    <h5>Total</h5>
+                                                </div>
+                                            </div>
+                                            <ul class="list-unstyled">
+                                                <li ng-repeat="i in it.contents">
+                                                    <div class="row">
+                                                        <div class="col-xs-4">
+                                                            <div class="row">
+                                                                <div class="col-xs-4">
+                                                                    <eve-image image-type="'Type'" override-width="image_width" object-id="i.type_id" img-width="32"> </eve-image>
+                                                                </div>
+                                                                <div class="col-xs-8">
+                                                                    {{ '{{ i.descriptors.name }}' }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-2">
+                                                            {{ '{{ i.descriptors.volume }}' }}m<sup>3</sup> / uni
+                                                        </div>
+                                                        <div class="col-xs-2">
+                                                            {{ '{{ i.quantiy }}' }}
+                                                        </div>
+                                                        <div class="col-xs-2">
+                                                            {{ '{{ i.descriptors.price | currency:"ISK"  }}' }}
+                                                        </div>
+                                                        <div class="col-xs-2">
+                                                            {{ '{{ i.descriptors.total_price | currency:"ISK" }}' }}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </uib-accordion-group>
+    </uib-accordion>
+</div>

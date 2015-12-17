@@ -91,7 +91,6 @@ class AssetController extends AbstractController implements ApiControllerInterfa
                     ];
                 }
 
-
                 return $this->jsonResponse(json_encode(array_values($locations)), 200);
 
                 break;

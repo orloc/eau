@@ -1,0 +1,103 @@
+{# Table VIEW = 0 #}
+<div ng-controller="inventoryTableViewController" class="col-xs-12" ng-show="view_type === 0 && !loading">
+    <div class="row">
+        <div class="col-xs-9" >
+            <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
+        </div>
+        <div class="col-xs-3">
+            <button slide-toggle="#advanced_options" style="margin-top: 20px;" class="btn btn-sm">Advanced Filters</button>
+            <div class="pull-right">
+                <span class="small muted">Per Page</span>
+                <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
+                    <option val="">{{ '{{ per_page }}' }}</option>
+                </select>
+            </div>
+        </div>
+        <div id="advanced_options" class="slideable">
+            <div class="col-xs-12">
+                <p>Here there will be instructions to configure complex filters</p>
+                <hr>
+            </div>
+        </div>
+        <div class="col-xs-12 active-filters">
+            <label class="label label-info"  ng-repeat="f in getActiveFilters()">{{ '{{ f.name }}' }}</label>
+        </div>
+        <div class="col-xs-12">
+            <div class="table-responsive">
+                <table class="table data-table table-striped table-condensed">
+                    <thead>
+                    <th >
+                        Name
+                    </th>
+                    <th>
+                        #
+                    </th>
+                    <th>
+                        m<sup>3</sup>
+
+                    </th>
+                    <th>Region
+                    </th>
+                    <th>Constellation
+                    </th>
+                    <th>System
+                    </th>
+                    <th>Station
+                    </th>
+                    <th>Avg Market Price
+                    </th>
+                    <th>
+                        Total Price
+                    </th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in assets | orderBy:'descriptors.total_price':true" ng-show="!loading">
+                        <td>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <eve-image image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
+                                </div>
+                                <div class="col-xs-8">
+                                    {{ '{{ item.descriptors.name }}' }}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ '{{ item.quantity }}' }}
+                        </td>
+                        <td> {{ '{{ getM3(item) | number:2}}' }}m<sup>3</sup></td>
+                        <td>
+                            {{ '{{ item.descriptors.region  }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.constellation  }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.system  }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.stationName  }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.price | currency:"ISK" }}' }}
+                        </td>
+                        <td>
+                            {{ '{{ item.descriptors.total_price | currency:"ISK" }}' }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="col-xs-12" ng-show="!loading">
+            <uib-pagination  ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
+            <div class="pull-right">
+                <span class="small muted">Per Page</span>
+                <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
+                    <option val="">{{ '{{ per_page }}' }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
