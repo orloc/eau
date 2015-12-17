@@ -1,6 +1,9 @@
 {# Table VIEW = 0 #}
-<div ng-controller="inventoryTableViewController" class="col-xs-12" ng-show="view_type === 0 && !loading">
-    <div class="row">
+<div ng-controller="inventoryTableViewController" class="col-xs-12" ng-show="view_type === 'all'">
+    <div ng-show="loading === true" class="col-xs-12 text-center">
+        <cube-grid-spinner></cube-grid-spinner>
+    </div>
+    <div class="row" ng-show="loading === false">
         <div class="col-xs-9" >
             <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
         </div>

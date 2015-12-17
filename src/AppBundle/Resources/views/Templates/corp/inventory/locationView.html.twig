@@ -1,6 +1,9 @@
 {# LOCATION VIEW = 1 #}
-<div class="col-xs-12 location-view" ng-controller="inventoryLocationViewController" ng-show="view_type === 1 && !loading">
-    <uib-accordion>
+<div class="col-xs-12 location-view" ng-controller="inventoryLocationViewController" ng-show="view_type === 1">
+    <div ng-show="loading === true" class="col-xs-12 text-center">
+        <cube-grid-spinner></cube-grid-spinner>
+    </div>
+    <uib-accordion >
         <uib-accordion-group
                 heading="{{  '{{ getHeadingName(loc) }}' }}"
                 ng-repeat="loc in locations"

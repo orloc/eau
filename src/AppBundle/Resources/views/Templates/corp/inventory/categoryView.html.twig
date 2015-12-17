@@ -3,9 +3,14 @@
         <uib-accordion-group
                 heading="{{  '{{ cat.marketGroupName }}' }}"
                 ng-repeat="cat in category_tree"
-                ng-click="openCateogry(cat)"
+                ng-click="openCategory(cat)"
                 >
-
+            <div class="row">
+                <div class="col-xs-4">
+                    <p class="small">
+                        {{ '{{ cat.description }}' }}
+                    </p>
+                </div>
         </uib-accordion-group>
     </uib-accordion>
 </div>

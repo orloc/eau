@@ -24,11 +24,8 @@
                     <button class="btn btn-sm btn-default" ng-click="switchView(3)" ng-class="{'active': view_type === 3 }"><i class="fa fa-pie-chart"></i>&nbsp;&nbsp;Summary</button>
                     <button class="btn btn-sm btn-default" ng-click="switchView(2)" ng-class="{'active': view_type === 2 }"><i class="fa fa-archive"></i>&nbsp;&nbsp;By Category</button>
                     <button class="btn btn-sm btn-default" ng-click="switchView(1)" ng-class="{'active': view_type === 1 }"><i class="fa fa-location-arrow"></i>&nbsp;&nbsp;By Location</button>
-                    <button class="btn btn-sm btn-default" ng-click="switchView(0)" ng-class="{'active': view_type === 0 }">All</button>
+                    <button class="btn btn-sm btn-default" ng-click="switchView('all')" ng-class="{'active': view_type === 'all' }">All</button>
                 </div>
-            </div>
-            <div ng-show="loading === true" class="col-xs-12 text-center">
-                <cube-grid-spinner></cube-grid-spinner>
             </div>
             {% include '@App/Templates/corp/inventory/locationView.html.twig' %}
             {% include '@App/Templates/corp/inventory/categoryView.html.twig' %}
