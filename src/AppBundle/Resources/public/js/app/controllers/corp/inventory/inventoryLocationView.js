@@ -29,6 +29,7 @@ angular.module('eveTool')
             return (loc.name !== null && loc.name.length > 0) ? loc.name : 'Unknown Location';
         };
 
+        /*
         corporationDataManager.getCorpInventorySorted(corp, translateView($scope.view_type)).then(function(data){
             $scope.locations = data;
             angular.forEach($scope.locations, function(d, k){
@@ -36,5 +37,6 @@ angular.module('eveTool')
             });
             $scope.loading = false;
         });
+        */
 
     }]);
