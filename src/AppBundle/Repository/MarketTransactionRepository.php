@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 
 use AppBundle\Entity\Account;
+use AppBundle\Entity\Corporation;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityRepository;
 
@@ -17,6 +18,23 @@ class MarketTransactionRepository extends EntityRepository {
             ->andWhere('jt.journal_transaction_id = :jtid')
             ->setParameters(['account' => $acc, 'id' => $transactionId, 'jtid' => $jTransID])
             ->getQuery()->getOneOrNullResult();
+    }
+
+    public function findLatestTransactionByItemType(Corporation $corp, $type, $itemID){
+        return $this->createQueryBuilder('mt')
+            ->select('mt')
+            ->leftJoin('mt.account', 'acc')
+            ->andWhere('acc.corporation = :corporation')
+            ->andWhere('mt.item_id = :item_id')
+            ->andWhere('mt.transaction_type = :type')
+            ->orderBy('mt.date', 'DESC')
+            ->setParameters([
+                'corporation' => $corp,
+                'item_id' => $itemID,
+                'type' => $type
+            ])
+            ->setMaxResults(1)
+            ->getQuery()->getResult();
     }
 
     public function getTotalBuyForDate(Account $acc, Carbon $date){

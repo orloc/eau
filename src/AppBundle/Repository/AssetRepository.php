@@ -15,7 +15,6 @@ class AssetRepository extends EntityRepository {
             ->where('a.asset_group = :group')
             ->andWhere('a.flag_id != :flag')
             ->setParameter('group', $group)
-            ->setParameter('flag', 62) // does not equal deliveries
             ->getQuery();
     }
 
@@ -25,7 +24,6 @@ class AssetRepository extends EntityRepository {
             ->where('a.asset_group in (:groups)')
             ->andWhere('a.flag_id != :flag')
             ->setParameter('groups', $groups)
-            ->setParameter('flag', 62) // does not equal deliveries
             ->getQuery()->getResult();
     }
 
@@ -60,7 +58,7 @@ class AssetRepository extends EntityRepository {
             ->where('a.asset_group = :agroup')
             ->andWhere('a.flag_id = :flag')
             ->setParameter('agroup', $group)
-            ->setParameter('flag', 62) // does not equal deliveries
+            ->setParameter('flag', 62) // does equal deliveries
             ->getQuery();
     }
 

@@ -35,6 +35,7 @@ class JournalTransactionRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
+
     public function getTransactionsByTypes(Corporation $corp, array $types, Carbon $date){
         $start = $date->copy();
         $start->subWeek()->setTime(0,0,0);
@@ -42,7 +43,7 @@ class JournalTransactionRepository extends EntityRepository {
         $end = $date->copy();
         $end->setTime(23,59,59);
 
-        $sql = "SELECT jt.ref_type_id, group_concat(jt.id) as ids
+        $sql = "SELECT jt.ref_type_id, group_concat(DISTINCT jt.id) as ids
              FROM journal_transactions as jt
              LEFT JOIN accounts as acc on jt.account_id=acc.id
              WHERE acc.corporation_id = :corp_id
@@ -92,7 +93,7 @@ class JournalTransactionRepository extends EntityRepository {
         $end = $date->copy();
         $end->setTime(23,59,59);
 
-        $sql = "SELECT jt.owner_id2, group_concat(jt.id) as ids
+        $sql = "SELECT jt.owner_id2, group_concat(DISTINCT jt.id) as ids
             FROM journal_transactions as jt
             LEFT JOIN accounts as acc on jt.account_id=acc.id
             WHERE  acc.corporation_id = :corp_id

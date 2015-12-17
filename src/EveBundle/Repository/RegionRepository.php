@@ -23,6 +23,17 @@ class RegionRepository extends AbstractDbalRepository implements RepositoryInter
 
     }
 
+    public function getRegionsInList(array $regions){
+        $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getTableName()} WHERE regionID IN (?)",
+            array($regions),
+            array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
+        );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     public function getAll(){
         $sql = "SELECT * FROM {$this->getTableName()}";
 

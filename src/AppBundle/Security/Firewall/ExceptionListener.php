@@ -4,6 +4,8 @@ namespace AppBundle\Security\Firewall;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use \Symfony\Component\Security\Http\Firewall\ExceptionListener as BaseListener;
 
 class ExceptionListener extends BaseListener {
@@ -20,8 +22,21 @@ class ExceptionListener extends BaseListener {
         };
 
         if (strstr($responseType(), 'application/json') !== false){
-            $exception = $event->getException();
-            $response = new JsonResponse(['code' => 403, 'message' => $exception->getMessage()], 403);
+            $e = $event->getException();
+            $response = new JsonResponse();
+            $code = 500;
+            if ($e instanceof NotFoundHttpException){
+                $code = 404;
+            }
+
+            if ($e instanceof AccessDeniedException){
+                $code = 403;
+            }
+            $response->setContent(json_encode([
+                'error' => $e->getMessage(),
+                'code' => $code
+            ], true))
+                ->setStatusCode($code);
 
             $event->setResponse($response);
         } else {

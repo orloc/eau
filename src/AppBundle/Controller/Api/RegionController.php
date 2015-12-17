@@ -31,4 +31,23 @@ class RegionController extends AbstractController implements ApiControllerInterf
 
     }
 
+    /**
+     * @Route("/price_regions", name="api.price_regions", options={"expose"=true})
+     * @Secure(roles="ROLE_CORP_MEMBER")
+     * @Method("GET")
+     */
+    public function availablePriceRegions(Request $request){
+
+        $rRepo = $this->get('evedata.registry')->get('EveBundle:Region');
+        $rids = $this->getDoctrine()->getManager('eve_data')
+            ->getRepository('EveBundle:ItemPrice')
+            ->getRegionIds();
+
+        $regions = $rRepo->getRegionsInList($rids);
+
+        $data = array_merge([['regionName' => 'Average-Price', 'regionID' => 0]], $regions);
+
+        return $this->jsonResponse(json_encode($data));
+    }
+
 }

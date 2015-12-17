@@ -20,6 +20,16 @@ class ItemPriceRepository extends EntityRepository {
 
     }
 
+    public function getRegionIds(){
+        $res = $this->createQueryBuilder('ip')
+            ->select('distinct ip.region_id as region_id')
+            ->getQuery()->getResult();
+
+        return array_values(array_map(function($d){
+            return $d['region_id'];
+        }, $res));
+    }
+
     public function getItem($region_id, $item_id){
         return $this->createQueryBuilder('ip')
             ->select('ip')

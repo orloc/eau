@@ -19,4 +19,14 @@ class IndustrialController extends Controller
     {
         return $this->render('@App/Admin/Industry/buyBackCalculator.html.twig');
     }
+
+    /**
+     * @Route("/industry/price-helper", name="industry.price_helper")
+     * @Method("GET")
+     * @Secure(roles="ROLE_CORP_MEMBER")
+     */
+    public function helperAction(Request $request)
+    {
+        return $this->render('@App/Admin/Industry/priceHelper.html.twig');
+    }
 }
