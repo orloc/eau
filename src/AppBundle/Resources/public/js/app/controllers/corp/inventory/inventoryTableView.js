@@ -40,9 +40,8 @@ angular.module('eveTool')
             console.log(val, 'table');
             if (val === 'all'){
                 updateInventory().then(function(data){
-                    console.log(data);
                     $scope.total_items = data.total_count;
-                    dataDispatcher.addEvent('total_update', items.total_price);
+                    dataDispatcher.addEvent('total_update', data.total_price);
                 });
             }
         });
