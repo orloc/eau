@@ -5,7 +5,6 @@ namespace AppBundle\Service\DataManager;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketTransaction;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 
@@ -23,8 +22,7 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
 
             $transactions = $client->WalletTransactions($params);
 
-            $this->mapList($transactions, [ 'corp' => $corporation, 'acc' => $acc]);
-
+            $this->mapList($transactions->transactions, [ 'corp' => $corporation, 'acc' => $acc]);
         }
     }
 
@@ -37,12 +35,12 @@ class MarketTransactionManager extends AbstractManager implements DataManagerInt
         }
 
         $count = 0;
-        while ($count <= count($items->entries)-1) {
-            $t = isset($items->transactions[$count]) ? $items->transactions[$count] : false;
+
+        while ($count <= count($items)-1) {
+            $t = isset($items[$count]) ? $items[$count] : false;
             if ($t === false){
                 break;
             }
-
             $exists = $this->doctrine->getRepository('AppBundle:MarketTransaction')
                 ->hasTransaction($acc, $t->transactionID, $t->journalTransactionID);
 

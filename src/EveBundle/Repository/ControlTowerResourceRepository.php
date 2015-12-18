@@ -8,11 +8,6 @@ class ControlTowerResourceRepository extends AbstractDbalRepository implements R
         return 'EveBundle:ControlTowerResource';
     }
 
-    public function getResource($itemId){
-
-
-    }
-
     public function getFuelConsumption($itemId){
         $sql = "SELECT * FROM {$this->getTableName()}
                 WHERE controlTowerTypeID = :id
