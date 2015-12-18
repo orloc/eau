@@ -11,7 +11,7 @@ angular.module('eveTool')
                     return ((fuelVolume/parseFloat(actualSize)) * 100).toPrecision(2);
                 })(tower);
 
-                return { 'percentage': percentage, 'max': actualSize, 'actual': fuelVolume };
+                return { 'percentage': percentage, 'max': actualSize, 'actual': fuel.quantity };
             }
         };
 
@@ -26,13 +26,16 @@ angular.module('eveTool')
         };
 
         var getTimeToOffline = function(tower){
-            var consumption = resolveTowerSize(tower, 160),
+            var consumption = 24,
                 date = moment(),
                 fuel = _.find(tower.fuel, function(f){
                 return f.typeID !== "16275";
             });
 
-            var remaining = (parseFloat(fuel.quantity) / consumption);
+            console.log(consumption, fuel);
+
+            var remaining = parseInt(fuel.quantity) / consumption;
+            console.log(remaining);
             date.add(remaining, 'hours');
             return parseFloat(date.format('x'));
         };

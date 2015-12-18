@@ -25,7 +25,6 @@ angular.module('eveTool')
             return corporationDataManager.getCorpInventory($scope.selected_corp, $scope.page, $scope.per_page).then(function(data){
                 var items = data.items;
 
-                console.log(items);
                 $scope.assets = items.items;
                 $scope.per_page = data.num_items_per_page;
                 $scope.page = data.current_page_number;
@@ -37,11 +36,10 @@ angular.module('eveTool')
         }
 
         $scope.$on('view_changed', function(event, val ){
-            console.log(val, 'table');
             if (val === 'all'){
                 updateInventory().then(function(data){
                     $scope.total_items = data.total_count;
-                    dataDispatcher.addEvent('total_update', data.total_price);
+                    $scope.$parent.total_price = data.items.total_price;
                 });
             }
         });

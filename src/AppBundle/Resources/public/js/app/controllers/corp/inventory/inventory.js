@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('inventoryController', ['$scope', 'corporationDataManager', 'selectedCorpManager', 'dataDispatcher', function($scope, corporationDataManager, selectedCorpManager, dataDispatcher){
+    .controller('inventoryController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
         $scope.view_type = null;
         $scope.image_width = 32;
         $scope.total_price = 0;
@@ -17,11 +17,6 @@ angular.module('eveTool')
             $scope.view_type = view;
             $scope.$broadcast('view_changed', $scope.view_type);
         };
-
-        $scope.$on('total_update', function(event, payload){
-            console.log(payload);
-            $scope.total_price = payload;
-        });
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
             if (typeof val.id === 'undefined'){

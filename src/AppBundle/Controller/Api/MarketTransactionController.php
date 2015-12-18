@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use Carbon\Carbon;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -27,6 +28,8 @@ class MarketTransactionController extends AbstractController implements ApiContr
      */
     public function indexAction(Request $request, Corporation $corp, Account $account)
     {
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+
         $date = $request->get('date', null);
         $type = $request->get('type', 'buy');
 

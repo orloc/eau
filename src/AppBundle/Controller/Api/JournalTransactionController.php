@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use Carbon\Carbon;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,6 +25,8 @@ class JournalTransactionController extends AbstractController implements ApiCont
      */
     public function indexAction(Request $request, Corporation $corp, Account $account)
     {
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+
         $date = $request->get('date', null);
 
         if ($date === null){
@@ -48,6 +51,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
      * @Method("GET")
      */
     public function getByTypeAction(Request $request, Corporation $corp){
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
         $date = $request->get('date', null);
 
         $dt = $date === null
@@ -75,6 +79,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
      * @Method("GET")
      */
     public function getByUserAction(Request $request, Corporation $corp){
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $date = $request->get('date', null);
         $dt = $date === null

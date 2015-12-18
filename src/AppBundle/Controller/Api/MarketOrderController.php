@@ -6,6 +6,7 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrderGroup;
+use AppBundle\Security\AccessTypes;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -26,6 +27,8 @@ class MarketOrderController extends AbstractController implements ApiControllerI
      */
     public function indexAction(Corporation $corp)
     {
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+
         $repo = $this->getDoctrine()->getRepository('AppBundle:MarketOrder');
         $newestGroup = $this->getDoctrine()->getRepository('AppBundle:MarketOrderGroup')
             ->getLatestMarketOrderGroup($corp);

@@ -7,6 +7,7 @@ use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,6 +28,7 @@ class CorporationMemberController extends AbstractController implements ApiContr
     public function indexAction(Request $request, Corporation $corp)
     {
 
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
         $members = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')
             ->findBy(['corporation' => $corp]);
 

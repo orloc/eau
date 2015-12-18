@@ -5,6 +5,7 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
+use AppBundle\Security\AccessTypes;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -24,6 +25,8 @@ class StarbaseController extends AbstractController implements ApiControllerInte
      */
     public function indexAction(Request $request, Corporation $corp)
     {
+
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $stations = $this->getDoctrine()->getRepository('AppBundle:Starbase')
             ->findBy(['corporation' => $corp]);
@@ -81,6 +84,17 @@ class StarbaseController extends AbstractController implements ApiControllerInte
         $json = $this->get('serializer')->serialize($stations, 'json');
 
         return $this->jsonResponse($json);
+
+    }
+
+    /**
+     * @Route("/corporation/{id}/starbases/fuel_ref", name="api.corporation.starbases_fuel_ref", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_CEO")
+     * @Method("GET")
+     */
+    public function getStarbaseFuelLookupAction(Request $request, Corporation $corp){
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
     }
 

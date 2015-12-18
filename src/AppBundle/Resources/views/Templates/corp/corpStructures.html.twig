@@ -41,10 +41,13 @@
                     </td>
                     <td width="400">
                         <div class='row' ng-repeat="i in item.descriptors.fuel" ng-init="percentValue = getTowerFuelQuantities(i, item)">
-                            <div class="col-xs-2">
+                            <div class="col-xs-3">
                                 <eve-image image-type="'Type'" object-id="i.typeID" img-width="32" override-width="image.width"></eve-image>
+                                <span class="small muted">
+                                    {{ '{{ percentValue.actual }} / {{ percentValue.max }}' }}
+                                </span>
                             </div>
-                            <div class="col-xs-10">
+                            <div class="col-xs-9">
                                 <div class="progress">
                                   <div class="progress-bar progress-bar-striped" ng-class="{ 'progress-bar-success': percentValue.percentage >= 75, 'progress-bar-warning': percentValue.percentage >= 25 && percentValue.percentage <= 74, 'progress-bar-danger': percentValue.percentage <= 24 }" role="progressbar" aria-valuenow="{{ '{{ percentValue }}' }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ '{{ percentValue.percentage }}' }}%">
                                     <span>{{ '{{ percentValue.percentage }}' }}% Full {{ '{{ percentValue.actual }} / {{  percentValue.max }}' }}</span>
