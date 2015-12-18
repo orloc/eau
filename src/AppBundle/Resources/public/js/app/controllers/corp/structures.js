@@ -26,16 +26,17 @@ angular.module('eveTool')
         };
 
         var getTimeToOffline = function(tower){
-            var consumption = 24,
-                date = moment(),
+            var date = moment(),
                 fuel = _.find(tower.fuel, function(f){
                 return f.typeID !== "16275";
             });
 
-            console.log(consumption, fuel);
-
-            var remaining = parseInt(fuel.quantity) / consumption;
-            console.log(remaining);
+            var perCycle = parseInt(tower.descriptors.fuel_consumption.quantity);
+            var secStatus = parseFloat(tower.descriptors.security) <= 0;
+            if (secStatus){
+                perCycle = perCycle - (perCycle * 0.25) ;
+            }
+            var remaining = parseInt(fuel.quantity) / perCycle;
             date.add(remaining, 'hours');
             return parseFloat(date.format('x'));
         };

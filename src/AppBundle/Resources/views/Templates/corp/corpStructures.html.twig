@@ -62,7 +62,7 @@
                         </label>
                     </td>
                     <td>
-                        <timer end-time="item.timeToOffline">{{ '{{ hours }}'}} h, {{ '{{ minutes }}' }} m, {{ '{{ seconds }}'}} s</timer>
+                        <timer end-time="item.timeToOffline">{{ '{{ days }}' }}d, {{ '{{ hours }}'}} h, {{ '{{ minutes }}' }} m, {{ '{{ seconds }}'}} s</timer>
                     </td>
                     <td> <i ng-class="{ 'fa fa-check': hasCorpAccess(item.general_settings), 'fa fa-minus': !hasCorpAccess(item.general_settings) }"></i></td>
                     <td> <i ng-class="{ 'fa fa-check': hasAllianceAccess(item.general_settings), 'fa fa-minus': !hasAllianceAccess(item.general_settings) }"></i></td>

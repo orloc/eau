@@ -35,6 +35,7 @@ class StarbaseController extends AbstractController implements ApiControllerInte
 
         $typeRepo = $this->get('evedata.registry')->get('EveBundle:ItemType');
         $attributeRepo = $this->get('evedata.registry')->get('EveBundle:ItemAttribute');
+        $resourceRepo = $this->get('evedata.registry')->get('EveBundle:ControlTowerResource');
 
         foreach ($stations as $s){
             $attributeData = $attributeRepo->getItemAttributes($s->getTypeId());
@@ -44,7 +45,7 @@ class StarbaseController extends AbstractController implements ApiControllerInte
             }, $attributeData);
 
             $attrDetails = $attributeRepo->getAttributes($ids);
-
+            $fuelDetails = $resourceRepo->getFuelConsumption($s->getTypeId());
             $mergedData = [];
             foreach ($attributeData as $k => $d){
                 foreach ($attrDetails as $m){
@@ -75,6 +76,7 @@ class StarbaseController extends AbstractController implements ApiControllerInte
 
             $fuels = $this->get('app.price.manager')->updatePrices($descriptors['fuel']);
 
+            $descriptors['fuel_consumption'] = $fuelDetails;
             $descriptors['fuel'] = $fuels;
 
             $s->setDescriptors($descriptors);
@@ -86,16 +88,4 @@ class StarbaseController extends AbstractController implements ApiControllerInte
         return $this->jsonResponse($json);
 
     }
-
-    /**
-     * @Route("/corporation/{id}/starbases/fuel_ref", name="api.corporation.starbases_fuel_ref", options={"expose"=true})
-     * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
-     * @Method("GET")
-     */
-    public function getStarbaseFuelLookupAction(Request $request, Corporation $corp){
-        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
-
-    }
-
 }
