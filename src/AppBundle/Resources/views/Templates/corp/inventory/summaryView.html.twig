@@ -16,8 +16,7 @@
                     <thead>
                         <th>Name</th>
                         <th>Quantity</th>
-                        <th>In Space</th>
-                        <th>System</th>
+                        <th>Location</th>
                     </thead>
                     <tbody>
                         <tr ng-repeat="i in items">
@@ -31,9 +30,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ '{{ i.asset_count}}' }}</td>
-                            <td>{{ '{{ i.descriptors.stationName }}' }}</td>
-                            <td>{{ '{{ i.descriptors.system }}' }}</td>
+                            <td>{{ '{{ i.asset_count | number }}' }}</td>
+                            <td>
+                                <span class="small">
+                                    {{ '{{ getLocation(i.descriptors) }}' }}
+                                </span>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

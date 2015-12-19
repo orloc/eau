@@ -16,4 +16,17 @@ angular.module('eveTool')
             }
         });
 
+        $scope.getLocation = function(desc){
+                var location = [
+                    desc.region,
+                    desc.system,
+                    function(desc){
+                        return desc.stationName === null
+                            ? 'IN SPACE' : desc.stationName;
+                    }(desc)
+                ];
+
+            return location.join(' - ');
+        };
+
     }]);
