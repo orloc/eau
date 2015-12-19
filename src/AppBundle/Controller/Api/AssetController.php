@@ -51,6 +51,25 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     }
 
     /**
+     * @Route("/corporation/{id}/asset_summary", name="api.corporation.assets.summary", options={"expose"=true})
+     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Secure(roles="ROLE_CEO")
+     * @Method("GET")
+     */
+    public function summaryAction(Request $request, Corporation $corp){
+        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+
+        $group = $this->getRepository('AppBundle:AssetGroup')
+            ->getLatestAssetGroup($corp);
+
+        $results = $this->getRepository('AppBundle:Asset')->getAssetItemSummary($group);
+
+        $json = json_encode($results);
+
+        return $this->jsonResponse($json);
+    }
+
+    /**
      * @Route("/corporation/{id}/assets/clustered", name="api.corporation.assets.clustered", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_CEO")

@@ -97,4 +97,14 @@ class AssetRepository extends EntityRepository {
             ->getQuery()->getResult();
 
     }
+
+    public function getAssetItemSummary(AssetGroup $group){
+        return $this->createQueryBuilder('a')
+            ->select('a.typeId, sum(a.quantity) as asset_count, a.descriptors as descriptors')
+            ->where('a.asset_group = :a_group')
+            ->groupBy('a.typeId')
+            ->addOrderBy('asset_count', 'DESC')
+            ->setParameter('a_group', $group)
+            ->getQuery()->getResult();
+    }
 }

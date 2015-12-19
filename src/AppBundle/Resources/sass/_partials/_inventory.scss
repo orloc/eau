@@ -8,7 +8,17 @@
   p, ul li,  {
     color: $offGrey;
   }
-;
+}
+.summary-view {
+  .panel-heading {
+    background-color: $offGrey;
+    color: $offWhite;
+    font-size: 22px;
+    text-transform: uppercase;
+  }
+  p, ul li,  {
+    color: $offGrey;
+  }
 }
 
 .location-view {
