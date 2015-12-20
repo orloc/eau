@@ -1,42 +1,62 @@
+ul.nav.nav-tabs {
+  border-bottom: 0;
+  li {
+    color: $offWhite;
+    &.active, &:hover, &:focus {
+      a {
+        background: linear-gradient(lighten($offGrey, 20), $offGrey);
+        color: $offWhite;
+        border: none;
+      }
+    }
+    a {
+      color: $offWhite;
+    }
+  }
+}
 .summary-stats {
   display: inline-block;
   line-height: 22px;
   padding: 20px;
   padding-top: 0;
+  color: $offWhite;
 }
 
 .controls {
   text-align: center;
-  position: absolute;
-  bottom: 0;
-  right: 10px;
+  margin-bottom: 10px;
   .btn {
     padding: 2.5px 5px;
   }
 }
 
 .viewing-details {
-  height: 100px;
+  p {
+    color: $offWhite;
+  }
+  margin-bottom: 10px;
 }
 
 .graphs {
   padding: 0;
+  margin-bottom: 10px;
   .x-axis path,
   .x-axis line {
     fill: none;
-    stroke: lighten($offGrey,20);
+    stroke: $offWhite;
     shape-rendering: crispEdges;
   }
 
-  .x-axis text {
+  .x-axis text, .y-axis text {
     font-family: sans-serif;
+    fill: $offWhite;
     font-size: 11px;
   }
 
   .legend text {
     font-size: 10px;
+    fill: $offWhite;
   }
-
 
 
   .wallet text {
@@ -48,11 +68,16 @@
 .wallet-divisions{
   .list-group-item {
     background-color: darken($darkBlue, 10);
+    border: none;
+    border-bottom: 1px solid darken($eveOrange, 10);
     border-color: darken($eveOrange, 10);
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
   li.active, li:hover, li:focus, li.active:hover, li.active:focus {
     background-color: $darkBlue;
-    border-color: $blueish;
     p {
       color: $offWhite;
     }

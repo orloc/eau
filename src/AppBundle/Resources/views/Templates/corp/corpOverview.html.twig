@@ -3,30 +3,30 @@
         <h5 class="text-center">Select a Corporation</h5>
     </div>
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <div class="row">
-            <div class="summary-stats col-xs-12" ng-cloak>
-                <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
-                        {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
-                <div class="small muted circle-ticker pull-right">
-                    <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
-                    &nbsp;
-                    &nbsp;
-                    <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}
-                </div>
+        <div class="summary-stats col-xs-12" ng-cloak>
+            <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
+            {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
+            <div class="small muted circle-ticker pull-right">
+                <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
+                &nbsp;
+                &nbsp;
+                <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}
             </div>
-            <div class="graphs col-xs-10" ng-hide="not_enough_data"></div>
-            <div class="col-xs-10" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
-            <div class="col-xs-2 viewing-details" >
-                <span class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</span>
-                <br>
+        </div>
+        <div class="row">
+            <div class="graphs col-xs-12" ng-hide="not_enough_data"></div>
+            <div class="col-xs-12" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
+            <div class="col-xs-10 viewing-details" >
+                <div class="btn-group-sm pull-left">
+                    <button  class="btn btn-sm" type="button" ng-click="byWeek()" ng-hide="loading === true">Week</button>
+                    <button  class="btn btn-sm" type="button" ng-click="byMonth()" ng-hide="loading === true">Month</button>
+                    <button class="btn btn-sm" type="button" ng-click="byQuarter()" ng-hide="loading === true">Quarter</button>
+                </div>
+                <p class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</p>
+            </div>
+            <div class="col-xs-2">
                 <div class=" pull-right controls">
-                    <div class="btn-group-sm">
-                        <button  class="btn btn-sm" type="button" ng-click="byWeek()" ng-hide="loading === true">Week</button>
-                        <button  class="btn btn-sm" type="button" ng-click="byMonth()" ng-hide="loading === true">Month</button>
-                        <button class="btn btn-sm" type="button" ng-click="byQuarter()" ng-hide="loading === true">Quarter</button>
-                    </div>
-                    <br>
                     <div class="btn-group-sm">
                         <button  class="btn btn-sm" type="button" ng-click="back()" ng-hide="loading === true"><i class="fa fa-chevron-left"></i></button>
                         <button  class="btn btn-sm" type="button" ng-click="today()" ng-disabled="current_date === orig_date" ng-hide="loading === true"><i class="fa fa-dot-circle-o"></i></button>
@@ -35,8 +35,6 @@
                 </div>
             </div>
         </div>
-        <br>
-
         <div class="row">
             <div class="col-xs-3">
                 <ul class="list-unstyled list-group wallet-divisions">

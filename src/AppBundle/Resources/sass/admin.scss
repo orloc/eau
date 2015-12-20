@@ -34,7 +34,8 @@ body {
 }
 
 .well {
-  background-color: darken($offWhite, 10);
+  background: linear-gradient(darken($offGrey, 5), $darkerBlack, $darkestBlack);
+  border-color: $offGrey;
 }
 
 #page-wrapper {
