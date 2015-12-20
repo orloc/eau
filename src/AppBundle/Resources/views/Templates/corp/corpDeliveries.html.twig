@@ -47,10 +47,9 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table data-table table-condensed table-striped table-hover">
+            <table class="table data-table table-condensed table-hover">
                 <thead>
                 <tr>
-                    <th></th>
                     <th>Name</th>
                     <th>Quantity</th>
                     <th>m<sup>3</sup></th>
@@ -58,7 +57,7 @@
                     <th>Constellation</th>
                     <th>System</th>
                     <th>Station</th>
-                    <th>Avg Market Price</th>
+                    <th>Avg Price</th>
                     <th>Total Price</th>
                 </tr>
                 </thead>
@@ -69,13 +68,15 @@
                     </td>
                 </tr>
                 <tr ng-show="!loading" ng-repeat="item in filtered_assets | orderBy:order_by_value:order_by_reverse" ng-class="{'warning': getRowClass(item) == 1, 'danger': getRowClass(item) == 2, 'info': getRowClass(item) == 0, 'success' : getRowClass(item) == -1 }">
-                    <td width="32px">
-                        <eve-image ng-if="filter == '*'" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
-                    </td>
-                    <td>
-                            <span ng-if="filter =='*'">
-                            {{ '{{ item.descriptors.name }}' }}
-                            </span>
+                    <td >
+                        <div class="row" ng-if="filter == '*'">
+                            <div class="col-xs-3">
+                                <eve-image  image-type="'Type'" override-width="image_width" object-id="item.type_id" img-width="32"></eve-image>
+                            </div>
+                            <div class="col-xs-9">
+                                {{ '{{ item.descriptors.name }}' }}
+                            </div>
+                        </div>
                         <span ng-if="filter != '*'">N/A</span>
                     </td>
                     <td>

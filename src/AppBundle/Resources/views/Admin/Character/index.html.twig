@@ -26,7 +26,6 @@
                     <div class="col-md-12" ng-cloak="">
                         <table class="table table-condensed table-hover data-table" ng-cloak>
                             <thead>
-                            <th></th>
                             <th>Name</th>
                             <th>Corporation</th>
                             <th>Is Main</th>
@@ -39,10 +38,16 @@
                             </thead>
                             <tbody>
                             <tr ng-class="{ 'info': selected_character.id == c.id}" ng-repeat="c in characters" ng-show="characters.length > 0" ng-cloak>
-                                <td width="64">
-                                    <eve-image image-type="'Character'" object-id="c.eve_id" img-width="256"></eve-image>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <eve-image image-type="'Character'" override-width="image_width" object-id="c.eve_id" img-width="256"></eve-image>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            {{ '{{ c.name }}' }}
+                                        </div>
+                                    </div>
                                 </td>
-                                <td>{{ '{{ c.name }}' }}</td>
                                 <td>{{ '{{ c.corporation_name }}' }}</td>
                                 <td>
                                     <label class="label" ng-class="{ 'label-warning': !c.is_main, 'label-success': c.is_main }">

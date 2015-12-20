@@ -1,0 +1,69 @@
+.navbar {
+  background-color: $darkestBlack;
+  border: $darkerBlack;
+}
+
+
+a.navbar-brand {
+  color: white!important;
+}
+
+.navbar-top-links {
+  li.welcome p {
+    color : $offWhite;
+  }
+
+  li.dropdown {
+    a:hover , a:focus, a.open {
+      background-color: $darkerBlack;
+      color: lighten($darkBlue, 20);
+    }
+    a {
+      color : $offWhite;
+    }
+
+    ul.dropdown-menu {
+      margin:0;
+      border:0;
+      border-radius:0;
+      padding: 0;
+      background-color: $darkerBlack;
+      li a {
+        font-size: 13px;
+        color: $offWhite;
+        &:hover {
+          color: lighten($darkBlue, 20);
+        }
+      }
+      &:hover {
+        background-color: lighten($darkerBlack, 10);
+      }
+    }
+  }
+}
+
+.navbar-brand {
+  font-family: 'eve_alphabold', sans-serif;
+  font-size: 30px;
+  span {
+    font-size: 15px;
+  }
+}
+
+.sidebar-nav {
+  background-color: $darkerBlack;
+  color: $offGrey;
+
+  ul li {
+    border-color: $offGrey;
+    a {
+      color: $offWhite;
+      font-size: 15px;
+    }
+
+    a.active, a:hover, a:focus {
+      background-color: $darkestBlack;
+      color: lighten($darkBlue, 20);
+    }
+  }
+}

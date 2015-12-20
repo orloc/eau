@@ -1,0 +1,56 @@
+<div class="col-xs-9" ng-show="selected_account && page == 'buy'">
+    <div class="table-responsive">
+        <table class="table data-table table-condensed table-hover">
+            <thead>
+            <th>Item</th>
+            <th>Volume</th>
+            <th>Price Per</th>
+            <th>Gross</th>
+            <th>Seller</th>
+            <th>Client</th>
+            </thead>
+            <tbody>
+            <tr ng-show="buy_orders.length > 0 " ng-repeat="b in buy_orders | filter:orderBy:'price * quantity'">
+                <td>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <eve-image image-type="'Type'" override-width="image_width" object-id="b.item_id" img-width="32"></eve-image>
+                        </div>
+                        <div class="col-xs-9">
+                            {{ '{{ b.item_name }}' }}
+                        </div>
+                    </div>
+                </td>
+                <td>{{ '{{ b.quantity }}' }}</td>
+                <td>{{ '{{ b.price | currency:"ISK" }}' }}</td>
+                <td>{{ '{{ b.price * b.quantity | currency:"ISK"}}' }}</td>
+                <td>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <eve-image image-type="'Character'" override-width="image_width" object-id="b.character_id" img-width="256"></eve-image>
+                        </div>
+                        <div class="col-xs-9">
+                            {{ '{{ b.character_name }}' }}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <eve-image image-type="'Character'" override-width="image_width" object-id="b.client_id" img-width="256"></eve-image>
+                        </div>
+                        <div class="col-xs-9">
+                            {{ '{{ b.client_name }}' }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="buy_orders.length == 0">
+                <td colspan="6" class="text-center text-danger">
+                    No Buy Orders Found.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

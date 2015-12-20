@@ -12,7 +12,7 @@
     <!-- /.navbar-header -->
 
     <ul class="nav navbar-top-links navbar-right" ng-cloak>
-        <li style="margin-right: 20px;">
+        <li class="welcome">
             <p>Welcome {{ app.getUser().getUsername() }}</p>
         </li>
         <li class="dropdown">
@@ -20,6 +20,8 @@
                 <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
             </a>
             <ul class="dropdown-menu dropdown-user">
+                <li><a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                </li>
                 <li><a href="{{ path('fos_user_security_logout') }}"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                 </li>
             </ul>

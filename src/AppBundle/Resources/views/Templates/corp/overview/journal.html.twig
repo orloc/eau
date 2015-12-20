@@ -1,0 +1,29 @@
+<div class="col-xs-9" ng-show="selected_account && page == 'journal'">
+    <div class="table-responsive">
+        <table class="table table-striped data-table table-condensed table-hover">
+            <thead>
+            <th>Date</th>
+            <th>Issuer</th>
+            <th>Recipient</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Balance</th>
+            </thead>
+            <tbody>
+            <tr ng-class="{ 'danger': j.amount < 0,'success': j.amount > 0}" ng-show="journal_transactions.length > 0 " ng-repeat="j in journal_transactions | orderBy:'date':true">
+                <td>{{ '{{ j.date | date:"yyyy.MM.dd H:mm:ss" }}' }}</td>
+                <td>{{ '{{  j.owner_name1 }}' }}</td>
+                <td>{{ '{{  j.owner_name2 }}' }}</td>
+                <td> {{ '{{ j.ref_type.ref_type_name }}' }}</td>
+                <td>{{ '{{  j.amount | currency:"ISK" }}' }}</td>
+                <td>{{ '{{  j.balance | currency:"ISK"}}' }}</td>
+            </tr>
+            <tr ng-show="journal_transactions.length === 0">
+                <td colspan="5" class="text-center text-danger">
+                    No Journal Transactions found
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

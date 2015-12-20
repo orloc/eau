@@ -1,31 +1,68 @@
+.table-responsive {
+  overflow-x: inherit;
+}
 table.table.data-table {
   padding: 10px;
+  margin-top: 20px;
+  p, ul li,  {
+    color: $offWhite;
+  }
+  li , p { color: $offWhite; }
 
   thead {
     tr th {
       background-color: $darkerBlack;
+      padding-top: 0!important;
+      padding: 2px;
+      border-top:  10px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 10px ;
       color: $offWhite;
-      text-transform: capitalize;
+      text-transform: uppercase;
+      font-size: 14px;
+      text-align: center;
       border-bottom: 1px lighten($darkerBlack, 20);
     }
   }
   tbody {
-    background-color: lighten($offWhite,10);
+    background-color: $offGrey;
+    tr.info td {
+      background-color: darken($darkBlue, 10);
+    }
+
+    tr.success td {
+      background-color: darken($eveGreen, 10);
+    }
+
+    tr.danger td {
+      background-color: darken($eveRed, 10);
+    }
+
+    tr.warning td {
+      background-color: darken($eveOrange, 20);
+    }
+
     tr td {
-      color: $offGrey;
+      color: $offWhite;
       font-weight: 400;
       font-size: 12px;
       border: 0;
-      border-top: 1px solid $offGrey;
+      border-top: 1px solid darken($eveOrange, 10);
+      text-align: center;
     }
 
     tr:hover {
       td {
-        background-color: lighten($offWhite, 10);
+        background-color: lighten($offGrey, 10);
         font-style: italic;
       }
     }
   }
+
+}
+
+table.table.data-table > tbody > tr:nth-of-type(odd) {
+  background-color: $blueish;
 }
 
 table.small-table {

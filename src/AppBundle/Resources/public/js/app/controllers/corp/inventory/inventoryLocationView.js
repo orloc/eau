@@ -4,7 +4,6 @@ angular.module('eveTool')
     .controller('inventoryLocationViewController', ['$scope', 'corporationDataManager', function($scope, corporationDataManager){
         $scope.open_items = [];
         $scope.locations = [];
-        $scope.loading = true;
 
         $scope.openedLocation = function(loc){
             if (loc.assets === null){
@@ -33,14 +32,16 @@ angular.module('eveTool')
 
         $scope.$on('view_changed', function(event, val){
             if (val === 1){
-                $scope.loading = true;
-                corporationDataManager.getCorpInventorySorted($scope.selected_corp, $scope.translateView(val)).then(function(data){
-                    $scope.locations = data;
-                    angular.forEach($scope.locations, function(d, k){
-                        $scope.locations[k].assets = null;
+                if ($scope.locations.length === 0){
+                    $scope.$parent.loading = true;
+                    corporationDataManager.getCorpInventorySorted($scope.selected_corp, $scope.translateView(val)).then(function(data){
+                        $scope.locations = data;
+                        angular.forEach($scope.locations, function(d, k){
+                            $scope.locations[k].assets = null;
+                        });
+                        $scope.$parent.loading = false;
                     });
-                    $scope.loading = false;
-                });
+                }
             }
         });
     }]);

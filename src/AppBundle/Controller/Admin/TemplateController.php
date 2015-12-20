@@ -21,6 +21,14 @@ class TemplateController extends Controller
     }
 
     /**
+     * @Route("/data_table", name="template.data_table")
+     */
+    public function datatableAction(Request $request)
+    {
+        return $this->render('AppBundle:Templates:serverStatus.html.twig');
+    }
+
+    /**
      * @Route("/slide_menu", name="template.slidemenu")
      */
     public function slideAction(Request $request)

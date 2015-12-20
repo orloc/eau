@@ -11,6 +11,7 @@ angular.module('eveTool')
         $scope.totalBalance = 0;
         $scope.grossProfit = 0;
         $scope.sell_orders = [];
+        $scope.image_width = 28;
         $scope.loading = false;
         $scope.page = 'stats';
         $scope.current_date = moment().format('MM/DD/YY');

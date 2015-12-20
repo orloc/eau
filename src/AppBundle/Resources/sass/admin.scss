@@ -1,18 +1,19 @@
 @import 'compass/css3';
 @import '_partials/_fonts.scss';
 @import '_partials/_colors.scss';
+@import '_partials/_text.scss';
 @import '_partials/_pushMenu.scss';
 @import '_partials/_footer.scss';
 @import '_partials/_form.scss';
-@import '_partials/_legal.scss';
 @import '_partials/_tables.scss';
-@import '_partials/_sidemenu.scss';
-@import '_partials/_onlineWidget.scss';
-@import '_partials/_walletoverview.scss';
-@import '_partials/_orebuyback.scss';
-@import '_partials/_aggregates.scss';
-@import '_partials/_corporation_item_pane.scss';
-@import '_partials/_inventory.scss';
+@import '_partials/_componenets/_nav.scss';
+@import '_partials/_componenets/_legal.scss';
+@import '_partials/_componenets/_onlineWidget.scss';
+@import '_partials/_componenets/_orebuyback.scss';
+@import '_partials/_componenets/_corporations/_walletoverview.scss';
+@import '_partials/_componenets/_corporations/_aggregates.scss';
+@import '_partials/_componenets/_corporations/_corporation_item_pane.scss';
+@import '_partials/_componenets/_corporations/_inventory.scss';
 
 body {
   height: 100%;
@@ -24,40 +25,16 @@ body {
   font-family: $roboto;
 }
 
-h1, h2, h3 {
-  font-family: 'eve_alphabold', sans-serif;
-  color: white;
-}
-
-p, ul,a {
-  color: white;
-}
-
-a.eve {
-  color: $eveOrange;
-  &:hover {
-    color: darken($eveOrange, 20);
-  }
-  &:focus {
-    color: darken($eveOrange, 20);
-  }
-}
-
 .normal_font {
   font-family: $roboto;
 }
 
-.progress {
-  margin-bottom: 10px;
-}
-
-
-a.navbar-brand {
-  color: white!important;
-}
-
 #wrapper {
   background-color: $darkerBlack;
+}
+
+.well {
+  background-color: darken($offWhite, 10);
 }
 
 #page-wrapper {
@@ -83,53 +60,6 @@ a.navbar-brand {
   @include background-image(radial-gradient(circle at 1.98% 23.04%, #2b0000, transparent 100%),radial-gradient(circle at 98.02% 70.05%, #190A05, transparent 93%),radial-gradient(circle at 50% 50%, #050d06, #050d06 100%));
   */
   border-left: $darkerBlack;
-}
-
-.navbar {
-  background-color: $darkestBlack;
-  border: $darkerBlack;
-}
-
-.navbar-top-links {
-  li.dropdown {
-    a:hover , a:focus{
-      background-color: $darkerBlack;
-      color: lighten($darkBlue, 20);
-    }
-
-    ul.dropdown-menu {
-      margin:0;
-      border:0;
-      border-radius:0;
-      background-color: $darkerBlack;
-      li a {
-        font-size: 16px;
-        color: lighten($darkBlue, 20);
-
-      }
-      &:hover {
-        background-color: lighten($darkerBlack, 10);
-      }
-    }
-  }
-}
-
-.navbar-brand {
-  font-family: 'eve_alphabold', sans-serif;
-  font-size: 30px;
-  span {
-    font-size: 15px;
-  }
-}
-
-.character-select{
-  padding: 10px;
-
-  ul li {
-    color: $darkerBlack;
-  }
-
-
 }
 
 /*

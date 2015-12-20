@@ -3,6 +3,7 @@
 angular.module('eveTool')
 .controller('corpListController', ['$scope', '$rootScope', 'selectedCorpManager', 'corporationDataManager', function($scope, $rootScope, selectedCorpManager, corporationDataManager){
     $scope.corps = [];
+    $scope.selected_corp = null;
     $scope.needs_update = [];
 
     $scope.$watch('user_roles', function(data){
@@ -32,7 +33,7 @@ angular.module('eveTool')
         };
 
         $scope.$watch('selected_corp', function(value){
-            if (typeof value === 'undefined'){
+            if (typeof value === 'undefined' || value === null){
                 return;
 
             }
@@ -42,6 +43,10 @@ angular.module('eveTool')
 
             selectedCorpManager.set(value);
         });
+
+        $scope.selectCorp = function(c){
+            $scope.selected_corp = c;
+        };
 
 
         $scope.$on('update_list', function(event, item){

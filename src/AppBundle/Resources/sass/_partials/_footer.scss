@@ -3,10 +3,11 @@ footer {
   position: absolute;
   bottom: 0;
   p {
+    color:  $offWhite;
     text-align: center;
   }
 
   a {
-    color: lightblue;
+    color: lighten($eveOrange, 10);
   }
 }

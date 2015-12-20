@@ -51,7 +51,7 @@
                         <tr ng-show="!loading && orders.length <= 0">
                             <td colspan="10" class="text-center"> No Orders found</td>
                         </tr>
-                        <tr ng-repeat="item in orders | orderBy:'ratio':false" ng-show="!loading && orders.length > 0" ng-class="{ 'danger': item.ratio <= 20, 'warning': item.ratio <= 50 }">
+                        <tr ng-repeat="item in orders | orderBy:'ratio':false" ng-show="!loading && orders.length > 0" ng-class="{ 'danger': item.ratio <= 20, 'warning': item.ratio <= 50 && item.ratio > 20 }">
                             <td>
                                 <div class="row">
                                     <div class="col-xs-3">
@@ -92,7 +92,7 @@
                             <td>
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <eve-image image-type="'Character'" object-id="item.placed_by_id" img-width="256"></eve-image>
+                                        <eve-image image-type="'Character'" override-width="image_width" object-id="item.placed_by_id" img-width="256"></eve-image>
                                     </div>
                                 </div>
                             </td>

@@ -1,0 +1,43 @@
+h1, h2, h3, h4 {
+  font-family: 'eve_alphabold', sans-serif;
+  color: white;
+}
+
+.well {
+  h1, h2, h3, h4 {
+    color: $offGrey;
+  }
+  p, ul li,  {
+    color: $offGrey;
+  }
+
+  li , p { color: $offGrey; }
+}
+
+
+a.eve {
+  color: $eveOrange;
+  &:hover {
+    color: darken($eveOrange, 20);
+  }
+  &:focus {
+    color: darken($eveOrange, 20);
+  }
+}
+
+.progress {
+  margin-bottom: 10px;
+}
+
+.panel-heading {
+  background-color: $offGrey;
+  color: $offWhite;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+p, ul li,  {
+  color: $offWhite;
+}
+
+li , p { color: $offWhite; }

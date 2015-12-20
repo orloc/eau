@@ -46,7 +46,10 @@
 }
 
 .wallet-divisions{
-
+  .list-group-item {
+    background-color: darken($darkBlue, 10);
+    border-color: darken($eveOrange, 10);
+  }
   li.active, li:hover, li:focus, li.active:hover, li.active:focus {
     background-color: $darkBlue;
     border-color: $blueish;
@@ -56,7 +59,7 @@
   }
   p {
     margin: 0;
-    color: $offGrey;
+    color: $offWhite;
   }
 
 }

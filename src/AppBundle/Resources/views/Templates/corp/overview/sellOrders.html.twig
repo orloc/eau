@@ -1,0 +1,57 @@
+<div class="col-xs-9" ng-show="selected_account && page == 'sell'">
+    <div class="table-responsive">
+        <table class="table data-table table-condensed table-hover">
+            <thead>
+            <th>Item</th>
+            <th>Volume</th>
+            <th>Price Per</th>
+            <th>Gross</th>
+            <th>Seller</th>
+            <th>Client</th>
+            </thead>
+            <tbody>
+
+            <tr ng-show="sell_orders.length > 0 " ng-repeat="s in sell_orders">
+                <td>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <eve-image image-type="'Type'" override-width="image_width" object-id="s.item_id" img-width="32"></eve-image>
+                        </div>
+                        <div class="col-xs-9">
+                            {{ '{{ s.item_name }}' }}
+                        </div>
+                    </div>
+                </td>
+                <td>{{ '{{ s.quantity }}' }}</td>
+                <td>{{ '{{ s.price | currency:"ISK" }}' }}</td>
+                <td>{{ '{{ s.price * s.quantity | currency:"ISK"}}' }}</td>
+                <td>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <eve-image image-type="'Character'" override-width="image_width" object-id="s.character_id" img-width="256"></eve-image>
+                        </div>
+                        <div class="col-xs-9">
+                            {{ '{{ s.character_name }}' }}
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <eve-image image-type="'Character'" override-width="image_width" object-id="s.client_id" img-width="256"></eve-image>
+                        </div>
+                        <div class="col-xs-9">
+                            {{ '{{ s.client_name }}' }}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="sell_orders.length == 0">
+                <td colspan="6" class="text-center text-danger">
+                    No Sell Orders Found.
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

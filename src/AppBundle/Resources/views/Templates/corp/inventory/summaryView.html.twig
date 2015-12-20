@@ -12,33 +12,30 @@
                     <button class="btn btn-sm btn-default">Hide Equipment</button>
                     <button class="btn btn-sm btn-default">Hide Ships</button>
                 </div>
-                <table class="table table-condensed data-table">
-                    <thead>
-                        <th>Name</th>
-                        <th>Quantity</th>
-                        <th>Location</th>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="i in items">
-                            <td>
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <eve-image image-type="'Type'" override-width="image_width" object-id="i.typeId" img-width="32"></eve-image>
-                                    </div>
-                                    <div class="col-xs-8">
-                                        {{ '{{ i.descriptors.name }}' }}
-                                    </div>
+
+                <eve-data-table table-headers="tableHeaders">
+                    {#
+                    <tr ng-repeat="i in items">
+                        <td>
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <eve-image image-type="'Type'" override-width="image_width" object-id="i.typeId" img-width="32"></eve-image>
                                 </div>
-                            </td>
-                            <td>{{ '{{ i.asset_count | number }}' }}</td>
-                            <td>
+                                <div class="col-xs-8">
+                                    {{ '{{ i.descriptors.name }}' }}
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ '{{ i.asset_count | number }}' }}</td>
+                        <td>
                                 <span class="small">
                                     {{ '{{ getLocation(i.descriptors) }}' }}
                                 </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                        </td>
+                    </tr>
+                    #}
+
+                </eve-data-table>
             </div>
         </div>
 

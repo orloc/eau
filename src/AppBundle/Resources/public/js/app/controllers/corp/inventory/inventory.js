@@ -2,6 +2,7 @@
 
 angular.module('eveTool')
     .controller('inventoryController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
+        $scope.loading = true;
         $scope.view_type = null;
         $scope.image_width = 32;
         $scope.total_price = 0;

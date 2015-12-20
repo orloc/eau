@@ -3,11 +3,11 @@
 {% block content -%}
     <div class="buyback">
         <side-menu-container ng-transclude>
-            <h2>Buyback Calculator
+            <h3>Buyback Calculator
                 {% if is_granted('ROLE_ADMIN') %}
                     <slide-button ng-cloak style="color: grey;" open-type="gears"></slide-button>
                 {% endif %}
-            </h2>
+            </h3>
             <div ng-controller="buybackController" class="row">
                 <div class="col-xs-6">
                     <form ng-submit="submit()">
