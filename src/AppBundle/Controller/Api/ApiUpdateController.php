@@ -21,7 +21,7 @@ class ApiUpdateController extends AbstractController implements ApiControllerInt
     /**
      * @Route("/corporation/{id}/api_update", name="api.corporation.apiupdate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp)

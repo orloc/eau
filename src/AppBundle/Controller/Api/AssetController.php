@@ -21,7 +21,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/corporation/{id}/assets", name="api.corporation.assets", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp)
@@ -53,7 +53,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/corporation/{id}/asset_summary", name="api.corporation.assets.summary", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function summaryAction(Request $request, Corporation $corp){
@@ -72,7 +72,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/corporation/{id}/assets/clustered", name="api.corporation.assets.clustered", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function getAssetsOrganizedAction(Request $request, Corporation $corp){
@@ -160,7 +160,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/corporation/{id}/location_assets", name="api.corporation.location_assets", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function locationAssetsAction(Request $request, Corporation $corp){
@@ -189,7 +189,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/corporation/{id}/deliveries", name="api.corporation.deliveries", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function deliveriesAction(Request $request, Corporation $corp)
@@ -394,7 +394,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/item_list", name="api.item_list", options={"expose"=true})
      * @Method("GET")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_USER")
      */
     public function getItemList(Request $request){
 
@@ -411,7 +411,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     /**
      * @Route("/market_groups", name="api.market_groups", options={"expose"=true})
      * @Method("GET")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_USER")
      */
     public function getTopLevelMarketGroups(Request $request){
         $items = $this->get('evedata.registry')

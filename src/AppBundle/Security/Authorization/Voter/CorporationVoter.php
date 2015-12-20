@@ -75,11 +75,21 @@ class CorporationVoter extends AbstractVoter {
                               // check if this account has a character this IS the CEO of this corp
                               foreach ($user->getCharacters() as $c){
                                    if ($accHasChar){ continue; }
-                                   $accHasChar = strcmp($corpCeo, $char->getName()) === 0;
+                                   $accHasChar = strcmp($corpCeo, $c->getName()) === 0;
                               }
                          }
 
                          return $charIsCeo || $accHasChar;
+                    }
+
+                    if ($user->hasRole('ROLE_DIRECTOR')){
+                        // check that the user is in this corporation
+                         $corpMembers = $object->getCorporationMembers();
+                         foreach ($corpMembers as $m){
+                              if (intval($m->getCharacterId()) === intval($char->getEveId())){
+                                  return true;
+                             }
+                         }
                     }
 
                   break;

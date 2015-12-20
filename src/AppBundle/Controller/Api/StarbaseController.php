@@ -20,7 +20,7 @@ class StarbaseController extends AbstractController implements ApiControllerInte
     /**
      * @Route("/corporation/{id}/starbases", name="api.corporation.starbases", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp)

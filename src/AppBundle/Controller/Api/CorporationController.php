@@ -24,7 +24,7 @@ class CorporationController extends AbstractController implements ApiControllerI
     /**
      * @Route("/", name="api.corps")
      * @Method("GET")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      */
     public function indexAction()
     {
@@ -72,7 +72,7 @@ class CorporationController extends AbstractController implements ApiControllerI
     /**
      * @Route("/needsUpdate", name="api.corp.needs_update")
      * @Method("GET")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @TODO RETHINK THIS
      */
     public function needsUpdateAction()
@@ -87,10 +87,10 @@ class CorporationController extends AbstractController implements ApiControllerI
     }
 
     /**
-     * Creates a new User entity.
+     * Creates a new Corporation entity.
      *
      * @Route("/", name="api.corp_create")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_SUPER_ADMIN")
      * @Method("POST")
      */
     public function createAction(Request $request)

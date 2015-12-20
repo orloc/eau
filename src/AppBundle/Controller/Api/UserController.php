@@ -47,7 +47,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
             }, $corps);
 
             $users = $userRepo->findAllByCorporationIds($ids);
-        } else if ($this->isGranted('ROLE_CEO')){
+        } else if ($this->isGranted('ROLE_CEO') ){
             $main = $charRepo->getMainCharacter($currentUser);
             $names = $charRepo->getCharNamesByCorpName($main->getCorporationName());
 

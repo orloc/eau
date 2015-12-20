@@ -20,7 +20,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
      * @Route("/corporation/{id}/account/{acc_id}/journal_transactions", name="api.corporation.account.journaltransactions", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @ParamConverter(name="account", class="AppBundle:Account", options={"id" = "acc_id"})
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp, Account $account)
@@ -47,7 +47,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
     /**
      * @Route("/corporation/{id}/journal_type_aggregate", name="api.corporation.journal.aggregate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function getByTypeAction(Request $request, Corporation $corp){
@@ -75,7 +75,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
     /**
      * @Route("/corporation/{id}/journal_user_aggregate", name="api.corporation.journal.user_aggregate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function getByUserAction(Request $request, Corporation $corp){

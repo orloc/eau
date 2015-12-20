@@ -13,9 +13,6 @@ angular.module('eveTool')
 
         corporationDataManager.getAll().then(function(d) {
             $scope.corps = d;
-
-            console.log(d);
-
             if($scope.corps.length === 1){
                 $scope.selected_corp = $scope.corps[0];
             }

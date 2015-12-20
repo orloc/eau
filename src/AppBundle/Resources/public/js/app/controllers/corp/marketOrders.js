@@ -22,7 +22,6 @@ angular.module('eveTool')
             }).then(function(items){
                 $scope.orders = mapFillRatio(items.items);
 
-                console.log($scope.orders);
                 $scope.total_escrow = items.total_escrow;
                 $scope.total_sales = items.total_on_market;
                 $scope.loading = false;

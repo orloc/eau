@@ -23,7 +23,7 @@ class MarketTransactionController extends AbstractController implements ApiContr
      * @Route("/corporation/{id}/account/{acc_id}/markettransaction", name="api.corporation.account.markettransactions", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @ParamConverter(name="account", class="AppBundle:Account", options={"id" = "acc_id"})
-     * @Secure(roles="ROLE_CEO")
+     * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
     public function indexAction(Request $request, Corporation $corp, Account $account)
