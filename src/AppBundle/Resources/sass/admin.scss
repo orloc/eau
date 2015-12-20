@@ -58,9 +58,12 @@ body {
 
 }
 
+.cloak {
+  opacity: .8;
+}
+
 #page-wrapper {
   padding-top: 45px;
-  opacity: .8;
   background-color: transparent;
   position: relative;
   #page-overlay{
