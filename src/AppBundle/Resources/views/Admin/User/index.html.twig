@@ -3,12 +3,13 @@
 {% block content -%}
     <div class="row" ng-controller="userListController">
         <side-menu-container ng-transclude>
-            <h3>User <span class="muted small">LIST</span>
-                <slide-button ng-if="hasRole('ROLE_CEO')" ng-cloak style="color: grey;" open-type="new"></slide-button>
-            </h3>
-            <br>
-            <table class="table data-table table-hover table-condensed" ng-cloak>
-                <thead>
+            <div class="cloak">
+                <h3>User <span class="muted small">LIST</span>
+                    <slide-button ng-if="hasRole('ROLE_CEO')" ng-cloak style="color: grey;" open-type="new"></slide-button>
+                </h3>
+                <br>
+                <table class="table data-table table-hover table-condensed" ng-cloak>
+                    <thead>
                     <th width="64px">ID</th>
                     <th>Username</th>
                     <th>Email</th>
@@ -21,8 +22,8 @@
                     <th>Locked</th>
                     <th>API</th>
                     <th ng-if="hasRole('ROLE_CEO')"><i class="fa fa-gears"></i></th>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     <tr ng-repeat="u in users" ng-class="{ 'info': u.id == my_id}">
                         <td ng-if="u.characters.length === 0">{{ '{{ u.id }}' }}</td>
                         <td ng-if="u.characters.length !== 0">
@@ -53,8 +54,9 @@
                             <button class="btn btn-small btn-default" disabled="true"><i class="fa fa-times"></i></button>
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
             {% include 'AppBundle:Admin/User:new.html.twig' %}
             {% include 'AppBundle:Admin/User:edit.html.twig' %}
         </side-menu-container>

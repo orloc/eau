@@ -30,6 +30,7 @@ angular.module('eveTool')
 
         $scope.update = function(){
             $scope.submitLoading = true;
+            console.log(editUserForm);
             $http.put(Routing.generate('api.user_update', { id: $scope.editUser.id }), $scope.editUser).then(function(data){
                 $scope.users[$scope.current_index] = data.data;
                 $scope.submitLoading = false;
