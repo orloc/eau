@@ -2,43 +2,44 @@
 
 {% block content -%}
     <div ng-controller="priceHelperController" class="row" ng-cloak>
-        <h3>Price Helper</h3>
-        <p>This tool is to help a user determine what the best price is to sell a given set of items.</p>
-        <p class="small text-info">Please select a corporation FIRST<br>
-            Then Enter the regions and Items you would like to show.
-        </p>
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="row">
-                    <form class="form-horizontal">
-                        <div class="col-xs-2">
-                            <select class="form-control" chosen
-                                    data-placeholder="Corporation"
-                                    ng-model="selected_corporation"
-                                    ng-options="i.id as i.corporation_details.name for i in corporations">
-                            </select>
-                        </div>
-                        <div class="col-xs-4">
-                            <select class="form-control" chosen multiple
-                                    data-placeholder="Select Region Prices"
-                                    ng-model="selected_price_profiles"
-                                    ng-options="i.regionID as i.regionName for i in regions">
-                            </select>
-                        </div>
+        <div class="cloak">
+            <h3>Price Helper</h3>
+            <p>This tool is to help a user determine what the best price is to sell a given set of items.</p>
+            <p class="small text-info">Please select a corporation FIRST<br>
+                Then Enter the regions and Items you would like to show.
+            </p>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="col-xs-2">
+                                <select class="form-control" chosen
+                                        data-placeholder="Corporation"
+                                        ng-model="selected_corporation"
+                                        ng-options="i.id as i.corporation_details.name for i in corporations">
+                                </select>
+                            </div>
+                            <div class="col-xs-4">
+                                <select class="form-control" chosen multiple
+                                        data-placeholder="Select Region Prices"
+                                        ng-model="selected_price_profiles"
+                                        ng-options="i.regionID as i.regionName for i in regions">
+                                </select>
+                            </div>
 
-                        <div class="col-xs-6">
-                            <select  class="form-control" chosen multiple
-                                     data-placeholder="Select Items..."
-                                     ng-model="selected_items"
-                                     ng-options="i.typeID as i.typeName for i in items">
-                            </select>
-                        </div>
-                    </form>
+                            <div class="col-xs-6">
+                                <select  class="form-control" chosen multiple
+                                         data-placeholder="Select Items..."
+                                         ng-model="selected_items"
+                                         ng-options="i.typeID as i.typeName for i in items">
+                                </select>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div class="col-xs-12" ng-show="item_result.length > 0">
-                <table class="table table-condensed data-table">
-                    <thead>
+                <div class="col-xs-12" ng-show="item_result.length > 0">
+                    <table class="table table-condensed data-table">
+                        <thead>
                         <th>Item</th>
                         <th>Last Buy</th>
                         <th>Last Sell</th>
@@ -46,56 +47,57 @@
                             {{ '{{ r.regionName }}' }}
                             <span class="small"></span>
                         </th>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td colspan="3"></td>
-                        <td ng-repeat="n in selected_price_profiles">
-                            <div class="row header">
-                                <div class="col-xs-1"> </div>
-                                <div class="col-xs-2"> Avg </div>
-                                <div class="col-xs-3"> +10% </div>
-                                <div class="col-xs-3"> +20%</div>
-                                <div class="col-xs-3"> +30%</div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr ng-repeat="i in item_result">
-                        <td>
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <eve-image image-type="'Type'" override-width="image_width" object-id="i.item.typeID" img-width="32"> </eve-image>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td ng-repeat="n in selected_price_profiles">
+                                <div class="row header">
+                                    <div class="col-xs-1"> </div>
+                                    <div class="col-xs-2"> Avg </div>
+                                    <div class="col-xs-3"> +10% </div>
+                                    <div class="col-xs-3"> +20%</div>
+                                    <div class="col-xs-3"> +30%</div>
                                 </div>
-                                <div class="col-xs-8">
-                                    {{ '{{ i.item.typeName }}' }}
+                            </td>
+                        </tr>
+                        <tr ng-repeat="i in item_result">
+                            <td>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <eve-image image-type="'Type'" override-width="image_width" object-id="i.item.typeID" img-width="32"> </eve-image>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        {{ '{{ i.item.typeName }}' }}
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td ng-init="lastBuy=getLastTrans(i,'buy')"><span ng-show="lastBuy === false">N/A</span>
+                            </td>
+                            <td ng-init="lastBuy=getLastTrans(i,'buy')"><span ng-show="lastBuy === false">N/A</span>
                             <span ng-show="lastBuy !== false">
                                 {{ '{{ lastBuy.price | currency:"ISK" }}' }}<br>
                                 <span class="small muted"> @{{ '{{ lastBuy.date | date:"shortDate" }}' }}</span>
                             </span>
-                        </td>
-                        <td ng-init="lastSell=getLastTrans(i,'sell')"><span ng-show="lastSell === false">N/A</span>
+                            </td>
+                            <td ng-init="lastSell=getLastTrans(i,'sell')"><span ng-show="lastSell === false">N/A</span>
                             <span ng-show="lastSell !== false">
                                 {{ '{{ lastSell.price | currency:"ISK" }}' }}<br>
                                 <span class="small muted">@ {{ '{{ lastBuy.date | date:"shortDate" }}' }}</span>
                             </span>
-                        </td>
-                        <td ng-repeat="n in selected_price_profiles">
-                            <div class="row " ng-init="activeProfile=getRegionPrices(i,n)">
-                                <div class="col-xs-1"></div>
-                                <div class="col-xs-2"> {{ '{{ activeProfile.avg_price | currency:"ISK"}}' }}
+                            </td>
+                            <td ng-repeat="n in selected_price_profiles">
+                                <div class="row " ng-init="activeProfile=getRegionPrices(i,n)">
+                                    <div class="col-xs-1"></div>
+                                    <div class="col-xs-2"> {{ '{{ activeProfile.avg_price | currency:"ISK"}}' }}
+                                    </div>
+                                    <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 10) | currency:"ISK"}}' }}</div>
+                                    <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 20) | currency:"ISK"}}' }}</div>
+                                    <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 30) | currency:"ISK"}}' }}</div>
                                 </div>
-                                <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 10) | currency:"ISK"}}' }}</div>
-                                <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 20) | currency:"ISK"}}' }}</div>
-                                <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 30) | currency:"ISK"}}' }}</div>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@
                 <span class="pull-right small normal_font" ng-if="needs_update.length > 0">
                     <b class="text-danger">{{ '{{ needs_update.length }}' }}</b> Corporation(s) Pending Initial Update
                 </span>
-                <div class="row">
+                <div class="row cloak">
                    <div class="col-xs-10">
                        <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorp(c)" class="corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
                            <eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="128" ng-show="!c.new"></eve-image>
@@ -20,7 +20,11 @@
                     </div>
                 </div>
             </div>
-            {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
+            <div class="col-xs-12">
+                <div class="cloak">
+                    {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
+                </div>
+            </div>
 
             {% include 'AppBundle:Admin/Corporation:new.html.twig' %}
         </side-menu-container>

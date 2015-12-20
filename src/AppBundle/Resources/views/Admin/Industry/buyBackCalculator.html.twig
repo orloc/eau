@@ -3,59 +3,61 @@
 {% block content -%}
     <div class="buyback">
         <side-menu-container ng-transclude>
-            <h3>Buyback Calculator
-                {% if is_granted('ROLE_ADMIN') %}
-                    <slide-button ng-cloak style="color: grey;" open-type="gears"></slide-button>
-                {% endif %}
-            </h3>
-            <div ng-controller="buybackController" class="row" ng-show="!loading" ng-cloak>
-                <div class="col-xs-6">
-                    <form ng-submit="submit()">
-                        <div class="form-group">
-                            <textarea ng-model="input_data" class="form-control" style="min-height: 300px;" cols="50"></textarea>
-                        </div>
-                        <input ng-disabled="loading" type="submit" class="btn btn-default btn-block" value="Calculate">
-                    </form>
+            <div class="cloak">
+                <h3>Buyback Calculator
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <slide-button ng-cloak style="color: grey;" open-type="gears"></slide-button>
+                    {% endif %}
+                </h3>
+                <div ng-controller="buybackController" class="row" ng-show="!loading" ng-cloak>
+                    <div class="col-xs-6">
+                        <form ng-submit="submit()">
+                            <div class="form-group">
+                                <textarea ng-model="input_data" class="form-control" style="min-height: 300px;" cols="50"></textarea>
+                            </div>
+                            <input ng-disabled="loading" type="submit" class="btn btn-default btn-block" value="Calculate">
+                        </form>
 
-                    <div ng-show="updated_items.length != 0" class="summary well" ng-cloak>
-                        <h3 class="result-total">Total Worth: <span class="text-success">{{ '{{ total_value.total_value | currency:"ISK " }}' }}</span></h3>
+                        <div ng-show="updated_items.length != 0" class="summary well" ng-cloak>
+                            <h3 class="result-total">Total Worth: <span class="text-success">{{ '{{ total_value.total_value | currency:"ISK " }}' }}</span></h3>
 
-                        <div ng-show="errors.length > 0" class="errors">
-                            <p class="text-danger">Items here were not parsed correctly and were excluded from the list</p>
-                            <ul>
-                                <li ng-repeat="e in errors">
-                                    {{ '{{ e }}' }}
-                                </li>
-                            </ul>
+                            <div ng-show="errors.length > 0" class="errors">
+                                <p class="text-danger">Items here were not parsed correctly and were excluded from the list</p>
+                                <ul>
+                                    <li ng-repeat="e in errors">
+                                        {{ '{{ e }}' }}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-xs-6">
-                    <p class="">Please paste your item content in the provided space. <i>Not all inventory formats are supported.</i><br>
-                        For the best results - repackaged and stack items in your inventory - make sure your in list view - <b>ctrl +a,   ctrl + c , ctrl + v</b>
-                    </p>
-                    <table class="table data-table table-hover table-condensed" ng-show="updated_items.length > 0" ng-cloak>
-                        <thead>
-                        <th width="32"></th>
-                        <th>Name</th>
-                        <th>#</th>
-                        <th>Unit Price</th>
-                        <th>Total</th>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="i in updated_items">
-                            <td >
-                                <eve-image image-type="'Type'" object-id="i.typeID" img-width="64"></eve-image>
-                            </td>
-                            <td>{{ '{{ i.typeName }}' }}</td>
-                            <td>{{ '{{ i.quantity | number }}' }}</td>
-                            <td>{{ '{{ i.price | currency:"ISK " }}' }}</td>
-                            <td>{{ '{{ i.quantity * i.price | currency:"ISK " }}' }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="col-xs-6">
+                        <p class="">Please paste your item content in the provided space. <i>Not all inventory formats are supported.</i><br>
+                            For the best results - repackaged and stack items in your inventory - make sure your in list view - <b>ctrl +a,   ctrl + c , ctrl + v</b>
+                        </p>
+                        <table class="table data-table table-hover table-condensed" ng-show="updated_items.length > 0" ng-cloak>
+                            <thead>
+                            <th width="32"></th>
+                            <th>Name</th>
+                            <th>#</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="i in updated_items">
+                                <td >
+                                    <eve-image image-type="'Type'" object-id="i.typeID" img-width="64"></eve-image>
+                                </td>
+                                <td>{{ '{{ i.typeName }}' }}</td>
+                                <td>{{ '{{ i.quantity | number }}' }}</td>
+                                <td>{{ '{{ i.price | currency:"ISK " }}' }}</td>
+                                <td>{{ '{{ i.quantity * i.price | currency:"ISK " }}' }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
 
+                    </div>
                 </div>
             </div>
             {% include '@App/Admin/Industry/buyBackConfig.html.twig' %}
