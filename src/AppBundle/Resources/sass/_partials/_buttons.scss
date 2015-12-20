@@ -1,0 +1,20 @@
+.btn-custom {
+  background-color: $darkBlue;
+  color: $offWhite;
+  font-family: 'eve_alphabold', sans-serif;
+
+  &:disabled {
+    background-color: lighten($darkBlue, 5);
+  }
+
+  &:hover, &:active, &:focus {
+    &:disabled {
+      color: $offWhite;
+      background-color: lighten($darkBlue, 5);
+    }
+    border: 0;
+    outline: 0;
+    background-color: lighten($darkBlue, 10);
+    color: lighten($offWhite, 10);
+  }
+}

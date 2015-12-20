@@ -4,6 +4,7 @@
 @import '_partials/_text.scss';
 @import '_partials/_pushMenu.scss';
 @import '_partials/_footer.scss';
+@import '_partials/_buttons.scss';
 @import '_partials/_form.scss';
 @import '_partials/_tables.scss';
 @import '_partials/_componenets/_nav.scss';
@@ -20,6 +21,7 @@ body {
   width: 100%;
   overflow-x: hidden;
   position: relative;
+
   left: 0;
   margin: 0;
   font-family: $roboto;
@@ -30,16 +32,36 @@ body {
 }
 
 #wrapper {
-  background-color: $darkerBlack;
+  background: url('/bundles/app/img/moon-station.png');
+  background-attachment: fixed;
 }
 
 .well {
   background: linear-gradient(darken($offGrey, 5), $darkerBlack, $darkestBlack);
   border-color: $offGrey;
+
+  h5 {
+    text-transform: uppercase;
+    color: $offWhite;
+    font-size: 15px;
+    &.text-danger {
+      color: $eveRed;
+    }
+    &.text-success {
+      color: $eveGreen;
+    }
+  }
+
+  p, span {
+    color: $offWhite;
+  }
+
 }
 
 #page-wrapper {
-  background-color: lighten($darkerBlack,10);
+  padding-top: 45px;
+  opacity: .8;
+  background-color: transparent;
   position: relative;
   #page-overlay{
     position: absolute;
@@ -61,6 +83,20 @@ body {
   @include background-image(radial-gradient(circle at 1.98% 23.04%, #2b0000, transparent 100%),radial-gradient(circle at 98.02% 70.05%, #190A05, transparent 93%),radial-gradient(circle at 50% 50%, #050d06, #050d06 100%));
   */
   border-left: $darkerBlack;
+}
+
+.chosen-container >{
+  color: $offGrey;
+}
+
+li.search-choice {
+  span {
+    color: $offGrey;
+  }
+}
+
+ul.chosen-result li {
+  color: $offGrey;
 }
 
 /*

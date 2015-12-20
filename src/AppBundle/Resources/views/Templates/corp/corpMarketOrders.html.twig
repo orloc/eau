@@ -1,23 +1,29 @@
 <div ng-controller="marketOrderController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <b class="text-info">Total Escrow:</b> {{ '{{ total_escrow | currency:"ISK" }}' }}
-        <b class="text-info">Total On Market:</b> {{ '{{ total_sales | currency:"ISK" }}' }}
-        &nbsp;
-        &nbsp;
-        <span class="small muted pull-right" ng-show="updated_at">
-            <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
-            &nbsp;
-            &nbsp;
-            <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
-        </span>
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-xs-6">
+                <span>
+                    <b class="text-info">Total Escrow:</b> {{ '{{ total_escrow | currency:"ISK" }}' }}
+                    &nbsp;
+                    &nbsp;
+                    <b class="text-info">Total On Market:</b> {{ '{{ total_sales | currency:"ISK" }}' }}
+                </span><br>
+                <span class="small muted" ng-show="updated_at">
+                    <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
+                    &nbsp;
+                    &nbsp;
+                    <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
+                </span>
+            </div>
+            <div class="col-xs-6">
                 <div class="btn-group pull-right">
                     <button class="btn btn-sm btn-default"><i class="fa fa-archive"></i>&nbsp;&nbsp;By Category</button>
                     <button class="btn btn-sm btn-default"><i class="fa fa-location-arrow"></i>&nbsp;&nbsp;By Location</button>
                     <button class="btn btn-sm btn-default">All</button>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-xs-12">
                 <div class="table-responsive">
                     <table class="table data-table table-striped table-hover table-condensed">

@@ -270,7 +270,7 @@ angular.module('eveTool')
             $scope.svg_start_date = $scope.current_date;
             var margins = {
                 top: 10,
-                right: 20,
+                right: 40,
                 bottom: 15,
                 left: 115
             };

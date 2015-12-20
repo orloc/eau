@@ -1,51 +1,49 @@
 <div ng-controller="deliveryController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
         <div class="row">
-            <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}
-
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            &nbsp;
-            <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
-            &nbsp;
-            &nbsp;
-        <span class="small muted pull-right" ng-show="updated_at">
-
-            <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
-            &nbsp;
-            &nbsp;
-            <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
-        </span>
+            <div class="col-xs-6">
+                <span>
+                    <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}
+                    &nbsp;
+                    &nbsp;
+                    <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
+                    <span class="small muted" ng-show="updated_at">
+                        <br>
+                        <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
+                        &nbsp;
+                        &nbsp;
+                        <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
+                    </span>
+                </span>
+            </div>
+            <div class="col-xs-6">
+                <ul class="list-inline list-unstyled pull-right">
+                    <li>
+                        <button ng-click="doFilter('region')" class="btn btn-sm btn-success">Region</button>
+                    </li>
+                    <li>
+                        <button ng-click="doFilter('constellation')" class="btn btn-sm btn-info">
+                            Constellation
+                        </button>
+                    </li>
+                    <li>
+                        <button ng-click="doFilter('system')" class="btn btn-sm btn-warning">
+                            System
+                        </button>
+                    </li>
+                    <li>
+                        <button ng-click="doFilter('station')" class="btn btn-sm btn-danger">
+                            Station
+                        </button>
+                    </li>
+                    <li>
+                        <button ng-click="doFilter('*')" class="btn btn-sm btn-link">
+                            All
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <div class="row">
-            <ul class="list-inline list-unstyled pull-right">
-                <li>
-                    <button ng-click="doFilter('region')" class="btn btn-sm btn-success">Region</button>
-                </li>
-                <li>
-                    <button ng-click="doFilter('constellation')" class="btn btn-sm btn-info">
-                        Constellation
-                    </button>
-                </li>
-                <li>
-                    <button ng-click="doFilter('system')" class="btn btn-sm btn-warning">
-                        System
-                    </button>
-                </li>
-                <li>
-                    <button ng-click="doFilter('station')" class="btn btn-sm btn-danger">
-                        Station
-                    </button>
-                </li>
-                <li>
-                    <button ng-click="doFilter('*')" class="btn btn-sm btn-link">
-                        All
-                    </button>
-                </li>
-            </ul>
-        </div>
-
         <div class="table-responsive">
             <table class="table data-table table-condensed table-hover">
                 <thead>

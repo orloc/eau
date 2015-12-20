@@ -1,6 +1,12 @@
 h1, h2, h3, h4 {
   font-family: 'eve_alphabold', sans-serif;
   color: white;
+  &.text-danger {
+    color: $eveRed;
+  }
+  &.text-success {
+    color: $eveGreen;
+  }
 }
 
 .well {
@@ -36,8 +42,14 @@ a.eve {
   text-transform: uppercase;
 }
 
-p, ul li,  {
+span, p, ul li,  {
   color: $offWhite;
+  &.text-danger {
+    color: $eveRed;
+  }
+  &.text-success {
+    color: $eveGreen;
+  }
 }
 
 li , p { color: $offWhite; }

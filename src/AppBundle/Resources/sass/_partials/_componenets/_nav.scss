@@ -1,6 +1,8 @@
 .navbar {
   background-color: $darkestBlack;
   border: $darkerBlack;
+  width: 100%;
+  position: fixed;
 }
 
 
@@ -50,20 +52,30 @@ a.navbar-brand {
   }
 }
 
-.sidebar-nav {
-  background-color: $darkerBlack;
-  color: $offGrey;
+.sidebar {
+  background: transparent;
+  .bottom-box {
+    border-right: 250px solid transparent;
+    border-top: 30em solid $darkerBlack;
+    height: 0px;
+    width: 0px;
 
-  ul li {
-    border-color: $offGrey;
-    a {
-      color: $offWhite;
-      font-size: 15px;
-    }
+  }
+  .sidebar-nav {
+    background-color: $darkerBlack;
+    color: $offGrey;
 
-    a.active, a:hover, a:focus {
-      background-color: $darkestBlack;
-      color: lighten($darkBlue, 20);
+    ul li {
+      border-color: $offGrey;
+      a {
+        color: $offWhite;
+        font-size: 15px;
+      }
+
+      a.active, a:hover, a:focus {
+        background-color: $darkestBlack;
+        color: lighten($darkBlue, 20);
+      }
     }
   }
 }

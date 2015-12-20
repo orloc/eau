@@ -38,8 +38,8 @@ ul.nav.nav-tabs {
 }
 
 .graphs {
-  padding: 0;
-  margin-bottom: 10px;
+  background: linear-gradient($darkerBlack, $darkestBlack);
+  margin-bottom: 20px;
   .x-axis path,
   .x-axis line {
     fill: none;
@@ -67,9 +67,9 @@ ul.nav.nav-tabs {
 
 .wallet-divisions{
   .list-group-item {
-    background-color: darken($darkBlue, 10);
+    background-color: darken($darkBlue, 20);
     border: none;
-    border-bottom: 1px solid darken($eveOrange, 10);
+    opacity: 0.8;
     border-color: darken($eveOrange, 10);
 
     &:last-child {
@@ -77,10 +77,8 @@ ul.nav.nav-tabs {
     }
   }
   li.active, li:hover, li:focus, li.active:hover, li.active:focus {
-    background-color: $darkBlue;
-    p {
-      color: $offWhite;
-    }
+    background: linear-gradient(darken($darkBlue, 15), $darkerBlack);
+    border-bottom: 3px double darken($eveOrange, 20);
   }
   p {
     margin: 0;

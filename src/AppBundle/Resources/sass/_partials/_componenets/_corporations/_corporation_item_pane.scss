@@ -13,19 +13,17 @@
 
   .corp-item {
     display: inline-block;
-    width: 25%;
     padding: 10px;
+    color: $offWhite;
 
     &:hover, &.success {
       .description {
-        color: $darkerBlack;
+        color: $offWhite;
+
       }
-      background-color: $offWhite;
+      background: linear-gradient(darken($darkBlue, 15), $darkerBlack);
     }
   }
-
-
-
 }
 .character-select{
   padding: 10px;

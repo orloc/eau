@@ -1,4 +1,19 @@
 .buyback {
+  h3.result-total {
+    font-family: $roboto;
+    color:$offWhite;
+    font-size: 24px;
+    span {
+      font-size: 20px;
+      &.text-danger {
+        color: $eveRed;
+      }
+      &.text-success {
+        color: $eveGreen;
+      }
+    }
+  }
+
   label {
     color: $offWhite;
   }

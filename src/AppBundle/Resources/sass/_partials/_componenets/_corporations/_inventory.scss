@@ -1,4 +1,12 @@
 .location-view {
+  .panel-group {
+    margin-top: 10px;
+  }
+
+  .panel-heading {
+    background: linear-gradient($darkerBlack, $darkestBlack);
+    border: none;
+  }
   ul li {
     color: $offGrey;
     font-weight: 400;
@@ -13,6 +21,7 @@
 
   .header {
     border-bottom: 1px solid $offGrey;
+    background: linear-gradient($darkerBlack, $darkestBlack);
     font-weight: bold;
     line-height: 12px;
     margin-bottom: 10px;

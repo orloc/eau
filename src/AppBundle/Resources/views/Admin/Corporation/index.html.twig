@@ -10,29 +10,15 @@
                 </span>
                 <div class="row">
                    <div class="col-xs-10">
-                       <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorp(c)" class="row corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
-                           <div class="col-xs-6">
-                               <eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="128" ng-show="!c.new"></eve-image>
-                           </div>
-                           <div class="col-xs-6">
-                               <span class="corp-name" ng-show="!c.new">{{ '{{ c.corporation_details.name }}' }} </span>
-                            <span class="small muted"><b>{{ '<{{ c.corporation_details.ticker }}>' }}</b>
-
-                            <br> {{ '{{ c.corporation_details.alliance_name }}' }}</span>
-                           </div>
-                       </div>
-                       {#
-                       <h4 class="text-info">{{ '{{ selected_corp.corporation_details.name  }}' }}</h4>
-                          <select width="150px" class="form-control" ng-options="c as getLabel(c) for c in corps" ng-show="corps.length > 1" ng-model="selected_corp">
-                              <option>Select A Corporation</option>
-                          </select>
-                           #}
-                      </div>
-                       <div class="col-xs-2">
-                           <slide-button open-type="new"></slide-button>
+                       <div ng-repeat="c in corps" ng-if="corps.length" ng-click="selectCorp(c)" class="corp-item" ng-class="{ 'warning' : c.new, 'success': selected_corp.id == c.id }">
+                           <eve-image image-type="'Corporation'" object_id="c.eve_id" img-width="128" ng-show="!c.new"></eve-image>
+                           <span class="small muted"><b>{{ '<{{ c.corporation_details.ticker }}>' }}</b></span>
                        </div>
                    </div>
-
+                    <div class="col-xs-2">
+                        <slide-button open-type="new"></slide-button>
+                    </div>
+                </div>
             </div>
             {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
 
