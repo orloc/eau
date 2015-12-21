@@ -28,26 +28,55 @@ table.table.data-table {
 
   tbody {
     background-color: darken($offGrey,5);
-    tr.info td {
-      background-color: darken($darkBlue, 10);
+    tr.info {
+      td {
+        background-color: darken($darkBlue, 10);
+      }
+      &:nth-child(odd){
+        td {
+          background-color: $darkBlue;
+        }
+      }
     }
 
-    tr.success td {
-      background-color: darken($eveGreen, 10);
+    tr.success {
+      td {
+        background-color: darken($eveGreen, 10);
+      }
+      &:nth-child(odd){
+        td {
+          background-color: $eveGreen;
+        }
+      }
     }
 
-    tr.danger td {
-      background-color: darken($eveRed, 10);
+    tr.danger {
+      td {
+        background-color: darken($eveRed, 10);
+      }
+      &:nth-child(odd){
+        td {
+          background-color: $eveRed;
+        }
+      }
     }
 
-    tr.warning td {
-      background-color: darken($eveOrange, 20);
+    tr.warning  {
+      td {
+        background-color: darken($eveOrange, 20);
+      }
+      &:nth-child(odd){
+        td {
+          background-color: $eveOrange;
+        }
+      }
     }
 
     tr:last-child {
       td:first-child {
         border-bottom-left-radius: 5px;
       }
+
       td:last-child {
         border-bottom-right-radius: 5px;
       }
