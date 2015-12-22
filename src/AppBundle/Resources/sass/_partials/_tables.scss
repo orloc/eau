@@ -67,7 +67,7 @@ table.table.data-table {
       }
       &:nth-child(odd){
         td {
-          background-color: $eveOrange;
+          background-color: darken($eveOrange, 30);
         }
       }
     }

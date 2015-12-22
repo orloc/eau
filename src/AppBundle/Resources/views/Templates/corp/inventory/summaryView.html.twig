@@ -13,28 +13,11 @@
                     <button class="btn btn-sm btn-default">Hide Ships</button>
                 </div>
 
-                <eve-data-table table-headers="tableHeaders">
-                    {#
-                    <tr ng-repeat="i in items">
-                        <td>
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <eve-image image-type="'Type'" override-width="image_width" object-id="i.typeId" img-width="32"></eve-image>
-                                </div>
-                                <div class="col-xs-8">
-                                    {{ '{{ i.descriptors.name }}' }}
-                                </div>
-                            </div>
-                        </td>
-                        <td>{{ '{{ i.asset_count | number }}' }}</td>
-                        <td>
-                                <span class="small">
-                                    {{ '{{ getLocation(i.descriptors) }}' }}
-                                </span>
-                        </td>
-                    </tr>
-                    #}
-
+                <eve-data-table
+                        table-headers="tableHeaders"
+                        table-data="items"
+                        image-width="image_width"
+                        ng-if="loading === false">
                 </eve-data-table>
             </div>
         </div>

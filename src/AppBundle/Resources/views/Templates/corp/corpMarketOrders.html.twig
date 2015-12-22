@@ -35,7 +35,7 @@
                             Type
                         </th>
                         <th >Filled / Total</th>
-                        <th>Value Remaining</th>
+                        <th>Value</th>
                         <th>Region
                         </th>
                         <th>Constellation
@@ -81,7 +81,8 @@
                             </span>
                             </td>
                             <td>
-                                {{ '{{ item.volume_remaining  * item.price | currency:"ISK" }}' }}
+                                {{ 'Per: {{ item.price | currency:"ISK" }}' }}<br>
+                                {{ 'Total: {{ item.volume_remaining  * item.price | currency:"ISK" }}' }}
                             </td>
                             <td>
                                 {{ '{{ item.descriptors.region  }}' }}
