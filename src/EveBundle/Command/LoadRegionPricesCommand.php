@@ -51,6 +51,14 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> %message% </info>');
 
         $itemPriceRepo = $em->getRepository('EveBundle:ItemPrice');
+        $existing = $itemPriceRepo->findAll();
+
+        $log->addDebug("Flushing existing items");
+        foreach ($existing as $i){
+            $em->remove($i);
+        }
+        $em->flush();
+        $log->addDebug("Beginning Import");
 
         $succeded = 0;
         $failed = 0;
@@ -62,18 +70,11 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                 try {
                     $response = $client->get($url);
                     $obj = json_decode($response->getBody()->getContents(), true);
-                    $processableItems = array_slice(array_reverse($obj['items']), 0, 2);
+                    $processableItem = array_pop($obj['items']);
 
-                    foreach ($processableItems as $idx => $item){
-                        $exists = $itemPriceRepo->hasItem(new \DateTime($item['date']), $r['regionID'], $i['typeID']);
-                        if (!$exists instanceof ItemPrice){
-                            $p = $this->makePriceData($item, $r, $i);
-                            $em->persist($p);
-                            $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
-                        } else{
-                            $log->addDebug("Skiping {$exists->getTypeName()} in {$exists->getRegionName()}");
-                        }
-                    }
+                    $p = $this->makePriceData($processableItem, $r, $i);
+                    $em->persist($p);
+                    $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
 
                     $succeded++;
                 }  catch (\Exception $e){
