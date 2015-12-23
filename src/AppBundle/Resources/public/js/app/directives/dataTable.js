@@ -12,8 +12,8 @@ angular.module('eveTool')
 
             },
             controller: function($scope) {
-                this.isReverse = false;
-                this.image_width = 32;
+                $scope.isReverse = false;
+                $scope.image_width = 32;
 
                 $scope.getColumnValue = function(row, header){
                     return  _.get(row, header.field_name, 'N/A');

@@ -11,10 +11,10 @@
         <tr ng-repeat="i in tableData | orderBy:sortOrder:isReverse">
             <td ng-repeat="h in $parent.tableHeaders">
                 <div class="row" ng-if="h.has_image">
-                    <div class="col-xs-4">
+                    <div class="col-xs-5">
                         <eve-image image-type="'Type'" override-width="image_width" object-id="i.typeId" img-width="32"></eve-image>
                     </div>
-                    <div class="col-xs-8">
+                    <div class="col-xs-7">
                         {{ '{{ getColumnValue(i, h) }}' }}
                     </div>
                 </div>

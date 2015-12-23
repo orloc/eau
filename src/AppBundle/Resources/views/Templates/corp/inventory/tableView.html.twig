@@ -8,14 +8,16 @@
             <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
         </div>
         <div class="col-xs-3">
+            {#
             <button slide-toggle="#advanced_options" style="margin-top: 20px;" class="btn btn-sm">Advanced Filters</button>
+            #}
             <div class="pull-right">
                 <span class="small muted">Per Page</span>
                 <select ng-disabled="loading === true" style="width: 50px;" class="form-control" ng-model="per_page" ng-options="selection.value as selection.label for selection in per_page_selection">
-                    <option val="">{{ '{{ per_page }}' }}</option>
                 </select>
             </div>
         </div>
+        {#
         <div id="advanced_options" class="slideable">
             <div class="col-xs-12">
                 <p>Here there will be instructions to configure complex filters</p>
@@ -25,6 +27,7 @@
         <div class="col-xs-12 active-filters">
             <label class="label label-info"  ng-repeat="f in getActiveFilters()">{{ '{{ f.name }}' }}</label>
         </div>
+        #}
         <div class="col-xs-12">
             <div class="table-responsive">
                 <table class="table data-table table-condensed">

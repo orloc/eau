@@ -3,14 +3,14 @@
 angular.module('eveTool')
     .controller('inventorySummaryViewController', ['$scope', 'corporationDataManager', function($scope, corporationDataManager ){
         $scope.items = [];
-        $scope.image_width = 20;
+        $scope.image_width = 32;
         $scope.tableHeaders = [
             {
                 name: 'Name', sortable: true,
                 has_image: true, field_name: 'descriptors.name'
             },
             {
-                name: 'Quantity', sortable: true,
+                name: 'Quantity', sortable: true, is_number: true,
                 has_image: false, field_name: 'asset_count'
             },
             {
