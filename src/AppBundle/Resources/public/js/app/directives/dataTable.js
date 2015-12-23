@@ -16,7 +16,14 @@ angular.module('eveTool')
                 $scope.image_width = 32;
 
                 $scope.getColumnValue = function(row, header){
-                    return  _.get(row, header.field_name, 'N/A');
+                    var val = _.get(row, header.field_name, 'N/A');
+
+                    if (typeof header.number !== 'undefined'){
+                    }
+                    if (typeof header.currency !== 'undefined'){
+                    }
+
+                    return val;
                 };
             },
             link : function(scope, element, attributes) {

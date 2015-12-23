@@ -1,7 +1,8 @@
 <table class="table table-condensed data-table">
     <thead>
-        <th ng-repeat="h in tableHeaders">
-            {{ '{{ h.name }}' }} <span ng-if="h.sortable === true">
+        <th ng-repeat="h in tableHeaders" >
+            <span> {{  "{{  h.name }}"}}</span>
+            <span ng-if="h.sortable === true">
                 <i ng-show="true"class="fa fa-chevron-up"></i>
                 <i ng-show="true" class="fa fa-chevron-down"></i>
             </span>
@@ -12,7 +13,7 @@
             <td ng-repeat="h in $parent.tableHeaders">
                 <div class="row" ng-if="h.has_image">
                     <div class="col-xs-5">
-                        <eve-image image-type="'Type'" override-width="image_width" object-id="i.typeId" img-width="32"></eve-image>
+                        <eve-image image-type="'Type'" override-width="image_width" object-id="i.type_id" img-width="32"></eve-image>
                     </div>
                     <div class="col-xs-7">
                         {{ '{{ getColumnValue(i, h) }}' }}

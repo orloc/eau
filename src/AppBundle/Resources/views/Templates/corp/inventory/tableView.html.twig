@@ -29,6 +29,15 @@
         </div>
         #}
         <div class="col-xs-12">
+            <eve-data-table
+                    table-headers="tableHeaders"
+                    table-data="assets"
+                    image-width="image_width"
+                    ng-if="loading === false">
+            </eve-data-table>
+        </div>
+        {#
+        <div class="col-xs-12">
             <div class="table-responsive">
                 <table class="table data-table table-condensed">
                     <thead>
@@ -96,6 +105,7 @@
 
             </div>
         </div>
+        #}
         <div class="col-xs-12" ng-show="!loading">
             <uib-pagination  ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
             <div class="pull-right">
