@@ -9,7 +9,7 @@
         </th>
     </thead>
     <tbody>
-        <tr ng-repeat="i in tableData | orderBy:sortOrder:isReverse">
+        <tr ng-repeat="i in tableData | orderBy:sortOrder:isReverse" class="{{ '{{ i.row_class }}' }}">
             <td ng-repeat="h in $parent.tableHeaders">
                 <div class="row" ng-if="h.has_image">
                     <div class="col-xs-5">
@@ -22,6 +22,11 @@
                 <div ng-if="!h.has_image">
                     {{ '{{ getColumnValue(i, h) }}' }}
                 </div>
+            </td>
+        </tr>
+        <tr ng-show="tableData.length === 0">
+            <td colspan="tableHeaders.length">
+                No Data Found.
             </td>
         </tr>
     </tbody>

@@ -5,7 +5,8 @@
             <cube-grid-spinner></cube-grid-spinner>
         </div>
         <div class="col-xs-12" ng-if="!loading">
-            <div class="button-group">
+            <p class="pull-left">Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
+            <div class="button-group pull-right">
                 <button class="btn btn-sm btn-default" ng-click="showView(0)" ng-class="{ 'active': selected === 0}">
                     <i class="fa fa-bank"></i> Transactions
                 </button>
@@ -15,27 +16,28 @@
             </div>
         </div>
         <div class="col-xs-12" ng-show="!loading && selected === 0">
-            <div class="pull-right">
-                <p>
-                    <i ng-init="transSum = sumTransactions()" ng-class="{ 'text-success fa-chevron-up': transSum > 0, 'text-danger fa-chevron-down': transSum < 0 }" class="fa"></i> {{ '{{ transSum | currency:" ISK" }}' }}
-                </p>
-            </div>
-            <p>Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
-            <div class="col-md-6" ng-repeat="s in segments">
-                <table class="table tabled-hover table-stripped data-table">
-                    <thead>
-                    <th>Type</th>
-                    <th>Amount</th>
-                    </thead>
-                    <tr ng-repeat="r in s" ng-class="{ 'danger': r.trans[0].total_amount <= 0, 'success': r.trans[0].total_amount > 0 }">
-                        <td>
-                            {{ '{{ r.type.ref_type_name }}' }}
-                        </td>
-                        <td>
-                            {{ '{{ r.trans[0].total_amount | currency:"ISK" }}' }}
-                        </td>
-                    </tr>
-                </table>
+            <div class="row">
+                <div class="col-xs-12">
+                    <p>
+                        <i ng-init="transSum = sumTransactions()" ng-class="{ 'text-success fa-chevron-up': transSum > 0, 'text-danger fa-chevron-down': transSum < 0 }" class="fa"></i> {{ '{{ transSum | currency:" ISK" }}' }}
+                    </p>
+                </div>
+                <div class="col-md-6" ng-repeat="s in segments">
+                    <table class="table tabled-hover table-stripped data-table">
+                        <thead>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        </thead>
+                        <tr ng-repeat="r in s" ng-class="{ 'danger': r.trans[0].total_amount <= 0, 'success': r.trans[0].total_amount > 0 }">
+                            <td>
+                                {{ '{{ r.type.ref_type_name }}' }}
+                            </td>
+                            <td>
+                                {{ '{{ r.trans[0].total_amount | currency:"ISK" }}' }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
         <div class="col-xs-12" ng-show="!loading && selected === 1">

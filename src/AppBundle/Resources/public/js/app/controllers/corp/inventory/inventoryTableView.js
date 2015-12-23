@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('inventoryTableViewController', ['$scope', 'corporationDataManager', 'dataDispatcher', function($scope, corporationDataManager, dataDispatcher){
+    .controller('inventoryTableViewController', ['$scope', 'corporationDataManager', function($scope, corporationDataManager){
         $scope.predicate = 'total_price';
         $scope.reverse = true;
         $scope.max_size = 10;
@@ -35,7 +35,6 @@ angular.module('eveTool')
                 name: 'Region', sortable: true,
                 field_name: 'descriptors.region'
             },
-
             {
                 name: 'Constellation', sortable: true,
                 field_name: 'descriptors.constellation'

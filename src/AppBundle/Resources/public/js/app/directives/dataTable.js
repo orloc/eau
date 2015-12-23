@@ -19,6 +19,8 @@ angular.module('eveTool')
                     if (typeof header.filter !== 'undefined' ){
                         if (header.filter === 'currency'){
                             val = $filter(header.filter)(val, 'ISK');
+                        } else if (header.filter === 'date') {
+                            val = $filter(header.filter)(val, 'yyyy.MM.dd H:mm:ss');
                         } else {
                             val = $filter(header.filter)(val);
                         }

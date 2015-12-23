@@ -231,9 +231,13 @@ angular.module('eveTool')
         };
 
         $scope.sumTransactions = function(){
-            return _.reduce(_.pluck($scope.ref_types, 'total'), function(init, carry){
-                return init + carry;
+            var trans = _.pluck($scope.ref_types, 'trans');
+            var total = 0;
+
+            angular.forEach(trans, function(t){
+                total += parseFloat(t[0].total_amount);
             });
+            return total;
         };
 
         $scope.getSegments = function(list, size){
