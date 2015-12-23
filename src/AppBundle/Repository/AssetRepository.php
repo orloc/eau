@@ -105,6 +105,6 @@ class AssetRepository extends EntityRepository {
             ->groupBy('a.typeId')
             ->addOrderBy('asset_count', 'DESC')
             ->setParameter('a_group', $group)
-            ->getQuery()->getResult();
+            ->getQuery();
     }
 }

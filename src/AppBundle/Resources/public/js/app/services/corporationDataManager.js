@@ -81,8 +81,8 @@ angular.module('eveTool')
             getCorpInventory: function(corp, page, per_page){
                 return getDeferred(Routing.generate('api.corporation.assets', { id: corp.id, page: page, per_page: per_page }));
             },
-            getCorpInventorySummary: function(corp){
-                return getDeferred(Routing.generate('api.corporation.assets.summary', { id: corp.id }));
+            getCorpInventorySummary: function(corp, page, per_page){
+                return getDeferred(Routing.generate('api.corporation.assets.summary', { id: corp.id, page: page, per_page: per_page}));
             },
             getCorpInventorySorted: function(corp, sort){
                 return getDeferred(Routing.generate('api.corporation.assets.clustered', { id: corp.id, sort: sort }));

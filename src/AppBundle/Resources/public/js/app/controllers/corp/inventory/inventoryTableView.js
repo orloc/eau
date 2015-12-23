@@ -7,8 +7,8 @@ angular.module('eveTool')
         $scope.max_size = 10;
         $scope.per_page = 10;
         $scope.page = 1;
-        $scope.assets = [];
         $scope.total_items = 0;
+        $scope.assets = [];
 
         $scope.per_page_selection = [
             { label: '10', value: 10},
@@ -46,13 +46,13 @@ angular.module('eveTool')
         });
 
         $scope.pageChanged = function(){
-            if (!$scope.loading) {
+            if (!$scope.$parent.loading) {
                 updateInventory();
             }
         };
 
         $scope.$watch('per_page', function(){
-            if (!$scope.loading) {
+            if (!$scope.$parent.loading) {
                 updateInventory();
             }
         });
