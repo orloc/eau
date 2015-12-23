@@ -17,9 +17,9 @@
             </div>
             <div class="col-xs-6">
                 <div class="btn-group pull-right">
-                    <button class="btn btn-sm btn-default"><i class="fa fa-archive"></i>&nbsp;&nbsp;By Category</button>
-                    <button class="btn btn-sm btn-default"><i class="fa fa-location-arrow"></i>&nbsp;&nbsp;By Location</button>
-                    <button class="btn btn-sm btn-default">All</button>
+                    <button class="btn btn-sm btn-default" ng-click="filterBuy()"><i class="fa fa-archive" ></i>&nbsp;&nbsp;Buy Orders</button>
+                    <button class="btn btn-sm btn-default" ng-click="filterSell()"><i class="fa fa-dollar" ></i>&nbsp;&nbsp;Sell Orders</button>
+                    <button class="btn btn-sm btn-default" ng-click="resetFilters()">All</button>
                 </div>
             </div>
         </div>

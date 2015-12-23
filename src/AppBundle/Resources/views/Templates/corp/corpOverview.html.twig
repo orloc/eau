@@ -18,11 +18,13 @@
             <div class="graphs col-xs-12" ng-hide="not_enough_data"></div>
             <div class="col-xs-12" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
             <div class="col-xs-10 viewing-details" >
+                {#
                 <div class="btn-group-sm pull-left">
                     <button  class="btn btn-sm" type="button" ng-click="byWeek()" ng-hide="loading === true">Week</button>
                     <button  class="btn btn-sm" type="button" ng-click="byMonth()" ng-hide="loading === true">Month</button>
                     <button class="btn btn-sm" type="button" ng-click="byQuarter()" ng-hide="loading === true">Quarter</button>
                 </div>
+                #}
                 <p class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</p>
             </div>
             <div class="col-xs-2">
@@ -48,7 +50,9 @@
                         </p>
                     </li>
                 </ul>
+                {#
                 <button ng-show="!loading" class="btn btn-block btn-default">Show All</button>
+                #}
             </div>
             <div class="col-xs-9">
                 <div ng-if="loading">

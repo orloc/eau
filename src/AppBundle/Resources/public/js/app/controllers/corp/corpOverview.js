@@ -311,8 +311,8 @@ angular.module('eveTool')
                 .attr("transform", "translate("+ margins.bottom+"," + margins.top +")");
 
             d3.json(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id , date: moment($scope.current_date).format('X') }), function(data){
-
-                if (data.length > 100){
+                console.log(data.length);
+                if (data.length > 50){
                     // Nest stock values by symbol.
                     var wallets  = d3.nest()
                         .key(function(d) { return d.name; })

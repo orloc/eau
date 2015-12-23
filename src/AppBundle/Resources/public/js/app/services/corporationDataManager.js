@@ -22,7 +22,7 @@ angular.module('eveTool')
                 .error(function(err){
                     deferred.reject(err.message);
                     if (err.code === 403){
-                       // window.location.replace(Routing.generate('eve.login.redirect',{}, true));
+                        window.location.replace(Routing.generate('eve.login.redirect',{}, true));
                     }
                 });
 
@@ -92,6 +92,9 @@ angular.module('eveTool')
             },
             getCorpDeliveries: function(corp){
                 return getDeferred(Routing.generate('api.corporation.deliveries', { id: corp.id}));
+            },
+            getMarketOrders: function(corp){
+                return getDeferred(Routing.generate('api.corporation.marketorders', { id: corp.id}));
             },
             getMarketGroups: function(){
                 return getDeferred(Routing.generate('api.market_groups'));
