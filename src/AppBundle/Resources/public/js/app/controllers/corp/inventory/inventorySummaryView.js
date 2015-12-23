@@ -15,7 +15,7 @@ angular.module('eveTool')
                 has_image: true, field_name: 'descriptors.name'
             },
             {
-                name: 'Quantity', sortable: true, is_number: true,
+                name: 'Quantity', sortable: true, filter: 'number',
                 has_image: false, field_name: 'asset_count'
             },
             {

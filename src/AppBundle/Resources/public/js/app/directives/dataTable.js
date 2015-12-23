@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('eveTool')
-    .directive('eveDataTable', [ function(){
+    .directive('eveDataTable', ['$filter', function($filter){
         return {
             restrict: 'E',
             scope: {
                 tableHeaders: "=tableHeaders",
                 tableData: "=tableData",
                 image_width: "=imageWidth"
-
-
             },
             controller: function($scope) {
                 $scope.isReverse = false;
@@ -18,9 +16,12 @@ angular.module('eveTool')
                 $scope.getColumnValue = function(row, header){
                     var val = _.get(row, header.field_name, 'N/A');
 
-                    if (typeof header.number !== 'undefined'){
-                    }
-                    if (typeof header.currency !== 'undefined'){
+                    if (typeof header.filter !== 'undefined' ){
+                        if (header.filter === 'currency'){
+                            val = $filter(header.filter)(val, 'ISK');
+                        } else {
+                            val = $filter(header.filter)(val);
+                        }
                     }
 
                     return val;
@@ -28,7 +29,6 @@ angular.module('eveTool')
             },
             link : function(scope, element, attributes) {
                 scope.orderBy = scope.tableHeaders[0].field_name;
-
             },
             templateUrl: Routing.generate('template.datatable')
         };

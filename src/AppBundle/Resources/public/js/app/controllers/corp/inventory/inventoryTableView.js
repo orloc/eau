@@ -24,11 +24,11 @@ angular.module('eveTool')
                 has_image: true, field_name: 'descriptors.name'
             },
             {
-                name: '#', sortable: true, is_number: true,
+                name: '#', sortable: true, filter: 'number',
                 field_name: 'quantity'
             },
             {
-                name: 'm3', sortable: true, is_number: true,
+                name: 'm3', sortable: true, filter: 'number',
                 field_name: 'total_m3'
             },
             {
@@ -49,11 +49,11 @@ angular.module('eveTool')
                 field_name: 'descriptors.stationName'
             },
             {
-                name: 'Avg Price', sortable: true, is_number: true,
+                name: 'Avg Price', sortable: true, filter: 'currency',
                 field_name: 'descriptors.price'
             },
             {
-                name: 'Total Price', sortable: true, is_number: true,
+                name: 'Total Price', sortable: true, filter: 'currency',
                 field_name: 'descriptors.total_price'
             }
         ];
