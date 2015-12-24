@@ -86,7 +86,7 @@ class CorporationMember
      */
     protected $mains_name;
 
-    public function setApiKey(ApiCredentials $creds){
+    public function setApiKey($creds){
         $this->api_key = $creds;
     }
 

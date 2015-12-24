@@ -37,7 +37,7 @@ class CorporationMemberController extends AbstractController implements ApiContr
             $found = $repo->findOneBy(['eve_id' => $m->getCharacterId()]);
 
             if ($found instanceof Character){
-                $m->setApiKey($found->getApiCredentials()->first());
+                $m->setApiKey($found->getApiCredentials()->first() instanceof ApiCredentials);
                 $m->setAssociatedChars(array_values($found->associatedCharacters()));
             }
         }
