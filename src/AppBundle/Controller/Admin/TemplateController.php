@@ -29,6 +29,14 @@ class TemplateController extends Controller
     }
 
     /**
+     * @Route("/reauthentication", name="template.reAuthentication")
+     */
+    public function reauthAction(Request $request)
+    {
+        return $this->render('AppBundle:Templates:reAuthentication.html.twig');
+    }
+
+    /**
      * @Route("/slide_menu", name="template.slidemenu")
      */
     public function slideAction(Request $request)

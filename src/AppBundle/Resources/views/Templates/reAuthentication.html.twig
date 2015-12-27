@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h4 ng-show="state == 0" class="modal-title text-center">Please Re-Enter Your Password</h4>
+    <h4 ng-show="state == 1" class="modal-title text-center">{{ '{{ character.character_name}}' }}'s Api Key</h4>
+</div>
+<div class="modal-body">
+    <p ng-show="error == true">
+        Your password was invalid.
+    </p>
+    <form ng-if="state == 0" name="passForm">
+        <fieldset>
+            <div class="form-group">
+                <input class="form-control"
+                       type="password"
+                       id="password"
+                       name="_password"
+                       placeholder="Password"
+                       ng-model="model.password"
+                        />
+            </div>
+        </fieldset>
+    </form>
+    <div class="row" ng-if="state == 1">
+        <div class="col-xs-12">
+            <ul class="list-unstyled">
+                <li><b>Type:</b> <br>{{ '{{ api_key.type }}' }}</li>
+                <li><b>Verification Code:</b> <br>{{ '{{ api_key.verification_code }}' }}</li>
+                <li><b>Api Key:</b><br> {{ '{{ api_key.api_key }}' }}</li>
+                <li><b>Access Mask: </b><br>{{ '{{ api_key.access_mask }}' }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button ng-if="state == 0"
+            class="btn btn-primary btn-block"
+            type="button"
+            ng-disabled="model.password.length <= 6"
+            ng-click="ok()">Submit</button>
+    <button class="btn btn-warning btn-block" type="button" ng-click="cancel()">Close</button>
+</div>

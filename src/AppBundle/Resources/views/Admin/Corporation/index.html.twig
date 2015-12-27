@@ -16,7 +16,9 @@
                        </div>
                    </div>
                     <div class="col-xs-2">
-                        <slide-button open-type="new"></slide-button>
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}
+                            <slide-button open-type="new"></slide-button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -25,8 +27,9 @@
                     {% include 'AppBundle:Admin/Corporation:corpDataPanel.html.twig' %}
                 </div>
             </div>
-
-            {% include 'AppBundle:Admin/Corporation:new.html.twig' %}
+            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                {% include 'AppBundle:Admin/Corporation:new.html.twig' %}
+            {% endif %}
         </side-menu-container>
     </div>
 {% endblock %}

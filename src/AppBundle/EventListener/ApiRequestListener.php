@@ -5,6 +5,7 @@ namespace AppBundle\EventListener;
 use AppBundle\Controller\ApiControllerInterface;
 use JMS\Serializer\Serializer;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class ApiRequestListener {
 
@@ -32,8 +33,13 @@ class ApiRequestListener {
         $request = $event->getRequest();
 
         if (in_array($request->getMethod(), ['POST', 'PATCH', 'PUT']) && 0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
-            $data = $this->serializer->deserialize($request->getContent(),'array' ,'json');
-            $request->request->replace(is_array($data) ? $data : []);
+            $content = $request->getContent();
+            if (strlen($content) === 0){
+                throw new BadRequestHttpException('Must have request body');
+            } else {
+                $data = $this->serializer->deserialize($content,'array' ,'json');
+                $request->request->replace(is_array($data) ? $data : []);
+            }
         }
     }
 }

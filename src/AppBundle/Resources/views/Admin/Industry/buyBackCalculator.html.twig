@@ -5,7 +5,7 @@
         <side-menu-container ng-transclude>
             <div class="cloak">
                 <h3>Buyback Calculator
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_CEO') %}
                         <slide-button ng-cloak style="color: grey;" open-type="gears"></slide-button>
                     {% endif %}
                 </h3>
@@ -60,7 +60,9 @@
                     </div>
                 </div>
             </div>
+            {% if is_granted('ROLE_CEO') %}
             {% include '@App/Admin/Industry/buyBackConfig.html.twig' %}
+            {% endif %}
         </side-menu-container>
     </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('corpMembersController', ['$scope', '$http', 'selectedCorpManager', function($scope, $http, selectedCorpManager){
+    .controller('corpMembersController', ['$scope', '$http', 'selectedCorpManager', '$uibModal', function($scope, $http, selectedCorpManager, $uibModal){
         $scope.selected_corp = null;
         $scope.image_width = 32;
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
@@ -11,12 +11,9 @@ angular.module('eveTool')
             $scope.selected_corp = val;
 
             var now = moment();
-
             $scope.getTimeWith = function(char){
                 var time = moment(char.start_time);
-
                 return  now.format('DDD')- time.format('DDD');
-
             };
 
             $scope.getAssocChars = function(m){
@@ -44,4 +41,22 @@ angular.module('eveTool')
                 });
             });
         });
+
+        $scope.viewKey = function(char){
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: Routing.generate('template.reAuthentication'),
+                controller: 'reAuthenticationController',
+                resolve: {
+                    character : function(){
+                        return char;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(input){
+                // do the authentication
+                console.log(input);
+            });
+        };
     }]);

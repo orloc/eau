@@ -7,6 +7,7 @@ use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Character;
 use AppBundle\Entity\Corporation;
+use AppBundle\Entity\CorporationMember;
 use AppBundle\Security\AccessTypes;
 use Doctrine\DBAL\DBALException;
 use JMS\SecurityExtraBundle\Annotation\Secure;
@@ -92,23 +93,17 @@ class ApiCredentialsController extends AbstractController implements ApiControll
 
     /**
      * @Route("/character/{id}/api_credentials", name="api.character.apicredentials", options={"expose"=true})
-     * @ParamConverter(name="character", class="AppBundle:Character")
+     * @ParamConverter(name="character", class="AppBundle:CorporationMember")
      * @Method("GET")
      * @Secure(roles="ROLE_CORP_MEMBER")
      */
-    public function getCharacterKeys(Request $request, Character $character){
+    public function getCharacterKeys(Request $request, CorporationMember $character){
 
-        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $character, 'Unauthorized access!');
-
-        $user = $this->getUser();
-
-        if (!$user->getCharacters()->contains($character) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-            return $this->jsonResponse(json_encode(['error' => 'YUou are not authorized to view this resource', 'code' => 403]), 403);
-        }
+        //$this->denyAccessUnlessGranted(AccessTypes::VIEW, $character, 'Unauthorized access!');
 
         $repo = $this->getDoctrine()->getRepository('AppBundle:ApiCredentials');
 
-        $keys = $repo->getKeysByCharacter($character);
+        $keys = $repo->findRelatedKeyByMember($character);
 
         return $this->jsonResponse($this->get('serializer')->serialize($keys, 'json'), 200);
 
@@ -125,10 +120,6 @@ class ApiCredentialsController extends AbstractController implements ApiControll
         $this->denyAccessUnlessGranted(AccessTypes::EDIT, $character, 'Unauthorized access!');
 
         $user = $this->getUser();
-
-        if (!$user->getCharacters()->contains($character) && !$this->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
-            return $this->jsonResponse(json_encode(['message' => 'YUou are not authorized to view this resource', 'code' => 403]), 403);
-        }
 
         $content = $request->request;
 
@@ -177,23 +168,17 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      */
     public function updateAction(Request $request, ApiCredentials $credentials)
     {
-
         $this->denyAccessUnlessGranted(AccessTypes::EDIT, $credentials->getCorporation(), 'Unauthorized access!');
 
-        //@TODO clean this up please
         $em = $this->getDoctrine()->getManager();
-
         if ($request->query->get('delete', false) && $credentials->getIsActive()){
             $credentials->setIsActive(false);
-
             $em->persist($credentials);
             $em->flush();
         }
 
         if ($request->query->get('enable', false) && !$credentials->getIsActive()){
-
             $credentials->setIsActive(true);
-
             $em->persist($credentials);
             $em->flush();
         }
@@ -203,4 +188,5 @@ class ApiCredentialsController extends AbstractController implements ApiControll
         return $this->jsonResponse($json);
 
     }
+
 }

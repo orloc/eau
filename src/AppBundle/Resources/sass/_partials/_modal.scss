@@ -1,0 +1,12 @@
+.modal-header {
+  background-color: $darkerBlack;
+  border-bottom-color: darken($eveOrange, 10);
+}
+
+.modal-body {
+  background-color: $offGrey;
+}
+.modal-footer {
+  border-top-color: darken($eveOrange, 10);
+  background-color: $darkestBlack;
+}
