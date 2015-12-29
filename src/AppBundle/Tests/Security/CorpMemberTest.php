@@ -7,7 +7,6 @@ use Symfony\Component\BrowserKit\Cookie;
 
 class CorpMemberTest extends WebTestCase
 {
-    private $client = null;
 
     public function setUp(){
         $this->client = static::createClient();

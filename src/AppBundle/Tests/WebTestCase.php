@@ -3,10 +3,13 @@
 namespace AppBundle\Tests;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase as BaseCase;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\BrowserKit\Cookie;
 
 class WebTestCase extends BaseCase
 {
+
+    protected $client = null;
 
     protected function logIn($role){
         $session = $this->client->getContainer()->get('session');

@@ -8,7 +8,6 @@ use Symfony\Component\BrowserKit\Cookie;
 
 class CEOTest extends WebTestCase
 {
-    private $client = null;
 
     public function setUp(){
         $this->client = static::createClient();
