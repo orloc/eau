@@ -13,7 +13,9 @@
 
     <ul class="nav navbar-top-links navbar-right" ng-cloak>
         <li class="welcome">
+            {% if app.getUser() %}
             <p>Welcome {{ app.getUser().getUsername() }}</p>
+            {% endif %}
         </li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">

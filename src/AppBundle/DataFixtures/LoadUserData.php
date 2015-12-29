@@ -30,14 +30,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'password' => 'password',
                 'locked' => false,
                 'roles' => ['ROLE_SUPER_ADMIN']
-            ],
-            [
-                'username' => 'capn',
-                'email' => 'egromaegtt@gmail.com',
-                'enabled' => true,
-                'password' => 'password',
-                'locked' => false,
-                'roles' => ['ROLE_SUPER_ADMIN']
             ]
         ];
 

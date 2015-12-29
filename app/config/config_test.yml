@@ -14,3 +14,14 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+liip_functional_test: ~
+
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+          default:
+            dbname:   "test_%app_data.database_name%"
+          eve_data:
+            dbname:   "test_%eve_data.database_name%"

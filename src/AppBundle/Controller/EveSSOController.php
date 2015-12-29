@@ -80,7 +80,7 @@ class EveSSOController extends Controller
         try {
             $response = $this->tryRequest($auth_request);
         } catch (\Exception $e){
-            $session->getFlashBag()->add('danger', 'There was <b>EITHER</b> a serious error when attempting to authenticate you <b>OR</b> the request you had sent was invald! <br><b><i>Try Again - if this persists - Don\'t worry we are fixing it...</i></b>');
+            $session->getFlashBag()->add('danger', 'There was a problem with your request<i>Try Again - if this persists - Submit an issue ticket using the link in the footer.</i></b>');
 
             return $this->redirect($this->generateUrl('eve.register'));
         }
@@ -97,8 +97,7 @@ class EveSSOController extends Controller
         try {
             $charResponse = $this->tryRequest($verfiyRequest);
         } catch (\Exception $e){
-            $session->getFlashBag()->add('danger', 'There was <b>EITHER</b> a serious error when attempting to authenticate you <b>OR</b> the request you had sent was invald! <br><b><i>Try Again - if this persists - Don\'t worry we are fixing it...</i></b>');
-
+            $session->getFlashBag()->add('danger', 'There was a problem with your request<i>Try Again - if this persists - Submit an issue ticket using the link in the footer.</i></b>');
             return $this->redirect($this->generateUrl('eve.register'));
         }
 
@@ -111,7 +110,7 @@ class EveSSOController extends Controller
 
         // character isnt in a corp that is registered by an admin
         if ($exists === null){
-            $session->getFlashBag()->add('warning', 'Sorry we do not support non-alpha tester registrations at this time.<br><b>COME BACK SOON</b>');
+            $session->getFlashBag()->add('warning', 'Sorry we do not support non-alpha tester registrations at this time.<br><b>COME BACK SOON</b> or make a request to add your corproation through a support ticket below.');
 
             $this->get('logger')->info(sprintf("ATTEMPTED REGISTRATION: char_id = %s char_name = %s", $cId, $cName ));
             return $this->redirect($this->generateUrl('eve.register'));

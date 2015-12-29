@@ -2,6 +2,7 @@
 @import '_partials/_fonts.scss';
 @import '_partials/_colors.scss';
 @import '_partials/_security.scss';
+@import '_partials/_componenets/_legal.scss';
 
 $darkBlue : darken(#3498DB, 30);
 $mistyBlue : desaturate($darkBlue, 40);

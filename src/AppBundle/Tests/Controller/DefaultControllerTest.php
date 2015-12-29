@@ -2,17 +2,29 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Liip\FunctionalTestBundle\Test\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
+
+    private $client = null;
+
+    public function setUp(){
+        $this->client = static::createClient();
+    }
+
     public function testIndex()
     {
-        $client = static::createClient();
+        $crawler = $this->client->request('GET', '/');
 
-        $crawler = $client->request('GET', '/');
+        $this->assertStatusCode(200, $this->client);
+        $this->assertContains('Eve Alliance Utility', $crawler->filter('#intro .container h2')->text());
+    }
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Welcome to Symfony', $crawler->filter('#container h1')->text());
+    public function testLegalPage(){
+        $crawler = $this->client->request('GET', '/legal');
+
+        $this->assertStatusCode(200, $this->client);
+        $this->assertContains('Copyright Notice', $crawler->filter('.legal h2')->text());
     }
 }
