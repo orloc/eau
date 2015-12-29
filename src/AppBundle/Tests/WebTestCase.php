@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Controller;
+namespace AppBundle\Tests;
 
 use Liip\FunctionalTestBundle\Test\WebTestCase as BaseCase;
 use Symfony\Component\BrowserKit\Cookie;

@@ -1,7 +1,8 @@
 <?php
 
-namespace AppBundle\Tests\Controller\Security;
+namespace AppBundle\Tests\Security;
 
+use AppBundle\Tests\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
 class DirectorTest extends WebTestCase

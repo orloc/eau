@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Controller;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use AppBundle\Tests\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {

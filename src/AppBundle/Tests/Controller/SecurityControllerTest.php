@@ -2,7 +2,7 @@
 
 namespace AppBundle\Tests\Controller\Security;
 
-use AppBundle\Tests\Controller\WebTestCase;
+use AppBundle\Tests\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
 class SecurityControllerTest extends WebTestCase

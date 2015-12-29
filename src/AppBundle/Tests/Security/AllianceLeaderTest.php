@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Tests\Controller\Security;
+namespace AppBundle\Tests\Security;
 
-use AppBundle\Tests\Controller\WebTestCase;
+use AppBundle\Tests\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
 class AllianceLeaderTest extends WebTestCase

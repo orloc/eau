@@ -1,8 +1,8 @@
 <?php
 
-namespace AppBundle\Tests\Controller;
+namespace AppBundle\Tests\Security;
 
-use Liip\FunctionalTestBundle\Test\WebTestCase;
+use AppBundle\Tests\WebTestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
 class AdminTest extends WebTestCase
