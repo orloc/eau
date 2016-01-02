@@ -49,7 +49,6 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
         $em = $this->doctrine->getManager();
         // remove the thing we dont want anymore
         if ($existing->count() !== count($items)){
-            $rev = [];
             $needsFlush = false;
             foreach ($existing as $e){
                 $found = false;
@@ -71,8 +70,10 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
         $repo = $em->getRepository('AppBundle:Starbase');
 
         foreach ($items as $i){
-            $exists = $repo->hasPOS($corp, $i['moonID']);
-            $obj = $this->mapItem($i, $exists instanceof Starbase ? $exists : false);
+            $exists = ($starbase = $repo->hasPOS($corp, $i['moonID'])) instanceof Starbase === true
+            ? $starbase
+            : null;
+            $obj = $this->mapItem($i, $exists);
 
             if (!$exists instanceof Starbase){
                 $corp->addStarbase($obj);
