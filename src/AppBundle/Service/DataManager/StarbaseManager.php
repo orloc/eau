@@ -86,7 +86,7 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
 
     public function mapItem($item, Starbase $existing = null){
 
-        $obj = !$existing ? new Starbase() : $existing;
+        $obj = $existing === null ? new Starbase() : $existing;
         $obj->setItemId((int)$item['itemID'])
             ->setTypeId((int)$item['typeID'])
             ->setLocationId((int)$item['locationID'])
