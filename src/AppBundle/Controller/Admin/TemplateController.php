@@ -103,7 +103,7 @@ class TemplateController extends Controller
 
     /**
      * @Route("/api_keys", name="template.apikeys")
-     * @Secure(roles="ROLE_DIRECTOR")
+     * @Secure(roles="ROLE_CEO")
      */
     public function corpApiKeyAction()
     {

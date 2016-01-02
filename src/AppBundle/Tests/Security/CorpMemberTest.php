@@ -56,4 +56,30 @@ class CorpMemberTest extends WebTestCase
 
         $this->assertCount(1, $crawler->filter('slide-button'));
     }
+
+    public function testGeneralRoutes(){
+        $routes = [
+            '/admin/character' => 1,
+            '/admin/corporation' => 0,
+            '/admin/dashboard' => 1,
+            '/admin/industry' => 1,
+            '/admin/user' => 0,
+            '/admin/industry/price-helper' => 1,
+            '/admin/template/corpoverview' => 0,
+            '/admin/template/corpinventory' => 0,
+            '/admin/template/corp_market_orders' => 0,
+            '/admin/template/api_keys' => 0,
+            '/admin/template/corp_members' => 0,
+            '/admin/template/corp_towers' => 0
+        ];
+
+        $this->logIn('ROLE_CORP_MEMBER');
+
+        foreach ($routes as $r => $expected){
+            $this->client->request('GET', $r);
+            $this->assertStatusCode($expected === 1 ? 200 : 403, $this->client,
+                "On $r"
+            );
+        }
+    }
 }

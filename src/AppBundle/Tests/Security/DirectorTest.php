@@ -60,4 +60,30 @@ class DirectorTest extends WebTestCase
         $this->assertCount(1, $crawler->filter('slide-button'));
     }
 
+    public function testGeneralRoutes(){
+        $routes = [
+            '/admin/character' => 1,
+            '/admin/user' => 0,
+            '/admin/corporation' => 1,
+            '/admin/dashboard' => 1,
+            '/admin/industry' => 1,
+            '/admin/industry/price-helper' => 1,
+            '/admin/template/corpoverview' => 1,
+            '/admin/template/corpinventory' => 1,
+            '/admin/template/corp_market_orders' => 1,
+            '/admin/template/api_keys' => 0,
+            '/admin/template/corp_members' => 1,
+            '/admin/template/corp_towers' => 1
+        ];
+
+        $this->logIn('ROLE_DIRECTOR');
+
+        foreach ($routes as $r => $expected){
+            $this->client->request('GET', $r);
+            $this->assertStatusCode($expected === 1 ? 200 : 403, $this->client,
+                "On $r"
+            );
+        }
+    }
+
 }
