@@ -113,8 +113,8 @@ class CorporationController extends AbstractController implements ApiControllerI
         $corpManager = $this->get('app.corporation.manager');
 
         try {
-            $result = $this->validateAndUpdateApiKey($key);
-            $this->updateCorporationKey($key, $result);
+            $result = $keyManager->validateAndUpdateApiKey($key, 'Corporation', '134217727');
+            $keyManager->updateCorporationKey($key, $result);
             $corp = $corpManager->createNewCorporation($key);
 
             $em->persist($corp);

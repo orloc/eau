@@ -59,7 +59,7 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
         try {
             $result = $this->get('app.apikey.manager')
-                ->validateAndUpdateApiKey($key);
+                ->validateAndUpdateApiKey($key, 'Account', '1073741823');
 
             $arr = $result->toArray();
 

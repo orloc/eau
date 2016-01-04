@@ -6,20 +6,21 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidAccessMaskException;
 use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
+use Pheal\Core\Element;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ApiKeyManager extends AbstractManager implements DataManagerInterface {
 
     public function validateKey(ApiCredentials $entity, $required_type = false, $required_mask = false){
         $key = $this->getKeyInfo($entity);
+
         list($type, $expires, $accessMask) = [$key->type, $key->expires, $key->accessMask];
 
         if (strlen($expires) > 0) {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }
 
-        // char or corp
-        if ($accessMask !== '1073741823' && $accessMask !== '134217727'){
+        if ($required_mask !== $accessMask){
             throw new InvalidAccessMaskException('Your Access Mask is invalid - please use the link above to generate a valid key');
         }
 
@@ -37,19 +38,20 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
         return $key;
     }
 
-    public function updateCorporationKey(ApiCredentials $key, $result){
-        var_dump(get_class($result));
-        $result_key = $result->toArray()['result']['key'];
+    public function updateCorporationKey(ApiCredentials $key, Element $result){
+        $result_key = $result->toArray();
         $character = array_pop($result_key['characters']);
 
         $key->setEveCharacterId($character['characterID'])
+            ->setType($result_key['type'])
+            ->setAccessMask($result_key['accessMask'])
             ->setEveCorporationId($character['corporationID']);
 
         return $key;
     }
 
-    public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false) {
-        $key = $this->validateKey($entity, $required_type, null);
+    public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false, $required_mask = false){
+        $key = $this->validateKey($entity, $required_type, $required_mask);
 
         $entity->setAccessMask($key->accessMask)
             ->setType($key->type)
@@ -83,6 +85,4 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
 
         return $result->key;
     }
-
-
 }
