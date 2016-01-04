@@ -6,18 +6,12 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidAccessMaskException;
 use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ApiKeyManager extends AbstractManager implements DataManagerInterface {
 
-    public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false) {
-        $client = $this->getClient($entity, 'account');
-
-        $result = $client->APIKeyInfo();
-
-        $key = $result->key;
-
+    public function validateKey(ApiCredentials $entity, $required_type = false, $required_mask = false){
+        $key = $this->getKeyInfo($entity);
         list($type, $expires, $accessMask) = [$key->type, $key->expires, $key->accessMask];
 
         if (strlen($expires) > 0) {
@@ -40,12 +34,28 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
             throw new \Exception('API key already exists');
         }
 
-        $entity->setAccessMask($accessMask)
-            ->setType($type)
+        return $key;
+    }
+
+    public function updateCorporationKey(ApiCredentials $key, $result){
+        var_dump(get_class($result));
+        $result_key = $result->toArray()['result']['key'];
+        $character = array_pop($result_key['characters']);
+
+        $key->setEveCharacterId($character['characterID'])
+            ->setEveCorporationId($character['corporationID']);
+
+        return $key;
+    }
+
+    public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false) {
+        $key = $this->validateKey($entity, $required_type, null);
+
+        $entity->setAccessMask($key->accessMask)
+            ->setType($key->type)
             ->setIsActive(true);
 
-        return $result;
-
+        return $key;
     }
 
     public function updateKey(ApiCredentials $key, array $creds){
@@ -66,5 +76,13 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
     public static function getName(){
         return 'api_key_manager';
     }
+
+    protected function getKeyInfo(ApiCredentials $entity){
+        $client = $this->getClient($entity, 'account');
+        $result = $client->APIKeyInfo();
+
+        return $result->key;
+    }
+
 
 }

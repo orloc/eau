@@ -113,16 +113,8 @@ class CorporationController extends AbstractController implements ApiControllerI
         $corpManager = $this->get('app.corporation.manager');
 
         try {
-            $result = $this->get('app.apikey.manager')
-                ->validateAndUpdateApiKey($key);
-
-            $result_key = $result->toArray()['result']['key'];
-
-            $character = array_pop($result_key['characters']);
-
-            $key->setEveCharacterId($character['characterID'])
-                ->setEveCorporationId($character['corporationID']);
-
+            $result = $this->validateAndUpdateApiKey($key);
+            $this->updateCorporationKey($key, $result);
             $corp = $corpManager->createNewCorporation($key);
 
             $em->persist($corp);
@@ -136,8 +128,6 @@ class CorporationController extends AbstractController implements ApiControllerI
 
             return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
         }
-
-        #$this->get('app.task.dispatcher')->addDeferred(CorporationEvents::NEW_CORPORATION, new NewCorporationEvent($corp));
 
         $json = $jms->serialize($corp, 'json');
 

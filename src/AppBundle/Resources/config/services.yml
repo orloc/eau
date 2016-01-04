@@ -57,21 +57,6 @@ services:
   app.task.dispatcher:
       class: AppBundle\EventListener\Dispatcher
 
-
-  # Task Events
-  app.task.coporation.new:
-      class: AppBundle\EventListener\Corporation\NewCorporationListener
-      arguments: [ "@app.evedataupdate.service", "@doctrine.orm.entity_manager" ]
-      tags:
-          - { name: app.task.subscriber }
-
-  # this is probably going to be depricated
-  app.task.belated_listener:
-      class: AppBundle\EventListener\BelatedTaskListener
-      arguments: [ "@app.task.dispatcher" ]
-      tags:
-        - { name: kernel.event_subscriber }
-
   # Validators
   app.validator.duplicate_email:
      class: AppBundle\Validator\DuplicateEmailConstraintValidator
