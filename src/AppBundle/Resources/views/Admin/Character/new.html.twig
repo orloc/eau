@@ -81,7 +81,7 @@
                     <br> <b class="text-info"> We have tried to guess which character is your main.</b>
                 </p>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-class="{ 'active' : char.characterID === selected_character.characterID }" ng-repeat="char in char_result.result.key.characters" ng-click="selectCharacter(char)">
+                    <li class="list-group-item" ng-class="{ 'active' : char.characterID === selected_character.characterID }" ng-repeat="char in char_result.characters" ng-click="selectCharacter(char)">
                         <div class="row">
                             <div class="col-xs-3">
                                 <eve-image image-type="'Character'" object-id="char.characterID" img-width="256"></eve-image>

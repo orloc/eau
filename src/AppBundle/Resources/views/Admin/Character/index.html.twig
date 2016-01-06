@@ -2,103 +2,86 @@
 
 {% block content -%}
     <div class="row" >
-        <side-menu-container ng-transclude>
-            <div class="cloak">
+        <side-menu-container ng-transclude ng-cloak>
+            <div class="cloak" ng-controller="characterListController">
                 <h3>Character <span class="muted small">LIST</span>
-                    <slide-button open-type="new"></slide-button>
+                    <div class="pull-right small">
+                        {% if app.getUser().getCharacters().count() == 0 %}
+                            <span class="eve add-link">Add a character <i class="fa fa-arrow-right"></i></span>
+                        {% endif %}
+                        <slide-button open-type="new"></slide-button>
+                    </div>
                 </h3>
-                <div ng-controller="characterListController">
-                    {% if is_granted('ROLE_CEO') %}
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <div class="btn-group">
-                                    <button class="btn btn-sm active btn-default">My Characters</button>
-                                    {% if is_granted('ROLE_ALLIANCE_LEADER') %}
-                                        <button class="btn btn-sm btn-default">Alliance Characters</button>
-                                    {% else %}
-                                        <button class="btn btn-sm btn-default">Corporation Characters</button>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    {% endif %}
-                    <div class="row"></div>
+                {% if is_granted('ROLE_CEO') %}
                     <div class="row">
-                        <div class="col-md-12" ng-cloak="">
-                            <table class="table table-condensed table-hover data-table" ng-cloak>
-                                <thead>
-                                <th>Name</th>
-                                <th>Corporation</th>
-                                <th>Is Main</th>
-                                <th>Skill Queue End</th>
-                                <th>SkillPoints</th>
-                                <th>Ship Type</th>
-                                <th>Last Known Location</th>
-                                <th>Has Key</th>
-                                <th><i class="fa fa-cogs"></i></th>
-                                </thead>
-                                <tbody>
-                                <tr ng-class="{ 'info': selected_character.id == c.id}" ng-repeat="c in characters" ng-show="characters.length > 0" ng-cloak>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col-xs-4">
-                                                <eve-image image-type="'Character'" override-width="image_width" object-id="c.eve_id" img-width="256"></eve-image>
-                                            </div>
-                                            <div class="col-xs-8">
-                                                {{ '{{ c.name }}' }}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ '{{ c.corporation_name }}' }}</td>
-                                    <td>
-                                        <label class="label" ng-class="{ 'label-warning': !c.is_main, 'label-success': c.is_main }">
-                                            <i class="fa" ng-class="{ 'fa-check': c.is_main, 'fa-times': !c.is_main }"></i>
-                                        </label>
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <label class="label" ng-class="{ 'label-danger': !c.has_key, 'label-success': c.has_key }">
-                                            <i class="fa" ng-class="{ 'fa-check': c.has_key, 'fa-times': !c.has_key }"></i>
-                                        </label>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-sm btn-default" ng-click="selectCharacter(c)" ng-show="selected_character == null"><i class="fa fa-cog"></i></button>
-                                        <button class="btn btn-sm btn-danger" ng-show="selected_character !== null && selected_character.id === c.id" ng-click="removeChar()"><i class="fa fa-times"></i></button>
-                                    </td>
-                                </tr>
-
-                                <tr ng-show="characters.length == 0" ng-cloak>
-                                    <td colspan="11" class=" text-center" ng-cloak>
-                                        <h3 style="font-family: 'roboto';" class="text-danger">No characters found</h3>
-                                        <p style="color: black;">You will <b>need to add or update</b> a character with a valid api key prior to being able to use this application.</p>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                        {#
-                        <div class="col-md-8" ng-cloak>
-                            <div class="well">
-                                <h3 class="text-center" style="font-family: 'roboto'; color: black;" ng-show="!selected_character">Select a Character</h3>
-
-                                <div class="row" ng-show="selected_character != null">
-                                    <div class="col-sm-6">
-                                        <eve-image ng-if="selected_character != null" image-type="'Character'" override-width="image_size" object-id="selected_character.eve_id" img-width="256" ng-init="image_size = 256"></eve-image>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <h3 style="font-family: 'roboto'; color: black;" class="text-center">More details coming soon.</h3>
-                                    </div>
-                                    <div class="col-xs-12">
-                                    </div>
-                                </div>
+                        <div class="col-xs-12">
+                            <div class="btn-group">
+                                <button class="btn btn-sm active btn-default">My Characters</button>
+                                {% if is_granted('ROLE_ALLIANCE_LEADER') %}
+                                    <button class="btn btn-sm btn-default">Alliance Characters</button>
+                                {% else %}
+                                    <button class="btn btn-sm btn-default">Corporation Characters</button>
+                                {% endif %}
                             </div>
-
                         </div>
-                        #}
+                    </div>
+                {% endif %}
+                <div class="row"></div>
+                <div class="row">
+                    <div class="col-md-12" ng-cloak="">
+                        <table class="table table-condensed table-hover data-table" ng-cloak>
+                            <thead>
+                            <th>Name</th>
+                            <th>Corporation</th>
+                            <th>Is Main</th>
+                            <th>Skill Queue End</th>
+                            <th>SkillPoints</th>
+                            <th>Ship Type</th>
+                            <th>Last Known Location</th>
+                            <th>Has Key</th>
+                            <th><i class="fa fa-cogs"></i></th>
+                            </thead>
+                            <tbody>
+                            <tr ng-class="{ 'info': selected_character.id == c.id}" ng-repeat="c in characters" ng-show="characters.length > 0" ng-cloak>
+                                <td>
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <eve-image image-type="'Character'" override-width="image_width" object-id="c.eve_id" img-width="256"></eve-image>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            {{ '{{ c.name }}' }}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ '{{ c.corporation_name }}' }}</td>
+                                <td>
+                                    <label class="label" ng-class="{ 'label-warning': !c.is_main, 'label-success': c.is_main }">
+                                        <i class="fa" ng-class="{ 'fa-check': c.is_main, 'fa-times': !c.is_main }"></i>
+                                    </label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <label class="label" ng-class="{ 'label-danger': !c.has_key, 'label-success': c.has_key }">
+                                        <i class="fa" ng-class="{ 'fa-check': c.has_key, 'fa-times': !c.has_key }"></i>
+                                    </label>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-default" ng-click="selectCharacter(c)" ng-show="selected_character == null"><i class="fa fa-cog"></i></button>
+                                    <button class="btn btn-sm btn-danger" ng-show="selected_character !== null && selected_character.id === c.id" ng-click="removeChar()"><i class="fa fa-times"></i></button>
+                                </td>
+                            </tr>
+
+                            <tr ng-show="characters.length == 0" ng-cloak>
+                                <td colspan="11" class=" text-center" ng-cloak>
+                                    <h3 style="font-family: 'roboto';" class="text-danger">No characters found</h3>
+                                    <p style="color: black;">You will <b>need to add or update</b> a character with a valid api key prior to being able to use this application.</p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

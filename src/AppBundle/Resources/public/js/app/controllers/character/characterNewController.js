@@ -18,8 +18,8 @@ angular.module('eveTool')
 
                 $scope.char_result = data.data;
 
-                angular.forEach($scope.char_result.result.key.characters, function(c){
-                    if (c.best_guess){
+                angular.forEach($scope.char_result.characters, function(c){
+                    if (c.best_guess === true){
                         $scope.selected_character = c;
                     }
                 });

@@ -7,6 +7,11 @@ h1, h2, h3, h4 {
   &.text-success {
     color: $eveGreen;
   }
+
+  div, span, p, a {
+    font-family: $roboto;
+
+  }
 }
 
 .well {
@@ -21,7 +26,7 @@ h1, h2, h3, h4 {
 }
 
 
-a.eve {
+.eve {
   color: $eveOrange;
   &:hover {
     color: darken($eveOrange, 20);

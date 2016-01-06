@@ -37,6 +37,11 @@ body {
   background-attachment: fixed;
 }
 
+.add-link{
+  line-height: 30px;
+  margin-right: 10px;
+}
+
 .well {
   background: linear-gradient(darken($offGrey, 5), $darkerBlack, $darkestBlack);
   border-color: $offGrey;

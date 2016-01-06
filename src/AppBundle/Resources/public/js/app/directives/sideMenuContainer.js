@@ -41,6 +41,7 @@ angular.module('eveTool')
                                 button.open = false;
                             }
                         });
+
                         m.scope.openMenu();
                     }
 

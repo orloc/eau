@@ -5,6 +5,7 @@ angular.module('eveTool')
         $scope.characters = [];
         $scope.selected_character = null;
         $scope.api_credentials = null;
+        $scope.false = null;
 
         $http.get(Routing.generate('api.characters')).then(function(data){
             $scope.characters = data.data;
@@ -20,6 +21,12 @@ angular.module('eveTool')
                 dataDispatcher.addEvent('new_char_api', c);
             });
         };
+
+        $scope.$on('opened_menu', function(val){
+            if (val === true){
+                $scope.opened = true;
+            }
+        });
 
         $scope.removeChar = function(){
             $scope.selected_character = null;
