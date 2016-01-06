@@ -11,18 +11,35 @@ class WebTestCase extends BaseCase
 
     protected $client = null;
 
-    protected function logIn($role){
+    protected function logIn($username, $string = false){
         $session = $this->client->getContainer()->get('session');
 
         $firewall = 'main';
-        $token = new UsernamePasswordToken('orloc', null, $firewall, [
-            $role
-        ]);
+
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        $user = $em->getRepository('AppBundle:User')->findOneByUsername($username);
+
+        if ($user === null){
+            var_dump($username, $user);
+
+            var_dump($em->getRepository('AppBundle:User')->findAll());die;
+
+        }
+
+        $token = new UsernamePasswordToken(
+            $string === true ? $user->getUsername() : $user,
+            null,
+            $firewall,
+            $user->getRoles()
+        );
 
         $session->set('_security_'.$firewall, serialize($token));
         $session->save();
 
         $cookie = new Cookie($session->getName(), $session->getId());
         $this->client->getCookieJar()->set($cookie);
+
+        $em->clear();
     }
 }

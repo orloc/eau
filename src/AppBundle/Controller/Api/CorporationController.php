@@ -6,9 +6,6 @@ use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\User;
-use AppBundle\Event\CorporationEvents;
-use AppBundle\Event\NewCorporationEvent;
-use AppBundle\Exception\InvalidExpirationException;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -120,6 +117,7 @@ class CorporationController extends AbstractController implements ApiControllerI
             $em->persist($corp);
             $em->flush();
         } catch (\Exception $e){
+
             $this->get('logger')->warning(sprintf('Invalid API creation attempt Key: %s Code %s User_Id: %s',
                 $content->get('api_key'),
                 $content->get('verification_code'),

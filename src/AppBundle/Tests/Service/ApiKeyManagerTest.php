@@ -79,6 +79,37 @@ class ApiKeyManagerTest extends WebTestCase
     }
 
     /**
+     * @expectedException \Exception
+     */
+
+    public function testDuplicateApiException(){
+        $config = $this->getContainer()->getParameter('test_config');
+
+        $key = new ApiCredentials();
+
+        $api_key = $config['api_keys']['good_corp_key']['key'];
+        $verification_code = $config['api_keys']['good_corp_key']['code'];
+
+        $key->setApiKey($api_key)
+            ->setVerificationCode($verification_code);
+
+        $this->manager->validateKey($key, 'Corporation', '134217727');
+
+        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
+
+        $existing = $em->getRepository('AppBundle:ApiCredentials')->findAll();
+        foreach ($existing as $e){
+            $em->remove($e);
+        }
+
+        $em->flush();
+
+        $afterPurge =  $em->getRepository('AppBundle:ApiCredentials')->findAll();
+
+        $this->assertCount(0, $afterPurge);
+    }
+
+    /**
      * @expectedException AppBundle\Exception\InvalidAccessMaskException
      */
 
@@ -107,19 +138,28 @@ class ApiKeyManagerTest extends WebTestCase
         $this->assertSame('1073741823', $res['accessMask']);
     }
 
+
+    /*
+     * @depends testDuplicateApiException
+     */
     public function testGoodCorpKey(){
+        $this->loadFixtures(['AppBundle\DataFixtures\Test\LoadUserData']);
         $config = $this->getContainer()->getParameter('test_config');
 
         $key = new ApiCredentials();
 
-        $key->setApiKey($config['api_keys']['good_corp_key']['key'])
-            ->setVerificationCode($config['api_keys']['good_corp_key']['code']);
+        $api_key = $config['api_keys']['good_corp_key']['key'];
+        $verification_code = $config['api_keys']['good_corp_key']['code'];
+
+        $key->setApiKey($api_key)
+            ->setVerificationCode($verification_code);
 
         $res = $this->manager->validateKey($key, 'Corporation', '134217727');
         $this->manager->updateCorporationKey($key, $res);
 
         $this->assertSame('Corporation', $key->getType());
         $this->assertSame('134217727', $key->getAccessMask());
+
     }
 
 }

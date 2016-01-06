@@ -71,10 +71,10 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
             $corps = $this->getDoctrine()->getRepository('AppBundle:Corporation');
 
-            foreach ($arr['result']['key']['characters'] as $i => $c){
+            foreach ($arr['characters'] as $i => $c){
                 $exists = $corps->findOneBy(['eve_id' => $c['corporationID']]);
 
-                $arr['result']['key']['characters'][$i]['best_guess'] = $exists instanceof Corporation;
+                $arr['characters'][$i]['best_guess'] = $exists instanceof Corporation;
             }
 
             return $this->jsonResponse(json_encode($arr));
@@ -97,9 +97,10 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
         $initialKey = $content->get('full_key', null);
         $selected_char = $content->get('char', null);
+        $api_key = $initialKey['result']['key'];
 
         $keyManager = $this->get('app.apikey.manager');
-        $key = $keyManager->buildInstanceFromRequest($content);
+        $key = $keyManager->buildInstanceFromArray($api_key);
 
         $validator = $this->get('validator');
 
@@ -109,13 +110,11 @@ class CharacterController extends AbstractController implements ApiControllerInt
             return $this->getErrorResponse($errors);
         }
 
-        $keyManager->updateKey($key, $initialKey['result']['key']);
-
         $key->setEveCharacterId($selected_char['characterID'])
             ->setEveCorporationId($selected_char['corporationID']);
 
 
-        $all_chars = $initialKey['result']['key']['characters'];
+        $all_chars = $initialKey['characters'];
         $cmanager = $this->get('app.character.manager');
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();

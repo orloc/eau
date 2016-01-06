@@ -39,8 +39,6 @@ angular.module('eveTool')
 
             var obj = {
                 char: $scope.selected_character,
-                api_key: $scope.char_result.result.key.api_key,
-                verification_code: $scope.char_result.result.key.verification_code,
                 full_key: $scope.char_result
             };
 

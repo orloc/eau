@@ -8,6 +8,7 @@ use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
 use Pheal\Core\Element;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 class ApiKeyManager extends AbstractManager implements DataManagerInterface {
 
@@ -60,17 +61,22 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
         return $key;
     }
 
-    public function updateKey(ApiCredentials $key, array $creds){
-        $key->setType($creds['type'])
-            ->setAccessMask($creds['accessMask'])
-            ->setIsActive(true);
-    }
-
     public function buildInstanceFromRequest(ParameterBag $content){
         $creds = new ApiCredentials();
 
         $creds->setVerificationCode($content->get('verification_code'))
             ->setApiKey($content->get('api_key'));
+
+        return $creds;
+    }
+
+    public function buildInstanceFromArray(array $content){
+        $creds = new ApiCredentials();
+
+        $accessor = PropertyAccess::createPropertyAccessor();
+        foreach ($content as $k => $v){
+            $accessor->setValue($creds, $k, $v);
+        }
 
         return $creds;
     }

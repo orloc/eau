@@ -24,7 +24,7 @@ class ApiCredentialsSubscriber implements EventSubscriber {
     public function prePersist(LifecycleEventArgs $args){
         $entity = $args->getObject();
 
-        if ($entity instanceof ApiCredentials){
+        if ($entity instanceof ApiCredentials && php_sapi_name() !== 'cli'){
             $user = $this->tokenManager->getToken()->getUser();
             $entity->setCreatedBy($user);
         }

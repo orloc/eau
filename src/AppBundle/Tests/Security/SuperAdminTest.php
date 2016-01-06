@@ -10,10 +10,10 @@ class SuperAdminTest extends WebTestCase
 
     public function setUp(){
         $this->client = static::createClient();
+        $this->logIn('super_admin', true);
     }
 
     public function testSuperAdminLogin(){
-        $this->logIn('ROLE_SUPER_ADMIN');
         $crawler = $this->client->request('GET', '/admin/dashboard');
         $this->assertStatusCode(200, $this->client);
 
@@ -26,7 +26,6 @@ class SuperAdminTest extends WebTestCase
     }
 
     public function testCorpPage(){
-        $this->logIn('ROLE_SUPER_ADMIN');
         $crawler = $this->client->request('GET', '/admin/corporation');
         $this->assertStatusCode(200, $this->client);
 
@@ -34,17 +33,13 @@ class SuperAdminTest extends WebTestCase
     }
 
     public function testUserPage(){
-        $this->logIn('ROLE_SUPER_ADMIN');
         $crawler = $this->client->request('GET', '/admin/user');
         $this->assertStatusCode(200, $this->client);
 
         $this->assertCount(2, $crawler->filter('slide-button'));
-
     }
 
     public function testIndustryPages(){
-        $this->logIn('ROLE_SUPER_ADMIN');
-
         $crawler = $this->client->request('GET', '/admin/industry');
         $this->assertStatusCode(200, $this->client);
 
@@ -55,7 +50,6 @@ class SuperAdminTest extends WebTestCase
     }
 
     public function setCharacters(){
-        $this->logIn('ROLE_SUPER_ADMIN');
         $crawler = $this->client->request('GET', '/admin/character');
         $this->assertStatusCode(200, $this->client);
 
@@ -77,8 +71,6 @@ class SuperAdminTest extends WebTestCase
             '/admin/template/corp_members' => 1,
             '/admin/template/corp_towers' => 1
         ];
-
-        $this->logIn('ROLE_SUPER_ADMIN');
 
         foreach ($routes as $r => $expected){
             $this->client->request('GET', $r);

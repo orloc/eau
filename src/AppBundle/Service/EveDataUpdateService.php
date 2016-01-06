@@ -29,24 +29,6 @@ class EveDataUpdateService {
         $this->log = $log;
     }
 
-    public function checkCorporationDetails(Corporation $c){
-        $em = $this->doctrine->getManager();
-        if ($c->getEveId() === null){
-            $this->log->info("Updating corp details");
-            $result = $this->corp_manager->getCorporationDetails($c);
-
-            $c->setEveId($result['id']);
-        }
-
-        if (!$c->getCorporationDetails() instanceof CorporationDetail) {
-            $result = $this->corp_manager->getCorporationSheet($c);
-
-            $c->setCorporationDetails($result);
-        }
-
-        $em->persist($c);
-    }
-
     public function updateShortTimerCalls(Corporation $c, $force = false){
         $calls = [
             AccountManager::getName() => 'updateAccounts',

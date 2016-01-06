@@ -32,7 +32,6 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
         $updateRegistry = $this->getContainer()->get('app.evedata.registry');
 
-
         $log->info('Preparing Reference Data');
         $corps = $em->getRepository('AppBundle:Corporation')
             ->findAll();
@@ -76,8 +75,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
         $corp_ids = [];
         foreach ($corps as $c){
             $log->info("Starting Update {$c->getCorporationDetails()->getName()}\n\n");
-            $dataUpdateService->checkCorporationDetails($c);
-            $em->flush();
+            $this->getContainer()->get('app.corporation.manager')->checkCorporationDetails($c);
             $dataUpdateService->updateShortTimerCalls($c, $force);
             $em->flush();
             $dataUpdateService->updateLongTimerCalls($c, $force);

@@ -22,8 +22,7 @@ class SecurityControllerTest extends WebTestCase
     }
 
     public function testBadLogin(){
-        $this->logIn('NOT A ROLE');
         $crawler = $this->client->request('GET', '/admin/dashboard');
-        $this->assertStatusCode(403, $this->client);
+        $this->assertStatusCode(302, $this->client);
     }
 }

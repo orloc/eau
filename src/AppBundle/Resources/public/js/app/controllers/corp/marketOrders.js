@@ -5,6 +5,8 @@ angular.module('eveTool')
         var orderCache = [];
         $scope.orders = [];
         $scope.image_width = 32;
+        $scope.placed_by = null;
+        $scope.placed_by_ids =[];
 
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val) {
             if (typeof val === 'undefined' || typeof val.id === 'undefined') {
@@ -24,6 +26,8 @@ angular.module('eveTool')
                 $scope.total_escrow = items.total_escrow;
                 $scope.total_sales = items.total_on_market;
                 $scope.loading = false;
+                $scope.placed_by_ids = _.unique(_.pluck(orderCache, 'placed_by_id'));
+                console.log($scope.placed_by_ids);
             });
 
             corporationDataManager.getLastUpdate(val, 2).then(function(data){
@@ -46,6 +50,17 @@ angular.module('eveTool')
             });
 
             return mapFillRatio(newOrders);
+        };
+
+        var getOrdersByPlacedBy = function(user){
+            var newOrders = [];
+            console.log(user);
+            angular.forEach(orderCache, function (o){
+                console.log(o);
+            });
+
+            return mapFillRatio(newOrders);
+
         };
 
         $scope.filterBuy = function(){

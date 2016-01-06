@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\DataFixtures;
+namespace AppBundle\DataFixtures\Test;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use \Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -24,15 +24,54 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
 
         $users = [
             [
-                'username' => 'orloc',
-                'email' => 'teppga52@gmail.com',
+                'username' => 'super_admin',
+                'email' => 'test@gmail.com',
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
                 'roles' => ['ROLE_SUPER_ADMIN']
-            ]
+            ],
+            [
+                'username' => 'admin',
+                'email' => 'test5@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_ADMIN']
+            ],
+            [
+                'username' => 'alliance_leader',
+                'email' => 'test4@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_ALLIANCE_LEADER']
+            ],
+            [
+                'username' => 'ceo',
+                'email' => 'test1@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_CEO']
+            ],
+            [
+                'username' => 'director',
+                'email' => 'test2@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_DIRECTOR']
+            ],
+            [
+                'username' => 'member',
+                'email' => 'test3@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_CORP_MEMBER']
+            ],
         ];
-
 
         foreach ($users as $u){
             $user = $this->createUser($u, $userManager);
@@ -52,7 +91,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             ->setLocked($data['locked'])
             ->setRoles($data['roles'])
             ->setPlainPassword($data['password']);
-
 
         return $user;
 
