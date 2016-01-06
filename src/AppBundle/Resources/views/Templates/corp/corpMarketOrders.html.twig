@@ -21,12 +21,14 @@
                     <button class="btn btn-sm btn-default" ng-click="filterSell()"><i class="fa fa-dollar" ></i>&nbsp;&nbsp;Sell Orders</button>
                     <button class="btn btn-sm btn-default" ng-click="resetFilters()">All</button>
                 </div>
+                {#
                 <select class="form-control" ng-model="placed_by">
                     <option value="">Filter by Owner</option>
                     <option ng-repeat="owner in placed_by_ids">
                         <eve-image image-type="'Character'" override-width="image_width" object-id="owner" img-width="256"></eve-image>
                     </option>
                 </select>
+                #}
             </div>
         </div>
         <div class="row">

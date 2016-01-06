@@ -30,7 +30,39 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'password' => 'password',
                 'locked' => false,
                 'roles' => ['ROLE_SUPER_ADMIN']
-            ]
+            ],
+            [
+                'username' => 'alliance_leader',
+                'email' => 'test4@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_ALLIANCE_LEADER']
+            ],
+            [
+                'username' => 'ceo',
+                'email' => 'test1@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_CEO']
+            ],
+            [
+                'username' => 'director',
+                'email' => 'test2@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_DIRECTOR']
+            ],
+            [
+                'username' => 'member',
+                'email' => 'test3@gmail.com',
+                'enabled' => true,
+                'password' => 'password',
+                'locked' => false,
+                'roles' => ['ROLE_CORP_MEMBER']
+            ],
         ];
 
         foreach ($users as $u){
