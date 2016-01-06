@@ -13,7 +13,12 @@ angular.module('eveTool')
             var now = moment();
             $scope.getTimeWith = function(char){
                 var time = moment(char.start_time);
-                return  now.format('DDD')- time.format('DDD');
+                var res = now.format('DDD')- time.format('DDD');
+
+                if (res < 0){
+                    res = (res + 365);
+                }
+                return  res;
             };
 
             $scope.getAssocChars = function(m){
