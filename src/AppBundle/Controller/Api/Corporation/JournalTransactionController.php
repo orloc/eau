@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 class JournalTransactionController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/account/{acc_id}/journal_transactions", name="api.corporation.account.journaltransactions", options={"expose"=true})
+     * @Route("/{id}/account/{acc_id}/journal_transactions", name="api.corporation.account.journaltransactions", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @ParamConverter(name="account", class="AppBundle:Account", options={"id" = "acc_id"})
      * @Secure(roles="ROLE_DIRECTOR")
@@ -45,7 +45,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
     }
 
     /**
-     * @Route("/corporation/{id}/journal_type_aggregate", name="api.corporation.journal.aggregate", options={"expose"=true})
+     * @Route("/{id}/journal_type_aggregate", name="api.corporation.journal.aggregate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
@@ -73,7 +73,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
     }
 
     /**
-     * @Route("/corporation/{id}/journal_user_aggregate", name="api.corporation.journal.user_aggregate", options={"expose"=true})
+     * @Route("/{id}/journal_user_aggregate", name="api.corporation.journal.user_aggregate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")

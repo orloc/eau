@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -10,12 +10,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * Region controller.
+ * Corporation controller.
  */
 class TitleController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{$id}/titles", name="api.titles", options={"expose"=true})
+     * @Route("/{$id}/titles", name="api.titles", options={"expose"=true})
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */

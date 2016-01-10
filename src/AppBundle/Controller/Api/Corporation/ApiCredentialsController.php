@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class ApiCredentialsController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials", options={"expose"=true})
+     * @Route("/{id}/api_credentials", name="api.corporation.apicredentials", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
      * @Secure(roles="ROLE_CEO")
@@ -40,7 +40,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     }
 
     /**
-     * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.post", options={"expose"=true})
+     * @Route("/{id}/api_credentials", name="api.corporation.apicredentials.post", options={"expose"=true})
      * @ParamConverter(name="corporation", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_CEO")
      * @Method("POST")
@@ -89,7 +89,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
     }
 
     /**
-     * @Route("/corporation/{id}/api_credentials", name="api.corporation.apicredentials.update", options={"expose"=true})
+     * @Route("/{id}/api_credentials", name="api.corporation.apicredentials.update", options={"expose"=true})
      * @ParamConverter(name="credentials", class="AppBundle:ApiCredentials")
      * @Secure(roles="ROLE_CEO")
      * @Method("PATCH")

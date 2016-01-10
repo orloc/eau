@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -20,7 +20,7 @@ class MarketOrderController extends AbstractController implements ApiControllerI
 {
 
     /**
-     * @Route("/corporation/{id}/marketorders", name="api.corporation.marketorders", options={"expose"=true})
+     * @Route("/{id}/marketorders", name="api.corporation.marketorders", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
      * @Secure(roles="ROLE_DIRECTOR")

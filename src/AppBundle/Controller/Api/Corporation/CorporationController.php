@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -12,14 +12,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * User controller.
- *
- * @Route("/corporation", options={"expose"=true})
+ * Corporation controller.
  */
 class CorporationController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/", name="api.corps")
+     * @Route("/", name="api.corps", options={"expose"=true})
      * @Method("GET")
      * @Secure(roles="ROLE_DIRECTOR")
      */
@@ -67,7 +65,7 @@ class CorporationController extends AbstractController implements ApiControllerI
     }
 
     /**
-     * @Route("/needsUpdate", name="api.corp.needs_update")
+     * @Route("/needsUpdate", name="api.corp.needs_update", options={"expose"=true})
      * @Method("GET")
      * @Secure(roles="ROLE_DIRECTOR")
      * @TODO RETHINK THIS
@@ -86,7 +84,7 @@ class CorporationController extends AbstractController implements ApiControllerI
     /**
      * Creates a new Corporation entity.
      *
-     * @Route("/", name="api.corp_create")
+     * @Route("/", name="api.corp_create", options={"expose"=true})
      * @Secure(roles="ROLE_SUPER_ADMIN")
      * @Method("POST")
      */

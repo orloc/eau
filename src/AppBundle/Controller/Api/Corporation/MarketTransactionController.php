@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 class MarketTransactionController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/account/{acc_id}/markettransaction", name="api.corporation.account.markettransactions", options={"expose"=true})
+     * @Route("/{id}/account/{acc_id}/markettransaction", name="api.corporation.account.markettransactions", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @ParamConverter(name="account", class="AppBundle:Account", options={"id" = "acc_id"})
      * @Secure(roles="ROLE_DIRECTOR")

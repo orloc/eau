@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 class StarbaseController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/starbases", name="api.corporation.starbases", options={"expose"=true})
+     * @Route("/{id}/starbases", name="api.corporation.starbases", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")

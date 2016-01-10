@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -20,7 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class CorporationMemberController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/members", name="api.corporation.members", options={"expose"=true})
+     * @Route("/{id}/members", name="api.corporation.members", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Method("GET")
      * @Secure(roles="ROLE_DIRECTOR")

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -14,12 +14,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 /**
- * ApiCredentials Controller controller.
+ * ApiUpdate Controller controller.
  */
 class ApiUpdateController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/api_update", name="api.corporation.apiupdate", options={"expose"=true})
+     * @Route("/{id}/api_update", name="api.corporation.apiupdate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
