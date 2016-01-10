@@ -560,7 +560,10 @@ class Corporation
      */
     public function addTitle(\AppBundle\Entity\CorporationTitle $titles)
     {
-        $this->titles[] = $titles;
+        if (!$this->titles->contains($titles)){
+            $this->titles[] = $titles;
+            $titles->setCorporation($this);
+        }
 
         return $this;
     }

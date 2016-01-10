@@ -31,10 +31,11 @@ class ApiUpdate
           CORP_WALLET_TRANSACTION = 8,
           CORP_STARBASE_LIST = 9,
           CORP_DETAILS = 10,
-          CORP_MEMBERS = 11;
+          CORP_MEMBERS = 11,
+          CORP_TITLES = 12;
 
-    const REF_TYPES = 12,
-          CONQUERABLE_STATIONS = 13;
+    const REF_TYPES = 99,
+          CONQUERABLE_STATIONS = 99;
 
     /**
      * @ORM\Id

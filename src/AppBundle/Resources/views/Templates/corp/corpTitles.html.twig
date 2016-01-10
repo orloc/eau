@@ -1,0 +1,25 @@
+<div ng-controller="corpTitleController" class="row">
+    <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+        <div class="table-responsive">
+            <table class="table data-table table-striped table-condensed">
+                <thead>
+                <th>
+                    Name
+                </th>
+                <th>Is Registered</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="t in titles">
+                    <td >
+                        <div class="row">
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-xs-12 well" ng-show="!selected_corp" ng-cloak><h5 class="text-center">Select a Corporation</h5></div>
+</div>

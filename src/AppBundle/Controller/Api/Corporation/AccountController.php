@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Corporation;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 class AccountController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/corporation/{id}/account", name="api.corporation.account", options={"expose"=true})
+     * @Route("/{id}/account", name="api.corporation.account", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
@@ -45,7 +45,7 @@ class AccountController extends AbstractController implements ApiControllerInter
     }
 
     /**
-     * @Route("/corporation/{id}/account/data", name="api.corporation.account_data", options={"expose"=true})
+     * @Route("/{id}/account/data", name="api.corporation.account_data", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")

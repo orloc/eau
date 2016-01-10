@@ -16,6 +16,21 @@ api:
     prefix: /api
     type: annotation
 
+api.character:
+    resource: "@AppBundle/Controller/Api/Character"
+    prefix: /api/character
+    type: annotation
+
+api.corporation:
+    resource: "@AppBundle/Controller/Api/Corporation"
+    prefix: /api/corporation
+    type: annotation
+
+api.eve:
+    resource: "@AppBundle/Controller/Api/Eve"
+    prefix: /api/eve
+    type: annotation
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 

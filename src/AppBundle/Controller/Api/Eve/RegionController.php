@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Eve;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;

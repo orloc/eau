@@ -17,13 +17,6 @@ class DashboardController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $manager = $this->get('app.corp_title.manager');
-
-        $corp = $this->getDoctrine()->getManager()->getRepository('AppBundle:Corporation')->findAll();
-
-        echo "<pre>";
-        var_dump($manager->updateTitles($corp[0]));die;
-        echo "</pre>";
         return $this->render('@App/Admin/dashboard.html.twig');
     }
 }

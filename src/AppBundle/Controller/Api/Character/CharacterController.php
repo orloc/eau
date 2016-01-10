@@ -1,10 +1,9 @@
 <?php
 
-namespace AppBundle\Controller\Api;
+namespace AppBundle\Controller\Api\Character;
 
 use AppBundle\Controller\AbstractController;
 use AppBundle\Controller\ApiControllerInterface;
-use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use JMS\SecurityExtraBundle\Annotation\Secure;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class CharacterController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/characters", name="api.characters", options={"expose"=true})
+     * @Route("/", name="api.characters", options={"expose"=true})
      * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("GET")
      */
@@ -38,7 +37,7 @@ class CharacterController extends AbstractController implements ApiControllerInt
     /**
      * Creates a new character entity.
      *
-     * @Route("/characters", name="api.character_create.validate", options={"expose"=true})
+     * @Route("/", name="api.character_create.validate", options={"expose"=true})
      * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("POST")
      */
@@ -88,7 +87,7 @@ class CharacterController extends AbstractController implements ApiControllerInt
     /**
      * Creates a new character entity step 2.
      *
-     * @Route("/characters/final", name="api.character_create.finalize", options={"expose"=true})
+     * @Route("/final", name="api.character_create.finalize", options={"expose"=true})
      * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("POST")
      */

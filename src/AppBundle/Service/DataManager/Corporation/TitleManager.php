@@ -2,8 +2,8 @@
 
 namespace AppBundle\Service\DataManager\Corporation;
 
-use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\Corporation;
+use AppBundle\Entity\CorporationTitle;
 use AppBundle\Service\DataManager\AbstractManager;
 use AppBundle\Service\DataManager\DataManagerInterface;
 use AppBundle\Service\DataManager\MappableDataManagerInterface;
@@ -25,17 +25,27 @@ class TitleManager extends AbstractManager implements DataManagerInterface, Mapp
     }
 
     public function mapList($items, array $options){
+        $corp = $options['corp'];
+
         foreach ($items as $i){
-            var_dump($i);die;
+            $item = $this->mapItem($i->toArray());
+            $corp->addTitle($item);
         }
     }
 
     public function mapItem($item){
-        $balance = new AccountBalance();
-        $balance->setBalance($item->balance);
+        $title = new CorporationTitle();
 
-        return $balance;
+        $title->setEveTitleId($item['titleID'])
+            ->setTitleName($item['titleName'])
+            ->setRoles($item['roles'])
+            ->setGrantableRoles($item['grantableRoles'])
+            ->setRolesAtHq($item['rolesAtHQ'])
+            ->setGrantableRolesAtHq($item['grantableRolesAtHQ'])
+            ->setRolesAtOther($item['rolesAtOther'])
+            ->setGrantableRolesAtOther($item['grantableRolesAtOther']);
 
+        return $title;
     }
 
     public static function getName(){

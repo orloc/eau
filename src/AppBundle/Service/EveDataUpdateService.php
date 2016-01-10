@@ -11,6 +11,7 @@ use AppBundle\Service\DataManager\Corporation\JournalTransactionManager;
 use AppBundle\Service\DataManager\Corporation\MarketOrderManager;
 use AppBundle\Service\DataManager\Corporation\MarketTransactionManager;
 use AppBundle\Service\DataManager\Corporation\StarbaseManager;
+use AppBundle\Service\DataManager\Corporation\TitleManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 
@@ -55,7 +56,8 @@ class EveDataUpdateService {
     public function updateLongTimerCalls(Corporation $c, $force = false){
         $calls = [
             AssetManager::getName() => 'generateAssetList',
-            MarketOrderManager::getName() => 'getMarketOrders'
+            MarketOrderManager::getName() => 'getMarketOrders',
+            TitleManager::getName() => 'updateTitles'
         ];
 
         foreach ($calls as $manager => $call){
@@ -156,6 +158,8 @@ class EveDataUpdateService {
                 return ApiUpdate::CORP_DETAILS;
             case 'updateRefTypes':
                 return ApiUpdate::REF_TYPES;
+            case 'updateTitles':
+                return ApiUpdate::CORP_TITLES;
             case 'updateConquerableStations':
                 return ApiUpdate::CONQUERABLE_STATIONS;
         }
