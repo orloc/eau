@@ -92,6 +92,12 @@ services:
       tags:
         - { name: eve.manager }
 
+  app.corp_title.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
+      class: AppBundle\Service\DataManager\Corporation\TitleManager
+      tags:
+        - { name: eve.manager }
+
   app.marketorder.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\Corporation\MarketOrderManager
@@ -132,7 +138,7 @@ services:
 
   app.asset.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@logger","@app.itemdetail.manager", "@app.price.manager" ]
-      class: AppBundle\Service\DataManager\AssetManager
+      class: AppBundle\Service\DataManager\Corporation\AssetManager
       tags:
         - { name: eve.manager }
 

@@ -17,17 +17,13 @@ class DashboardController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $manager = $this->get('app.corp_title.manager');
 
-        /*
-        $registry = $this->get('evedata.registry');
-        $groups = $registry->get('EveBundle:MarketGroup')
-            ->getAllGroups();
+        $corp = $this->getDoctrine()->getManager()->getRepository('AppBundle:Corporation')->findAll();
 
-        $groupIds = array_map(function($d){ return $d['marketGroupID']; }, $groups);
-        $marketItems = $registry->get('EveBundle:ItemType')->findAllInGroups($groupIds);
-
-        var_dump($marketItems);die;
-        */
+        echo "<pre>";
+        var_dump($manager->updateTitles($corp[0]));die;
+        echo "</pre>";
         return $this->render('@App/Admin/dashboard.html.twig');
     }
 }

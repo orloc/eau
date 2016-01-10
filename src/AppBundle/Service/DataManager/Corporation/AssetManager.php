@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Service\DataManager;
+namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
@@ -12,6 +12,9 @@ use \EveBundle\Repository\Registry as EveRegistry;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
+use AppBundle\Service\DataManager\AbstractManager;
+use AppBundle\Service\DataManager\DataManagerInterface;
+use AppBundle\Service\DataManager\MappableDataManagerInterface;
 
 class AssetManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 

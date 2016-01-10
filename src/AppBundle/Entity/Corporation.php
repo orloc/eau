@@ -68,6 +68,11 @@ class Corporation
     protected $api_updates;
 
     /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CorporationTitle", mappedBy="corporation", cascade={"persist"})
+     */
+    protected $titles;
+
+    /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AssetGroup", mappedBy="corporation", cascade={"persist"})
      */
     protected $asset_groups;
@@ -115,6 +120,7 @@ class Corporation
         $this->buyback_configurations = new ArrayCollection();
         $this->market_order_groups = new ArrayCollection();
         $this->corporation_members = new ArrayCollection();
+        $this->titles = new ArrayCollection();
     }
 
     /**
@@ -544,5 +550,38 @@ class Corporation
     public function getBuybackConfigurations()
     {
         return $this->buyback_configurations;
+    }
+
+    /**
+     * Add titles
+     *
+     * @param \AppBundle\Entity\CorporationTitle $titles
+     * @return Corporation
+     */
+    public function addTitle(\AppBundle\Entity\CorporationTitle $titles)
+    {
+        $this->titles[] = $titles;
+
+        return $this;
+    }
+
+    /**
+     * Remove titles
+     *
+     * @param \AppBundle\Entity\CorporationTitle $titles
+     */
+    public function removeTitle(\AppBundle\Entity\CorporationTitle $titles)
+    {
+        $this->titles->removeElement($titles);
+    }
+
+    /**
+     * Get titles
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTitles()
+    {
+        return $this->titles;
     }
 }

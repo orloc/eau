@@ -3,8 +3,8 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\ApiUpdate;
-use AppBundle\Service\DataManager\ConquerableStationManager;
-use AppBundle\Service\DataManager\RefTypeManager;
+use AppBundle\Service\DataManager\Eve\ConquerableStationManager;
+use AppBundle\Service\DataManager\Eve\RefTypeManager;
 use Carbon\Carbon;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Entity\Corporation;
-use AppBundle\Service\DataManager\AssetManager;
+use AppBundle\Service\DataManager\Corporation\AssetManager;
 use AppBundle\Service\DataManager\Corporation\AccountManager;
 use AppBundle\Service\DataManager\Corporation\CorporationManager;
 use AppBundle\Service\DataManager\Corporation\JournalTransactionManager;
