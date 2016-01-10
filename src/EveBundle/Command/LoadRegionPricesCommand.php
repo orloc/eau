@@ -60,28 +60,25 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $em->flush();
         $log->addDebug("Beginning Import");
 
-        $succeded = 0;
-        $failed = 0;
         foreach ($neededRegions as $r){
             $r = $eveRegistry->get('EveBundle:Region')->getRegionById($r);
             $progress->setMessage("Processing Region {$r['regionName']}");
             foreach ($items as $k => $i){
                 $url = $this->getCrestUrl($r['regionID'], $i['typeID']);
+
                 try {
                     $response = $client->get($url);
                     $obj = json_decode($response->getBody()->getContents(), true);
+
                     $processableItem = array_pop($obj['items']);
+                    if (is_array($processableItem)) {
+                        $p = $this->makePriceData($processableItem, $r, $i);
+                        $em->persist($p);
+                        $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
+                    }
 
-                    $p = $this->makePriceData($processableItem, $r, $i);
-                    $em->persist($p);
-                    $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
-
-                    $succeded++;
                 }  catch (\Exception $e){
-
                     $log->addError(sprintf("Failed request for : %s with %s", $url, $e->getMessage()));
-
-                    $failed++;
                 }
 
                 $progress->advance();
@@ -96,9 +93,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $em->clear();
 
         $progress->finish();
-
-        $output->writeln(sprintf("%s Succeded, %s failed - check logs for more information.", $succeded, $failed));
-
     }
 
     protected function makePriceData(array $data, array $region, array $item){

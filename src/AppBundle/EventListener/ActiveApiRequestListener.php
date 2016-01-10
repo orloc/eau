@@ -72,12 +72,15 @@ class ActiveApiRequestListener {
         if ($token->isAuthenticated()
             && ($user = $this->storage->getToken()->getUser()) instanceof User
         ){
-            $characters =  $user->getCharacters();
+
+            $characters = $this->doctrine->getRepository('AppBundle:Character')
+                ->findBy(['user' => $user]);
 
             $activeKeys = $this->doctrine->getRepository('AppBundle:ApiCredentials')
                 ->getActiveKeyForUser($user);
 
-            if ($characters->count() == 0 || count($activeKeys) <= 0){
+
+            if (count($characters) == 0 || count($activeKeys) <= 0){
                 $this->log->debug(sprintf("LISTENER REDIRECT for %s", $request->attributes->get('_route')));
                 $response = new RedirectResponse($this->router->generate('characters'));
                 $this->session->set(self::ACTIVE_API_CHECK, time());

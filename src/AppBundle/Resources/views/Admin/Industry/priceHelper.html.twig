@@ -4,15 +4,12 @@
     <div ng-controller="priceHelperController" class="row" ng-cloak>
         <div class="cloak">
             <h3>Price Helper</h3>
-            <p>This tool is to help a user determine what the best price is to sell a given set of items.</p>
-            <p class="small text-info">Please select a corporation FIRST<br>
-                Then Enter the regions and Items you would like to show.
             </p>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="row">
                         <form class="form-horizontal">
-                            <div class="col-xs-2">
+                            <div class="col-xs-2" ng-if="is_granted('ROLE_DIRECTOR')">
                                 <select class="form-control" chosen
                                         data-placeholder="Corporation"
                                         ng-model="selected_corporation"

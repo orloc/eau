@@ -26,7 +26,8 @@ class ApiCredentialsSubscriber implements EventSubscriber {
 
         if ($entity instanceof ApiCredentials && php_sapi_name() !== 'cli'){
             $user = $this->tokenManager->getToken()->getUser();
-            $entity->setCreatedBy($user);
+            $entity->setCreatedBy($user)
+                ->setIsActive(true);
         }
     }
 

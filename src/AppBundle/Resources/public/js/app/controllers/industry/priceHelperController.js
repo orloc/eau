@@ -1,18 +1,27 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('priceHelperController', ['$scope', '$http','corporationDataManager', '$filter', function($scope, $http, corporationDataManager, $filter){
+    .controller('priceHelperController', ['$scope', '$http','corporationDataManager', '$filter', 'userRoleManager', function($scope, $http, corporationDataManager, $filter, userRoleManager){
         $scope.selected_items = [];
         $scope.selected_price_profiles = [];
         $scope.selected_corporation = null;
 
-        corporationDataManager.getAll().then(function(d){
-            $scope.corporations = d;
-        });
+        var roles = userRoleManager.getCurrentRoles();
+
+        if (userRoleManager.isGranted('ROLE_DIRECTOR', roles)){
+            corporationDataManager.getAll().then(function(d){
+                $scope.corporations = d;
+            });
+        }
+
         $http.get(Routing.generate('api.item_list')).then(function(d){
             $scope.items = d.data;
             $scope.show_items = false;
         });
+
+        $scope.is_granted = function(role){
+            return userRoleManager.isGranted(role, roles);
+        };
 
         $http.get(Routing.generate('api.price_regions')).then(function(d){
             $scope.regions = d.data;
@@ -64,7 +73,7 @@ angular.module('eveTool')
 
         function updateView (){
             if ($scope.selected_items.length > 0 && $scope.selected_price_profiles.length >0){
-                $http.post(Routing.generate('api.price_lookup', {id:$scope.selected_corporation }), { regions: $scope.selected_price_profiles, items: $scope.selected_items }).then(function(data){
+                $http.post(Routing.generate('api.price_lookup'), { regions: $scope.selected_price_profiles, items: $scope.selected_items, corp :$scope.selected_corporation  }).then(function(data){
                     $scope.item_result = data.data;
                 });
             }

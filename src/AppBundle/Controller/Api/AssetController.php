@@ -323,17 +323,22 @@ class AssetController extends AbstractController implements ApiControllerInterfa
     }
 
     /**
-     * @Route("/industry/{id}/price_lookup", name="api.price_lookup", options={"expose"=true})
-     * @ParamConverter(name="corp", class="AppBundle:Corporation")
+     * @Route("/industry/price_lookup", name="api.price_lookup", options={"expose"=true})
      * @Method("POST")
      * @Secure(roles="ROLE_USER")
      */
-    public function getPriceDistributionAction(Request $request, Corporation $corp){
-
-        $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
+    public function getPriceDistributionAction(Request $request){
 
         $regions = $request->request->get('regions', false);
+        $corp = $request->request->get('corp', false);
         $items = $request->request->get('items', false);
+
+        if ($corp){
+            $corporation = $this->getDoctrine()->getRepository('AppBundle:Corporation')
+                ->find($corp);
+            $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corporation, 'Unauthorized access!');
+        }
+
 
         if (!(bool)$items || !(bool)$regions ){
             return $this->jsonResponse(json_encode(['error' => 'invalid']), 400);
@@ -384,8 +389,10 @@ class AssetController extends AbstractController implements ApiControllerInterfa
                 $data[$k] = $r;
             }
 
-            $data['last_buy'] = $marketingRepo->findLatestTransactionByItemType($corp, 'buy',$i['typeID']);
-            $data['last_sell'] = $marketingRepo->findLatestTransactionByItemType($corp, 'sell',$i['typeID']);
+            if ($corp && isset($corporation) && $corporation instanceof Corporation){
+                $data['last_buy'] = $marketingRepo->findLatestTransactionByItemType($corp, 'buy',$i['typeID']);
+                $data['last_sell'] = $marketingRepo->findLatestTransactionByItemType($corp, 'sell',$i['typeID']);
+            }
 
             $retItems[] = $data;
         }
