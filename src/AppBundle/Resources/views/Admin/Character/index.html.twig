@@ -6,7 +6,7 @@
             <div class="cloak" ng-controller="characterListController">
                 <h3>Character <span class="muted small">LIST</span>
                     <div class="pull-right small">
-                        {% if app.getUser().getCharacters().count() == 0 %}
+                        {% if app.getUser() and app.getUser().getCharacters().count() == 0 %}
                             <span class="eve add-link">Add a character <i class="fa fa-arrow-right"></i></span>
                         {% endif %}
                         <slide-button open-type="new"></slide-button>
