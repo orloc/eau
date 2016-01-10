@@ -1,16 +1,20 @@
 <?php
 
-namespace AppBundle\Service\DataManager;
+namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Account;
+
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationDetail;
 use AppBundle\Entity\CorporationMember;
+use AppBundle\Service\DataManager\ApiKeyManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use EveBundle\Repository\Registry as EveRegistry;
 use Monolog\Logger;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
+use AppBundle\Service\DataManager\AbstractManager;
+use AppBundle\Service\DataManager\DataManagerInterface;
 
 class CorporationManager extends AbstractManager implements DataManagerInterface {
 

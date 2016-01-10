@@ -1,11 +1,14 @@
 <?php
 
-namespace AppBundle\Service\DataManager;
+namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrder;
 use AppBundle\Entity\MarketOrderGroup;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use AppBundle\Service\DataManager\AbstractManager;
+use AppBundle\Service\DataManager\DataManagerInterface;
+use AppBundle\Service\DataManager\MappableDataManagerInterface;
+
 
 class MarketOrderManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 

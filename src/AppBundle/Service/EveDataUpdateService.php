@@ -4,14 +4,13 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Entity\Corporation;
-use AppBundle\Entity\CorporationDetail;
-use AppBundle\Service\DataManager\AccountManager;
 use AppBundle\Service\DataManager\AssetManager;
-use AppBundle\Service\DataManager\CorporationManager;
-use AppBundle\Service\DataManager\JournalTransactionManager;
-use AppBundle\Service\DataManager\MarketOrderManager;
-use AppBundle\Service\DataManager\MarketTransactionManager;
-use AppBundle\Service\DataManager\StarbaseManager;
+use AppBundle\Service\DataManager\Corporation\AccountManager;
+use AppBundle\Service\DataManager\Corporation\CorporationManager;
+use AppBundle\Service\DataManager\Corporation\JournalTransactionManager;
+use AppBundle\Service\DataManager\Corporation\MarketOrderManager;
+use AppBundle\Service\DataManager\Corporation\MarketTransactionManager;
+use AppBundle\Service\DataManager\Corporation\StarbaseManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 

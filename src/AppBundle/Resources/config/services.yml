@@ -68,22 +68,33 @@ services:
     class: AppBundle\Service\DataManagerRegistry
 
   # Manager
-
   app.corporation.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger", "@app.apikey.manager" ]
-      class: AppBundle\Service\DataManager\CorporationManager
+      class: AppBundle\Service\DataManager\Corporation\CorporationManager
       tags:
         - { name: eve.manager }
 
   app.markettransaction.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine","@evedata.registry",  "@logger" ]
-      class: AppBundle\Service\DataManager\MarketTransactionManager
+      class: AppBundle\Service\DataManager\Corporation\MarketTransactionManager
       tags:
         - { name: eve.manager }
 
   app.journaltransaction.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@logger" ]
-      class: AppBundle\Service\DataManager\JournalTransactionManager
+      class: AppBundle\Service\DataManager\Corporation\JournalTransactionManager
+      tags:
+        - { name: eve.manager }
+
+  app.starbase.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
+      class: AppBundle\Service\DataManager\Corporation\StarbaseManager
+      tags:
+        - { name: eve.manager }
+
+  app.marketorder.manager:
+      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
+      class: AppBundle\Service\DataManager\Corporation\MarketOrderManager
       tags:
         - { name: eve.manager }
 
@@ -95,7 +106,7 @@ services:
 
   app.account.manager:
       arguments: [ "@tarioch.pheal.factory", "@doctrine", "@evedata.registry", "@logger" ]
-      class: AppBundle\Service\DataManager\AccountManager
+      class: AppBundle\Service\DataManager\Corporation\AccountManager
       tags:
         - { name: eve.manager }
 
@@ -106,27 +117,16 @@ services:
       #tags:
       #  - { name: eve.manager }
 
-  app.starbase.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
-      class: AppBundle\Service\DataManager\StarbaseManager
-      tags:
-        - { name: eve.manager }
-
-  app.marketorder.manager:
-      arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
-      class: AppBundle\Service\DataManager\MarketOrderManager
-      tags:
-        - { name: eve.manager }
 
   app.reftype.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
-      class: AppBundle\Service\DataManager\RefTypeManager
+      class: AppBundle\Service\DataManager\Eve\RefTypeManager
       tags:
         - { name: eve.manager }
 
   app.conquerable_station.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
-      class: AppBundle\Service\DataManager\ConquerableStationManager
+      class: AppBundle\Service\DataManager\Eve\ConquerableStationManager
       tags:
         - { name: eve.manager }
 

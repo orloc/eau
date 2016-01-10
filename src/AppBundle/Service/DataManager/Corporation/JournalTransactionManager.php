@@ -1,14 +1,18 @@
 <?php
 
-namespace AppBundle\Service\DataManager;
+namespace AppBundle\Service\DataManager\Corporation;
+
+use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+use Symfony\Bridge\Monolog\Logger;
 
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\JournalTransaction;
 use AppBundle\Entity\RefType;
-use Doctrine\Bundle\DoctrineBundle\Registry;
-use Symfony\Bridge\Monolog\Logger;
-use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
+
+use AppBundle\Service\DataManager\MappableDataManagerInterface;
+use AppBundle\Service\DataManager\DataManagerInterface;
+use AppBundle\Service\DataManager\AbstractManager;
 
 class JournalTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 

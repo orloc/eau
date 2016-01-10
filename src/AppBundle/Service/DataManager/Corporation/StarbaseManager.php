@@ -1,11 +1,13 @@
 <?php
 
-namespace AppBundle\Service\DataManager;
+namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\Starbase;
 use Carbon\Carbon;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use AppBundle\Service\DataManager\MappableDataManagerInterface;
+use AppBundle\Service\DataManager\DataManagerInterface;
+use AppBundle\Service\DataManager\AbstractManager;
 
 class StarbaseManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface
 {

@@ -1,11 +1,13 @@
 <?php
 
-namespace AppBundle\Service\DataManager;
+namespace AppBundle\Service\DataManager\Eve;
 
 
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\RefType;
-use Doctrine\Bundle\DoctrineBundle\Registry;
+use AppBundle\Service\DataManager\AbstractManager;
+use AppBundle\Service\DataManager\DataManagerInterface;
+use AppBundle\Service\DataManager\MappableDataManagerInterface;
 
 class RefTypeManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
