@@ -3,7 +3,7 @@
 {% block content -%}
     <div ng-controller="priceHelperController" class="row" ng-cloak>
         <div class="cloak">
-            <h3>Price Helper</h3>
+            <h3>Price Helper <button ng-show="selected_items.length > 0" ng-click="clearItems()" class="pull-right btn btn-warning">Clear</button></h3>
             </p>
             <div class="row">
                 <div class="col-xs-12">

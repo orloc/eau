@@ -14,6 +14,10 @@ angular.module('eveTool')
             });
         }
 
+        $scope.clearItems = function(){
+            $scope.selected_items = [];
+        };
+
         $http.get(Routing.generate('api.item_list')).then(function(d){
             $scope.items = d.data;
             $scope.show_items = false;

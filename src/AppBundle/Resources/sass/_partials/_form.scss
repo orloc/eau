@@ -30,4 +30,24 @@ form {
     }
   }
 }
+.chosen-container-multi .chosen-choices li.search-choice .search-choice-close {
+  background: url('/bower_components/chosen/chosen-sprite.png');
+}
 
+.chosen-container-multi {
+  span,p, ul li, input, a.search-choice-close {
+     color : $offGrey;
+  }
+}
+
+.chosen-container {
+  a.chosen-single span {
+    color: $offGrey;
+  }
+
+  ul.chosen-result {
+    li {
+      color: $offGrey!important;
+    }
+  }
+}

@@ -17,7 +17,7 @@ class CharacterControllerTest extends WebTestCase
 
         $goodKey = $this->getContainer()->getParameter('test_config')['api_keys']['good_user_key'];
 
-        $crawler = $this->client->request('POST', '/api/characters', [],[],[
+        $crawler = $this->client->request('POST', '/api/character/', [],[],[
             'CONTENT_TYPE' => 'application/json'
         ],sprintf('{ "api_key":"%sjskldfjs", "verification_code": "%skajsdfka" }', $goodKey['key'], $goodKey['code']));
 
@@ -34,7 +34,7 @@ class CharacterControllerTest extends WebTestCase
 
         $goodKey = $this->getContainer()->getParameter('test_config')['api_keys']['good_user_key'];
 
-        $crawler = $this->client->request('POST', '/api/characters', [],[],[
+        $crawler = $this->client->request('POST', '/api/character/', [],[],[
             'CONTENT_TYPE' => 'application/json'
         ],sprintf('{ "api_key":"%s", "verification_code": "%s" }', $goodKey['key'], $goodKey['code']));
 
@@ -59,7 +59,7 @@ class CharacterControllerTest extends WebTestCase
             }
         }
 
-        $crawler = $this->client->request('POST', '/api/characters/final', [],[],[
+        $crawler = $this->client->request('POST', '/api/character/final', [],[],[
             'CONTENT_TYPE' => 'application/json'
         ],json_encode([
             'char' => $main === null ? $content['characters'][0] : $main,

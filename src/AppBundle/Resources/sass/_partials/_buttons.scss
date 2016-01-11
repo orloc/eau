@@ -1,3 +1,19 @@
+h1, h2, h3, h4, h5 {
+  button, a {
+    font-family: $roboto;
+  }
+}
+
+.push-menu {
+  .btn {
+    color: $offWhite;
+    background-color: $darkBlue;
+    &.active {
+      background-color: lighten($darkBlue, 20);
+    }
+  }
+}
+
 .btn-custom {
   background-color: $darkBlue;
   color: $offWhite;
