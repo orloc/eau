@@ -71,7 +71,7 @@
                             <td ng-init="lastSell=getLastTrans(i,'sell')"><span ng-show="lastSell === false">N/A</span>
                             <span ng-show="lastSell !== false">
                                 {{ '{{ lastSell.price | currency:"ISK" }}' }}<br>
-                                <span class="small muted">@ {{ '{{ lastBuy.date | date:"shortDate" }}' }}</span>
+                                <span class="small muted">@ {{ '{{ lastSell.date | date:"shortDate" }}' }}</span>
                             </span>
                             </td>
                             <td ng-repeat="n in selected_price_profiles">
