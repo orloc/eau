@@ -9,4 +9,5 @@
     {% if is_granted('ROLE_CEO') %}
         <eve-pane title="Api Keys" template-url="{{ path('template.apikeys') }}"></eve-pane>
     {% endif %}
+    <eve-pane title="Titles" template-url="{{ path('template.titles') }}"></eve-pane>
 </eve-tabs>

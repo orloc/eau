@@ -9,5 +9,9 @@ angular.module('eveTool')
                 return;
             }
             $scope.selected_corp = val;
+
+            $http.get(Routing.generate('app.titles', { id: val})).then(function(data){
+                console.log(data);
+            });
         });
     }]);

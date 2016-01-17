@@ -123,7 +123,6 @@ services:
       #tags:
       #  - { name: eve.manager }
 
-
   app.reftype.manager:
       arguments: [ "@tarioch.pheal.factory" , "@doctrine", "@evedata.registry", "@logger" ]
       class: AppBundle\Service\DataManager\Eve\RefTypeManager

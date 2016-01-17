@@ -102,6 +102,15 @@ class TemplateController extends Controller
     }
 
     /**
+     * @Route("/corp_titles", name="template.titles")
+     * @Secure(roles="ROLE_DIRECTOR")
+     */
+    public function corpTitleAction()
+    {
+        return $this->render('AppBundle:Templates:corp/corpTitles.html.twig');
+    }
+
+    /**
      * @Route("/api_keys", name="template.apikeys")
      * @Secure(roles="ROLE_CEO")
      */
