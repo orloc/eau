@@ -6,15 +6,59 @@
                 <th>
                     Name
                 </th>
-                <th>Is Registered</th>
+                <th>Roles</th>
+                <th>Grantable Roles</th>
+                <th>HQ Roles</th>
+                <th>HQ Grantable Roles</th>
+                <th>Other Roles</th>
+                <th>Other Grantable Roles</th>
                 </thead>
                 <tbody>
                 <tr ng-repeat="t in titles">
                     <td >
-                        <div class="row">
-                        </div>
+                        {{ '{{ t.title_name }}' }}
                     </td>
                     <td>
+                        <ul>
+                            <li ng-repeat="r in t.roles">
+                                {{ '{{ r.roleName }}'}}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="r in t.grantable_roles">
+                                {{ '{{ r.roleName }}'}}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="r in t.roles_at_hq">
+                                {{ '{{ r.roleName }}'}}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="r in t.grantable_roles_at_hq">
+                                {{ '{{ r.roleName }}'}}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="r in t.roles_at_other">
+                                {{ '{{ r.roleName }}'}}
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li ng-repeat="r in t.grantable_roles_at_other">
+                                {{ '{{ r.roleName }}'}}
+                            </li>
+                        </ul>
                     </td>
                 </tr>
                 </tbody>

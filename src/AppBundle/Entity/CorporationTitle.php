@@ -38,36 +38,43 @@ class CorporationTitle
 
     /**
      * @ORM\Column(type="string")
+     * @JMS\Expose()
      */
     protected $title_name;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $roles;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $grantable_roles;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $roles_at_hq;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $grantable_roles_at_hq;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $roles_at_other;
 
     /**
      * @ORM\Column(type="array")
+     * @JMS\Expose()
      */
     protected $grantable_roles_at_other;
 

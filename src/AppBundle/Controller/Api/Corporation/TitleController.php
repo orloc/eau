@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class TitleController extends AbstractController implements ApiControllerInterface {
 
     /**
-     * @Route("/{$id}/titles", name="api.titles", options={"expose"=true})
+     * @Route("/{id}/titles", name="api.titles", options={"expose"=true})
      * @ParamConverter(class="AppBundle\Entity\Corporation", name="corp")
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")

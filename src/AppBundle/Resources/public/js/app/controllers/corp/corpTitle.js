@@ -10,8 +10,11 @@ angular.module('eveTool')
             }
             $scope.selected_corp = val;
 
-            $http.get(Routing.generate('app.titles', { id: val})).then(function(data){
-                console.log(data);
+            $http.get(Routing.generate('api.titles', { id: val.id })).then(function(data){
+                var filteredRoles = _.filter(data.data, function(d){
+                    return d.title_name.length > 0;
+                });
+                $scope.titles = filteredRoles;
             });
         });
     }]);
