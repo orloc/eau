@@ -25,13 +25,18 @@ class PriceLookupController extends AbstractController implements ApiControllerI
     public function getPriceDistributionAction(Request $request){
 
         $regions = $request->request->get('regions', false);
-        $corp = $request->request->get('corp', false);
         $items = $request->request->get('items', false);
 
-        if ($corp){
-            $corporation = $this->getDoctrine()->getRepository('AppBundle:Corporation')
-                ->find($corp);
-            $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corporation, 'Unauthorized access!');
+        $authChecker = $this->get('security.authorization_checker');
+        if ($authChecker->isGranted('ROLE_DIRECTOR')){
+            $em = $this->getDoctrine()->getManager();
+            $main = $em->getRepository('AppBundle:Character')->getMainCharacter($this->getUser());
+            if ($main !== null){
+                $corporation = $this->getDoctrine()->getRepository('AppBundle:Corporation')
+                    ->findByCorpName($main->getCorporationName());
+
+                $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corporation, 'Unauthorized access!');
+            }
         }
 
 
@@ -84,9 +89,9 @@ class PriceLookupController extends AbstractController implements ApiControllerI
                 $data[$k] = $r;
             }
 
-            if ($corp && isset($corporation) && $corporation instanceof Corporation){
-                $data['last_buy'] = $marketingRepo->findLatestTransactionByItemType($corp, 'buy',$i['typeID']);
-                $data['last_sell'] = $marketingRepo->findLatestTransactionByItemType($corp, 'sell',$i['typeID']);
+            if (isset($corporation) && $corporation instanceof Corporation){
+                $data['last_buy'] = $marketingRepo->findLatestTransactionByItemType($corporation, 'buy',$i['typeID']);
+                $data['last_sell'] = $marketingRepo->findLatestTransactionByItemType($corporation, 'sell',$i['typeID']);
             }
 
             $retItems[] = $data;

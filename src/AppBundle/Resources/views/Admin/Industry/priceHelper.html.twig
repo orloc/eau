@@ -9,13 +9,6 @@
                 <div class="col-xs-12">
                     <div class="row">
                         <form class="form-horizontal">
-                            <div class="col-xs-2" ng-if="is_granted('ROLE_DIRECTOR')">
-                                <select class="form-control" chosen
-                                        data-placeholder="Corporation"
-                                        ng-model="selected_corporation"
-                                        ng-options="i.id as i.corporation_details.name for i in corporations">
-                                </select>
-                            </div>
                             <div class="col-xs-4">
                                 <select class="form-control" chosen multiple
                                         data-placeholder="Select Region Prices"

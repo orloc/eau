@@ -14,6 +14,13 @@ class TitleManager extends AbstractManager implements DataManagerInterface, Mapp
 
         $apiKey = $this->getApiKey($corporation);
 
+        $existingTitles = $this->doctrine->getRepository('AppBundle:CorporationTitle')
+            ->findBy(['corporation' => $corporation]);
+
+        foreach ($existingTitles as $et){
+            $this->doctrine->getManager()->remove($et);
+        }
+
         $client = $this->getClient($apiKey);
 
         $titles = $client->Titles([

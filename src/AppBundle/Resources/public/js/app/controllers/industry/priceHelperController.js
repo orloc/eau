@@ -4,15 +4,6 @@ angular.module('eveTool')
     .controller('priceHelperController', ['$scope', '$http','corporationDataManager', '$filter', 'userRoleManager', function($scope, $http, corporationDataManager, $filter, userRoleManager){
         $scope.selected_items = [];
         $scope.selected_price_profiles = [];
-        $scope.selected_corporation = null;
-
-        var roles = userRoleManager.getCurrentRoles();
-
-        if (userRoleManager.isGranted('ROLE_DIRECTOR', roles)){
-            corporationDataManager.getAll().then(function(d){
-                $scope.corporations = d;
-            });
-        }
 
         $scope.clearItems = function(){
             $scope.selected_items = [];
@@ -76,8 +67,9 @@ angular.module('eveTool')
         };
 
         function updateView (){
-            if ($scope.selected_items.length > 0 && $scope.selected_price_profiles.length >0){
-                $http.post(Routing.generate('api.price_lookup'), { regions: $scope.selected_price_profiles, items: $scope.selected_items, corp :$scope.selected_corporation  }).then(function(data){
+            if ($scope.selected_items.length > 0 && $scope.selected_price_profiles.length >0 )
+            {
+                $http.post(Routing.generate('api.price_lookup'), { regions: $scope.selected_price_profiles, items: $scope.selected_items  }).then(function(data){
                     $scope.item_result = data.data;
                 });
             }

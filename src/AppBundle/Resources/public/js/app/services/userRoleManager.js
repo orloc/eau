@@ -154,6 +154,8 @@ angular.module('eveTool')
 
             var  highestRole = getHighestFromMap(roleList);
 
+            console.log(requested_role.weight <=  highestRole.weight);
+
             return requested_role.weight <= highestRole.weight;
         }
 
