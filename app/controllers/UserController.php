@@ -197,6 +197,8 @@ class UserController extends BaseController
                 ->withErrors('Administrators group could not be found');
 
         $user->email = Input::get('email');
+        
+        $user->tsid = Input::get('tsid');
 
         if (Input::get('username') != '')
             $user->username = Input::get('username');
@@ -204,7 +206,7 @@ class UserController extends BaseController
         if (Input::get('password') != '')
             $user->password = Hash::make(Input::get('password'));
 
-        $groups = Input::except('_token', 'username', 'password', 'first_name', 'last_name', 'userID', 'email');
+        $groups = Input::except('_token', 'username', 'password', 'first_name', 'last_name', 'userID', 'email', 'tsid');
 
         // Delete all the permissions the user has now
         \GroupUserPivot::where('user_id', '=', $user->id)

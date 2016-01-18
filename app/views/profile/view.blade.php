@@ -29,6 +29,13 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <label class="col-md-4 control-label" for="tsid">TSID</label>
+            <div class="col-md-4">
+              {{ Form::text('tsid', $user->tsid, array('id' => 'tsid', 'class' => ' form-control', 'placeholder' => 'Teamspeak Client ID')) }}
+            </div>
+          </div>
+
           <!-- Select Basic -->
           <div class="form-group">
             <label class="col-md-4 control-label" for="selectbasic">SeAT Theme</label>

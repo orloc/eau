@@ -59,6 +59,7 @@ Artisan::add(new \Seat\Commands\Scheduled\EveCorporationWalletUpdater);
 Artisan::add(new \Seat\Commands\Scheduled\EveCorporationUpdater);
 Artisan::add(new \Seat\Commands\Scheduled\EveEveUpdater);
 Artisan::add(new \Seat\Commands\Scheduled\EveMapUpdater);
+Artisan::add(new \Seat\Commands\Scheduled\TeamspeakTransferUpdater);
 Artisan::add(new \Seat\Commands\Scheduled\EveServerUpdater);
 Artisan::add(new \Seat\Commands\Scheduled\SeatQueueCleanup);
 Artisan::add(new \Seat\Commands\Scheduled\SeatNotify);

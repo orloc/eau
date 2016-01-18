@@ -131,6 +131,10 @@ class ProfileController extends BaseController
         $validation = new Validators\UserSettingValidator;
 
         if($validation->passes()) {
+            
+            $user = Auth::findUserById(Auth::id());
+            $user->tsid = Input::get('tsid');
+            $user->save();
 
             // We will have to lookup the characterID's name
             // quickly before we set the setting, so lets

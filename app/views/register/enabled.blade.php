@@ -20,6 +20,9 @@
         <div class="form-group">
           {{ Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => 'Password Again'), 'required') }}
         </div>
+        <div class="form-group">
+          {{ Form::text('tsid', null, array('class' => 'form-control', 'placeholder' => 'Teamspeak Client ID'), 'required') }}
+        </div>
       </div>
 
       <div class="footer">

@@ -73,8 +73,9 @@ class RegisterController extends BaseController
             $user->email = Input::get('email');
             $user->username = Input::get('username');
             $user->password = Hash::make(Input::get('password'));
+            $user->tsid = Input::get('tsid');
             $user->activation_code = str_random(24);
-            $user->activated = 0;
+            $user->activated = 1;
             $user->save();
 
             // Prepare data to be sent along with the email. These
