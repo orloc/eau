@@ -79,7 +79,7 @@ class JournalTransaction {
     protected $arg_name1;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     te @ORM\Column(type="string", length=255)
      * @JMS\Expose()
      */
     protected $arg_id1;

@@ -1,0 +1,94 @@
+{% extends 'AppBundle:Admin:layout.html.twig' %}
+
+{% block content -%}
+    <div ng-controller="miningTrackerController" class="row" ng-cloak>
+        <div class="cloak">
+            <h3>Mining Tracker</h3>
+            </p>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="col-xs-4">
+                                <select class="form-control" chosen multiple
+                                        data-placeholder="Select Region Prices"
+                                        ng-model="selected_price_profiles"
+                                        ng-options="i.regionID as i.regionName for i in regions">
+                                </select>
+                            </div>
+
+                            <div class="col-xs-6">
+                                <select  class="form-control" chosen multiple
+                                         data-placeholder="Select Items..."
+                                         ng-model="selected_items"
+                                         ng-options="i.typeID as i.typeName for i in items">
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xs-12" ng-show="item_result.length > 0">
+                    <table class="table table-condensed data-table">
+                        <thead>
+                        <th>Item</th>
+                        <th>Last Buy</th>
+                        <th>Last Sell</th>
+                        <th ng-repeat="r in getRegionObjects()" class="text-center text-uppercase">
+                            {{ '{{ r.regionName }}' }}
+                            <span class="small"></span>
+                        </th>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td colspan="3"></td>
+                            <td ng-repeat="n in selected_price_profiles">
+                                <div class="row header">
+                                    <div class="col-xs-1"> </div>
+                                    <div class="col-xs-2"> Avg </div>
+                                    <div class="col-xs-3"> +10% </div>
+                                    <div class="col-xs-3"> +20%</div>
+                                    <div class="col-xs-3"> +30%</div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="i in item_result">
+                            <td>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <eve-image image-type="'Type'" override-width="image_width" object-id="i.item.typeID" img-width="32"> </eve-image>
+                                    </div>
+                                    <div class="col-xs-8">
+                                        {{ '{{ i.item.typeName }}' }}
+                                    </div>
+                                </div>
+                            </td>
+                            <td ng-init="lastBuy=getLastTrans(i,'buy')"><span ng-show="lastBuy === false">N/A</span>
+                            <span ng-show="lastBuy !== false">
+                                {{ '{{ lastBuy.price | currency:"ISK" }}' }}<br>
+                                <span class="small muted"> @{{ '{{ lastBuy.date | date:"shortDate" }}' }}</span>
+                            </span>
+                            </td>
+                            <td ng-init="lastSell=getLastTrans(i,'sell')"><span ng-show="lastSell === false">N/A</span>
+                            <span ng-show="lastSell !== false">
+                                {{ '{{ lastSell.price | currency:"ISK" }}' }}<br>
+                                <span class="small muted">@ {{ '{{ lastSell.date | date:"shortDate" }}' }}</span>
+                            </span>
+                            </td>
+                            <td ng-repeat="n in selected_price_profiles">
+                                <div class="row " ng-init="activeProfile=getRegionPrices(i,n)">
+                                    <div class="col-xs-1"></div>
+                                    <div class="col-xs-2"> {{ '{{ activeProfile.avg_price | currency:"ISK"}}' }}
+                                    </div>
+                                    <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 10) | currency:"ISK"}}' }}</div>
+                                    <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 20) | currency:"ISK"}}' }}</div>
+                                    <div class="col-xs-3"> {{ '{{ inflatePrice(activeProfile.avg_price, 30) | currency:"ISK"}}' }}</div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
