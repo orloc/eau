@@ -10,13 +10,49 @@ use Doctrine\ORM\EntityRepository;
 
 class MarketTransactionRepository extends EntityRepository {
 
+     protected function getTransactionByAccountQuery(Account $account, Carbon $start, Carbon $end){
+        return $this->createQueryBuilder('mt')
+            ->select('mt')
+            ->where('mt.account = :account')
+            ->andWhere('mt.date >= :start')
+            ->andWhere('mt.date <= :end')
+            ->setParameters([
+                'account' => $account,
+                'start' => $start,
+                'end' => $end
+            ])
+            ->getQuery()->getResult();
+    }
+
+    public function getTransactionsByAccount(Account $account,Carbon $date){
+        $start = $date->copy();
+        $start->setTime(0,0,0);
+
+        $end = $start->copy();
+        $end->setTime(23,59,59);
+
+        return $this->getTransactionByAccountQuery($account, $start, $end);
+
+    }
+
+    public function getTransactionsByAccountInRange(Account $account, array $range){
+
+        $start = $range['start']->copy();
+        $start->setTime(0,0,0);
+
+        $end = $range['end']->copy();
+        $end->setTime(23,59,59);
+
+        return $this->getTransactionByAccountQuery($account, $start, $end);
+    }
+
     public function hasTransaction(Account $acc, $transactionId, $jTransID){
-        return $this->createQueryBuilder('jt')
-            ->leftJoin('jt.account', 'acc')
+        return $this->createQueryBuilder('mt')
+            ->leftJoin('mt.account', 'acc')
             ->where('acc = :account')
-            ->andWhere('jt.transaction_id = :id')
-            ->andWhere('jt.journal_transaction_id = :jtid')
-            ->setParameters(['account' => $acc, 'id' => $transactionId, 'jtid' => $jTransID])
+            ->andWhere('mt.transaction_id = :id')
+            ->andWhere('mt.journal_transaction_id = :mtid')
+            ->setParameters(['account' => $acc, 'id' => $transactionId, 'mtid' => $jTransID])
             ->getQuery()->getOneOrNullResult();
     }
 

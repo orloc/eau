@@ -15,13 +15,7 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class JournalTransactionRepository extends EntityRepository {
 
-    public function getTransactionsByAccount(Account $account,Carbon $date){
-        $start = $date->copy();
-        $start->setTime(0,0,0);
-
-        $end = $start->copy();
-        $end->setTime(23,59,59);
-
+    protected function getTransactionByAccountQuery(Account $account, Carbon $start, Carbon $end){
         return $this->createQueryBuilder('jt')
             ->select('jt')
             ->where('jt.account = :account')
@@ -33,6 +27,28 @@ class JournalTransactionRepository extends EntityRepository {
                 'end' => $end
             ])
             ->getQuery()->getResult();
+    }
+
+    public function getTransactionsByAccount(Account $account,Carbon $date){
+        $start = $date->copy();
+        $start->setTime(0,0,0);
+
+        $end = $start->copy();
+        $end->setTime(23,59,59);
+
+        return $this->getTransactionByAccountQuery($account, $start, $end);
+
+    }
+
+    public function getTransactionsByAccountInRange(Account $account, array $range){
+
+        $start = $range['start']->copy();
+        $start->setTime(0,0,0);
+
+        $end = $range['end']->copy();
+        $end->setTime(23,59,59);
+
+        return $this->getTransactionByAccountQuery($account, $start, $end);
     }
 
 
