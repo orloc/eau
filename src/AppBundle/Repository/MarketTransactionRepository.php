@@ -20,8 +20,7 @@ class MarketTransactionRepository extends EntityRepository {
                 'account' => $account,
                 'start' => $start,
                 'end' => $end
-            ])
-            ->getQuery()->getResult();
+            ]);
     }
 
     public function getTransactionsByAccount(Account $account,Carbon $date){
@@ -31,11 +30,11 @@ class MarketTransactionRepository extends EntityRepository {
         $end = $start->copy();
         $end->setTime(23,59,59);
 
-        return $this->getTransactionByAccountQuery($account, $start, $end);
+        return $this->getTransactionByAccountQuery($account, $start, $end)->getQuery()->getResult();
 
     }
 
-    public function getTransactionsByAccountInRange(Account $account, array $range){
+    public function getTransactionsByAccountInRange(Account $account, array $range, $type){
 
         $start = $range['start']->copy();
         $start->setTime(0,0,0);
@@ -43,7 +42,11 @@ class MarketTransactionRepository extends EntityRepository {
         $end = $range['end']->copy();
         $end->setTime(23,59,59);
 
-        return $this->getTransactionByAccountQuery($account, $start, $end);
+        $q = $this->getTransactionByAccountQuery($account, $start, $end)
+                ->andWhere('mt.transaction_type = :trans_type')
+                ->setParameter('trans_type', $type);
+
+        return $q->getQuery()->getResult();
     }
 
     public function hasTransaction(Account $acc, $transactionId, $jTransID){
