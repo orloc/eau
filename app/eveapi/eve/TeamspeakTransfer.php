@@ -40,6 +40,7 @@ class TeamspeakTransfer extends BaseApi
 
     protected function getValidCorps($users){
         $validCorps = [];
+        $invalid = [];
         foreach($users as $u){
             $valid_keys = \SeatKey::where('user_id', $u->id)->lists('keyID');
             if (!empty($valid_keys)) {
@@ -54,10 +55,13 @@ class TeamspeakTransfer extends BaseApi
                         ];
                     }
                 }
+            } else { 
+                $invalid[] = $u;
+
             }
         }
 
-        return $validCorps;
+        return [ $validCorps, $invalid ];
     }
 
     protected function addClient($server_group, $user) { 
@@ -77,16 +81,97 @@ class TeamspeakTransfer extends BaseApi
         }
     }
 
+    protected function groupCompare($group, $sG){
+        if ($sG->__toString() == $group->name 
+            && $sG->__toString() != "Guest Server Query" 
+            && $sG->__toString() != "Admin Server Query" 
+            && $sG->__toString() != "Server Admin"
+            && $sG->__toString() != "Guest"
+            && $sG->__toString() != "epicness"
+            && $sG->__toString() != "Normal")
+        {
+            return true;
+        }
+        return false;
+    }
+
+    protected function seatGroupCompare($sG){
+        if ($sG->__toString() != "Guest Server Query"
+            && $sG->__toString() != "Admin Server Query"
+            && $sG->__toString() != "Server Admin"
+            && $sG->__toString() != "Guest"
+            && $sG->__toString() != "epicness"
+            && $sG->__toString() != "Admin"
+            && $sG->__toString() != "Normal")
+        {
+            return true;
+        }
+        return false;
+    }
+
+    protected function updateSeatGroup($server_group, $group, $user){
+        if ($group->name == $server_group->__toString())
+        {
+            $client_list = $server_group->clientList();
+            foreach ($client_list as $client)
+            {
+                if ($client["client_unique_identifier"] == $user->tsid)
+                {
+                    $user_groups = \Auth::getUserGroups($user);
+                    $allowed = false;
+                    foreach ($user_groups as $group)
+                    {
+                        if ($group->name == $server_group->__toString())
+                        {
+                            $allowed = true;
+                        }
+                    }
+                    if ($allowed == false)
+                    {
+                        try {
+                            $usr_client = self::$tsClient->clientFindDb($user->tsid, true);
+                            if (!empty($usr_client))
+                                $server_group->clientDel($usr_client);
+                        } catch (Exception $e) {}
+                    }
+                }
+            }
+        }
+
+    }
+
+    protected function updateServerGroup($uGroup, $sg, $user){
+        if ($this->groupCompare($uGroup, $sg )) { 
+            $client_list = $sg->clientList();
+            $ingroup = false;
+            foreach ($client_list as $client) {
+                if ($client["client_unique_identifier"] == $user->tsid) {
+                    $ingroup = true;
+                }
+            }
+            if ($ingroup == false) {
+                try {
+                    $usr_client = self::$tsClient->clientFindDb($user->tsid, true);
+                    if (!empty($usr_client)) {
+                        $sg->clientAdd($usr_client);
+                    }
+                } catch (Exception $e) {}
+            }
+        }
+    }
+
     public function Update()
     {
+        $time = microtime(true);
         parent::bootstrap();
         
         $server_groups = $this->tsClient->serverGroupList();
         
         $users = \User::all();
         $seat_groups = \Auth::findAllGroups();
+        $corps = \EveCorporationCorporationSheet::all();
 
-        $validCorps = $this->getValidCorps($users);
+        list($validCorps, $invalidUsers) = $this->getValidCorps($users);
 
         foreach ($server_groups as $sg) { 
             foreach ($validCorps as $c){
@@ -97,181 +182,52 @@ class TeamspeakTransfer extends BaseApi
                 }
 
                 foreach ($groups as $uGroup) { 
-                    if ($sg->__toString() === $uGroup->name) {
-                    }
+                    $this->updateServerGroup($uGroup, $sg, $c['user']);
                 }
-            }
-        }
-        die('here');
 
-        foreach ($users as $user)
-        {
-            $valid_keys = \SeatKey::where('user_id', $user->id)->lists('keyID');
-            if (!empty($valid_keys)) {
-                $corporation_affiliation = \EveAccountAPIKeyInfoCharacters::whereIn('keyID', $valid_keys)->groupBy('corporationID')->lists('corporationID');
-            }
-            if (!empty($corporation_affiliation)) {
-                $viable = \EveCorporationCorporationSheet::whereIn('corporationID', $corporation_affiliation)->lists('corporationName');
-            }
-            if (!empty($viable)) {
-                
-                foreach ($server_groups as $server_group)
-                {
-                    foreach ($viable as $corp)
-                    {
-                        if ($server_group == $corp)
-                        {
-                            $alreadyin = false;
-                            $client_list = $server_group->clientList();
-                            foreach ($client_list as $client)
-                            {
-                                if ($client["client_unique_identifier"] == $user->tsid)
-                                {
-                                    $alreadyin = true;
-                                }
-                            }
-                            if (!$alreadyin)
-                            {
-                                try {
-                                    $usr_client = self::$tsClient->clientFindDb($user->tsid, true);
-                                    if (!empty($usr_client))
-                                        $server_group->clientAdd($usr_client);
-                                } catch (TeamSpeak3_Adapter_ServerQuery_Exception $e) {}
-                            }
-                        }
-                    }
-                }
-                
-                $user_groups = \Auth::getUserGroups($user);
-                foreach ($user_groups as $group)
-                {
-                    foreach ($server_groups as $server_group)
-                    {
-                        if ($server_group->__toString() == $group->name 
-                            && $server_group->__toString() != "Guest Server Query" 
-                            && $server_group->__toString() != "Admin Server Query" 
-                            && $server_group->__toString() != "Server Admin"
-                            && $server_group->__toString() != "Guest"
-                            && $server_group->__toString() != "epicness"
-                            && $server_group->__toString() != "Normal")
-                        {
-                            $client_list = $server_group->clientList();
-                            $ingroup = false;
-                            foreach ($client_list as $client)
-                            {
-                                if ($client["client_unique_identifier"] == $user->tsid)
-                                {
-                                    $ingroup = true;
-                                }
-                            }
-                            if ($ingroup == false)
-                            {
-                                try {
-                                    $usr_client = self::$tsClient->clientFindDb($user->tsid, true);
-                                    if (!empty($usr_client))
-                                        $server_group->clientAdd($usr_client);
-                                } catch (Exception $e) {}
-                            }
-                        }
-                    }
-                }
-                
-                foreach ($server_groups as $server_group)
-                {
-                    if ($server_group->__toString() != "Guest Server Query"
-                        && $server_group->__toString() != "Admin Server Query"
-                        && $server_group->__toString() != "Server Admin"
-                        && $server_group->__toString() != "Guest"
-                        && $server_group->__toString() != "epicness"
-                        && $server_group->__toString() != "Admin"
-                        && $server_group->__toString() != "Normal")
-                    {
-                        foreach ($seat_groups as $group)
-                        {
-                            if ($group->name == $server_group->__toString())
-                            {
-                                $client_list = $server_group->clientList();
-                                foreach ($client_list as $client)
-                                {
-                                    if ($client["client_unique_identifier"] == $user->tsid)
-                                    {
-                                        $user_groups = \Auth::getUserGroups($user);
-                                        $allowed = false;
-                                        foreach ($user_groups as $group)
-                                        {
-                                            if ($group->name == $server_group->__toString())
-                                            {
-                                                $allowed = true;
-                                            }
-                                        }
-                                        if ($allowed == false)
-                                        {
-                                            try {
-                                                $usr_client = self::$tsClient->clientFindDb($user->tsid, true);
-                                                if (!empty($usr_client))
-                                                    $server_group->clientDel($usr_client);
-                                            } catch (Exception $e) {}
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                if ($this->seatGroupCompare($sg)){
+                    foreach ($seat_groups as $seatGroup) { 
+                        $this->updateSeatGroup($sg, $seatGroup, $c['user']);
                     }
                 }
                 
             }
-            
-            if (empty($valid_keys) || empty($corporation_affiliation) || empty($viable))
-            {
-                
-                $corps = \EveCorporationCorporationSheet::all();
-                foreach ($corps as $corp)
+
+            $client_list = $sg->clientList();
+
+            foreach ($invalidUsers as $user){
+                foreach ($client_list as $client)
                 {
-                    foreach ($server_groups as $server_group)
+                    if ($client["client_unique_identifier"] == $user->tsid)
                     {
-                        if ($server_group == $corp->corporationName)
-                        {
-                            $client_list = $server_group->clientList();
-                            foreach ($client_list as $client)
-                            {
-                                if ($client["client_unique_identifier"] == $user->tsid)
-                                {
-                                    try {
-                                        $usr_client = self::$tsClient->clientFindDb($user->tsid, true);
-                                        if (!empty($usr_client))
-                                            $server_group->clientDel($usr_client);
-                                    } catch (Exception $e) {}
-                                }
-                            }
-                        }
+                        try {
+                            $usr_client = self::$tsClient->clientFindDb($user->tsid, true);
+                            if (!empty($usr_client))
+                                $sg->clientDel($usr_client);
+                        } catch (Exception $e) {}
                     }
                 }
-                
-                foreach ($server_groups as $server_group)
+
+                if ($sg->__toString() != "Guest Server Query" 
+                    && $sg->__toString() != "Admin Server Query" 
+                    && $sg->__toString() != "Server Admin"
+                    && $sg->__toString() != "Guest"
+                    && $sg->__toString() != "epicness"
+                    && $sg->__toString() != "Friends"
+                    && $sg->__toString() != "Normal")
                 {
-                    if ($server_group->__toString() != "Guest Server Query" 
-                        && $server_group->__toString() != "Admin Server Query" 
-                        && $server_group->__toString() != "Server Admin"
-                        && $server_group->__toString() != "Guest"
-                        && $server_group->__toString() != "epicness"
-                        && $server_group->__toString() != "Friends"
-                        && $server_group->__toString() != "Normal")
+                    $client_list = $sg->clientList();
+                    foreach ($client_list as $client)
                     {
-                        $client_list = $server_group->clientList();
-                        foreach ($client_list as $client)
+                        if ($client["client_unique_identifier"] == $user->tsid)
                         {
-                            if ($client["client_unique_identifier"] == $user->tsid)
-                            {
-                                try {
-                                    $server_group->clientDel($client["cldbid"]);
-                                } catch (Exception $e) {}
-                            }
+                            try {
+                                $sg->clientDel($client["cldbid"]);
+                            } catch (Exception $e) {}
                         }
                     }
                 }
             }
         }
-
-        return true;
     }
 }
