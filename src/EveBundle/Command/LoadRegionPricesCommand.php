@@ -41,7 +41,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
         $eveRegistry = $this->getContainer()->get('evedata.registry');
 
-
         $regionRepo = $eveRegistry->get('EveBundle:Region');
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
@@ -62,8 +61,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
         $log->addDebug("Beginning Import");
 
-
-
         $client = new Client();
         $requests = function($region, $items) {
             foreach ($items as $i){
@@ -74,7 +71,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         foreach ($neededRegions as $region){
             list($processableData, $index) = $this->buildIndex($items);
             $pool = new Pool($client, $requests($region, $items), [
-                'concurrency' => 5,
+                'concurrency' => 15,
                 'fulfilled' => function($response, $index) use (&$processableData, $progress, $log) {
                     $obj = json_decode($response->getBody()->getContents(), true);
                     $processableData[$index] = array_pop($obj['items']);

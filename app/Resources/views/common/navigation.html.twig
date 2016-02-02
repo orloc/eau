@@ -61,6 +61,11 @@
                         <li>
                             <a href="{{ path('industry.price_helper') }}"><i class="fa fa-calculator fa-fw"></i> Price Helper</a>
                         </li>
+                        {% if is_granted('ROLE_DIRECTOR') %}
+                            <li>
+                                <a href="{{ path('market_manager') }}"><i class="fa fa-shopping-bag fa-fw"></i> Market Order Manager</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </li>
             </ul>

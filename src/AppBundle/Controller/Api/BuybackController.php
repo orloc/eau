@@ -71,7 +71,7 @@ class BuybackController extends AbstractController implements ApiControllerInter
 
                 if ($t === BuybackConfiguration::TYPE_GLOBAL){
                     $config = array_pop($configs);
-                    $global = $config->getBaseMarkDown();
+                    $global = abs(floatval($config->getBaseMarkDown()));
                 }
 
                 if ($t === BuybackConfiguration::TYPE_SINGLE){
@@ -92,11 +92,17 @@ class BuybackController extends AbstractController implements ApiControllerInter
             unset($regionPrices);
 
             foreach ($items as $k => $i){
-                if (!isset($specifics[$i['typeID']]) ){
+                try {
                     $prePrice = floatval($numberedPrices[$i['typeID']]->getAvgPrice());
-                    $items[$k]['price'] = $prePrice - ($prePrice * ($global / 100));
-                } else {
-                    $items[$k]['price'] = $specifics[$i['typeID']];
+                    $items[$k]['price'] = $prePrice;
+                    if (!isset($specifics[$i['typeID']]) ){
+                        $items[$k]['new_price'] = $prePrice - ($prePrice * ($global / 100));
+                    } else {
+                        $items[$k]['new_price'] = $specifics[$i['typeID']];
+                    }
+
+                } catch (\Exception $e){
+
                 }
             }
         } else {

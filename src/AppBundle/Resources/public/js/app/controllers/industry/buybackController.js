@@ -60,19 +60,24 @@ angular.module('eveTool')
 
                         i['quantity'] = parseInt(qData.quantity);
                         i['total_value'] = parseFloat(i['quantity'] * i.price);
+                        i['new_total_value'] = parseFloat(i['quantity'] * i.new_price);
                     });
 
                     $scope.updated_items = items;
 
                     $scope.total_value  =  _.reduce($scope.updated_items, function(total, value){
-                        if (typeof total === 'undefined'){
-                            return value;
+                        if (!isNaN(value.total_value)){
+                            return total + value.total_value;
                         }
-
-                        total.total_value += value.total_value;
-
                         return total;
-                    });
+                    }, 0);
+
+                    $scope.new_total_value  =  _.reduce($scope.updated_items, function(total, value){
+                        if (!isNaN(value.new_total_value)){
+                            return total + value.new_total_value;
+                        }
+                        return total ;
+                    }, 0);
                 };
             };
 
