@@ -3,21 +3,24 @@
         <h5 class="text-center">Select a Corporation</h5>
     </div>
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <div class="summary-stats col-xs-12" ng-cloak>
-            <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
-            {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
-            <div class="small muted circle-ticker pull-right">
-                <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
-                &nbsp;
-                &nbsp;
-                <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}
+        <div class="summary-stats row" ng-cloak>
+            <div class="col-sm-7">
+                <b>Balance</b>:&nbsp;&nbsp;&nbsp; {{ '{{ totalBalance | currency:"ISK"}}' }}<br>
+                <b>Daily Change</b>:&nbsp;&nbsp;&nbsp;<i ng-class="{ 'fa fa-chevron-up text-success': percentChangeBalance.percent > 0, 'fa fa-chevron-down text-danger': percentChangeBalance.percent < 0 }"></i>
+                {{ '{{ percentChangeBalance.percent | number : 2 }}% ({{ percentChangeBalance.diff | currency:"ISK" }})' }}
+            </div>
+            <div class="col-sm-5">
+                <div class="small muted circle-ticker">
+                    <b>Updated At</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
+                    <br>
+                    <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="graphs col-xs-12" ng-hide="not_enough_data"></div>
             <div class="col-xs-12" ng-show="not_enough_data"><h4 class="text-center">Not Enough Data</h4></div>
-            <div class="col-xs-10 viewing-details" >
+            <div class="col-sm-10 viewing-details" >
                 {#
                 <div class="btn-group-sm pull-left">
                     <button  class="btn btn-sm" type="button" ng-click="byWeek()" ng-hide="loading === true">Week</button>
@@ -27,7 +30,7 @@
                 #}
                 <p class="pull-right small"><b>Viewing:</b> {{ ' {{ current_date }}' }}</p>
             </div>
-            <div class="col-xs-2">
+            <div class="col-sm-2">
                 <div class=" pull-right controls">
                     <div class="btn-group-sm">
                         <button  class="btn btn-sm" type="button" ng-click="back()" ng-hide="loading === true"><i class="fa fa-chevron-left"></i></button>
@@ -38,7 +41,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-3">
+            <div class="col-sm-3">
                 <ul class="list-unstyled list-group wallet-divisions">
                     <li ng-repeat="acc in accounts" ng-class="{ 'list-group-item active': selected_account.id == acc.id, 'list-group-item': selected_account.id != acc.id}" ng-click="selectAccount(acc)">
                         <p>
@@ -54,7 +57,7 @@
                 <button ng-show="!loading" class="btn btn-block btn-default">Show All</button>
                 #}
             </div>
-            <div class="col-xs-9">
+            <div class="col-sm-9">
                 <div ng-if="loading">
                     <cube-grid-spinner></cube-grid-spinner>
                 </div>

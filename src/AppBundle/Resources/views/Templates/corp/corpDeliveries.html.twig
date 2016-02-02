@@ -1,22 +1,23 @@
 <div ng-controller="deliveryController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
         <div class="row">
-            <div class="col-xs-6">
-                <span>
-                    <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}
-                    &nbsp;
-                    &nbsp;
-                    <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
-                    <span class="small muted" ng-show="updated_at">
-                        <br>
-                        <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i>
-                        &nbsp;
-                        &nbsp;
-                        <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
-                    </span>
-                </span>
+            <div class="col-sm-6">
+                <div class="row">
+                   <div class="col-sm-8">
+                       <span>
+                           <b class="text-info">Total Value:</b> {{ '{{ total_price | currency:"ISK" }}' }}<br>
+                           <b class="text-info">Total M<sup>3</sup>:</b> {{ '{{ totalM3() | number:2}}' }}
+                       </span>
+                   </div>
+                    <div class="col-sm-4">
+                        <span class="small muted" ng-show="updated_at">
+                            <b>Updated At:</b> {{ '{{ updated_at | date }} {{ updated_at | date:"shortTime" }}' }} <i class="fa" ng-class="{ 'fa-check text-success': update_succeeded , 'fa-times text-danger': !update_succeeded}"></i><br>
+                            <b>Next Update:</b> {{ '{{ next_update | date }} {{ next_update | date:"shortTime" }}' }}<br>
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="col-xs-6">
+            <div class="col-sm-6">
                 <ul class="list-inline list-unstyled pull-right">
                     <li>
                         <button ng-click="doFilter('region')" class="btn btn-sm btn-success">Region</button>

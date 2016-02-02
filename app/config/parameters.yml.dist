@@ -27,3 +27,20 @@ parameters:
     eve_client_id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     eve_client_secret: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+    test_config:
+        api_keys:
+            no_expire:
+                code:
+                key:
+            bad_type:
+                code:
+                key:
+            good_corp_key:
+                code:
+                key:
+            bad_mask:
+                code:
+                key:
+            good_user_key:
+                code:
+                key:

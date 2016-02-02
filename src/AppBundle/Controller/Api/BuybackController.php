@@ -84,6 +84,7 @@ class BuybackController extends AbstractController implements ApiControllerInter
                 }
             }
 
+
             $numberedPrices = [];
             foreach ($regionPrices as $p){
                 $numberedPrices[$p->getTypeId()] = $p;
