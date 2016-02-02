@@ -42,6 +42,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $eveRegistry = $this->getContainer()->get('evedata.registry');
 
 
+        $regionRepo = $eveRegistry->get('EveBundle:Region');
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
 
@@ -73,8 +74,8 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         foreach ($neededRegions as $region){
             list($processableData, $index) = $this->buildIndex($items);
             $pool = new Pool($client, $requests($region, $items), [
-                'concurrency' => 10,
-                'fulfilled' => function($response, $index) use ($processableData, $progress, $log) {
+                'concurrency' => 5,
+                'fulfilled' => function($response, $index) use (&$processableData, $progress, $log) {
                     $obj = json_decode($response->getBody()->getContents(), true);
                     $processableData[$index] = array_pop($obj['items']);
                     $progress->advance();
@@ -88,43 +89,17 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             $promise = $pool->promise();
             $promise->wait();
 
+            $real_region = $regionRepo->getRegionById($region);
+
             foreach ($processableData as $i => $processableItem){
                 if (is_array($processableItem) && isset($index[$i])) {
-                    $p = $this->makePriceData($processableItem, $region, $index[$i]['typeID']);
+                    $p = $this->makePriceData($processableItem, $real_region, $index[$i]);
                     $em->persist($p);
                     $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
                 }
             }
         }
 
-        /*
-        foreach ($neededRegions as $r){
-            $r = $eveRegistry->get('EveBundle:Region')->getRegionById($r);
-            $progress->setMessage("Processing Region {$r['regionName']}");
-            foreach ($items as $k => $i){
-                $url = $this->getCrestUrl($r['regionID'], $i['typeID']);
-
-                try {
-                    $response = $client->get($url);
-                    $obj = json_decode($response->getBody()->getContents(), true);
-
-                    $processableItem = array_pop($obj['items']);
-                    if (is_array($processableItem)) {
-                        $p = $this->makePriceData($processableItem, $r, $i);
-                        $em->persist($p);
-                        $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
-                    }
-
-                }  catch (\Exception $e){
-                    $log->addError(sprintf("Failed request for : %s with %s", $url, $e->getMessage()));
-                }
-
-                $progress->advance();
-            }
-        }
-        $em->clear();
-
-        */
         $em->flush();
         $progress->finish();
     }
