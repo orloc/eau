@@ -1,4 +1,4 @@
-<div class="col-xs-9 aggregates" ng-show="selected_account && page == 'stats'" >
+<div class="col-sm-9 aggregates" ng-show="selected_account && page == 'stats'" >
     {# make me a directive #}
     <div class="row">
         <div ng-if="loading">
@@ -22,7 +22,7 @@
                         <i ng-init="transSum = sumTransactions()" ng-class="{ 'text-success fa-chevron-up': transSum > 0, 'text-danger fa-chevron-down': transSum < 0 }" class="fa"></i> {{ '{{ transSum | currency:" ISK" }}' }}
                     </p>
                 </div>
-                <div class="col-md-6" ng-repeat="s in segments">
+                <div class="col-sm-6" ng-repeat="s in segments">
                     <table class="table tabled-hover table-stripped data-table">
                         <thead>
                         <th>Type</th>
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="col-xs-12" ng-show="!loading && selected === 1">
-            <div class="col-md-6" ng-repeat="s in member_segments">
+            <div class="col-sm-6" ng-repeat="s in member_segments">
                 <table class="table tabled-hover table-stripped data-table ">
                     <thead>
                     <th></th>

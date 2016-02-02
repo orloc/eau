@@ -3,9 +3,10 @@
 namespace EveBundle\Command;
 
 use AppBundle\Entity\BuybackConfiguration;
-use Carbon\Carbon;
 use EveBundle\Entity\ItemPrice;
 use GuzzleHttp\Client;
+use GuzzleHttp\Pool;
+use GuzzleHttp\Psr7\Request;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,6 +21,17 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             ->setDescription('Loads region specific price history from the crest API.');
     }
 
+    protected function buildIndex($items){
+        $index = [];
+        $data = [];
+        foreach ($items as $i){
+            $index[] = $i;
+            $data[] = null;
+        }
+
+        return [ $data, $index ];
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
@@ -29,9 +41,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
         $eveRegistry = $this->getContainer()->get('evedata.registry');
 
-        $client = new Client([
-            'base_uri' => 'https://public-crest.eveonline.com/'
-        ]);
 
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
@@ -50,16 +59,45 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $progress = new ProgressBar($output, count($neededRegions) * count($items));
         $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> %message% </info>');
 
-        $itemPriceRepo = $em->getRepository('EveBundle:ItemPrice');
-        $existing = $itemPriceRepo->findAll();
-
-        $log->addDebug("Flushing existing items");
-        foreach ($existing as $i){
-            $em->remove($i);
-        }
-        $em->flush();
         $log->addDebug("Beginning Import");
 
+
+
+        $client = new Client();
+        $requests = function($region, $items) {
+            foreach ($items as $i){
+                yield new Request('GET', $this->getCrestUrl($region, $i['typeID']));
+            }
+        };
+
+        foreach ($neededRegions as $region){
+            list($processableData, $index) = $this->buildIndex($items);
+            $pool = new Pool($client, $requests($region, $items), [
+                'concurrency' => 10,
+                'fulfilled' => function($response, $index) use ($processableData, $progress, $log) {
+                    $obj = json_decode($response->getBody()->getContents(), true);
+                    $processableData[$index] = array_pop($obj['items']);
+                    $progress->advance();
+                },
+                'rejected' => function($reason, $index) use ($log, $progress) {
+                    $log->addError(sprintf("Failed request for : %s with %s", 'thing', 'thing'));
+                    $progress->advance();
+                }
+            ]);
+
+            $promise = $pool->promise();
+            $promise->wait();
+
+            foreach ($processableData as $i => $processableItem){
+                if (is_array($processableItem) && isset($index[$i])) {
+                    $p = $this->makePriceData($processableItem, $region, $index[$i]['typeID']);
+                    $em->persist($p);
+                    $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
+                }
+            }
+        }
+
+        /*
         foreach ($neededRegions as $r){
             $r = $eveRegistry->get('EveBundle:Region')->getRegionById($r);
             $progress->setMessage("Processing Region {$r['regionName']}");
@@ -82,16 +120,12 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                 }
 
                 $progress->advance();
-
-                if ($k % 500 === 0){
-                    $em->flush();
-                    $em->clear();
-                }
             }
         }
-        $em->flush();
         $em->clear();
 
+        */
+        $em->flush();
         $progress->finish();
     }
 
@@ -113,7 +147,8 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
     }
 
     protected function getCrestUrl($region, $item){
-        return "market/$region/types/$item/history/";
+        $baseUri = 'https://public-crest.eveonline.com/';
+        return $baseUri."market/$region/types/$item/history/";
     }
 
 }
