@@ -162,7 +162,6 @@ class TeamspeakTransfer extends BaseApi
 
     public function Update()
     {
-        $time = microtime(true);
         parent::bootstrap();
         
         $server_groups = $this->tsClient->serverGroupList();

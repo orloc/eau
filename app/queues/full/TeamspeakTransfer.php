@@ -57,7 +57,10 @@ class TeamspeakTransfer
 
             $job_record->output = 'Started Teamspeak transfer';
     		$job_record->save();
-            EveApi\Eve\TeamspeakTransfer::Update();
+            $eveTransfer = new EveApi\Eve\TeamspeakTransfer();
+            $eveTransfer->Update();
+
+            \Log::info("done with TS update");
 
     		$job_record->status = 'Done';
             $job_record->output = null;

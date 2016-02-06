@@ -7,3 +7,7 @@ composer.lock
 .installed.lck
 .DS_Store
 Thumbs.db
+*.swp
+*.swo
+*~
+
