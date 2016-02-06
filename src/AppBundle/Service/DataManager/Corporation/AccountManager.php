@@ -16,12 +16,7 @@ class AccountManager extends AbstractManager implements DataManagerInterface, Ma
 
     public function updateAccounts(Corporation $corporation){
 
-        try {
-            $apiKey = $this->getApiKey($corporation);
-        } catch (InvalidApiKeyException $e){
-            $this->log->info($e->getMessage());
-            return;
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
 

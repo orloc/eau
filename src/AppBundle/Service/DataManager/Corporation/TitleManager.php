@@ -13,12 +13,7 @@ class TitleManager extends AbstractManager implements DataManagerInterface, Mapp
 
     public function updateTitles(Corporation $corporation){
 
-        try {
-            $apiKey = $this->getApiKey($corporation);
-        } catch (InvalidApiKeyException $e){
-            $this->log->info($e->getMessage());
-            return;
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $existingTitles = $this->doctrine->getRepository('AppBundle:CorporationTitle')
             ->findBy(['corporation' => $corporation]);

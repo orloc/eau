@@ -15,12 +15,7 @@ use AppBundle\Service\DataManager\MappableDataManagerInterface;
 class MarketTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
     public function updateMarketTransactions(Corporation $corporation, $fromID = null) {
-        try {
-            $apiKey = $this->getApiKey($corporation);
-        } catch (InvalidApiKeyException $e){
-            $this->log->info($e->getMessage());
-            return;
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
 

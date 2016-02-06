@@ -15,12 +15,7 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
 
     public function getMarketOrders(Corporation $corporation){
 
-        try {
-            $apiKey = $this->getApiKey($corporation);
-        } catch (InvalidApiKeyException $e){
-            $this->log->info($e->getMessage());
-            return;
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
 

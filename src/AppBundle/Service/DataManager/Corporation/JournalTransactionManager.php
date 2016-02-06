@@ -2,7 +2,6 @@
 
 namespace AppBundle\Service\DataManager\Corporation;
 
-use AppBundle\Exception\InvalidApiKeyException;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use Symfony\Bridge\Monolog\Logger;
 
@@ -18,12 +17,7 @@ use AppBundle\Service\DataManager\AbstractManager;
 class JournalTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
     public function updateJournalTransactions(Corporation $corporation, $fromID = null){
-        try {
-            $apiKey = $this->getApiKey($corporation);
-        } catch (InvalidApiKeyException $e){
-            $this->log->info($e->getMessage());
-            return;
-        }
+        $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
 

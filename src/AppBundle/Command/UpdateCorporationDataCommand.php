@@ -75,14 +75,18 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
         $corp_ids = [];
         foreach ($corps as $c){
             $log->info("Starting Update {$c->getCorporationDetails()->getName()}\n\n");
-            $this->getContainer()->get('app.corporation.manager')->checkCorporationDetails($c);
-            $dataUpdateService->updateShortTimerCalls($c, $force);
-            $em->flush();
-            $dataUpdateService->updateLongTimerCalls($c, $force);
-            $em->flush();
+            try {
+                $this->getContainer()->get('app.corporation.manager')->checkCorporationDetails($c);
+                $dataUpdateService->updateShortTimerCalls($c, $force);
+                $em->flush();
+                $dataUpdateService->updateLongTimerCalls($c, $force);
+                $em->flush();
 
-            $corp_ids[] = $c->getId();
-            $log->info("Finished Updated {$c->getCorporationDetails()->getName()}");
+                $corp_ids[] = $c->getId();
+                $log->info("Finished Updated {$c->getCorporationDetails()->getName()}");
+            } catch (\Exception $e){
+                $log->info("ERROR: {$e->getMessage()}");
+            }
         }
         $log->info("Updating Compound Fields.");
         $start = microtime(true);

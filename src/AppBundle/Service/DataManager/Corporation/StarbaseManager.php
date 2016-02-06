@@ -14,12 +14,7 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
 {
 
     public function getStarbases(Corporation $c){
-        try {
-            $apiKey = $this->getApiKey($c);
-        } catch (InvalidApiKeyException $e){
-            $this->log->info($e->getMessage());
-            return;
-        }
+        $apiKey = $this->getApiKey($c);
         $client = $this->getClient($apiKey);
 
         $bases = $client->StarbaseList()
