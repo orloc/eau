@@ -6,6 +6,7 @@ namespace AppBundle\Service\DataManager\Corporation;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\AccountBalance;
 use AppBundle\Entity\Corporation;
+use AppBundle\Exception\InvalidApiKeyException;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use AppBundle\Service\DataManager\AbstractManager;
 use AppBundle\Service\DataManager\DataManagerInterface;
@@ -15,7 +16,12 @@ class AccountManager extends AbstractManager implements DataManagerInterface, Ma
 
     public function updateAccounts(Corporation $corporation){
 
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
 
         $client = $this->getClient($apiKey);
 

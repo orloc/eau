@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\ApiUpdate;
 use AppBundle\Entity\Corporation;
 use AppBundle\Service\DataManager\Corporation\AssetManager;
@@ -103,10 +104,26 @@ class EveDataUpdateService {
         $em = $this->doctrine->getManager();
 
         $start = microtime(true);
-        $success = $this->tryCall($manager, $call, $c);
+
+        $key = $this->registry->get($manager)->getApiKey($c);
+
+        if ($key->getInvalid()){
+            $this->log->info(sprintf("Invalid Api key for %c", $c->getCorporationDetails()->getName()));
+            return;
+        }
+
+        if ($key->getErrorCount() >= 5){
+            $key->setInvalid(true)
+                ->setErrorCount(0);
+
+            $em->persist($key);
+            return;
+        }
+
+        $success = $this->tryCall($manager, $call, $c, $key);
 
         if (!$success){
-
+            $em->persist($key);
         }
 
         $update = $this->createApiUpdate(
@@ -124,7 +141,7 @@ class EveDataUpdateService {
         $this->log->info(sprintf("Done Executing %s in %s seconds", $call, $end));
     }
 
-    protected function tryCall($manager, $function, $arg){
+    protected function tryCall($manager, $function, $arg, ApiCredentials $key){
         try {
             $this->registry
                 ->get($manager)
@@ -137,6 +154,9 @@ class EveDataUpdateService {
                 $function,
                 $e->getMessage()
             ));
+
+            $count = $key->getErrorCount();
+            $key->setErrorCount($count + 1);
 
             return false;
         }

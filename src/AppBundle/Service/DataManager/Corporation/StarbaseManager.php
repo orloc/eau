@@ -4,6 +4,7 @@ namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\Starbase;
+use AppBundle\Exception\InvalidApiKeyException;
 use Carbon\Carbon;
 use AppBundle\Service\DataManager\MappableDataManagerInterface;
 use AppBundle\Service\DataManager\DataManagerInterface;
@@ -13,7 +14,12 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
 {
 
     public function getStarbases(Corporation $c){
-        $apiKey = $this->getApiKey($c);
+        try {
+            $apiKey = $this->getApiKey($c);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
         $client = $this->getClient($apiKey);
 
         $bases = $client->StarbaseList()

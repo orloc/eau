@@ -5,6 +5,7 @@ namespace AppBundle\Service\DataManager\Corporation;
 use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
 use AppBundle\Entity\Corporation;
+use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Service\AssetDetailUpdateManager;
 use AppBundle\Service\PriceUpdateManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
@@ -31,7 +32,12 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
 
     public function generateAssetList(Corporation $corporation){
 
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
 
         $client = $this->getClient($apiKey);
         $result = $client->AssetList();

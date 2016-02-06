@@ -4,6 +4,7 @@ namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidAccessMaskException;
+use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
 use Pheal\Core\Element;

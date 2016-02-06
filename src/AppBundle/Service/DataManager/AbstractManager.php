@@ -4,6 +4,7 @@ namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
+use AppBundle\Exception\InvalidApiKeyException;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use AppBundle\Entity\ApiCredentials;
 use EveBundle\Repository\Registry as EveRegistry;
@@ -45,7 +46,7 @@ abstract class AbstractManager {
             ->getActiveKey($entity);
 
         if ($apiKey === null){
-            throw new \Exception('No active api key for corp' . $entity->getId() .' found');
+            throw new InvalidApiKeyException('No active api key for corp' . $entity->getId() .' found');
         }
 
         return $apiKey;

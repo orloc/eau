@@ -5,6 +5,7 @@ namespace AppBundle\Service\DataManager\Corporation;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketOrder;
 use AppBundle\Entity\MarketOrderGroup;
+use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Service\DataManager\AbstractManager;
 use AppBundle\Service\DataManager\DataManagerInterface;
 use AppBundle\Service\DataManager\MappableDataManagerInterface;
@@ -14,7 +15,12 @@ class MarketOrderManager extends AbstractManager implements DataManagerInterface
 
     public function getMarketOrders(Corporation $corporation){
 
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
 
         $client = $this->getClient($apiKey);
 

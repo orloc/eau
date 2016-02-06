@@ -8,6 +8,7 @@ use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationDetail;
 use AppBundle\Entity\CorporationMember;
+use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Service\DataManager\ApiKeyManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use EveBundle\Repository\Registry as EveRegistry;
@@ -34,7 +35,12 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
 
     public function getCorporationDetails(Corporation $corporation){
 
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
 
         $client = $this->getClient($apiKey, 'account');
         $details = $client->APIKeyInfo()->key->characters[0];
@@ -44,7 +50,12 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
     }
 
     public function getMembers(Corporation $corporation){
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
 
         $client = $this->getClient($apiKey);
 
@@ -110,7 +121,13 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
     }
 
     public function getCorporationSheet(Corporation $corporation){
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
+
         $corpClient = $this->getClient($apiKey);
 
         $corpSheet = $corpClient->CorporationSheet();

@@ -5,6 +5,7 @@ namespace AppBundle\Service\DataManager\Corporation;
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\MarketTransaction;
+use AppBundle\Exception\InvalidApiKeyException;
 use Symfony\Bridge\Monolog\Logger;
 use Symfony\Component\OptionsResolver\Exception\OptionDefinitionException;
 use AppBundle\Service\DataManager\AbstractManager;
@@ -14,7 +15,12 @@ use AppBundle\Service\DataManager\MappableDataManagerInterface;
 class MarketTransactionManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
 
     public function updateMarketTransactions(Corporation $corporation, $fromID = null) {
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
 
         $client = $this->getClient($apiKey);
 

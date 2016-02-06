@@ -4,6 +4,7 @@ namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationTitle;
+use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Service\DataManager\AbstractManager;
 use AppBundle\Service\DataManager\DataManagerInterface;
 use AppBundle\Service\DataManager\MappableDataManagerInterface;
@@ -12,7 +13,12 @@ class TitleManager extends AbstractManager implements DataManagerInterface, Mapp
 
     public function updateTitles(Corporation $corporation){
 
-        $apiKey = $this->getApiKey($corporation);
+        try {
+            $apiKey = $this->getApiKey($corporation);
+        } catch (InvalidApiKeyException $e){
+            $this->log->info($e->getMessage());
+            return;
+        }
 
         $existingTitles = $this->doctrine->getRepository('AppBundle:CorporationTitle')
             ->findBy(['corporation' => $corporation]);
