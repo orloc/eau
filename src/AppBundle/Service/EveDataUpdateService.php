@@ -100,10 +100,14 @@ class EveDataUpdateService {
 
     protected function doUpdate($manager, $call, Corporation $c, $cache_style){
         $this->log->info(sprintf("Executing %s", $call));
-        $start = microtime(true) ;
+        $em = $this->doctrine->getManager();
+
+        $start = microtime(true);
         $success = $this->tryCall($manager, $call, $c);
 
-        $em = $this->doctrine->getManager();
+        if (!$success){
+
+        }
 
         $update = $this->createApiUpdate(
             $cache_style,

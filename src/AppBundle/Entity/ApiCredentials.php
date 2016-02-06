@@ -84,6 +84,11 @@ class ApiCredentials {
 
     /**
      * @ORM\Column(type="integer")
+     */
+    public $error_count;
+
+    /**
+     * @ORM\Column(type="integer")
      * @JMS\Expose()
      */
     protected $access_mask;
@@ -128,6 +133,8 @@ class ApiCredentials {
         $this->created_at = new \DateTime();
         $this->characters = new ArrayCollection();
         $this->is_active = false;
+        $this->invalid = false;
+        $this->error_count = 0;
     }
 
     /**
@@ -448,5 +455,28 @@ class ApiCredentials {
     public function getCharacters()
     {
         return $this->characters;
+    }
+
+    /**
+     * Set error_count
+     *
+     * @param integer $errorCount
+     * @return ApiCredentials
+     */
+    public function setErrorCount($errorCount)
+    {
+        $this->error_count = $errorCount;
+
+        return $this;
+    }
+
+    /**
+     * Get error_count
+     *
+     * @return integer 
+     */
+    public function getErrorCount()
+    {
+        return $this->error_count;
     }
 }

@@ -16,8 +16,9 @@ class ApiCredentialRepository extends EntityRepository {
             ->leftJoin('api.characters', 'char')
             ->leftJoin('char.user', 'u')
             ->where('api.is_active = :active')
+            ->andWhere('api.invalid != :invalid_bool')
             ->andWhere('u = :user')
-            ->setParameters(['user' => $user, 'active' => true])
+            ->setParameters(['user' => $user, 'active' => true, 'invalid_bool' => true])
             ->getQuery()->getResult();
     }
 
@@ -48,8 +49,9 @@ class ApiCredentialRepository extends EntityRepository {
         return $this->createQueryBuilder('api')
             ->select('api')
             ->where('api.is_active = :active')
+            ->andWhere('api.invalid != :invalid_bool')
             ->andWhere('api.corporation = :corp')
-            ->setParameters(['corp' => $corp, 'active' => true])
+            ->setParameters(['corp' => $corp, 'active' => true, 'invalid_bool' => true])
             ->getQuery()->getOneOrNullResult();
 
     }

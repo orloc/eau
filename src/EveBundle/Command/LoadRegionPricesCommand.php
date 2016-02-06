@@ -45,8 +45,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
 
-        $items = array_chunk($items, 100)[0];
-
         // regions we actually need
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
@@ -85,18 +83,18 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                     $progress->advance();
                 }
             ]);
-            $progress->finish();
 
             $promise = $pool->promise();
             $promise->wait();
 
             $real_region = $regionRepo->getRegionById($region);
 
-            $count = 0;
 
+            $progress->finish();
             $progress = new ProgressBar($output, count($processableData));
             $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%%  <question>%memory:6s%</question> <info> Updating Database </info>');
 
+            $count = 0;
             foreach ($processableData as $i => $processableItem){
                 if (is_array($processableItem) && isset($index[$i])) {
                     $exists = $em->getRepository('EveBundle:ItemPrice')
