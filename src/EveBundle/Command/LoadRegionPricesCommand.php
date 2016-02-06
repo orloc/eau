@@ -45,6 +45,8 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
 
+        $items = array_chunk($items, 100)[0];
+
         // regions we actually need
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
@@ -83,6 +85,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                     $progress->advance();
                 }
             ]);
+            $progress->finish();
 
             $promise = $pool->promise();
             $promise->wait();
@@ -90,16 +93,26 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             $real_region = $regionRepo->getRegionById($region);
 
             $count = 0;
+
+            $progress = new ProgressBar($output, count($processableData));
+            $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%%  <question>%memory:6s%</question> <info> Updating Database </info>');
+
             foreach ($processableData as $i => $processableItem){
                 if (is_array($processableItem) && isset($index[$i])) {
                     $exists = $em->getRepository('EveBundle:ItemPrice')
                         ->hasItem($real_region['regionID'], $index[$i]['typeID']);
 
-                    var_dump($exists);die;
-                    $p = $this->makePriceData($processableItem, $real_region, $index[$i]);
+                    if ($exists instanceof ItemPrice){
+                        $p = $this->updatePriceData($processableItem, $exists);
+                        $log->addDebug("Updating item {$p->getTypeName()} in {$p->getRegionName()}");
+                    } else  {
+                        $p = $this->makePriceData($processableItem, $real_region, $index[$i]);
+                        $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
+                    }
+                    $progress->advance();
+
                     $em->persist($p);
                     $count++;
-                    $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
 
                     if ($count % (count($processableData) / 20) === 0){
                         $em->flush();
@@ -107,11 +120,22 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                     }
                 }
             }
-
+            $progress->finish();
+            $em->flush();
         }
 
-        $em->flush();
-        $progress->finish();
+    }
+
+    protected function updatePriceData(array $item, ItemPrice $price){
+        $price->setVolume($item['volume'])
+            ->setOrderCount($item['orderCount'])
+            ->setHighPrice($item['highPrice'])
+            ->setLowPrice($item['lowPrice'])
+            ->setAvgPrice($item['avgPrice'])
+            ->setDate(new \DateTime($item['date']));
+
+        return $price;
+
     }
 
     protected function makePriceData(array $data, array $region, array $item){
