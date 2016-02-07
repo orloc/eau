@@ -58,9 +58,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             return array_merge($carry, $value->getRegions());
         });
 
-        $progress = new ProgressBar($output, count($neededRegions) * count($items));
-        $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> Updating %message% </info>');
-
         $log->addDebug("Beginning Import");
 
         $client = new Client();
@@ -74,6 +71,9 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             $errors = [];
             $real_region = $regionRepo->getRegionById($region);
             foreach ($chunked_items as $items){
+                $progress = new ProgressBar($output, count($items));
+                $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> Updating %message% </info>');
+
                 list($processableData, $index) = $this->buildIndex($items);
 
                 $progress->setMessage($real_region['regionName']);
