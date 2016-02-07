@@ -45,8 +45,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
 
-        $items = array_chunk($items, count($items)/20)[0];
-
         // regions we actually need
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
