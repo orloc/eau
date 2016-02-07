@@ -45,6 +45,8 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
 
+        $chunked_items = array_chunk($items, count($items) / 30);
+
         // regions we actually need
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
@@ -71,58 +73,61 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         foreach ($neededRegions as $region){
             $errors = [];
             $real_region = $regionRepo->getRegionById($region);
-            list($processableData, $index) = $this->buildIndex($items);
+            foreach ($chunked_items as $items){
+                list($processableData, $index) = $this->buildIndex($items);
 
-            $progress->setMessage($real_region['regionName']);
+                $progress->setMessage($real_region['regionName']);
 
-            $pool = new Pool($client, $requests($region, $items), [
-                'fulfilled' => function($response, $i) use (&$processableData, $progress, $log) {
-                    $obj = json_decode($response->getBody()->getContents(), true);
-                    $processableData[$i] = array_pop($obj['items']);
-                    $progress->advance();
-                },
-                'rejected' => function($reason, $i) use ($log, $progress, $real_region) {
-                    $errors[$i] = $reason;
-                    $progress->setMessage(sprintf("{$real_region['regionName']} with %s errors", count($errors)));
-                    $progress->advance();
-                }
-            ]);
-
-            $promise = $pool->promise();
-            $promise->wait();
-
-
-            $progress->finish();
-            $progress = new ProgressBar($output, count($processableData));
-            $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%%  <question>%memory:6s%</question> <info> Updating Database </info>');
-
-            $count = 0;
-            foreach ($processableData as $i => $processableItem){
-                if (is_array($processableItem) && isset($index[$i])) {
-                    $exists = $em->getRepository('EveBundle:ItemPrice')
-                        ->hasItem($real_region['regionID'], $index[$i]['typeID']);
-
-                    if ($exists instanceof ItemPrice){
-                        $p = $this->updatePriceData($processableItem, $exists);
-                        $log->addDebug("Updating item {$p->getTypeName()} in {$p->getRegionName()}");
-                    } else  {
-                        $p = $this->makePriceData($processableItem, $real_region, $index[$i]);
-                        $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
+                $pool = new Pool($client, $requests($region, $items), [
+                    'fulfilled' => function($response, $i) use (&$processableData, $progress, $log) {
+                        $obj = json_decode($response->getBody()->getContents(), true);
+                        $processableData[$i] = array_pop($obj['items']);
+                        $progress->advance();
+                    },
+                    'rejected' => function($reason, $i) use ($log, $progress, $real_region) {
+                        $errors[$i] = $reason;
+                        $progress->setMessage(sprintf("{$real_region['regionName']} with %s errors", count($errors)));
+                        $progress->advance();
                     }
-                    $progress->advance();
+                ]);
 
-                    $em->persist($p);
-                    $count++;
+                $promise = $pool->promise();
+                $promise->wait();
 
-                    if ($count % (count($processableData) / 20) === 0){
-                        $log->addDebug('Flushing Set');
-                        $em->flush();
-                        $em->clear();
+
+                $progress->finish();
+                $progress = new ProgressBar($output, count($processableData));
+                $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%%  <question>%memory:6s%</question> <info> Updating Database </info>');
+
+                $count = 0;
+                foreach ($processableData as $i => $processableItem){
+                    if (is_array($processableItem) && isset($index[$i])) {
+                        $exists = $em->getRepository('EveBundle:ItemPrice')
+                            ->hasItem($real_region['regionID'], $index[$i]['typeID']);
+
+                        if ($exists instanceof ItemPrice){
+                            $p = $this->updatePriceData($processableItem, $exists);
+                            $log->addDebug("Updating item {$p->getTypeName()} in {$p->getRegionName()}");
+                        } else  {
+                            $p = $this->makePriceData($processableItem, $real_region, $index[$i]);
+                            $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
+                        }
+                        $progress->advance();
+
+                        $em->persist($p);
+                        $count++;
+
+                        if ($count % (count($processableData) / 20) === 0){
+                            $log->addDebug('Flushing Set');
+                            $em->flush();
+                            $em->clear();
+                        }
                     }
                 }
+                $progress->finish();
+                $em->flush();
+
             }
-            $progress->finish();
-            $em->flush();
         }
 
     }
