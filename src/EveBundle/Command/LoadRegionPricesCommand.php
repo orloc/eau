@@ -45,6 +45,8 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $items = $eveRegistry->get('EveBundle:ItemType')
             ->findAllMarketItems();
 
+        $items = array_chunk($items, count($items)/20)[0];
+
         // regions we actually need
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
@@ -57,7 +59,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         });
 
         $progress = new ProgressBar($output, count($neededRegions) * count($items));
-        $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> %message% </info>');
+        $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> Updating %message% </info>');
 
         $log->addDebug("Beginning Import");
 
@@ -70,24 +72,26 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
         foreach ($neededRegions as $region){
             $errors = [];
+            $real_region = $regionRepo->getRegionById($region);
             list($processableData, $index) = $this->buildIndex($items);
+
+            $progress->setMessage($real_region['regionName']);
+
             $pool = new Pool($client, $requests($region, $items), [
-                'concurrency' => 10,
-                'fulfilled' => function($response, $index) use (&$processableData, $progress, $log) {
+                'fulfilled' => function($response, $i) use (&$processableData, $progress, $log) {
                     $obj = json_decode($response->getBody()->getContents(), true);
-                    $processableData[$index] = array_pop($obj['items']);
+                    $processableData[$i] = array_pop($obj['items']);
                     $progress->advance();
                 },
-                'rejected' => function($reason, $index) use ($log, $progress) {
-                    $errors[$index] = $reason;
+                'rejected' => function($reason, $i) use ($log, $progress, $real_region) {
+                    $errors[$i] = $reason;
+                    $progress->setMessage(sprintf("{$real_region['regionName']} with %s errors", count($errors)));
                     $progress->advance();
                 }
             ]);
 
             $promise = $pool->promise();
             $promise->wait();
-
-            $real_region = $regionRepo->getRegionById($region);
 
 
             $progress->finish();
@@ -113,6 +117,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                     $count++;
 
                     if ($count % (count($processableData) / 20) === 0){
+                        $log->addDebug('Flushing Set');
                         $em->flush();
                         $em->clear();
                     }
