@@ -28,6 +28,26 @@ class MarketOrderRepository extends EntityRepository
 
     }
 
+    public function getBuyOrders(MarketOrderGroup $group){
+        return $this->createQueryBuilder('mo')
+            ->andWhere('mo.bid = :bid')
+            ->andWhere('mo.market_order_group = :mgroup ')
+            ->setParameter('mgroup', $group)
+            ->setParameter('bid', 1)
+            ->getQuery()->getResult();
+
+    }
+
+    public function getSellOrders(MarketOrderGroup $group){
+        return $this->createQueryBuilder('mo')
+            ->andWhere('mo.bid = :bid')
+            ->andWhere('mo.market_order_group = :mgroup ')
+            ->setParameter('mgroup', $group)
+            ->setParameter('bid', 0)
+            ->getQuery()->getResult();
+
+    }
+
     public function getOpenSellOrders(MarketOrderGroup $group){
 
         return $this->createQueryBuilder('mo')

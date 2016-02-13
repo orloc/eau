@@ -37,8 +37,8 @@ class MarketOrderController extends AbstractController implements ApiControllerI
             return $this->jsonResponse(json_encode(['error' => 'not found']), 400);
         }
 
-        $orders = $repo->getOpenBuyOrders($newestGroup);
-        $sellorders = $repo->getOpenSellOrders($newestGroup);
+        $orders = $repo->getBuyOrders($newestGroup);
+        $sellorders = $repo->getSellOrders($newestGroup);
 
         $total_onMarket = array_reduce($sellorders, function($carry, $data){
             if ($carry === null){
