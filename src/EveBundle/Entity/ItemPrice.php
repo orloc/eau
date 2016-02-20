@@ -7,12 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="EveBundle\Repository\ItemPriceRepository")
  * @ORM\Table(name="item_prices", uniqueConstraints={
-    @ORM\UniqueConstraint(name="item_price_date_idx", columns={"region_id", "type_id", "date"})})
- * @package AppBundle\Entity
  */
 class ItemPrice
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -75,14 +72,15 @@ class ItemPrice
      */
     protected $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -90,9 +88,10 @@ class ItemPrice
     }
 
     /**
-     * Set volume
+     * Set volume.
      *
-     * @param integer $volume
+     * @param int $volume
+     *
      * @return ItemPrice
      */
     public function setVolume($volume)
@@ -103,9 +102,9 @@ class ItemPrice
     }
 
     /**
-     * Get volume
+     * Get volume.
      *
-     * @return integer 
+     * @return int
      */
     public function getVolume()
     {
@@ -113,9 +112,10 @@ class ItemPrice
     }
 
     /**
-     * Set order_count
+     * Set order_count.
      *
-     * @param integer $orderCount
+     * @param int $orderCount
+     *
      * @return ItemPrice
      */
     public function setOrderCount($orderCount)
@@ -126,9 +126,9 @@ class ItemPrice
     }
 
     /**
-     * Get order_count
+     * Get order_count.
      *
-     * @return integer 
+     * @return int
      */
     public function getOrderCount()
     {
@@ -136,9 +136,10 @@ class ItemPrice
     }
 
     /**
-     * Set low_price
+     * Set low_price.
      *
      * @param string $lowPrice
+     *
      * @return ItemPrice
      */
     public function setLowPrice($lowPrice)
@@ -149,9 +150,9 @@ class ItemPrice
     }
 
     /**
-     * Get low_price
+     * Get low_price.
      *
-     * @return string 
+     * @return string
      */
     public function getLowPrice()
     {
@@ -159,9 +160,10 @@ class ItemPrice
     }
 
     /**
-     * Set high_price
+     * Set high_price.
      *
      * @param string $highPrice
+     *
      * @return ItemPrice
      */
     public function setHighPrice($highPrice)
@@ -172,9 +174,9 @@ class ItemPrice
     }
 
     /**
-     * Get high_price
+     * Get high_price.
      *
-     * @return string 
+     * @return string
      */
     public function getHighPrice()
     {
@@ -182,9 +184,10 @@ class ItemPrice
     }
 
     /**
-     * Set avg_price
+     * Set avg_price.
      *
      * @param string $avgPrice
+     *
      * @return ItemPrice
      */
     public function setAvgPrice($avgPrice)
@@ -195,9 +198,9 @@ class ItemPrice
     }
 
     /**
-     * Get avg_price
+     * Get avg_price.
      *
-     * @return string 
+     * @return string
      */
     public function getAvgPrice()
     {
@@ -205,9 +208,10 @@ class ItemPrice
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
+     *
      * @return ItemPrice
      */
     public function setDate($date)
@@ -218,9 +222,9 @@ class ItemPrice
     }
 
     /**
-     * Get date
+     * Get date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -228,9 +232,10 @@ class ItemPrice
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return ItemPrice
      */
     public function setCreatedAt($createdAt)
@@ -241,9 +246,9 @@ class ItemPrice
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -251,9 +256,10 @@ class ItemPrice
     }
 
     /**
-     * Set region_id
+     * Set region_id.
      *
-     * @param integer $regionId
+     * @param int $regionId
+     *
      * @return ItemPrice
      */
     public function setRegionId($regionId)
@@ -264,9 +270,9 @@ class ItemPrice
     }
 
     /**
-     * Get region_id
+     * Get region_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getRegionId()
     {
@@ -274,9 +280,10 @@ class ItemPrice
     }
 
     /**
-     * Set region_name
+     * Set region_name.
      *
      * @param string $regionName
+     *
      * @return ItemPrice
      */
     public function setRegionName($regionName)
@@ -287,9 +294,9 @@ class ItemPrice
     }
 
     /**
-     * Get region_name
+     * Get region_name.
      *
-     * @return string 
+     * @return string
      */
     public function getRegionName()
     {
@@ -297,9 +304,10 @@ class ItemPrice
     }
 
     /**
-     * Set type_id
+     * Set type_id.
      *
-     * @param integer $typeId
+     * @param int $typeId
+     *
      * @return ItemPrice
      */
     public function setTypeId($typeId)
@@ -310,9 +318,9 @@ class ItemPrice
     }
 
     /**
-     * Get type_id
+     * Get type_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getTypeId()
     {
@@ -320,9 +328,10 @@ class ItemPrice
     }
 
     /**
-     * Set type_name
+     * Set type_name.
      *
      * @param string $typeName
+     *
      * @return ItemPrice
      */
     public function setTypeName($typeName)
@@ -333,9 +342,9 @@ class ItemPrice
     }
 
     /**
-     * Get type_name
+     * Get type_name.
      *
-     * @return string 
+     * @return string
      */
     public function getTypeName()
     {

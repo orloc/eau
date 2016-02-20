@@ -14,8 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Corporation controller.
  */
-class CorporationController extends AbstractController implements ApiControllerInterface {
-
+class CorporationController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/", name="api.corps", options={"expose"=true})
      * @Method("GET")
@@ -23,23 +23,21 @@ class CorporationController extends AbstractController implements ApiControllerI
      */
     public function indexAction()
     {
-
         $user = $this->getUser();
         $corpRepo = $this->getDoctrine()->getRepository('AppBundle:Corporation');
         $corps = [];
 
-        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN')){
+        if ($user->hasRole('ROLE_ADMIN') || $user->hasRole('ROLE_SUPER_ADMIN')) {
             $corps = $corpRepo->findAllUpdatedCorporations();
-        }
-        else if ($user->hasRole('ROLE_ALLIANCE_LEADER')){
+        } elseif ($user->hasRole('ROLE_ALLIANCE_LEADER')) {
             $main = $this->getDoctrine()->getRepository('AppBundle:Character')
                 ->getMainCharacter($user);
 
             $corp = $corpRepo->findByCorpName($main->getCorporationName());
             $corps = $corpRepo->findCorporationsByAlliance($corp->getCorporationDetails()->getAllianceName());
-        } else if ($user->hasRole('ROLE_CEO') || $user->hasRole('ROLE_DIRECTOR')) {
+        } elseif ($user->hasRole('ROLE_CEO') || $user->hasRole('ROLE_DIRECTOR')) {
             $characters = $this->getDoctrine()->getRepository('AppBundle:Character')->findBy(['user' => $user]);
-            $names = array_map(function($c){
+            $names = array_map(function ($c) {
                 return $c->getName();
             }, $characters);
             $main = $this->getDoctrine()->getRepository('AppBundle:Character')
@@ -47,13 +45,13 @@ class CorporationController extends AbstractController implements ApiControllerI
 
             $corps = $corpRepo->findCorpByCeoList($names);
             $hasAllCorps = false;
-            foreach ($corps as $c){
-                if ($c->getCorporationDetails()->getName() === $main->getCorporationName()){
+            foreach ($corps as $c) {
+                if ($c->getCorporationDetails()->getName() === $main->getCorporationName()) {
                     $hasAllCorps = true;
                     break;
                 }
             }
-            if (!$hasAllCorps){
+            if (!$hasAllCorps) {
                 $corps[] = $corpRepo->findByCorpName($main->getCorporationName());
             }
         }
@@ -61,7 +59,6 @@ class CorporationController extends AbstractController implements ApiControllerI
         $json = $this->get('jms_serializer')->serialize($corps, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -78,7 +75,6 @@ class CorporationController extends AbstractController implements ApiControllerI
         $json = $this->get('jms_serializer')->serialize($corp, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -99,7 +95,7 @@ class CorporationController extends AbstractController implements ApiControllerI
 
         $errors = $validator->validate($key);
 
-        if (count($errors) > 0){
+        if (count($errors) > 0) {
             return $this->getErrorResponse($errors);
         }
 
@@ -114,22 +110,20 @@ class CorporationController extends AbstractController implements ApiControllerI
 
             $em->persist($corp);
             $em->flush();
-        } catch (\Exception $e){
-
+        } catch (\Exception $e) {
             $this->get('logger')->warning(sprintf('Invalid API creation attempt Key: %s Code %s User_Id: %s',
                 $content->get('api_key'),
                 $content->get('verification_code'),
                 $this->getUser() instanceof User ? $this->getUser()->getId() : '.anon'
             ));
 
-            return $this->jsonResponse($jms->serialize([ ['message' => $e->getMessage() ]], 'json'), 400);
+            return $this->jsonResponse($jms->serialize([['message' => $e->getMessage()]], 'json'), 400);
         }
 
         $json = $jms->serialize($corp, 'json');
 
         return $this->jsonResponse($json, 200, [
-            'Connection' => 'close'
+            'Connection' => 'close',
         ]);
-
     }
 }

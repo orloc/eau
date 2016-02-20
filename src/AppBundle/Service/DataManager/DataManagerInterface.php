@@ -2,8 +2,7 @@
 
 namespace AppBundle\Service\DataManager;
 
-interface DataManagerInterface {
-
+interface DataManagerInterface
+{
     public static function getName();
-
 }

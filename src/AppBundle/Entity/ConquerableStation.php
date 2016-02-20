@@ -4,18 +4,14 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ConquerableStationRepository")
  * @ORM\Table(name="conquerable_stations")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class ConquerableStation
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -54,12 +50,10 @@ class ConquerableStation
      */
     protected $corporation_name;
 
-
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -67,9 +61,10 @@ class ConquerableStation
     }
 
     /**
-     * Set station_id
+     * Set station_id.
      *
-     * @param integer $stationId
+     * @param int $stationId
+     *
      * @return ConquerableStation
      */
     public function setStationId($stationId)
@@ -80,9 +75,9 @@ class ConquerableStation
     }
 
     /**
-     * Get station_id
+     * Get station_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getStationId()
     {
@@ -90,9 +85,10 @@ class ConquerableStation
     }
 
     /**
-     * Set station_name
+     * Set station_name.
      *
      * @param string $stationName
+     *
      * @return ConquerableStation
      */
     public function setStationName($stationName)
@@ -103,9 +99,9 @@ class ConquerableStation
     }
 
     /**
-     * Get station_name
+     * Get station_name.
      *
-     * @return string 
+     * @return string
      */
     public function getStationName()
     {
@@ -113,9 +109,10 @@ class ConquerableStation
     }
 
     /**
-     * Set station_type_id
+     * Set station_type_id.
      *
-     * @param integer $stationTypeId
+     * @param int $stationTypeId
+     *
      * @return ConquerableStation
      */
     public function setStationTypeId($stationTypeId)
@@ -126,9 +123,9 @@ class ConquerableStation
     }
 
     /**
-     * Get station_type_id
+     * Get station_type_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getStationTypeId()
     {
@@ -136,9 +133,10 @@ class ConquerableStation
     }
 
     /**
-     * Set solar_system_id
+     * Set solar_system_id.
      *
-     * @param integer $solarSystemId
+     * @param int $solarSystemId
+     *
      * @return ConquerableStation
      */
     public function setSolarSystemId($solarSystemId)
@@ -149,9 +147,9 @@ class ConquerableStation
     }
 
     /**
-     * Get solar_system_id
+     * Get solar_system_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getSolarSystemId()
     {
@@ -159,9 +157,10 @@ class ConquerableStation
     }
 
     /**
-     * Set corporation_id
+     * Set corporation_id.
      *
-     * @param integer $corporationId
+     * @param int $corporationId
+     *
      * @return ConquerableStation
      */
     public function setCorporationId($corporationId)
@@ -172,9 +171,9 @@ class ConquerableStation
     }
 
     /**
-     * Get corporation_id
+     * Get corporation_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getCorporationId()
     {
@@ -182,9 +181,10 @@ class ConquerableStation
     }
 
     /**
-     * Set corporation_name
+     * Set corporation_name.
      *
      * @param string $corporationName
+     *
      * @return ConquerableStation
      */
     public function setCorporationName($corporationName)
@@ -195,9 +195,9 @@ class ConquerableStation
     }
 
     /**
-     * Get corporation_name
+     * Get corporation_name.
      *
-     * @return string 
+     * @return string
      */
     public function getCorporationName()
     {

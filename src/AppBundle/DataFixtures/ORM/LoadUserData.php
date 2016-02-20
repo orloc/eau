@@ -3,23 +3,23 @@
 namespace AppBundle\DataFixtures\Test;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use \Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use FOS\UserBundle\Doctrine\UserManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
-class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
-
+class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+{
     private $container;
 
-    public function setContainer(ContainerInterface $container = null){
+    public function setContainer(ContainerInterface $container = null)
+    {
         $this->container = $container;
     }
 
-    public function load(ObjectManager $manager){
-
+    public function load(ObjectManager $manager)
+    {
         $userManager = $this->container->get('fos_user.user_manager');
 
         $users = [
@@ -29,7 +29,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
-                'roles' => ['ROLE_SUPER_ADMIN']
+                'roles' => ['ROLE_SUPER_ADMIN'],
             ],
             [
                 'username' => 'alliance_leader',
@@ -37,7 +37,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
-                'roles' => ['ROLE_ALLIANCE_LEADER']
+                'roles' => ['ROLE_ALLIANCE_LEADER'],
             ],
             [
                 'username' => 'ceo',
@@ -45,7 +45,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
-                'roles' => ['ROLE_CEO']
+                'roles' => ['ROLE_CEO'],
             ],
             [
                 'username' => 'director',
@@ -53,7 +53,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
-                'roles' => ['ROLE_DIRECTOR']
+                'roles' => ['ROLE_DIRECTOR'],
             ],
             [
                 'username' => 'member',
@@ -61,11 +61,11 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
                 'enabled' => true,
                 'password' => 'password',
                 'locked' => false,
-                'roles' => ['ROLE_CORP_MEMBER']
+                'roles' => ['ROLE_CORP_MEMBER'],
             ],
         ];
 
-        foreach ($users as $u){
+        foreach ($users as $u) {
             $user = $this->createUser($u, $userManager);
             $userManager->updateUser($user, false);
         }
@@ -73,8 +73,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $manager->flush();
     }
 
-    public function createUser(array $data, UserManager $userManager){
-
+    public function createUser(array $data, UserManager $userManager)
+    {
         $user = $userManager->createUser();
 
         $user->setUsername($data['username'])
@@ -85,10 +85,10 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             ->setPlainPassword($data['password']);
 
         return $user;
-
     }
 
-    public function getOrder(){
+    public function getOrder()
+    {
         return 1;
     }
 }

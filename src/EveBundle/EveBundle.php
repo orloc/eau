@@ -8,8 +8,8 @@ use EveBundle\DependencyInjection\Compiler\RepositoryRegistryCompilerPass;
 
 class EveBundle extends Bundle
 {
-
-    public function build(ContainerBuilder $container){
+    public function build(ContainerBuilder $container)
+    {
         parent::build($container);
 
         $container->addCompilerPass(new RepositoryRegistryCompilerPass());

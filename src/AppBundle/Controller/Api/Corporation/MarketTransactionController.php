@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Market transaction controller.
  */
-class MarketTransactionController extends AbstractController implements ApiControllerInterface {
-
+class MarketTransactionController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/account/{acc_id}/markettransaction", name="api.corporation.account.markettransactions", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -33,9 +33,9 @@ class MarketTransactionController extends AbstractController implements ApiContr
         $date = $request->get('date', null);
         $type = $request->get('type', 'buy');
 
-        if ($date === null){
+        if ($date === null) {
             $arr = $this->getDoctrine()->getRepository('AppBundle:MarketTransaction')->findBy([
-                'account' => $account
+                'account' => $account,
             ]);
         } else {
             $reduced = $this->reduceOrders(
@@ -48,35 +48,38 @@ class MarketTransactionController extends AbstractController implements ApiContr
         $json = $this->get('serializer')->serialize(isset($arr) ? $arr : $reduced, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
-    protected function reduceOrders(array $orders){
-        $reduced =  [];
-        foreach ($orders as $name => $prices){
-            foreach ($prices as $price => $objs){
-                $obj = array_reduce($objs, function($carry, $value){
-                    if ($carry === null){
+    protected function reduceOrders(array $orders)
+    {
+        $reduced = [];
+        foreach ($orders as $name => $prices) {
+            foreach ($prices as $price => $objs) {
+                $obj = array_reduce($objs, function ($carry, $value) {
+                    if ($carry === null) {
                         return $value;
                     }
-                    return $value->setQuantity($carry->getQuantity()+$value->getQuantity());
+
+                    return $value->setQuantity($carry->getQuantity() + $value->getQuantity());
                 });
                 $reduced[] = $obj;
             }
         }
+
         return $reduced;
     }
 
-    protected function getOrderReference(array $orders){
+    protected function getOrderReference(array $orders)
+    {
         $sorted = [];
-        foreach ($orders as $o){
+        foreach ($orders as $o) {
             $itemName = $o->getItemName();
             $itemPrice = $o->getPrice();
-            if (!isset($sorted[$itemName])){
+            if (!isset($sorted[$itemName])) {
                 $sorted[$itemName] = [];
             }
 
-            if (!isset($sorted[$itemName][$itemPrice])){
+            if (!isset($sorted[$itemName][$itemPrice])) {
                 $sorted[$itemName][$itemPrice] = [];
             }
             $sorted[$itemName][$itemPrice][] = $o;
@@ -85,14 +88,15 @@ class MarketTransactionController extends AbstractController implements ApiContr
         return $sorted;
     }
 
-    protected function getOrders(Account $account, $date, $type){
+    protected function getOrders(Account $account, $date, $type)
+    {
         $dt = Carbon::createFromTimestamp($date);
         $orders = [];
         $repo = $this->getDoctrine()->getRepository('AppBundle:MarketTransaction');
 
-        if ($type === 'buy'){
+        if ($type === 'buy') {
             $orders = $repo->getTotalBuyForDate($account, $dt);
-        } else if ($type === 'sell'){
+        } elseif ($type === 'sell') {
             $orders = $repo->getTotalSellForDate($account, $dt);
         }
 

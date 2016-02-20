@@ -2,11 +2,12 @@
 
 namespace EveBundle\Repository;
 
-class Registry {
-
+class Registry
+{
     protected $repositories;
 
-    public function set(RepositoryInterface $repo){
+    public function set(RepositoryInterface $repo)
+    {
         if (!isset($this->repositories[$repo->getName()])) {
             $this->repositories[strtolower($repo->getName())] = $repo;
         }
@@ -14,10 +15,10 @@ class Registry {
         return $this;
     }
 
-    public function get($name){
-
+    public function get($name)
+    {
         $name = strtolower($name);
-        if (isset($this->repositories[$name])){
+        if (isset($this->repositories[$name])) {
             return $this->repositories[$name];
         }
 

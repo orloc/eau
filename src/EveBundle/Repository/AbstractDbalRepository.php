@@ -2,14 +2,14 @@
 
 namespace EveBundle\Repository;
 
-
 use Doctrine\DBAL\Connection;
 
-abstract class AbstractDbalRepository {
-
+abstract class AbstractDbalRepository
+{
     protected $conn;
 
-    public function __construct(Connection $dbal){
-        $this->conn  = $dbal;
+    public function __construct(Connection $dbal)
+    {
+        $this->conn = $dbal;
     }
 }

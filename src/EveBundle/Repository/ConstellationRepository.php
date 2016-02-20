@@ -2,26 +2,25 @@
 
 namespace EveBundle\Repository;
 
-class ConstellationRepository extends AbstractDbalRepository implements RepositoryInterface {
-
-    public function getName(){
+class ConstellationRepository extends AbstractDbalRepository implements RepositoryInterface
+{
+    public function getName()
+    {
         return 'EveBundle:Constellation';
     }
 
-    public function getTableName(){
+    public function getTableName()
+    {
         return 'mapConstellations';
     }
 
-    public function getConstellationById($constellationId){
-
+    public function getConstellationById($constellationId)
+    {
         $sql = "SELECT constellationName as name FROM {$this->getTableName()} WHERE constellationID = :id ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $constellationId]);
 
         return $stmt->fetch();
-
     }
-
 }
-

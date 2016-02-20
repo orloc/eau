@@ -6,9 +6,8 @@ use AppBundle\Tests\WebTestCase;
 
 class DefaultControllerTest extends WebTestCase
 {
-
-
-    public function setUp(){
+    public function setUp()
+    {
         $this->client = static::createClient();
     }
 
@@ -20,7 +19,8 @@ class DefaultControllerTest extends WebTestCase
         $this->assertContains('Eve Alliance Utility', $crawler->filter('#intro .container h2')->text());
     }
 
-    public function testLegalPage(){
+    public function testLegalPage()
+    {
         $crawler = $this->client->request('GET', '/legal');
 
         $this->assertStatusCode(200, $this->client);

@@ -4,44 +4,44 @@ namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationTitle;
-use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Service\DataManager\AbstractManager;
 use AppBundle\Service\DataManager\DataManagerInterface;
 use AppBundle\Service\DataManager\MappableDataManagerInterface;
 
-class TitleManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface {
-
-    public function updateTitles(Corporation $corporation){
-
+class TitleManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface
+{
+    public function updateTitles(Corporation $corporation)
+    {
         $apiKey = $this->getApiKey($corporation);
 
         $existingTitles = $this->doctrine->getRepository('AppBundle:CorporationTitle')
             ->findBy(['corporation' => $corporation]);
 
-        foreach ($existingTitles as $et){
+        foreach ($existingTitles as $et) {
             $this->doctrine->getManager()->remove($et);
         }
 
         $client = $this->getClient($apiKey);
 
         $titles = $client->Titles([
-            'characterID' => $apiKey->getEveCharacterId()
+            'characterID' => $apiKey->getEveCharacterId(),
         ]);
 
         $this->mapList($titles->titles, ['corp' => $corporation]);
-
     }
 
-    public function mapList($items, array $options){
+    public function mapList($items, array $options)
+    {
         $corp = $options['corp'];
 
-        foreach ($items as $i){
+        foreach ($items as $i) {
             $item = $this->mapItem($i->toArray());
             $corp->addTitle($item);
         }
     }
 
-    public function mapItem($item){
+    public function mapItem($item)
+    {
         $title = new CorporationTitle();
 
         $title->setEveTitleId($item['titleID'])
@@ -56,8 +56,8 @@ class TitleManager extends AbstractManager implements DataManagerInterface, Mapp
         return $title;
     }
 
-    public static function getName(){
+    public static function getName()
+    {
         return 'title_manager';
     }
-
 }

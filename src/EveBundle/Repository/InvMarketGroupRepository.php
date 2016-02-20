@@ -2,28 +2,30 @@
 
 namespace EveBundle\Repository;
 
-class InvMarketGroupRepository extends AbstractDbalRepository implements RepositoryInterface {
-
-    public function getName(){
+class InvMarketGroupRepository extends AbstractDbalRepository implements RepositoryInterface
+{
+    public function getName()
+    {
         return 'EveBundle:MarketGroup';
     }
 
-    public function getTableName(){
+    public function getTableName()
+    {
         return 'invMarketGroups';
     }
 
-    public function getOreGroups(){
-
+    public function getOreGroups()
+    {
         $sql = "SELECT * FROM {$this->getTableName()} WHERE parentGroupID = :id ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => 54]);
 
         return $stmt->fetchAll();
-
     }
 
-    public function getTopLevelGroups(){
+    public function getTopLevelGroups()
+    {
         $sql = "SELECT * FROM {$this->getTableName()} WHERE parentGroupID IS NULL ";
 
         $stmt = $this->conn->prepare($sql);
@@ -32,7 +34,8 @@ class InvMarketGroupRepository extends AbstractDbalRepository implements Reposit
         return $stmt->fetchAll();
     }
 
-    public function getInList(array $list){
+    public function getInList(array $list)
+    {
         $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getTableName()} WHERE marketGroupID IN (?)",
             array($list),
             array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
@@ -42,7 +45,8 @@ class InvMarketGroupRepository extends AbstractDbalRepository implements Reposit
         return $stmt->fetchAll();
     }
 
-    public function getAllGroups(){
+    public function getAllGroups()
+    {
         $sql = "SELECT * FROM {$this->getTableName()}";
 
         $stmt = $this->conn->prepare($sql);
@@ -50,6 +54,4 @@ class InvMarketGroupRepository extends AbstractDbalRepository implements Reposit
 
         return $stmt->fetchAll();
     }
-
 }
-

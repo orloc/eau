@@ -1,11 +1,9 @@
 <?php
 
-
 namespace EveBundle\Repository;
 
-
-interface RepositoryInterface {
-
+interface RepositoryInterface
+{
     public function getName();
 
     public function getTableName();

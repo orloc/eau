@@ -12,15 +12,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Data controller.
  */
-class DataController extends AbstractController implements ApiControllerInterface {
-
+class DataController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/item_list", name="api.item_list", options={"expose"=true})
      * @Method("GET")
      * @Secure(roles="ROLE_USER")
      */
-    public function getItemList(Request $request){
-
+    public function getItemList(Request $request)
+    {
         $items = $this->get('evedata.registry')
             ->get('EveBundle:ItemType')
             ->findAllMarketItems();
@@ -28,7 +28,6 @@ class DataController extends AbstractController implements ApiControllerInterfac
         $json = json_encode($items);
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -36,7 +35,8 @@ class DataController extends AbstractController implements ApiControllerInterfac
      * @Method("GET")
      * @Secure(roles="ROLE_USER")
      */
-    public function getTopLevelMarketGroups(Request $request){
+    public function getTopLevelMarketGroups(Request $request)
+    {
         $items = $this->get('evedata.registry')
             ->get('EveBundle:MarketGroup')
             ->getTopLevelGroups();
@@ -45,6 +45,4 @@ class DataController extends AbstractController implements ApiControllerInterfac
 
         return $this->jsonResponse($json);
     }
-
-
 }

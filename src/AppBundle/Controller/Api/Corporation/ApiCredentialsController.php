@@ -16,8 +16,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * ApiCredentials Controller controller.
  */
-class ApiCredentialsController extends AbstractController implements ApiControllerInterface {
-
+class ApiCredentialsController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/api_credentials", name="api.corporation.apicredentials", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -26,7 +26,6 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      */
     public function indexAction(Request $request, Corporation $corp)
     {
-
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $credentials = $this->getDoctrine()->getManager()
@@ -36,7 +35,6 @@ class ApiCredentialsController extends AbstractController implements ApiControll
         $json = $this->get('serializer')->serialize($credentials, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -45,8 +43,8 @@ class ApiCredentialsController extends AbstractController implements ApiControll
      * @Secure(roles="ROLE_CEO")
      * @Method("POST")
      */
-    public function newAction(Request $request,  Corporation $corporation){
-
+    public function newAction(Request $request,  Corporation $corporation)
+    {
         $this->denyAccessUnlessGranted(AccessTypes::EDIT, $corporation, 'Unauthorized access!');
 
         $content = $request->request;
@@ -58,7 +56,7 @@ class ApiCredentialsController extends AbstractController implements ApiControll
 
         $errors = $validator->validate($newKey);
 
-        if (count($errors) > 0){
+        if (count($errors) > 0) {
             return $this->getErrorResponse($errors);
         }
 
@@ -78,14 +76,13 @@ class ApiCredentialsController extends AbstractController implements ApiControll
             $em->persist($newKey);
 
             $em->flush();
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $this->get('logger')->addEmergency('Error registering new api key for user '.$corporation->getCorporationDetails()->getName());
+
             return $this->jsonResponse(json_encode(['message' => 'Error with the EVE Api please try again', 'property_path' => '', 'exception' => $e->getMessage()]), 400);
         }
 
         return $this->jsonResponse($this->get('serializer')->serialize($newKey, 'json'));
-
-
     }
 
     /**
@@ -99,13 +96,13 @@ class ApiCredentialsController extends AbstractController implements ApiControll
         $this->denyAccessUnlessGranted(AccessTypes::EDIT, $credentials->getCorporation(), 'Unauthorized access!');
 
         $em = $this->getDoctrine()->getManager();
-        if ($request->query->get('delete', false) && $credentials->getIsActive()){
+        if ($request->query->get('delete', false) && $credentials->getIsActive()) {
             $credentials->setIsActive(false);
             $em->persist($credentials);
             $em->flush();
         }
 
-        if ($request->query->get('enable', false) && !$credentials->getIsActive()){
+        if ($request->query->get('enable', false) && !$credentials->getIsActive()) {
             $credentials->setIsActive(true);
             $em->persist($credentials);
             $em->flush();
@@ -114,7 +111,5 @@ class ApiCredentialsController extends AbstractController implements ApiControll
         $json = $this->get('serializer')->serialize($credentials, 'json');
 
         return $this->jsonResponse($json);
-
     }
-
 }

@@ -4,22 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="accounts")
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class Account
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -60,7 +54,6 @@ class Account
      */
     protected $last_day_balance;
 
-
     /**
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\AccountBalance", cascade={"persist"}, mappedBy="account")
      */
@@ -81,7 +74,8 @@ class Account
      */
     protected $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
         $this->balances = new ArrayCollection();
         $this->market_transactions = new ArrayCollection();
@@ -89,14 +83,15 @@ class Account
     }
 
     /**
-     * Add balances
+     * Add balances.
      *
      * @param \AppBundle\Entity\AccountBalance $balances
+     *
      * @return Account
      */
     public function addBalance(\AppBundle\Entity\AccountBalance $balances)
     {
-        if (!$this->balances->contains($balances)){
+        if (!$this->balances->contains($balances)) {
             $this->balances[] = $balances;
             $balances->setAccount($this);
         }
@@ -105,14 +100,15 @@ class Account
     }
 
     /**
-     * Add transactions
+     * Add transactions.
      *
      * @param \AppBundle\Entity\MarketTransaction $transactions
+     *
      * @return Account
      */
     public function addMarketTransaction(\AppBundle\Entity\MarketTransaction $transactions)
     {
-        if (!$this->market_transactions->contains($transactions)){
+        if (!$this->market_transactions->contains($transactions)) {
             $this->market_transactions[] = $transactions;
             $transactions->setAccount($this);
         }
@@ -121,45 +117,50 @@ class Account
     }
 
     /**
-     * Add journal_transactions
+     * Add journal_transactions.
      *
      * @param \AppBundle\Entity\JournalTransaction $journalTransactions
+     *
      * @return Account
      */
     public function addJournalTransaction(\AppBundle\Entity\JournalTransaction $journalTransactions)
     {
-        if (!$this->journal_transactions->contains($journalTransactions)){
+        if (!$this->journal_transactions->contains($journalTransactions)) {
             $this->journal_transactions[] = $journalTransactions;
             $journalTransactions->setAccount($this);
-
         }
 
         return $this;
     }
 
-    public function getLastDayBalance(){
+    public function getLastDayBalance()
+    {
         return $this->last_day_balance;
     }
 
-    public function setLastDayBalance($balance){
+    public function setLastDayBalance($balance)
+    {
         $this->last_day_balance = floatval($balance);
+
         return $this;
     }
 
-    public function getCurrentBalance(){
+    public function getCurrentBalance()
+    {
         return $this->current_balance;
     }
 
-    public function setCurrentBalance($balance){
+    public function setCurrentBalance($balance)
+    {
         $this->current_balance = floatval($balance);
+
         return $this;
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -167,9 +168,10 @@ class Account
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Account
      */
     public function setName($name)
@@ -180,9 +182,9 @@ class Account
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -190,9 +192,10 @@ class Account
     }
 
     /**
-     * Set eve_account_id
+     * Set eve_account_id.
      *
-     * @param integer $eveAccountId
+     * @param int $eveAccountId
+     *
      * @return Account
      */
     public function setEveAccountId($eveAccountId)
@@ -203,9 +206,9 @@ class Account
     }
 
     /**
-     * Get eve_account_id
+     * Get eve_account_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getEveAccountId()
     {
@@ -213,9 +216,10 @@ class Account
     }
 
     /**
-     * Set division
+     * Set division.
      *
-     * @param integer $division
+     * @param int $division
+     *
      * @return Account
      */
     public function setDivision($division)
@@ -226,9 +230,9 @@ class Account
     }
 
     /**
-     * Get division
+     * Get division.
      *
-     * @return integer 
+     * @return int
      */
     public function getDivision()
     {
@@ -236,9 +240,10 @@ class Account
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return Account
      */
     public function setCreatedAt($createdAt)
@@ -249,9 +254,9 @@ class Account
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -259,9 +264,10 @@ class Account
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return Account
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -272,9 +278,9 @@ class Account
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -282,7 +288,7 @@ class Account
     }
 
     /**
-     * Remove balances
+     * Remove balances.
      *
      * @param \AppBundle\Entity\AccountBalance $balances
      */
@@ -292,18 +298,17 @@ class Account
     }
 
     /**
-     * Get balances
+     * Get balances.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBalances()
     {
         return $this->balances;
     }
 
-
     /**
-     * Remove transactions
+     * Remove transactions.
      *
      * @param \AppBundle\Entity\MarketTransaction $transactions
      */
@@ -313,9 +318,9 @@ class Account
     }
 
     /**
-     * Get transactions
+     * Get transactions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMarketTransactions()
     {
@@ -323,7 +328,7 @@ class Account
     }
 
     /**
-     * Remove journal_transactions
+     * Remove journal_transactions.
      *
      * @param \AppBundle\Entity\JournalTransaction $journalTransactions
      */
@@ -332,11 +337,10 @@ class Account
         $this->journal_transactions->removeElement($journalTransactions);
     }
 
-
     /**
-     * Get journal_transactions
+     * Get journal_transactions.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getJournalTransactions()
     {

@@ -3,21 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\JournalTransactionRepository")
  * @ORM\Table(name="journal_transactions", uniqueConstraints={
-    @ORM\UniqueConstraint(name="refId_date_acc_idx", columns={"ref_id", "date", "account_id", "amount"}),
+ @ORM\UniqueConstraint(name="refId_date_acc_idx", columns={"ref_id", "date", "account_id", "amount"}),
  * })
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
-class JournalTransaction {
-
+class JournalTransaction
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="bigint")
@@ -70,7 +66,7 @@ class JournalTransaction {
      * @ORM\Column(type="integer")
      * @JMS\Expose()
      */
-    protected  $owner_id2;
+    protected $owner_id2;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -79,7 +75,6 @@ class JournalTransaction {
     protected $arg_name1;
 
     /**
-     te @ORM\Column(type="string", length=255)
      * @JMS\Expose()
      */
     protected $arg_id1;
@@ -114,7 +109,6 @@ class JournalTransaction {
      */
     protected $owner2_type_id;
 
-
     /**
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Account", inversedBy="journal_transactions")
      * @JMS\Expose()
@@ -126,25 +120,26 @@ class JournalTransaction {
      */
     protected $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
         return $this->id;
     }
 
-
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
+     *
      * @return JournalTransaction
      */
     public function setDate($date)
@@ -155,9 +150,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get date
+     * Get date.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDate()
     {
@@ -165,9 +160,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set ref_id
+     * Set ref_id.
      *
-     * @param integer $refId
+     * @param int $refId
+     *
      * @return JournalTransaction
      */
     public function setRefId($refId)
@@ -178,9 +174,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get ref_id
+     * Get ref_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getRefId()
     {
@@ -188,9 +184,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set ref_type_id
+     * Set ref_type_id.
      *
-     * @param integer $refTypeId
+     * @param int $refTypeId
+     *
      * @return JournalTransaction
      */
     public function setRefTypeId($refTypeId)
@@ -201,9 +198,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get ref_type_id
+     * Get ref_type_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getRefTypeId()
     {
@@ -211,9 +208,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set owner_name1
+     * Set owner_name1.
      *
      * @param string $ownerName1
+     *
      * @return JournalTransaction
      */
     public function setOwnerName1($ownerName1)
@@ -224,9 +222,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get owner_name1
+     * Get owner_name1.
      *
-     * @return string 
+     * @return string
      */
     public function getOwnerName1()
     {
@@ -234,9 +232,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set owner_id1
+     * Set owner_id1.
      *
-     * @param integer $ownerId1
+     * @param int $ownerId1
+     *
      * @return JournalTransaction
      */
     public function setOwnerId1($ownerId1)
@@ -247,9 +246,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get owner_id1
+     * Get owner_id1.
      *
-     * @return integer 
+     * @return int
      */
     public function getOwnerId1()
     {
@@ -257,9 +256,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set owner_name2
+     * Set owner_name2.
      *
      * @param string $ownerName2
+     *
      * @return JournalTransaction
      */
     public function setOwnerName2($ownerName2)
@@ -270,9 +270,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get owner_name2
+     * Get owner_name2.
      *
-     * @return string 
+     * @return string
      */
     public function getOwnerName2()
     {
@@ -280,9 +280,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set owner_id2
+     * Set owner_id2.
      *
-     * @param integer $ownerId2
+     * @param int $ownerId2
+     *
      * @return JournalTransaction
      */
     public function setOwnerId2($ownerId2)
@@ -293,9 +294,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get owner_id2
+     * Get owner_id2.
      *
-     * @return integer 
+     * @return int
      */
     public function getOwnerId2()
     {
@@ -303,9 +304,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set arg_name1
+     * Set arg_name1.
      *
      * @param string $argName1
+     *
      * @return JournalTransaction
      */
     public function setArgName1($argName1)
@@ -316,9 +318,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get arg_name1
+     * Get arg_name1.
      *
-     * @return string 
+     * @return string
      */
     public function getArgName1()
     {
@@ -326,9 +328,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set arg_id1
+     * Set arg_id1.
      *
      * @param string $argId1
+     *
      * @return JournalTransaction
      */
     public function setArgId1($argId1)
@@ -339,9 +342,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get arg_id1
+     * Get arg_id1.
      *
-     * @return string 
+     * @return string
      */
     public function getArgId1()
     {
@@ -349,9 +352,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set amount
+     * Set amount.
      *
      * @param string $amount
+     *
      * @return JournalTransaction
      */
     public function setAmount($amount)
@@ -362,9 +366,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get amount
+     * Get amount.
      *
-     * @return string 
+     * @return string
      */
     public function getAmount()
     {
@@ -372,9 +376,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set balance
+     * Set balance.
      *
      * @param string $balance
+     *
      * @return JournalTransaction
      */
     public function setBalance($balance)
@@ -385,9 +390,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get balance
+     * Get balance.
      *
-     * @return string 
+     * @return string
      */
     public function getBalance()
     {
@@ -395,9 +400,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set reason
+     * Set reason.
      *
      * @param string $reason
+     *
      * @return JournalTransaction
      */
     public function setReason($reason)
@@ -408,20 +414,20 @@ class JournalTransaction {
     }
 
     /**
-     * Get reason
+     * Get reason.
      *
-     * @return string 
+     * @return string
      */
     public function getReason()
     {
         return $this->reason;
     }
 
-
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return JournalTransaction
      */
     public function setCreatedAt($createdAt)
@@ -432,9 +438,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -442,9 +448,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set account
+     * Set account.
      *
      * @param \AppBundle\Entity\Account $account
+     *
      * @return JournalTransaction
      */
     public function setAccount(\AppBundle\Entity\Account $account = null)
@@ -455,9 +462,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get account
+     * Get account.
      *
-     * @return \AppBundle\Entity\Account 
+     * @return \AppBundle\Entity\Account
      */
     public function getAccount()
     {
@@ -465,9 +472,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set owner1_type_id
+     * Set owner1_type_id.
      *
      * @param string $owner1TypeId
+     *
      * @return JournalTransaction
      */
     public function setOwner1TypeId($owner1TypeId)
@@ -478,9 +486,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get owner1_type_id
+     * Get owner1_type_id.
      *
-     * @return string 
+     * @return string
      */
     public function getOwner1TypeId()
     {
@@ -488,9 +496,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set owner2_type_id
+     * Set owner2_type_id.
      *
      * @param string $owner2TypeId
+     *
      * @return JournalTransaction
      */
     public function setOwner2TypeId($owner2TypeId)
@@ -501,9 +510,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get owner2_type_id
+     * Get owner2_type_id.
      *
-     * @return string 
+     * @return string
      */
     public function getOwner2TypeId()
     {
@@ -511,9 +520,10 @@ class JournalTransaction {
     }
 
     /**
-     * Set ref_type
+     * Set ref_type.
      *
      * @param \AppBundle\Entity\RefType $refType
+     *
      * @return JournalTransaction
      */
     public function setRefType(\AppBundle\Entity\RefType $refType = null)
@@ -524,9 +534,9 @@ class JournalTransaction {
     }
 
     /**
-     * Get ref_type
+     * Get ref_type.
      *
-     * @return \AppBundle\Entity\RefType 
+     * @return \AppBundle\Entity\RefType
      */
     public function getRefType()
     {

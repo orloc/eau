@@ -9,12 +9,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class AppBundle extends Bundle
 {
-
-    public function getParent(){
+    public function getParent()
+    {
         return 'FOSUserBundle';
     }
 
-    public function build(ContainerBuilder $container){
+    public function build(ContainerBuilder $container)
+    {
         parent::build($container);
 
         $container->addCompilerPass(new DispatcherCompilerPass());

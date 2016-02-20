@@ -13,8 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Character controller.
  */
-class CharacterController extends AbstractController implements ApiControllerInterface {
-
+class CharacterController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/", name="api.characters", options={"expose"=true})
      * @Secure(roles="ROLE_CORP_MEMBER")
@@ -22,16 +22,14 @@ class CharacterController extends AbstractController implements ApiControllerInt
      */
     public function indexAction(Request $request)
     {
-
         $user = $this->getUser();
 
         $characters = $this->getDoctrine()->getRepository('AppBundle:Character')
-            ->findBy(['user' => $user ]);
+            ->findBy(['user' => $user]);
 
         $json = $this->get('serializer')->serialize($characters, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -52,7 +50,7 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
         $errors = $validator->validate($key);
 
-        if (count($errors) > 0){
+        if (count($errors) > 0) {
             return $this->getErrorResponse($errors);
         }
 
@@ -67,21 +65,18 @@ class CharacterController extends AbstractController implements ApiControllerInt
             $arr['result']['key']['access_mask'] = $key->getAccessMask();
             $arr['result']['key']['type'] = $key->getType();
 
-
             $corps = $this->getDoctrine()->getRepository('AppBundle:Corporation');
 
-            foreach ($arr['characters'] as $i => $c){
+            foreach ($arr['characters'] as $i => $c) {
                 $exists = $corps->findOneBy(['eve_id' => $c['corporationID']]);
 
                 $arr['characters'][$i]['best_guess'] = $exists instanceof Corporation;
             }
 
             return $this->jsonResponse(json_encode($arr));
-
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return $this->jsonResponse(json_encode(['message' => $e->getMessage(), 'code' => 400]), 400);
         }
-
     }
 
     /**
@@ -91,7 +86,8 @@ class CharacterController extends AbstractController implements ApiControllerInt
      * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("POST")
      */
-    public function createFinalAction(Request $request){
+    public function createFinalAction(Request $request)
+    {
         $content = $request->request;
 
         $initialKey = $content->get('full_key', null);
@@ -105,13 +101,12 @@ class CharacterController extends AbstractController implements ApiControllerInt
 
         $errors = $validator->validate($key);
 
-        if (count($errors) > 0 ){
+        if (count($errors) > 0) {
             return $this->getErrorResponse($errors);
         }
 
         $key->setEveCharacterId($selected_char['characterID'])
             ->setEveCorporationId($selected_char['corporationID']);
-
 
         $all_chars = $initialKey['characters'];
         $cmanager = $this->get('app.character.manager');
@@ -123,10 +118,10 @@ class CharacterController extends AbstractController implements ApiControllerInt
         $has_main = $this->getDoctrine()->getRepository('AppBundle:Character')
             ->findOneBy(['user' => $user, 'is_main' => true]);
 
-        foreach($all_chars as $c){
+        foreach ($all_chars as $c) {
             $char = $cmanager->createCharacter($c);
 
-            if ($char->getEveId() === $selected_char['characterID'] && !$has_main){
+            if ($char->getEveId() === $selected_char['characterID'] && !$has_main) {
                 $char->setIsMain(true);
             }
 
@@ -142,9 +137,8 @@ class CharacterController extends AbstractController implements ApiControllerInt
             $em->flush();
 
             return  $this->jsonResponse($this->get('jms_serializer')->serialize($addedChars, 'json'));
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return $this->jsonResponse(json_encode(['message' => $e->getMessage(), 'code' => 400]), 400);
         }
     }
-
 }

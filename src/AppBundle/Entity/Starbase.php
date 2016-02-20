@@ -3,20 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StarBaseRepository")
  * @ORM\Table(name="starbases")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class Starbase
 {
-
     const STATE_UNANCHORED = 0,
           STATE_OFFLINE = 1,
           STATE_ONLINING = 2,
@@ -112,24 +107,27 @@ class Starbase
      */
     protected $created_at;
 
-    public function setDescriptors(array $desc){
+    public function setDescriptors(array $desc)
+    {
         $this->descriptors = $desc;
 
         return $this;
     }
 
-    public function getDescriptors(){
+    public function getDescriptors()
+    {
         return $this->descriptors;
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -137,9 +135,10 @@ class Starbase
     }
 
     /**
-     * Set item_id
+     * Set item_id.
      *
-     * @param integer $itemId
+     * @param int $itemId
+     *
      * @return Starbase
      */
     public function setItemId($itemId)
@@ -150,9 +149,9 @@ class Starbase
     }
 
     /**
-     * Get item_id
+     * Get item_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getItemId()
     {
@@ -160,9 +159,10 @@ class Starbase
     }
 
     /**
-     * Set type_id
+     * Set type_id.
      *
-     * @param integer $typeId
+     * @param int $typeId
+     *
      * @return Starbase
      */
     public function setTypeId($typeId)
@@ -173,9 +173,9 @@ class Starbase
     }
 
     /**
-     * Get type_id
+     * Get type_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getTypeId()
     {
@@ -183,9 +183,10 @@ class Starbase
     }
 
     /**
-     * Set moon_id
+     * Set moon_id.
      *
-     * @param integer $moonId
+     * @param int $moonId
+     *
      * @return Starbase
      */
     public function setMoonId($moonId)
@@ -196,9 +197,9 @@ class Starbase
     }
 
     /**
-     * Get moon_id
+     * Get moon_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getMoonId()
     {
@@ -206,9 +207,10 @@ class Starbase
     }
 
     /**
-     * Set state
+     * Set state.
      *
-     * @param integer $state
+     * @param int $state
+     *
      * @return Starbase
      */
     public function setState($state)
@@ -219,9 +221,9 @@ class Starbase
     }
 
     /**
-     * Get state
+     * Get state.
      *
-     * @return integer 
+     * @return int
      */
     public function getState()
     {
@@ -229,9 +231,10 @@ class Starbase
     }
 
     /**
-     * Set state_timestamp
+     * Set state_timestamp.
      *
      * @param \DateTime $stateTimestamp
+     *
      * @return Starbase
      */
     public function setStateTimestamp($stateTimestamp)
@@ -242,9 +245,9 @@ class Starbase
     }
 
     /**
-     * Get state_timestamp
+     * Get state_timestamp.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStateTimestamp()
     {
@@ -252,9 +255,10 @@ class Starbase
     }
 
     /**
-     * Set online_timestamp
+     * Set online_timestamp.
      *
      * @param \DateTime $onlineTimestamp
+     *
      * @return Starbase
      */
     public function setOnlineTimestamp($onlineTimestamp)
@@ -265,9 +269,9 @@ class Starbase
     }
 
     /**
-     * Get online_timestamp
+     * Get online_timestamp.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getOnlineTimestamp()
     {
@@ -275,9 +279,10 @@ class Starbase
     }
 
     /**
-     * Set standing_owner_id
+     * Set standing_owner_id.
      *
-     * @param integer $standingOwnerId
+     * @param int $standingOwnerId
+     *
      * @return Starbase
      */
     public function setStandingOwnerId($standingOwnerId)
@@ -288,9 +293,9 @@ class Starbase
     }
 
     /**
-     * Get standing_owner_id
+     * Get standing_owner_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getStandingOwnerId()
     {
@@ -298,9 +303,10 @@ class Starbase
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return Starbase
      */
     public function setCreatedAt($createdAt)
@@ -311,9 +317,9 @@ class Starbase
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -321,9 +327,10 @@ class Starbase
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return Starbase
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -334,9 +341,9 @@ class Starbase
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -344,9 +351,10 @@ class Starbase
     }
 
     /**
-     * Set location_id
+     * Set location_id.
      *
-     * @param integer $locationId
+     * @param int $locationId
+     *
      * @return Starbase
      */
     public function setLocationId($locationId)
@@ -357,9 +365,9 @@ class Starbase
     }
 
     /**
-     * Get location_id
+     * Get location_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getLocationId()
     {
@@ -367,9 +375,10 @@ class Starbase
     }
 
     /**
-     * Set general_settings
+     * Set general_settings.
      *
      * @param array $generalSettings
+     *
      * @return Starbase
      */
     public function setGeneralSettings($generalSettings)
@@ -380,9 +389,9 @@ class Starbase
     }
 
     /**
-     * Get general_settings
+     * Get general_settings.
      *
-     * @return array 
+     * @return array
      */
     public function getGeneralSettings()
     {
@@ -390,9 +399,10 @@ class Starbase
     }
 
     /**
-     * Set combat_settings
+     * Set combat_settings.
      *
      * @param array $combatSettings
+     *
      * @return Starbase
      */
     public function setCombatSettings($combatSettings)
@@ -403,9 +413,9 @@ class Starbase
     }
 
     /**
-     * Get combat_settings
+     * Get combat_settings.
      *
-     * @return array 
+     * @return array
      */
     public function getCombatSettings()
     {
@@ -413,9 +423,10 @@ class Starbase
     }
 
     /**
-     * Set fuel
+     * Set fuel.
      *
      * @param array $fuel
+     *
      * @return Starbase
      */
     public function setFuel($fuel)
@@ -426,9 +437,9 @@ class Starbase
     }
 
     /**
-     * Get fuel
+     * Get fuel.
      *
-     * @return array 
+     * @return array
      */
     public function getFuel()
     {

@@ -2,18 +2,20 @@
 
 namespace EveBundle\Repository;
 
-class StaStationsRepository extends AbstractDbalRepository implements RepositoryInterface {
-
-    public function getName(){
+class StaStationsRepository extends AbstractDbalRepository implements RepositoryInterface
+{
+    public function getName()
+    {
         return 'EveBundle:StaStations';
     }
 
-    public function getTableName(){
+    public function getTableName()
+    {
         return 'staStations';
     }
 
-    public function getStationById($locationID){
-
+    public function getStationById($locationID)
+    {
         $sql = "SELECT *FROM {$this->getTableName()}
                 WHERE stationID = :id ";
 
@@ -21,7 +23,5 @@ class StaStationsRepository extends AbstractDbalRepository implements Repository
         $stmt->execute(['id' => $locationID]);
 
         return $stmt->fetch();
-
     }
-
 }

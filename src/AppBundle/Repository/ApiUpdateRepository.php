@@ -6,9 +6,10 @@ use AppBundle\Entity\Corporation;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityRepository;
 
-class ApiUpdateRepository extends EntityRepository {
-
-    public function getLatestUpdate(Corporation $corp, $type){
+class ApiUpdateRepository extends EntityRepository
+{
+    public function getLatestUpdate(Corporation $corp, $type)
+    {
         return $this->createQueryBuilder('au')
             ->select('au')
             ->where('au.corporation = :corp')
@@ -19,7 +20,8 @@ class ApiUpdateRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function getLastUpdate(){
+    public function getLastUpdate()
+    {
         return $this->createQueryBuilder('au')
             ->select('au')
             ->orderBy('au.created_at', 'DESC')
@@ -27,7 +29,8 @@ class ApiUpdateRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function getLastUpdateByType($type){
+    public function getLastUpdateByType($type)
+    {
         return $this->createQueryBuilder('au')
             ->select('au')
             ->where('au.api_call = :type')
@@ -37,20 +40,22 @@ class ApiUpdateRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function getShortTimerExpired(Corporation $entity, $call){
+    public function getShortTimerExpired(Corporation $entity, $call)
+    {
         $now = Carbon::now()->subMinutes(60);
 
-        return (bool)$this->getTimeExpiredBuilder($entity, $now, $call);
+        return (bool) $this->getTimeExpiredBuilder($entity, $now, $call);
     }
 
-    public function getLongTimerExpired(Corporation $entity, $call){
+    public function getLongTimerExpired(Corporation $entity, $call)
+    {
         $now = Carbon::now()->subHours(23);
 
-        return (bool)$this->getTimeExpiredBuilder($entity, $now, $call);
-
+        return (bool) $this->getTimeExpiredBuilder($entity, $now, $call);
     }
 
-    public function getLastUpdateByCorpType(Corporation $entity, $type){
+    public function getLastUpdateByCorpType(Corporation $entity, $type)
+    {
         return $this->createQueryBuilder('au')
             ->select('au')
             ->where('au.corporation = :corp')
@@ -61,7 +66,8 @@ class ApiUpdateRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
-    private function getTimeExpiredBuilder(Corporation $entity, Carbon $now, $call){
+    private function getTimeExpiredBuilder(Corporation $entity, Carbon $now, $call)
+    {
         $is_cached = $this->createQueryBuilder('au')
             ->select('count(au) as is_cached')
             ->leftJoin('au.corporation', 'c')
@@ -71,10 +77,10 @@ class ApiUpdateRepository extends EntityRepository {
             ->addOrderBy('au.created_at', 'DESC')
             ->setMaxResults(1)
             ->setParameters([
-                'corp' => $entity , 'now' => $now, 'call' => $call
+                'corp' => $entity, 'now' => $now, 'call' => $call,
             ])->getQuery()->getOneOrNullResult();
 
-        if (isset($is_cached['is_cached'])){
+        if (isset($is_cached['is_cached'])) {
             return intval($is_cached['is_cached']);
         }
 

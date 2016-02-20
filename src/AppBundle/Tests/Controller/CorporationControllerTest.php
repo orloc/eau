@@ -3,37 +3,38 @@
 namespace AppBundle\Tests\Controller;
 
 use AppBundle\Tests\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
 
 class CorporationControllerTest extends WebTestCase
 {
-
-    public function setUp(){
+    public function setUp()
+    {
         $this->client = static::createClient();
     }
 
-    public function testBadKeyResponse(){
+    public function testBadKeyResponse()
+    {
         $this->loadFixtures(['AppBundle\DataFixtures\Test\LoadUserData']);
         $this->logIn('super_admin');
 
         $goodKey = $this->getContainer()->getParameter('test_config')['api_keys']['good_corp_key'];
 
-        $crawler = $this->client->request('POST', '/api/corporation/', [],[],[
-            'CONTENT_TYPE' => 'application/json'
-        ],sprintf('{ "api_key":"%sjskldfjs", "verification_code": "%skajsdfka" }', $goodKey['key'], $goodKey['code']));
+        $crawler = $this->client->request('POST', '/api/corporation/', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], sprintf('{ "api_key":"%sjskldfjs", "verification_code": "%skajsdfka" }', $goodKey['key'], $goodKey['code']));
 
         $this->assertStatusCode(400, $this->client);
     }
 
-    public function testGoodKeyResponse(){
+    public function testGoodKeyResponse()
+    {
         $this->logIn('super_admin');
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $goodKey = $this->getContainer()->getParameter('test_config')['api_keys']['good_corp_key'];
 
-        $crawler = $this->client->request('POST', '/api/corporation/', [],[],[
-            'CONTENT_TYPE' => 'application/json'
-        ],sprintf('{ "api_key":"%s", "verification_code": "%s" }', $goodKey['key'], $goodKey['code']));
+        $crawler = $this->client->request('POST', '/api/corporation/', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+        ], sprintf('{ "api_key":"%s", "verification_code": "%s" }', $goodKey['key'], $goodKey['code']));
 
         $this->assertStatusCode(200, $this->client);
 
@@ -51,19 +52,19 @@ class CorporationControllerTest extends WebTestCase
         $this->assertCount(1, $corps);
     }
 
-    public function testAdminIndex(){
-
+    public function testAdminIndex()
+    {
     }
 
-    public function testAllianceIndex(){
-
+    public function testAllianceIndex()
+    {
     }
 
-    public function testCeoIndex(){
-
+    public function testCeoIndex()
+    {
     }
 
-    public function testDirectorIndex(){
-
+    public function testDirectorIndex()
+    {
     }
 }

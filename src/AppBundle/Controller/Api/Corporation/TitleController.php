@@ -15,8 +15,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Corporation controller.
  */
-class TitleController extends AbstractController implements ApiControllerInterface {
-
+class TitleController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/titles", name="api.titles", options={"expose"=true})
      * @ParamConverter(class="AppBundle\Entity\Corporation", name="corp")
@@ -33,6 +33,5 @@ class TitleController extends AbstractController implements ApiControllerInterfa
         $json = $this->get('serializer')->serialize($titles, 'json');
 
         return $this->jsonResponse($json);
-
     }
 }

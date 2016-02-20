@@ -3,23 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Doctrine\ORM\Mapping\UniqueConstraint;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="corporation_details", uniqueConstraints={
-     @ORM\UniqueConstraint(name="name_idx", columns={"name"})
+ @ORM\UniqueConstraint(name="name_idx", columns={"name"})
  * })
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class CorporationDetail
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -123,15 +117,15 @@ class CorporationDetail
      */
     protected $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -139,9 +133,10 @@ class CorporationDetail
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return CorporationDetail
      */
     public function setName($name)
@@ -152,9 +147,9 @@ class CorporationDetail
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -162,9 +157,10 @@ class CorporationDetail
     }
 
     /**
-     * Set ticker
+     * Set ticker.
      *
      * @param string $ticker
+     *
      * @return CorporationDetail
      */
     public function setTicker($ticker)
@@ -175,9 +171,9 @@ class CorporationDetail
     }
 
     /**
-     * Get ticker
+     * Get ticker.
      *
-     * @return string 
+     * @return string
      */
     public function getTicker()
     {
@@ -185,9 +181,10 @@ class CorporationDetail
     }
 
     /**
-     * Set ceo_id
+     * Set ceo_id.
      *
-     * @param integer $ceoId
+     * @param int $ceoId
+     *
      * @return CorporationDetail
      */
     public function setCeoId($ceoId)
@@ -198,9 +195,9 @@ class CorporationDetail
     }
 
     /**
-     * Get ceo_id
+     * Get ceo_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getCeoId()
     {
@@ -208,9 +205,10 @@ class CorporationDetail
     }
 
     /**
-     * Set ceo_name
+     * Set ceo_name.
      *
      * @param string $ceoName
+     *
      * @return CorporationDetail
      */
     public function setCeoName($ceoName)
@@ -221,9 +219,9 @@ class CorporationDetail
     }
 
     /**
-     * Get ceo_name
+     * Get ceo_name.
      *
-     * @return string 
+     * @return string
      */
     public function getCeoName()
     {
@@ -231,9 +229,10 @@ class CorporationDetail
     }
 
     /**
-     * Set headquarters_id
+     * Set headquarters_id.
      *
-     * @param integer $headquartersId
+     * @param int $headquartersId
+     *
      * @return CorporationDetail
      */
     public function setHeadquartersId($headquartersId)
@@ -244,9 +243,9 @@ class CorporationDetail
     }
 
     /**
-     * Get headquarters_id
+     * Get headquarters_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getHeadquartersId()
     {
@@ -254,9 +253,10 @@ class CorporationDetail
     }
 
     /**
-     * Set headquarters_name
+     * Set headquarters_name.
      *
      * @param string $headquartersName
+     *
      * @return CorporationDetail
      */
     public function setHeadquartersName($headquartersName)
@@ -267,9 +267,9 @@ class CorporationDetail
     }
 
     /**
-     * Get headquarters_name
+     * Get headquarters_name.
      *
-     * @return string 
+     * @return string
      */
     public function getHeadquartersName()
     {
@@ -277,9 +277,10 @@ class CorporationDetail
     }
 
     /**
-     * Set description
+     * Set description.
      *
      * @param string $description
+     *
      * @return CorporationDetail
      */
     public function setDescription($description)
@@ -290,9 +291,9 @@ class CorporationDetail
     }
 
     /**
-     * Get description
+     * Get description.
      *
-     * @return string 
+     * @return string
      */
     public function getDescription()
     {
@@ -300,9 +301,10 @@ class CorporationDetail
     }
 
     /**
-     * Set url
+     * Set url.
      *
      * @param string $url
+     *
      * @return CorporationDetail
      */
     public function setUrl($url)
@@ -313,9 +315,9 @@ class CorporationDetail
     }
 
     /**
-     * Get url
+     * Get url.
      *
-     * @return string 
+     * @return string
      */
     public function getUrl()
     {
@@ -323,9 +325,10 @@ class CorporationDetail
     }
 
     /**
-     * Set alliance_id
+     * Set alliance_id.
      *
-     * @param integer $allianceId
+     * @param int $allianceId
+     *
      * @return CorporationDetail
      */
     public function setAllianceId($allianceId)
@@ -336,9 +339,9 @@ class CorporationDetail
     }
 
     /**
-     * Get alliance_id
+     * Get alliance_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getAllianceId()
     {
@@ -346,9 +349,10 @@ class CorporationDetail
     }
 
     /**
-     * Set alliance_name
+     * Set alliance_name.
      *
      * @param string $allianceName
+     *
      * @return CorporationDetail
      */
     public function setAllianceName($allianceName)
@@ -359,9 +363,9 @@ class CorporationDetail
     }
 
     /**
-     * Get alliance_name
+     * Get alliance_name.
      *
-     * @return string 
+     * @return string
      */
     public function getAllianceName()
     {
@@ -369,9 +373,10 @@ class CorporationDetail
     }
 
     /**
-     * Set tax_rate
+     * Set tax_rate.
      *
      * @param string $taxRate
+     *
      * @return CorporationDetail
      */
     public function setTaxRate($taxRate)
@@ -382,9 +387,9 @@ class CorporationDetail
     }
 
     /**
-     * Get tax_rate
+     * Get tax_rate.
      *
-     * @return string 
+     * @return string
      */
     public function getTaxRate()
     {
@@ -392,9 +397,10 @@ class CorporationDetail
     }
 
     /**
-     * Set member_count
+     * Set member_count.
      *
-     * @param integer $memberCount
+     * @param int $memberCount
+     *
      * @return CorporationDetail
      */
     public function setMemberCount($memberCount)
@@ -405,9 +411,9 @@ class CorporationDetail
     }
 
     /**
-     * Get member_count
+     * Get member_count.
      *
-     * @return integer 
+     * @return int
      */
     public function getMemberCount()
     {
@@ -415,9 +421,10 @@ class CorporationDetail
     }
 
     /**
-     * Set member_limit
+     * Set member_limit.
      *
-     * @param integer $memberLimit
+     * @param int $memberLimit
+     *
      * @return CorporationDetail
      */
     public function setMemberLimit($memberLimit)
@@ -428,9 +435,9 @@ class CorporationDetail
     }
 
     /**
-     * Get member_limit
+     * Get member_limit.
      *
-     * @return integer 
+     * @return int
      */
     public function getMemberLimit()
     {
@@ -438,9 +445,10 @@ class CorporationDetail
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return CorporationDetail
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -451,9 +459,9 @@ class CorporationDetail
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -461,9 +469,10 @@ class CorporationDetail
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return CorporationDetail
      */
     public function setCreatedAt($createdAt)
@@ -474,9 +483,9 @@ class CorporationDetail
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -484,9 +493,10 @@ class CorporationDetail
     }
 
     /**
-     * Set shares
+     * Set shares.
      *
-     * @param integer $shares
+     * @param int $shares
+     *
      * @return CorporationDetail
      */
     public function setShares($shares)
@@ -497,9 +507,9 @@ class CorporationDetail
     }
 
     /**
-     * Get shares
+     * Get shares.
      *
-     * @return integer 
+     * @return int
      */
     public function getShares()
     {

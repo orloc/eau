@@ -15,8 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Starbase controller.
  */
-class StarbaseController extends AbstractController implements ApiControllerInterface {
-
+class StarbaseController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/starbases", name="api.corporation.starbases", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -25,7 +25,6 @@ class StarbaseController extends AbstractController implements ApiControllerInte
      */
     public function indexAction(Request $request, Corporation $corp)
     {
-
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $stations = $this->getDoctrine()->getRepository('AppBundle:Starbase')
@@ -37,40 +36,40 @@ class StarbaseController extends AbstractController implements ApiControllerInte
         $attributeRepo = $this->get('evedata.registry')->get('EveBundle:ItemAttribute');
         $resourceRepo = $this->get('evedata.registry')->get('EveBundle:ControlTowerResource');
 
-        foreach ($stations as $s){
+        foreach ($stations as $s) {
             $attributeData = $attributeRepo->getItemAttributes($s->getTypeId());
 
-            $ids = array_map(function($i){
+            $ids = array_map(function ($i) {
                 return intval($i['attributeID']);
             }, $attributeData);
 
             $attrDetails = $attributeRepo->getAttributes($ids);
             $fuelDetails = $resourceRepo->getFuelConsumption($s->getTypeId());
             $mergedData = [];
-            foreach ($attributeData as $k => $d){
-                foreach ($attrDetails as $m){
-                    if ($d['attributeID'] === $m['attributeID']){
+            foreach ($attributeData as $k => $d) {
+                foreach ($attrDetails as $m) {
+                    if ($d['attributeID'] === $m['attributeID']) {
                         $mergedData[] = array_merge($attributeData[$k], $m);
                     }
                 }
             }
 
             $descriptors = array_merge(
-                ['attributes' => $mergedData ],
+                ['attributes' => $mergedData],
                 $loctionRepo->determineLocationDetails($s->getLocationId()),
                 $typeRepo->getItemTypeData($s->getTypeId()),
                 [
                     'fuel' => is_array($s->getFuel())
-                        ? array_map(function($d) use ($typeRepo, $attributeRepo){
+                        ? array_map(function ($d) use ($typeRepo, $attributeRepo) {
                             $data = $typeRepo->getItemTypeData($d['typeID']);
 
                             return [
                                 'type' => $data,
                                 'typeID' => $d['typeID'],
-                                'quantity' => $d['quantity']
+                                'quantity' => $d['quantity'],
                             ];
                         }, $s->getFuel())
-                        : []
+                        : [],
                 ]
             );
 
@@ -82,10 +81,8 @@ class StarbaseController extends AbstractController implements ApiControllerInte
             $s->setDescriptors($descriptors);
         }
 
-
         $json = $this->get('serializer')->serialize($stations, 'json');
 
         return $this->jsonResponse($json);
-
     }
 }

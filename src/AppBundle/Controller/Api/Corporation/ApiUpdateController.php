@@ -16,8 +16,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * ApiUpdate Controller controller.
  */
-class ApiUpdateController extends AbstractController implements ApiControllerInterface {
-
+class ApiUpdateController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/api_update", name="api.corporation.apiupdate", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -41,7 +41,7 @@ class ApiUpdateController extends AbstractController implements ApiControllerInt
 
         $type = $request->query->get('type', false);
 
-        if (!$type || !in_array($type, $types)){
+        if (!$type || !in_array($type, $types)) {
             return $this->jsonResponse(json_encode(['error' => 'Invalid type or not found']), 400);
         }
 
@@ -51,6 +51,5 @@ class ApiUpdateController extends AbstractController implements ApiControllerInt
         $json = $this->get('serializer')->serialize($update, 'json');
 
         return $this->jsonResponse($json);
-
     }
 }

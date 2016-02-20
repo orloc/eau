@@ -4,24 +4,20 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ApiCredentialRepository")
  * @ORM\Table(name="api_credentials", uniqueConstraints={
-@ORM\UniqueConstraint(name="key_val_corpIdx", columns={"api_key", "verification_code"}),
+ @ORM\UniqueConstraint(name="key_val_corpIdx", columns={"api_key", "verification_code"}),
  * })
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
-class ApiCredentials {
-
+class ApiCredentials
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -110,26 +106,29 @@ class ApiCredentials {
      */
     protected $created_by;
 
-    public function toArray(){
+    public function toArray()
+    {
         return [
             'api_key' => $this->getApiKey(),
             'verification_code' => $this->getVerificationCode(),
             'access_mask' => $this->getAccessMask(),
-            'type' => $this->getType()
+            'type' => $this->getType(),
         ];
     }
 
-    public static function loadValidatorMetadata(ClassMetadata $metadata){
-        $metadata->addPropertyConstraints('api_key',[
-            new Assert\NotBlank()
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraints('api_key', [
+            new Assert\NotBlank(),
         ])
             ->addPropertyConstraints('verification_code', [
                 new Assert\NotBlank(),
-                new Assert\Length(['min' => 64, 'max' => 64])
+                new Assert\Length(['min' => 64, 'max' => 64]),
             ]);
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
         $this->characters = new ArrayCollection();
         $this->is_active = false;
@@ -138,9 +137,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -148,9 +147,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set api_key
+     * Set api_key.
      *
      * @param string $apiKey
+     *
      * @return ApiCredentials
      */
     public function setApiKey($apiKey)
@@ -161,9 +161,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get api_key
+     * Get api_key.
      *
-     * @return string 
+     * @return string
      */
     public function getApiKey()
     {
@@ -171,9 +171,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set type
+     * Set type.
      *
      * @param string $type
+     *
      * @return ApiCredentials
      */
     public function setType($type)
@@ -184,9 +185,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return string 
+     * @return string
      */
     public function getType()
     {
@@ -194,9 +195,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set verification_code
+     * Set verification_code.
      *
      * @param string $verificationCode
+     *
      * @return ApiCredentials
      */
     public function setVerificationCode($verificationCode)
@@ -207,9 +209,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get verification_code
+     * Get verification_code.
      *
-     * @return string 
+     * @return string
      */
     public function getVerificationCode()
     {
@@ -217,9 +219,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set invalid
+     * Set invalid.
      *
-     * @param boolean $invalid
+     * @param bool $invalid
+     *
      * @return ApiCredentials
      */
     public function setInvalid($invalid)
@@ -230,9 +233,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get invalid
+     * Get invalid.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getInvalid()
     {
@@ -240,9 +243,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set access_mask
+     * Set access_mask.
      *
-     * @param integer $accessMask
+     * @param int $accessMask
+     *
      * @return ApiCredentials
      */
     public function setAccessMask($accessMask)
@@ -253,9 +257,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get access_mask
+     * Get access_mask.
      *
-     * @return integer 
+     * @return int
      */
     public function getAccessMask()
     {
@@ -263,9 +267,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return ApiCredentials
      */
     public function setCreatedAt($createdAt)
@@ -276,9 +281,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -286,9 +291,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set created_by
+     * Set created_by.
      *
      * @param \DateTime $createdBy
+     *
      * @return ApiCredentials
      */
     public function setCreatedBy($createdBy)
@@ -299,9 +305,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get created_by
+     * Get created_by.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedBy()
     {
@@ -309,9 +315,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return ApiCredentials
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -322,9 +329,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -332,9 +339,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set deleted_at
+     * Set deleted_at.
      *
      * @param \DateTime $deletedAt
+     *
      * @return ApiCredentials
      */
     public function setDeletedAt($deletedAt)
@@ -345,9 +353,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get deleted_at
+     * Get deleted_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -355,9 +363,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set character_id
+     * Set character_id.
      *
-     * @param integer $characterId
+     * @param int $characterId
+     *
      * @return ApiCredentials
      */
     public function setEveCharacterId($characterId)
@@ -368,9 +377,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get character_id
+     * Get character_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getEveCharacterId()
     {
@@ -378,9 +387,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set corporation_id
+     * Set corporation_id.
      *
-     * @param integer $corporationId
+     * @param int $corporationId
+     *
      * @return ApiCredentials
      */
     public function setEveCorporationId($corporationId)
@@ -391,9 +401,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get corporation_id
+     * Get corporation_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getEveCorporationId()
     {
@@ -401,9 +411,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set is_active
+     * Set is_active.
      *
-     * @param boolean $isActive
+     * @param bool $isActive
+     *
      * @return ApiCredentials
      */
     public function setIsActive($isActive)
@@ -414,20 +425,20 @@ class ApiCredentials {
     }
 
     /**
-     * Get is_active
+     * Get is_active.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getIsActive()
     {
         return $this->is_active;
     }
 
-
     /**
-     * Add characters
+     * Add characters.
      *
      * @param \AppBundle\Entity\Character $characters
+     *
      * @return ApiCredentials
      */
     public function addCharacter(\AppBundle\Entity\Character $characters)
@@ -438,7 +449,7 @@ class ApiCredentials {
     }
 
     /**
-     * Remove characters
+     * Remove characters.
      *
      * @param \AppBundle\Entity\Character $characters
      */
@@ -448,9 +459,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get characters
+     * Get characters.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCharacters()
     {
@@ -458,9 +469,10 @@ class ApiCredentials {
     }
 
     /**
-     * Set error_count
+     * Set error_count.
      *
-     * @param integer $errorCount
+     * @param int $errorCount
+     *
      * @return ApiCredentials
      */
     public function setErrorCount($errorCount)
@@ -471,9 +483,9 @@ class ApiCredentials {
     }
 
     /**
-     * Get error_count
+     * Get error_count.
      *
-     * @return integer 
+     * @return int
      */
     public function getErrorCount()
     {

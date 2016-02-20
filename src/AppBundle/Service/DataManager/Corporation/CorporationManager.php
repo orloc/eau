@@ -3,7 +3,6 @@
 namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Account;
-
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\CorporationDetail;
@@ -16,34 +15,37 @@ use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 use AppBundle\Service\DataManager\AbstractManager;
 use AppBundle\Service\DataManager\DataManagerInterface;
 
-class CorporationManager extends AbstractManager implements DataManagerInterface {
-
+class CorporationManager extends AbstractManager implements DataManagerInterface
+{
     private $api_manager;
 
-    public function __construct(PhealFactory $pheal, Registry $registry, EveRegistry $eveRegistry, Logger $logger, ApiKeyManager $apiManager ){
+    public function __construct(PhealFactory $pheal, Registry $registry, EveRegistry $eveRegistry, Logger $logger, ApiKeyManager $apiManager)
+    {
         parent::__construct($pheal, $registry, $eveRegistry, $logger);
         $this->api_manager = $apiManager;
     }
 
-    public function createNewCorporation(ApiCredentials $key){
-        $corp  = new Corporation();
+    public function createNewCorporation(ApiCredentials $key)
+    {
+        $corp = new Corporation();
         $corp->addApiCredential($key);
 
         return $corp;
     }
 
-    public function getCorporationDetails(Corporation $corporation){
-
+    public function getCorporationDetails(Corporation $corporation)
+    {
         $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey, 'account');
         $details = $client->APIKeyInfo()->key->characters[0];
-        $result =  [ 'id' => $details->corporationID ];
+        $result = ['id' => $details->corporationID];
 
         return $result;
     }
 
-    public function getMembers(Corporation $corporation){
+    public function getMembers(Corporation $corporation)
+    {
         $apiKey = $this->getApiKey($corporation);
 
         $client = $this->getClient($apiKey);
@@ -56,18 +58,18 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
 
         $ids = [];
         foreach ($existing_members as $m) {
-            $ids[(int)$m->getCharacterId()] = $m;
+            $ids[(int) $m->getCharacterId()] = $m;
         }
 
         foreach ($members as $m) {
-            $intId = (int)$m->characterID;
-            if (!isset($ids[$intId])){
+            $intId = (int) $m->characterID;
+            if (!isset($ids[$intId])) {
                 $mem = new CorporationMember();
 
                 $mem->setCharacterId($m->characterID)
                     ->setCharacterName($m->name)
                     ->setStartTime(new \DateTime($m->startDateTime));
-                /**
+                /*
                  * @TODO you forgot the homebase..
                  */
 
@@ -76,7 +78,7 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
                 /*
                  * @TODO just lost their history
                  */
-                if ($ids[$intId]->getDisbandedAt() !== null){
+                if ($ids[$intId]->getDisbandedAt() !== null) {
                     $ids[$intId]->setDisbandedAt(null)
                         ->setStartTime(new \Datetime($m->startDateTime));
                 }
@@ -85,16 +87,16 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
         }
 
         // any that were left over are not in our list anymore...
-        foreach ($ids as $deleted_member){
+        foreach ($ids as $deleted_member) {
             $deleted_member->setDisbandedAt(new \DateTime());
         }
-
     }
 
-    public function checkCorporationDetails(Corporation $c){
+    public function checkCorporationDetails(Corporation $c)
+    {
         $em = $this->doctrine->getManager();
-        if ($c->getEveId() === null){
-            $this->log->info("Updating corp details");
+        if ($c->getEveId() === null) {
+            $this->log->info('Updating corp details');
             $result = $this->getCorporationDetails($c);
 
             $c->setEveId($result['id']);
@@ -109,7 +111,8 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
         $em->persist($c);
     }
 
-    public function getCorporationSheet(Corporation $corporation){
+    public function getCorporationSheet(Corporation $corporation)
+    {
         $apiKey = $this->getApiKey($corporation);
 
         $corpClient = $this->getClient($apiKey);
@@ -118,7 +121,7 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
 
         $this->initializeAccounts($corpSheet->walletDivisions, $corporation);
 
-        if (!($entity = $corporation->getCorporationDetails()) instanceof CorporationDetail){
+        if (!($entity = $corporation->getCorporationDetails()) instanceof CorporationDetail) {
             $entity = new CorporationDetail();
         }
 
@@ -138,17 +141,16 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
             ->setShares($corpSheet->shares);
 
         return $entity;
-
     }
 
-    public function initializeAccounts($accounts, Corporation $corp){
-        foreach ($accounts as $a){
+    public function initializeAccounts($accounts, Corporation $corp)
+    {
+        foreach ($accounts as $a) {
             if (intval($a->accountKey) <= 1006) {
                 $exists = $this->doctrine->getRepository('AppBundle:Account')
                     ->findOneBy(['corporation' => $corp, 'division' => $a->accountKey]);
 
-
-                if ($exists instanceof Account){
+                if ($exists instanceof Account) {
                     $exists->setName($a->description);
                 } else {
                     $account = new Account();
@@ -157,14 +159,13 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
                         ->setName($a->description);
 
                     $corp->addAccount($account);
-
                 }
             }
         }
     }
 
-    public static function getName(){
+    public static function getName()
+    {
         return 'corporation_manager';
     }
-
 }

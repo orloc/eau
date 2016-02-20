@@ -25,9 +25,8 @@ class DashboardController extends Controller
      * @Method("GET")
      * @Secure(roles="ROLE_DIRECTOR")
      */
-    public function marketManager(Request $request){
-
-
+    public function marketManager(Request $request)
+    {
         return $this->render('@App/Admin/marketManager.html.twig');
     }
 }

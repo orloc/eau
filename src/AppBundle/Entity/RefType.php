@@ -4,20 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RefTypeRepository")
  * @ORM\Table(name="ref_types", uniqueConstraints={
-    @ORM\UniqueConstraint(name="refIDidx", columns={"ref_type_id"}),
+ @ORM\UniqueConstraint(name="refIDidx", columns={"ref_type_id"}),
  * })
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class RefType
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -38,11 +34,10 @@ class RefType
      */
     protected $ref_type_name;
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -50,9 +45,10 @@ class RefType
     }
 
     /**
-     * Set ref_type_id
+     * Set ref_type_id.
      *
-     * @param integer $refTypeId
+     * @param int $refTypeId
+     *
      * @return RefType
      */
     public function setRefTypeId($refTypeId)
@@ -63,9 +59,9 @@ class RefType
     }
 
     /**
-     * Get ref_type_id
+     * Get ref_type_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getRefTypeId()
     {
@@ -73,9 +69,10 @@ class RefType
     }
 
     /**
-     * Set ref_type_name
+     * Set ref_type_name.
      *
      * @param string $refTypeName
+     *
      * @return RefType
      */
     public function setRefTypeName($refTypeName)
@@ -86,9 +83,9 @@ class RefType
     }
 
     /**
-     * Get ref_type_name
+     * Get ref_type_name.
      *
-     * @return string 
+     * @return string
      */
     public function getRefTypeName()
     {

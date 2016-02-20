@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
@@ -12,16 +11,13 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CorporationRepository")
  * @ORM\Table(name="corporations", uniqueConstraints={
-    @ORM\UniqueConstraint(name="eve_id_idx", columns={"eve_id"})
+ @ORM\UniqueConstraint(name="eve_id_idx", columns={"eve_id"})
  * })
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class Corporation
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -103,9 +99,10 @@ class Corporation
      */
     protected $deleted_at;
 
-    public static function loadValidatorMetadata(ClassMetadata $metadata){
-        $metadata->addPropertyConstraints('api_credentials',[
-            new Assert\Valid()
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraints('api_credentials', [
+            new Assert\Valid(),
         ]);
     }
 
@@ -124,14 +121,15 @@ class Corporation
     }
 
     /**
-     * Add accounts
+     * Add accounts.
      *
      * @param \AppBundle\Entity\Account $accounts
+     *
      * @return Corporation
      */
     public function addAccount(\AppBundle\Entity\Account $accounts)
     {
-        if (!$this->accounts->contains($accounts)){
+        if (!$this->accounts->contains($accounts)) {
             $this->accounts[] = $accounts;
             $accounts->setCorporation($this);
         }
@@ -140,14 +138,15 @@ class Corporation
     }
 
     /**
-     * Add assets
+     * Add assets.
      *
      * @param \AppBundle\Entity\Asset $assets
+     *
      * @return Corporation
      */
     public function addAssetGroup(\AppBundle\Entity\AssetGroup $assets)
     {
-        if (!$this->asset_groups->contains($assets)){
+        if (!$this->asset_groups->contains($assets)) {
             $this->asset_groups[] = $assets;
             $assets->setCorporation($this);
         }
@@ -155,8 +154,9 @@ class Corporation
         return $this;
     }
 
-    public function addStarbase(Starbase $starbase){
-        if (!$this->starbases->contains($starbase)){
+    public function addStarbase(Starbase $starbase)
+    {
+        if (!$this->starbases->contains($starbase)) {
             $this->starbases[] = $starbase;
             $starbase->setCorporation($this);
         }
@@ -164,16 +164,16 @@ class Corporation
         return $this;
     }
 
-
     /**
-     * Add market_orders
+     * Add market_orders.
      *
      * @param \AppBundle\Entity\MarketOrder $marketOrders
+     *
      * @return Corporation
      */
     public function addMarketOrderGroup(\AppBundle\Entity\MarketOrderGroup $marketOrders)
     {
-        if (!$this->market_order_groups->contains($marketOrders)){
+        if (!$this->market_order_groups->contains($marketOrders)) {
             $this->market_order_groups[] = $marketOrders;
             $marketOrders->setCorporation($this);
         }
@@ -182,14 +182,15 @@ class Corporation
     }
 
     /**
-     * Add api_updates
+     * Add api_updates.
      *
      * @param \AppBundle\Entity\ApiUpdate $apiUpdates
+     *
      * @return Corporation
      */
     public function addApiUpdate(\AppBundle\Entity\ApiUpdate $apiUpdates)
     {
-        if (!$this->api_updates->contains($apiUpdates)){
+        if (!$this->api_updates->contains($apiUpdates)) {
             $this->api_updates[] = $apiUpdates;
             $apiUpdates->setCorporation($this);
         }
@@ -197,11 +198,10 @@ class Corporation
         return $this;
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -209,9 +209,10 @@ class Corporation
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return Corporation
      */
     public function setCreatedAt($createdAt)
@@ -222,9 +223,9 @@ class Corporation
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -232,9 +233,10 @@ class Corporation
     }
 
     /**
-     * Set deleted_at
+     * Set deleted_at.
      *
      * @param \DateTime $deletedAt
+     *
      * @return Corporation
      */
     public function setDeletedAt($deletedAt)
@@ -245,9 +247,9 @@ class Corporation
     }
 
     /**
-     * Get deleted_at
+     * Get deleted_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -255,9 +257,10 @@ class Corporation
     }
 
     /**
-     * Set created_by
+     * Set created_by.
      *
      * @param \AppBundle\Entity\User $createdBy
+     *
      * @return Corporation
      */
     public function setCreatedBy(\AppBundle\Entity\User $createdBy = null)
@@ -268,9 +271,9 @@ class Corporation
     }
 
     /**
-     * Get created_by
+     * Get created_by.
      *
-     * @return \AppBundle\Entity\User 
+     * @return \AppBundle\Entity\User
      */
     public function getCreatedBy()
     {
@@ -278,9 +281,10 @@ class Corporation
     }
 
     /**
-     * Set eve_id
+     * Set eve_id.
      *
-     * @param integer $eveId
+     * @param int $eveId
+     *
      * @return Corporation
      */
     public function setEveId($eveId)
@@ -291,9 +295,9 @@ class Corporation
     }
 
     /**
-     * Get eve_id
+     * Get eve_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getEveId()
     {
@@ -301,7 +305,7 @@ class Corporation
     }
 
     /**
-     * Remove accounts
+     * Remove accounts.
      *
      * @param \AppBundle\Entity\Account $accounts
      */
@@ -311,9 +315,9 @@ class Corporation
     }
 
     /**
-     * Get accounts
+     * Get accounts.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAccounts()
     {
@@ -321,9 +325,10 @@ class Corporation
     }
 
     /**
-     * Set lasted_updated_at
+     * Set lasted_updated_at.
      *
      * @param \DateTime $lastedUpdatedAt
+     *
      * @return Corporation
      */
     public function setLastUpdatedAt($lastedUpdatedAt)
@@ -334,9 +339,9 @@ class Corporation
     }
 
     /**
-     * Get lasted_updated_at
+     * Get lasted_updated_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getLastUpdatedAt()
     {
@@ -344,7 +349,7 @@ class Corporation
     }
 
     /**
-     * Remove asset_groupings
+     * Remove asset_groupings.
      *
      * @param \AppBundle\Entity\AssetGrouping $assetGroupings
      */
@@ -354,9 +359,9 @@ class Corporation
     }
 
     /**
-     * Get asset_groupings
+     * Get asset_groupings.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getAssetGroups()
     {
@@ -364,7 +369,7 @@ class Corporation
     }
 
     /**
-     * Remove api_updates
+     * Remove api_updates.
      *
      * @param \AppBundle\Entity\ApiUpdate $apiUpdates
      */
@@ -374,9 +379,9 @@ class Corporation
     }
 
     /**
-     * Get api_updates
+     * Get api_updates.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getApiUpdates()
     {
@@ -384,14 +389,15 @@ class Corporation
     }
 
     /**
-     * Add api_credentials
+     * Add api_credentials.
      *
      * @param \AppBundle\Entity\ApiCredentials $apiCredentials
+     *
      * @return Corporation
      */
     public function addApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
     {
-        if (!$this->api_credentials->contains($apiCredentials)){
+        if (!$this->api_credentials->contains($apiCredentials)) {
             $this->api_credentials[] = $apiCredentials;
             $apiCredentials->setCorporation($this);
         }
@@ -400,7 +406,7 @@ class Corporation
     }
 
     /**
-     * Remove api_credentials
+     * Remove api_credentials.
      *
      * @param \AppBundle\Entity\ApiCredentials $apiCredentials
      */
@@ -410,9 +416,9 @@ class Corporation
     }
 
     /**
-     * Get api_credentials
+     * Get api_credentials.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getApiCredentials()
     {
@@ -420,9 +426,10 @@ class Corporation
     }
 
     /**
-     * Set corporation_details
+     * Set corporation_details.
      *
      * @param \AppBundle\Entity\CorporationDetail $corporationDetails
+     *
      * @return Corporation
      */
     public function setCorporationDetails(\AppBundle\Entity\CorporationDetail $corporationDetails = null)
@@ -434,9 +441,9 @@ class Corporation
     }
 
     /**
-     * Get corporation_details
+     * Get corporation_details.
      *
-     * @return \AppBundle\Entity\CorporationDetail 
+     * @return \AppBundle\Entity\CorporationDetail
      */
     public function getCorporationDetails()
     {
@@ -444,7 +451,7 @@ class Corporation
     }
 
     /**
-     * Remove market_order_groups
+     * Remove market_order_groups.
      *
      * @param \AppBundle\Entity\MarketOrderGroup $marketOrderGroups
      */
@@ -454,9 +461,9 @@ class Corporation
     }
 
     /**
-     * Get market_order_groups
+     * Get market_order_groups.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getMarketOrderGroups()
     {
@@ -464,7 +471,7 @@ class Corporation
     }
 
     /**
-     * Remove starbases
+     * Remove starbases.
      *
      * @param \AppBundle\Entity\Starbase $starbases
      */
@@ -474,9 +481,9 @@ class Corporation
     }
 
     /**
-     * Get starbases
+     * Get starbases.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getStarbases()
     {
@@ -484,14 +491,15 @@ class Corporation
     }
 
     /**
-     * Add corporation_members
+     * Add corporation_members.
      *
      * @param \AppBundle\Entity\CorporationMember $corporationMembers
+     *
      * @return Corporation
      */
     public function addCorporationMember(\AppBundle\Entity\CorporationMember $corporationMembers)
     {
-        if (!$this->corporation_members->contains($corporationMembers)){
+        if (!$this->corporation_members->contains($corporationMembers)) {
             $this->corporation_members[] = $corporationMembers;
             $corporationMembers->setCorporation($this);
         }
@@ -500,7 +508,7 @@ class Corporation
     }
 
     /**
-     * Remove corporation_members
+     * Remove corporation_members.
      *
      * @param \AppBundle\Entity\CorporationMember $corporationMembers
      */
@@ -510,9 +518,9 @@ class Corporation
     }
 
     /**
-     * Get corporation_members
+     * Get corporation_members.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCorporationMembers()
     {
@@ -520,9 +528,10 @@ class Corporation
     }
 
     /**
-     * Add buyback_configurations
+     * Add buyback_configurations.
      *
      * @param \AppBundle\Entity\BuybackConfiguration $buybackConfigurations
+     *
      * @return Corporation
      */
     public function addBuybackConfiguration(\AppBundle\Entity\BuybackConfiguration $buybackConfigurations)
@@ -533,7 +542,7 @@ class Corporation
     }
 
     /**
-     * Remove buyback_configurations
+     * Remove buyback_configurations.
      *
      * @param \AppBundle\Entity\BuybackConfiguration $buybackConfigurations
      */
@@ -543,9 +552,9 @@ class Corporation
     }
 
     /**
-     * Get buyback_configurations
+     * Get buyback_configurations.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getBuybackConfigurations()
     {
@@ -553,14 +562,15 @@ class Corporation
     }
 
     /**
-     * Add titles
+     * Add titles.
      *
      * @param \AppBundle\Entity\CorporationTitle $titles
+     *
      * @return Corporation
      */
     public function addTitle(\AppBundle\Entity\CorporationTitle $titles)
     {
-        if (!$this->titles->contains($titles)){
+        if (!$this->titles->contains($titles)) {
             $this->titles[] = $titles;
             $titles->setCorporation($this);
         }
@@ -569,7 +579,7 @@ class Corporation
     }
 
     /**
-     * Remove titles
+     * Remove titles.
      *
      * @param \AppBundle\Entity\CorporationTitle $titles
      */
@@ -579,9 +589,9 @@ class Corporation
     }
 
     /**
-     * Get titles
+     * Get titles.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getTitles()
     {

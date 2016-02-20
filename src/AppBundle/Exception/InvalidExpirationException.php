@@ -2,6 +2,6 @@
 
 namespace AppBundle\Exception;
 
-class InvalidExpirationException extends \Exception {
-
+class InvalidExpirationException extends \Exception
+{
 }

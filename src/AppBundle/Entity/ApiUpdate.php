@@ -3,21 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ApiUpdateRepository")
  * @ORM\Table(name="api_updates")
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class ApiUpdate
 {
-
     const CACHE_STYLE_SHORT = 1,
           CACHE_STYLE_LONG = 2;
 
@@ -73,16 +68,15 @@ class ApiUpdate
      */
     protected $created_at;
 
-
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -90,9 +84,10 @@ class ApiUpdate
     }
 
     /**
-     * Set type
+     * Set type.
      *
-     * @param integer $type
+     * @param int $type
+     *
      * @return ApiUpdate
      */
     public function setType($type)
@@ -103,9 +98,9 @@ class ApiUpdate
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return integer 
+     * @return int
      */
     public function getType()
     {
@@ -113,9 +108,10 @@ class ApiUpdate
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return ApiUpdate
      */
     public function setCreatedAt($createdAt)
@@ -126,9 +122,9 @@ class ApiUpdate
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -136,9 +132,10 @@ class ApiUpdate
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return ApiUpdate
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -149,9 +146,9 @@ class ApiUpdate
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -159,9 +156,10 @@ class ApiUpdate
     }
 
     /**
-     * Set api_call
+     * Set api_call.
      *
-     * @param integer $apiCall
+     * @param int $apiCall
+     *
      * @return ApiUpdate
      */
     public function setApiCall($apiCall)
@@ -172,9 +170,9 @@ class ApiUpdate
     }
 
     /**
-     * Get api_call
+     * Get api_call.
      *
-     * @return integer 
+     * @return int
      */
     public function getApiCall()
     {
@@ -182,9 +180,10 @@ class ApiUpdate
     }
 
     /**
-     * Set succeeded
+     * Set succeeded.
      *
-     * @param boolean $succeeded
+     * @param bool $succeeded
+     *
      * @return ApiUpdate
      */
     public function setSucceeded($succeeded)
@@ -195,9 +194,9 @@ class ApiUpdate
     }
 
     /**
-     * Get succeeded
+     * Get succeeded.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getSucceeded()
     {

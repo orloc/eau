@@ -3,21 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="alliances")
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class Alliance
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -37,9 +32,9 @@ class Alliance
     protected $name;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -47,9 +42,10 @@ class Alliance
     }
 
     /**
-     * Set eve_id
+     * Set eve_id.
      *
-     * @param integer $eveId
+     * @param int $eveId
+     *
      * @return Alliance
      */
     public function setEveId($eveId)
@@ -60,9 +56,9 @@ class Alliance
     }
 
     /**
-     * Get eve_id
+     * Get eve_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getEveId()
     {
@@ -70,9 +66,10 @@ class Alliance
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Alliance
      */
     public function setName($name)
@@ -83,9 +80,9 @@ class Alliance
     }
 
     /**
-     * Get name
+     * Get name.
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {

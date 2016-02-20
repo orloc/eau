@@ -16,113 +16,121 @@ use AppBundle\Service\DataManager\Corporation\TitleManager;
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 
-class EveDataUpdateService {
-
+class EveDataUpdateService
+{
     protected $doctrine;
 
     protected $registry;
 
     protected $log;
 
-    public function __construct(DataManagerRegistry $registry, Registry $doctrine, Logger $log){
+    public function __construct(DataManagerRegistry $registry, Registry $doctrine, Logger $log)
+    {
         $this->doctrine = $doctrine;
         $this->registry = $registry;
         $this->log = $log;
     }
 
-    public function updateShortTimerCalls(Corporation $c, $force = false){
+    public function updateShortTimerCalls(Corporation $c, $force = false)
+    {
         $calls = [
             AccountManager::getName() => 'updateAccounts',
             CorporationManager::getName() => ['getCorporationSheet', 'getMembers'],
             JournalTransactionManager::getName() => 'updateJournalTransactions',
             MarketTransactionManager::getName() => 'updateMarketTransactions',
-            StarbaseManager::getName() => 'getStarbases'
+            StarbaseManager::getName() => 'getStarbases',
         ];
 
-        foreach ($calls as $manager => $call){
-            if (is_array($call)){
-                foreach ($call as $ic){
-                    if(!$this->checkShortTimer($c, $this->resolveCall($ic)) || $force === true) {
+        foreach ($calls as $manager => $call) {
+            if (is_array($call)) {
+                foreach ($call as $ic) {
+                    if (!$this->checkShortTimer($c, $this->resolveCall($ic)) || $force === true) {
                         $this->doUpdate($manager, $ic, $c, ApiUpdate::CACHE_STYLE_SHORT);
                     }
                 }
             } else {
-                if(!$this->checkShortTimer($c, $this->resolveCall($call)) || $force === true) {
+                if (!$this->checkShortTimer($c, $this->resolveCall($call)) || $force === true) {
                     $this->doUpdate($manager, $call, $c, ApiUpdate::CACHE_STYLE_SHORT);
                 }
             }
         }
     }
 
-    public function updateLongTimerCalls(Corporation $c, $force = false){
+    public function updateLongTimerCalls(Corporation $c, $force = false)
+    {
         $calls = [
             AssetManager::getName() => 'generateAssetList',
             MarketOrderManager::getName() => 'getMarketOrders',
-            TitleManager::getName() => 'updateTitles'
+            TitleManager::getName() => 'updateTitles',
         ];
 
-        foreach ($calls as $manager => $call){
-            if(!$this->checkLongTimer($c, $this->resolveCall($call)) || $force === true){
+        foreach ($calls as $manager => $call) {
+            if (!$this->checkLongTimer($c, $this->resolveCall($call)) || $force === true) {
                 $this->doUpdate($manager, $call, $c, ApiUpdate::CACHE_STYLE_LONG);
             }
         }
-
     }
 
-    public function checkShortTimer(Corporation $c, $call){
+    public function checkShortTimer(Corporation $c, $call)
+    {
         return $this->doctrine->getRepository('AppBundle:ApiUpdate')
             ->getShortTimerExpired($c, $call);
     }
 
-    public function checkLongTimer(Corporation $c, $call){
+    public function checkLongTimer(Corporation $c, $call)
+    {
         return $this->doctrine->getRepository('AppBundle:ApiUpdate')
             ->getLongTimerExpired($c, $call);
     }
 
-    public function updateAssetCache(array $c){
+    public function updateAssetCache(array $c)
+    {
         $this->registry->get(AssetManager::getName())
             ->updateAssetGroupCache($c);
     }
 
-
-    public function createApiUpdate($type, $call, $success, Corporation $corp = null){
+    public function createApiUpdate($type, $call, $success, Corporation $corp = null)
+    {
         $access = new ApiUpdate();
 
         $access->setType($type)
             ->setApiCall($call)
             ->setSucceeded($success);
 
-        if ($corp){
+        if ($corp) {
             $access->setCorporation($corp);
         }
 
         return $access;
     }
 
-    protected function doUpdate($manager, $call, Corporation $c, $cache_style){
-        $this->log->info(sprintf("Executing %s", $call));
+    protected function doUpdate($manager, $call, Corporation $c, $cache_style)
+    {
+        $this->log->info(sprintf('Executing %s', $call));
         $em = $this->doctrine->getManager();
 
         $start = microtime(true);
 
         $key = $this->registry->get($manager)->getApiKey($c);
 
-        if ($key->getInvalid()){
-            $this->log->info(sprintf("Invalid Api key for %c", $c->getCorporationDetails()->getName()));
+        if ($key->getInvalid()) {
+            $this->log->info(sprintf('Invalid Api key for %c', $c->getCorporationDetails()->getName()));
+
             return;
         }
 
-        if ($key->getErrorCount() >= 5){
+        if ($key->getErrorCount() >= 5) {
             $key->setInvalid(true)
                 ->setErrorCount(0);
 
             $em->persist($key);
+
             return;
         }
 
         $success = $this->tryCall($manager, $call, $c, $key);
 
-        if (!$success){
+        if (!$success) {
             $em->persist($key);
         }
 
@@ -138,18 +146,19 @@ class EveDataUpdateService {
         $em->persist($c);
 
         $end = microtime(true) - $start;
-        $this->log->info(sprintf("Done Executing %s in %s seconds", $call, $end));
+        $this->log->info(sprintf('Done Executing %s in %s seconds', $call, $end));
     }
 
-    protected function tryCall($manager, $function, $arg, ApiCredentials $key){
+    protected function tryCall($manager, $function, $arg, ApiCredentials $key)
+    {
         try {
             $this->registry
                 ->get($manager)
                 ->$function($arg);
 
             return true;
-        } catch (\Exception $e){
-            $this->log->error(sprintf("Error syncing data for %s  on call %s with: %s",
+        } catch (\Exception $e) {
+            $this->log->error(sprintf('Error syncing data for %s  on call %s with: %s',
                 $arg->getCorporationDetails()->getName(),
                 $function,
                 $e->getMessage()
@@ -162,8 +171,9 @@ class EveDataUpdateService {
         }
     }
 
-    protected function resolveCall($call){
-        switch ($call){
+    protected function resolveCall($call)
+    {
+        switch ($call) {
             case 'updateAccounts':
                 return ApiUpdate::CORP_ACC_BALANCES;
             case 'updateJournalTransactions':

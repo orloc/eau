@@ -2,9 +2,8 @@
 
 namespace AppBundle\Security;
 
-
-final class AccessTypes {
-
+final class AccessTypes
+{
     const VIEW = 'view',
           EDIT = 'edit';
 }

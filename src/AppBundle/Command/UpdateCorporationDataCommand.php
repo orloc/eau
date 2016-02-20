@@ -23,7 +23,6 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $force = $input->getOption('force', false);
 
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
@@ -67,13 +66,13 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
             $update = true;
         }
 
-        if ($update){
+        if ($update) {
             $log->info('Flushing Data');
             $em->flush();
         }
 
         $corp_ids = [];
-        foreach ($corps as $c){
+        foreach ($corps as $c) {
             $log->info("Starting Update {$c->getCorporationDetails()->getName()}\n\n");
             try {
                 $this->getContainer()->get('app.corporation.manager')->checkCorporationDetails($c);
@@ -84,13 +83,13 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
                 $corp_ids[] = $c->getId();
                 $log->info("Finished Updated {$c->getCorporationDetails()->getName()}");
-            } catch (\Exception $e){
+            } catch (\Exception $e) {
                 $log->info("ERROR: {$e->getMessage()}");
             }
         }
-        $log->info("Updating Compound Fields.");
+        $log->info('Updating Compound Fields.');
         $start = microtime(true);
         $dataUpdateService->updateAssetCache($corp_ids);
-        $log->info(sprintf("Done in %s", microtime(true) - $start));
+        $log->info(sprintf('Done in %s', microtime(true) - $start));
     }
 }

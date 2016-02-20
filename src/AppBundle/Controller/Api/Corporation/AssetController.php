@@ -15,8 +15,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Asset controller.
  */
-class AssetController extends AbstractController implements ApiControllerInterface {
-
+class AssetController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/assets", name="api.corporation.assets", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -25,7 +25,6 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      */
     public function indexAction(Request $request, Corporation $corp)
     {
-
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $group = $this->getRepository('AppBundle:AssetGroup')
@@ -38,7 +37,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $newList = [
             'total_price' => $group->getAssetSum(),
-            'items' => $assets->getItems()
+            'items' => $assets->getItems(),
         ];
 
         $assets->setItems($newList);
@@ -46,7 +45,6 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $json = $this->get('serializer')->serialize($assets, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -55,7 +53,8 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
-    public function summaryAction(Request $request, Corporation $corp){
+    public function summaryAction(Request $request, Corporation $corp)
+    {
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $group = $this->getRepository('AppBundle:AssetGroup')
@@ -65,7 +64,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $assets = $this->paginateResult($request, $query);
 
-        $json = $this->get('serializer')->serialize($assets,'json');
+        $json = $this->get('serializer')->serialize($assets, 'json');
 
         return $this->jsonResponse($json);
     }
@@ -76,12 +75,13 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
-    public function getAssetsOrganizedAction(Request $request, Corporation $corp){
+    public function getAssetsOrganizedAction(Request $request, Corporation $corp)
+    {
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $sort = $request->query->get('sort', false);
 
-        if (!$sort || !in_array($sort, ['location', 'category'])){
+        if (!$sort || !in_array($sort, ['location', 'category'])) {
             return $this->jsonResponse(json_encode(['error' => 'invalid sort']), 400);
         }
 
@@ -89,25 +89,26 @@ class AssetController extends AbstractController implements ApiControllerInterfa
             ->getLatestAssetGroup($corp);
         $repo = $this->getRepository('AppBundle:Asset');
 
-
-        switch ($sort){
+        switch ($sort) {
             case 'location':
                 $results = $repo->getLocationsByAssetGroup($group);
                 $locations = [];
                 $updatedResults = $this->get('app.itemdetail.manager')
                     ->updateDetails($results);
 
-                foreach ($updatedResults as $r){
-                    if ($r->getLocationId() === null) { continue;}
+                foreach ($updatedResults as $r) {
+                    if ($r->getLocationId() === null) {
+                        continue;
+                    }
 
                     $desc = $r->getDescriptors();
-                    $name =  $desc['stationName'] === null
+                    $name = $desc['stationName'] === null
                         ? 'In Space @ '.$desc['system']
                         : $desc['stationName'];
 
                     $locations[$r->getLocationId()] = [
                         'name' => $name,
-                        'id' => $r->getLocationId()
+                        'id' => $r->getLocationId(),
                     ];
                 }
 
@@ -115,9 +116,9 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
                 break;
             case 'category':
-                $itemIds = array_map(function($i) {
+                $itemIds = array_map(function ($i) {
                     return $i['typeId'];
-                },$repo->getTypeIDSByAssetGroup($group));
+                }, $repo->getTypeIDSByAssetGroup($group));
 
                 $reg = $this->get('evedata.registry');
 
@@ -125,32 +126,35 @@ class AssetController extends AbstractController implements ApiControllerInterfa
                     ->findAllByTypes($itemIds);
 
                 $map = $this->doMap($types);
+
                 return $this->jsonResponse(json_encode(array_values($map)), 200);
                 break;
         }
     }
 
-    protected function doMap(array $types){
+    protected function doMap(array $types)
+    {
         $no_parents = false;
         $reg = $this->get('evedata.registry');
-        while(!$no_parents){
-            $ref =[];
-            $marketGroupIds = array_unique(array_map(function($t) use (&$ref){
+        while (!$no_parents) {
+            $ref = [];
+            $marketGroupIds = array_unique(array_map(function ($t) use (&$ref) {
                 $refPoint = isset($t['typeID']) ? $t['marketGroupID'] : $t['parentGroupID'];
-                if (!isset($ref[$refPoint])){
+                if (!isset($ref[$refPoint])) {
                     $ref[$refPoint][] = $t;
                 }
                 $ref[$refPoint][] = $t;
+
                 return $refPoint;
             }, $types));
 
             $types = $reg->get('EveBundle:MarketGroup')->getInList($marketGroupIds);
 
-            foreach ($types as $k => $t){
-                $types[$k]['children'] =  $ref[$t['marketGroupID']];
+            foreach ($types as $k => $t) {
+                $types[$k]['children'] = $ref[$t['marketGroupID']];
             }
 
-            $no_parents = empty(array_filter($types, function($t){
+            $no_parents = empty(array_filter($types, function ($t) {
                 return $t['parentGroupID'] !== null;
             }));
         }
@@ -164,10 +168,11 @@ class AssetController extends AbstractController implements ApiControllerInterfa
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
-    public function locationAssetsAction(Request $request, Corporation $corp){
+    public function locationAssetsAction(Request $request, Corporation $corp)
+    {
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
         $loc = $request->query->get('location', false);
-        if (!$loc){
+        if (!$loc) {
             return $this->jsonResponse(json_encode(['error' => 'invalid']), 400);
         }
 
@@ -182,9 +187,9 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($assets);
         $priceManager->updatePrices($updatedItems);
 
-        $json =  $this->get('jms_serializer')->serialize($updatedItems, 'json');
-        return $this->jsonResponse($json, 200);
+        $json = $this->get('jms_serializer')->serialize($updatedItems, 'json');
 
+        return $this->jsonResponse($json, 200);
     }
 
     /**
@@ -203,7 +208,6 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $query = $this->getRepository('AppBundle:Asset')
             ->getDeliveriesByGroup($group);
 
-
         $items = $query->getResult();
 
         $priceManager = $this->get('app.price.manager');
@@ -211,8 +215,8 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $updatedItems = $this->get('app.itemdetail.manager')->updateDetails($items);
         $priceManager->updatePrices($updatedItems);
 
-        $total_price = array_reduce($items, function($carry, $data){
-            if ($carry === null){
+        $total_price = array_reduce($items, function ($carry, $data) {
+            if ($carry === null) {
                 return $data->getDescriptors()['total_price'];
             }
 
@@ -221,12 +225,11 @@ class AssetController extends AbstractController implements ApiControllerInterfa
 
         $newList = [
             'total_price' => $total_price,
-            'items' => array_values($items)
+            'items' => array_values($items),
         ];
 
         $json = $this->get('serializer')->serialize($newList, 'json');
 
         return $this->jsonResponse($json);
-
     }
 }

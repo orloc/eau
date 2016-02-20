@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,16 +12,14 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CharacterRepository")
  * @ORM\Table(name="characters", uniqueConstraints={
-    @ORM\UniqueConstraint(name="unique_name", columns={"eve_id"})
+ @ORM\UniqueConstraint(name="unique_name", columns={"eve_id"})
  * })
  * @ORM\HasLifecycleCallbacks()
  * @JMS\ExclusionPolicy("all")
  * @UniqueEntity(fields={"eve_id"})
- * @package AppBundle\Entity
  */
 class Character
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -80,40 +77,44 @@ class Character
     /**
      * @JMS\VirtualProperty()
      */
-    public function hasKey(){
+    public function hasKey()
+    {
         return $this->getApiCredentials()->count() ? true : false;
     }
 
-    public function associatedCharacters(){
+    public function associatedCharacters()
+    {
         $chars = $this->getUser()->getCharacters();
-        $otherChars = array_filter($chars->toArray(), function($c){
+        $otherChars = array_filter($chars->toArray(), function ($c) {
             return $c->getId() !== $this->getId();
         });
 
-        $return = array_map(function($c) { return [
+        $return = array_map(function ($c) { return [
             'name' => $c->getName(),
-            'id' => $c->getId() ];
+            'id' => $c->getId(), ];
         }, $otherChars);
 
         return $return;
     }
 
-    public static function loadValidatorMetadata(ClassMetadata $metadata){
-        $metadata->addPropertyConstraints('api_credentials',[
-            new Assert\Valid()
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata->addPropertyConstraints('api_credentials', [
+            new Assert\Valid(),
         ]);
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
         $this->is_main = false;
         $this->api_credentials = new ArrayCollection();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -121,9 +122,10 @@ class Character
     }
 
     /**
-     * Set eve_id
+     * Set eve_id.
      *
-     * @param integer $eveId
+     * @param int $eveId
+     *
      * @return Character
      */
     public function setEveId($eveId)
@@ -134,9 +136,9 @@ class Character
     }
 
     /**
-     * Get eve_id
+     * Get eve_id.
      *
-     * @return integer
+     * @return int
      */
     public function getEveId()
     {
@@ -144,9 +146,10 @@ class Character
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Character
      */
     public function setName($name)
@@ -157,7 +160,7 @@ class Character
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -167,9 +170,10 @@ class Character
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return Character
      */
     public function setCreatedAt($createdAt)
@@ -180,7 +184,7 @@ class Character
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
      * @return \DateTime
      */
@@ -190,9 +194,10 @@ class Character
     }
 
     /**
-     * Set user
+     * Set user.
      *
      * @param \AppBundle\Entity\User $user
+     *
      * @return Character
      */
     public function setUser(\AppBundle\Entity\User $user = null)
@@ -203,7 +208,7 @@ class Character
     }
 
     /**
-     * Get user
+     * Get user.
      *
      * @return \AppBundle\Entity\User
      */
@@ -213,14 +218,15 @@ class Character
     }
 
     /**
-     * Add api_credentials
+     * Add api_credentials.
      *
      * @param \AppBundle\Entity\ApiCredentials $apiCredentials
+     *
      * @return Character
      */
     public function addApiCredential(\AppBundle\Entity\ApiCredentials $apiCredentials)
     {
-        if (!$this->api_credentials->contains($apiCredentials)){
+        if (!$this->api_credentials->contains($apiCredentials)) {
             $this->api_credentials[] = $apiCredentials;
             $apiCredentials->addCharacter($this);
         }
@@ -229,7 +235,7 @@ class Character
     }
 
     /**
-     * Remove api_credentials
+     * Remove api_credentials.
      *
      * @param \AppBundle\Entity\ApiCredentials $apiCredentials
      */
@@ -239,7 +245,7 @@ class Character
     }
 
     /**
-     * Get api_credentials
+     * Get api_credentials.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -249,9 +255,10 @@ class Character
     }
 
     /**
-     * Set eve_corporation_id
+     * Set eve_corporation_id.
      *
-     * @param integer $eveCorporationId
+     * @param int $eveCorporationId
+     *
      * @return Character
      */
     public function setEveCorporationId($eveCorporationId)
@@ -262,9 +269,9 @@ class Character
     }
 
     /**
-     * Get eve_corporation_id
+     * Get eve_corporation_id.
      *
-     * @return integer
+     * @return int
      */
     public function getEveCorporationId()
     {
@@ -272,9 +279,10 @@ class Character
     }
 
     /**
-     * Set corporation_name
+     * Set corporation_name.
      *
      * @param string $corporationName
+     *
      * @return Character
      */
     public function setCorporationName($corporationName)
@@ -285,7 +293,7 @@ class Character
     }
 
     /**
-     * Get corporation_name
+     * Get corporation_name.
      *
      * @return string
      */
@@ -295,9 +303,10 @@ class Character
     }
 
     /**
-     * Set is_main
+     * Set is_main.
      *
-     * @param boolean $isMain
+     * @param bool $isMain
+     *
      * @return Character
      */
     public function setIsMain($isMain)
@@ -308,9 +317,9 @@ class Character
     }
 
     /**
-     * Get is_main
+     * Get is_main.
      *
-     * @return boolean
+     * @return bool
      */
     public function getIsMain()
     {

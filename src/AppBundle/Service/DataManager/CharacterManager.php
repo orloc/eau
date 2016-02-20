@@ -3,19 +3,19 @@
 namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\Character;
-
-use Doctrine\Bundle\DoctrineBundle\Registry;
 use Monolog\Logger;
 
-class CharacterManager {
-
+class CharacterManager
+{
     private $log;
 
-    public function __construct(Logger $logger){
+    public function __construct(Logger $logger)
+    {
         $this->log = $logger;
     }
 
-    public function createCharacter(array $details){
+    public function createCharacter(array $details)
+    {
         $char = new Character();
 
         $char->setEveId($details['characterID'])
@@ -26,17 +26,13 @@ class CharacterManager {
         return $char;
     }
 
-
-    public function newCharacterWithName(array $details){
-
+    public function newCharacterWithName(array $details)
+    {
         $char = new Character();
 
         $char->setEveId($details['id'])
             ->setName($details['name']);
 
         return $char;
-
     }
-
-
 }

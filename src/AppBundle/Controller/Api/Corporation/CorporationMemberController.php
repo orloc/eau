@@ -17,8 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Region controller.
  */
-class CorporationMemberController extends AbstractController implements ApiControllerInterface {
-
+class CorporationMemberController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/members", name="api.corporation.members", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -27,38 +27,34 @@ class CorporationMemberController extends AbstractController implements ApiContr
      */
     public function indexAction(Request $request, Corporation $corp)
     {
-
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
         $members = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')
             ->findBy(['corporation' => $corp]);
 
         $tmp = [];
-        foreach ($members as $m){
+        foreach ($members as $m) {
             $tmp[$m->getCharacterName()] = $m;
         }
 
         $repo = $this->getRepository('AppBundle:Character');
-        foreach ($members as $m){
+        foreach ($members as $m) {
             $found = $repo->findOneBy(['eve_id' => $m->getCharacterId(), 'is_main' => true]);
 
-            if ($found instanceof Character){
+            if ($found instanceof Character) {
                 $tmp[$m->getCharacterName()]->setApiKey($found->getApiCredentials()->first() instanceof ApiCredentials);
                 $vals = array_values($found->associatedCharacters());
                 $tmp[$m->getCharacterName()]->setAssociatedChars($vals);
 
-                foreach ($vals as $v){
-                    if (isset($tmp[$v['name']])){
+                foreach ($vals as $v) {
+                    if (isset($tmp[$v['name']])) {
                         unset($tmp[$v['name']]);
                     }
                 }
-
             }
         }
 
         $json = $this->get('serializer')->serialize($tmp, 'json');
 
         return $this->jsonResponse($json);
-
     }
-
 }

@@ -2,17 +2,19 @@
 
 namespace EveBundle\Repository;
 
-class ConqStationRepository extends AbstractDbalRepository implements RepositoryInterface {
-
-    public function getName(){
+class ConqStationRepository extends AbstractDbalRepository implements RepositoryInterface
+{
+    public function getName()
+    {
         return 'EveBundle:StaStations';
     }
 
-    public function getTableName(){
+    public function getTableName()
+    {
         return 'staStations';
     }
 
-    public function getStationById($locationID){
+    public function getStationById($locationID)
+    {
     }
-
 }

@@ -3,20 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BuybackConfigurationRepository")
  * @ORM\Table(name="buyback_configurations")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class BuybackConfiguration
 {
-
     const TYPE_GLOBAL = 1,
         TYPE_SINGLE = 2,
         TYPE_REGION = 3;
@@ -72,7 +67,7 @@ class BuybackConfiguration
     protected $created_at;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -80,9 +75,9 @@ class BuybackConfiguration
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -90,9 +85,10 @@ class BuybackConfiguration
     }
 
     /**
-     * Set regions
+     * Set regions.
      *
      * @param array $regions
+     *
      * @return BuybackConfiguration
      */
     public function setRegions($regions)
@@ -103,7 +99,7 @@ class BuybackConfiguration
     }
 
     /**
-     * Get regions
+     * Get regions.
      *
      * @return array
      */
@@ -113,9 +109,10 @@ class BuybackConfiguration
     }
 
     /**
-     * Set type
+     * Set type.
      *
-     * @param integer $type
+     * @param int $type
+     *
      * @return BuybackConfiguration
      */
     public function setType($type)
@@ -126,9 +123,9 @@ class BuybackConfiguration
     }
 
     /**
-     * Get type
+     * Get type.
      *
-     * @return integer
+     * @return int
      */
     public function getType()
     {
@@ -136,9 +133,10 @@ class BuybackConfiguration
     }
 
     /**
-     * Set override
+     * Set override.
      *
      * @param string $override
+     *
      * @return BuybackConfiguration
      */
     public function setOverride($override)
@@ -149,7 +147,7 @@ class BuybackConfiguration
     }
 
     /**
-     * Get override
+     * Get override.
      *
      * @return string
      */
@@ -159,9 +157,10 @@ class BuybackConfiguration
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return BuybackConfiguration
      */
     public function setCreatedAt($createdAt)
@@ -172,7 +171,7 @@ class BuybackConfiguration
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
      * @return \DateTime
      */
@@ -182,9 +181,10 @@ class BuybackConfiguration
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return BuybackConfiguration
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -195,7 +195,7 @@ class BuybackConfiguration
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
      * @return \AppBundle\Entity\Corporation
      */
@@ -205,9 +205,10 @@ class BuybackConfiguration
     }
 
     /**
-     * Set single_item
+     * Set single_item.
      *
-     * @param integer $singleItem
+     * @param int $singleItem
+     *
      * @return BuybackConfiguration
      */
     public function setSingleItem($singleItem)
@@ -218,9 +219,9 @@ class BuybackConfiguration
     }
 
     /**
-     * Get single_item
+     * Get single_item.
      *
-     * @return integer
+     * @return int
      */
     public function getSingleItem()
     {
@@ -228,9 +229,10 @@ class BuybackConfiguration
     }
 
     /**
-     * Set base_markdown
+     * Set base_markdown.
      *
      * @param string $baseMarkdown
+     *
      * @return BuybackConfiguration
      */
     public function setBaseMarkdown($baseMarkdown)
@@ -241,7 +243,7 @@ class BuybackConfiguration
     }
 
     /**
-     * Get base_markdown
+     * Get base_markdown.
      *
      * @return string
      */

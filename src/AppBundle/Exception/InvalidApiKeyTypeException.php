@@ -2,6 +2,6 @@
 
 namespace AppBundle\Exception;
 
-class InvalidApiKeyTypeException extends \Exception {
-
+class InvalidApiKeyTypeException extends \Exception
+{
 }

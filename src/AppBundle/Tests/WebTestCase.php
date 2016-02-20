@@ -8,10 +8,10 @@ use Symfony\Component\BrowserKit\Cookie;
 
 class WebTestCase extends BaseCase
 {
-
     protected $client = null;
 
-    protected function logIn($username, $string = false){
+    protected function logIn($username, $string = false)
+    {
         $session = $this->client->getContainer()->get('session');
 
         $firewall = 'main';
@@ -20,11 +20,11 @@ class WebTestCase extends BaseCase
 
         $user = $em->getRepository('AppBundle:User')->findOneByUsername($username);
 
-        if ($user === null){
+        if ($user === null) {
             var_dump($username, $user);
 
-            var_dump($em->getRepository('AppBundle:User')->findAll());die;
-
+            var_dump($em->getRepository('AppBundle:User')->findAll());
+            die;
         }
 
         $token = new UsernamePasswordToken(

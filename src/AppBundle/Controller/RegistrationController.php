@@ -10,10 +10,10 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use Symfony\Component\HttpFoundation\Request;
 
-
-class RegistrationController extends BaseController {
-
-    public function registerAction(Request $request){
+class RegistrationController extends BaseController
+{
+    public function registerAction(Request $request)
+    {
         $session = $this->get('session');
 
         /** @var $formFactory \FOS\UserBundle\Form\Factory\FactoryInterface */
@@ -23,13 +23,11 @@ class RegistrationController extends BaseController {
         /** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
         $dispatcher = $this->get('event_dispatcher');
 
-
         if (($auth = $session->get('registration_authorized', false)) !== false) {
-
             $user = $userManager->createUser();
             $user->setEnabled(true);
 
-            $user->setUsername(strtolower(str_replace(' ','_', trim($auth['name']))))
+            $user->setUsername(strtolower(str_replace(' ', '_', trim($auth['name']))))
                 ->addRole('ROLE_CORP_MEMBER');
 
             $event = new GetResponseUserEvent($user, $request);
@@ -66,21 +64,20 @@ class RegistrationController extends BaseController {
 
             return $this->render('FOSUserBundle:Registration:register.html.twig', array(
                 'form' => $form->createView(),
-                'auth' => $auth
+                'auth' => $auth,
             ));
-
-
         }
 
         return $this->redirect($this->generateUrl('eve.register'));
     }
 
     /**
-     * Tell the user to check his email provider
+     * Tell the user to check his email provider.
      */
     public function checkEmailAction()
     {
         $this->get('session')->remove('registration_authorized');
+
         return parent::checkEmailAction();
     }
 }

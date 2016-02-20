@@ -2,14 +2,14 @@
 
 namespace AppBundle\Repository;
 
-
 use AppBundle\Entity\Account;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityRepository;
 
-class AccountBalanceRepository extends EntityRepository {
-
-    public function getLatestBalance(Account $acc, \DateTime $date = null){
+class AccountBalanceRepository extends EntityRepository
+{
+    public function getLatestBalance(Account $acc, \DateTime $date = null)
+    {
         $dt = Carbon::instance($date)->endOfDay();
 
         $builder = $this->createQueryBuilder('ab')
@@ -19,17 +19,16 @@ class AccountBalanceRepository extends EntityRepository {
             ->setMaxResults(1)
             ->setParameters(['account' => $acc]);
 
-        if ($date){
+        if ($date) {
             $builder->andWhere('ab.created_at <= :end_of_day')
-                ->setParameter('end_of_day',$dt);
+                ->setParameter('end_of_day', $dt);
         }
-
 
         return $builder->getQuery()->getOneOrNullResult();
     }
 
-
-    public function getLastDayBalance(Account $acc){
+    public function getLastDayBalance(Account $acc)
+    {
         $date = Carbon::create()
             ->subDay();
 
@@ -41,20 +40,20 @@ class AccountBalanceRepository extends EntityRepository {
             ->setMaxResults(1)
             ->setParameters(['account' => $acc, 'date' => $date])
             ->getQuery()->getOneOrNullResult();
-
     }
 
-    public function getOrderedBalances(Account $acc){
+    public function getOrderedBalances(Account $acc)
+    {
         return $this->createQueryBuilder('ab')
             ->leftJoin('ab.account', 'acc')
             ->where('acc = :account')
             ->addOrderBy('ab.created_at', 'DESC')
             ->setParameters(['account' => $acc])
             ->getQuery()->getResult();
-
     }
 
-    public function getOrderedBalancesByDate(Account $acc, Carbon $date){
+    public function getOrderedBalancesByDate(Account $acc, Carbon $date)
+    {
         $end = $date->copy();
         $start = $date->subDays(7);
 
@@ -67,9 +66,8 @@ class AccountBalanceRepository extends EntityRepository {
             ->setParameters([
                 'account' => $acc,
                 'start' => $start,
-                'end' => $end
+                'end' => $end,
             ])
             ->getQuery()->getResult();
-
     }
 }

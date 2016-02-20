@@ -19,11 +19,9 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
  * @UniqueEntity("username")
  *
  * Class User
- * @package AppBundle\Entity
  */
-class User extends BaseUser {
-
-
+class User extends BaseUser
+{
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -56,22 +54,24 @@ class User extends BaseUser {
      */
     protected $deleted_at;
 
-    public static function loadValidatorMetadata(ClassMetadata $metadata){
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
         $metadata->addPropertyConstraints('username', [new Assert\NotBlank()])
             ->addPropertyConstraints('email', [
                 new Assert\Email(),
                 new Assert\NotBlank(),
-                new DuplicateEmailConstraint(['groups' => 'new'])
+                new DuplicateEmailConstraint(['groups' => 'new']),
             ])
-            ->addPropertyConstraints('plainPassword',[
-                new Assert\NotBlank(['groups' => 'new'])
+            ->addPropertyConstraints('plainPassword', [
+                new Assert\NotBlank(['groups' => 'new']),
             ])
             ->addPropertyConstraints('roles', [
-                new Assert\NotBlank()
+                new Assert\NotBlank(),
             ]);
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
         $this->setCreatedAt(new \DateTime());
         $this->setUpdatedAt(new \DateTime());
@@ -79,9 +79,9 @@ class User extends BaseUser {
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -89,9 +89,10 @@ class User extends BaseUser {
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return User
      */
     public function setCreatedAt($createdAt)
@@ -102,9 +103,9 @@ class User extends BaseUser {
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -112,9 +113,10 @@ class User extends BaseUser {
     }
 
     /**
-     * Set deleted_at
+     * Set deleted_at.
      *
      * @param \DateTime $deletedAt
+     *
      * @return User
      */
     public function setDeletedAt($deletedAt)
@@ -125,9 +127,9 @@ class User extends BaseUser {
     }
 
     /**
-     * Get deleted_at
+     * Get deleted_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getDeletedAt()
     {
@@ -135,9 +137,10 @@ class User extends BaseUser {
     }
 
     /**
-     * Set updated_at
+     * Set updated_at.
      *
      * @param \DateTime $updatedAt
+     *
      * @return User
      */
     public function setUpdatedAt($updatedAt)
@@ -148,9 +151,9 @@ class User extends BaseUser {
     }
 
     /**
-     * Get updated_at
+     * Get updated_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
@@ -158,14 +161,15 @@ class User extends BaseUser {
     }
 
     /**
-     * Add characters
+     * Add characters.
      *
      * @param \AppBundle\Entity\Character $characters
+     *
      * @return User
      */
     public function addCharacter(\AppBundle\Entity\Character $characters)
     {
-        if (!$this->characters->contains($characters)){
+        if (!$this->characters->contains($characters)) {
             $this->characters[] = $characters;
             $characters->setUser($this);
         }
@@ -174,7 +178,7 @@ class User extends BaseUser {
     }
 
     /**
-     * Remove characters
+     * Remove characters.
      *
      * @param \AppBundle\Entity\Character $characters
      */
@@ -184,9 +188,9 @@ class User extends BaseUser {
     }
 
     /**
-     * Get characters
+     * Get characters.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getCharacters()
     {

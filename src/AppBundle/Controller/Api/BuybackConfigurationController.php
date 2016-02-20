@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class BuybackConfigurationController extends AbstractController implements ApiControllerInterface {
-
+class BuybackConfigurationController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/buyback_configuration", name="api.buyback_configuration", options={"expose"=true})
      * @Method("GET")
@@ -21,7 +21,6 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
      */
     public function getAllAction(Request $request)
     {
-
         $configs = $this->getDoctrine()
             ->getRepository('AppBundle:BuybackConfiguration')
             ->findAll();
@@ -38,7 +37,6 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
      */
     public function postAction(Request $request)
     {
-
         $content = $request->request->all();
         $config = new BuybackConfiguration();
 
@@ -46,8 +44,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
             ->getRepository('AppBundle:Corporation')
             ->findOneBy(['id' => $content['corporation']]);
 
-
-        if (!$corp instanceof Corporation){
+        if (!$corp instanceof Corporation) {
             return $this->jsonResponse(['error' => 'Not found', 'code' => 400], 400);
         }
 
@@ -56,7 +53,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
         $config->setOverride($content['override_price'])
             ->setRegions(count($content['base_regions']) ? $content['base_regions'] : null)
             ->setSingleItem($content['search_item'] != null
-                ? (int)$content['search_item']
+                ? (int) $content['search_item']
                 : null)
             ->setBaseMarkdown($content['base_markdown'] != null
                 ? $content['base_markdown']
@@ -86,14 +83,13 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
      */
     public function patchAction(Request $request, BuybackConfiguration $config)
     {
-
         $content = $request->request->all();
 
-        if ($config->getType() == BuybackConfiguration::TYPE_GLOBAL){
+        if ($config->getType() == BuybackConfiguration::TYPE_GLOBAL) {
             $config->setBaseMarkdown($content['base_markdown']);
-        } elseif ($config->getType() == BuybackConfiguration::TYPE_SINGLE){
+        } elseif ($config->getType() == BuybackConfiguration::TYPE_SINGLE) {
             $config->setOverride($content['override']);
-        } elseif ($config->getType() == BuybackConfiguration::TYPE_REGION){
+        } elseif ($config->getType() == BuybackConfiguration::TYPE_REGION) {
             $config->setRegions($content['base_regions']);
         }
 
@@ -113,8 +109,8 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
      * @Method("DELETE")
      * @Secure(roles="ROLE_CEO")
      */
-    public function deleteAction(Request $request, BuybackConfiguration $config){
-
+    public function deleteAction(Request $request, BuybackConfiguration $config)
+    {
         $em = $this->getDoctrine()->getManager();
         $em->remove($config);
         $em->flush();
@@ -122,6 +118,5 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
         $json = $this->get('serializer')->serialize($config, 'json');
 
         return $this->jsonResponse($json);
-
     }
 }

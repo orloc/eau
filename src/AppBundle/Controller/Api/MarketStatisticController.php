@@ -11,21 +11,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
-class MarketStatisticController extends AbstractController implements ApiControllerInterface {
-
-
+class MarketStatisticController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/industry/market_diff", name="api.market_diff", options={"expose"=true})
      * @Method("GET")
      * @Secure(roles="ROLE_USER")
      */
-    public function getPriceDistributionAction(Request $request){
-
+    public function getPriceDistributionAction(Request $request)
+    {
         $authChecker = $this->get('security.authorization_checker');
-        if ($authChecker->isGranted('ROLE_DIRECTOR')){
+        if ($authChecker->isGranted('ROLE_DIRECTOR')) {
             $em = $this->getDoctrine()->getManager();
             $main = $em->getRepository('AppBundle:Character')->getMainCharacter($this->getUser());
-            if ($main !== null){
+            if ($main !== null) {
                 $corporation = $this->getDoctrine()->getRepository('AppBundle:Corporation')
                     ->findByCorpName($main->getCorporationName());
 
@@ -33,9 +32,9 @@ class MarketStatisticController extends AbstractController implements ApiControl
             }
         }
 
-        if (isset($corporation) && $corporation instanceof Corporation){
+        if (isset($corporation) && $corporation instanceof Corporation) {
         }
 
-        return $this->jsonResponse($this->get('jms_serializer')->serialize([],'json'));
+        return $this->jsonResponse($this->get('jms_serializer')->serialize([], 'json'));
     }
 }

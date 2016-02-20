@@ -21,20 +21,20 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             ->setDescription('Loads region specific price history from the crest API.');
     }
 
-    protected function buildIndex($items){
+    protected function buildIndex($items)
+    {
         $index = [];
         $data = [];
-        foreach ($items as $i){
+        foreach ($items as $i) {
             $index[] = $i;
             $data[] = null;
         }
 
-        return [ $data, $index ];
+        return [$data, $index];
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $registry = $this->getContainer()->get('doctrine');
         $log = $this->getContainer()->get('logger');
         $em = $registry->getManager('eve_data');
@@ -51,26 +51,27 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);
 
-        $neededRegions = array_reduce($configs, function($carry, $value){
-            if ($carry === null){
+        $neededRegions = array_reduce($configs, function ($carry, $value) {
+            if ($carry === null) {
                 return $value->getRegions();
             }
+
             return array_merge($carry, $value->getRegions());
         });
 
-        $log->addDebug("Beginning Import");
+        $log->addDebug('Beginning Import');
 
         $client = new Client();
-        $requests = function($region, $items) {
-            foreach ($items as $i){
+        $requests = function ($region, $items) {
+            foreach ($items as $i) {
                 yield new Request('GET', $this->getCrestUrl($region, $i['typeID']));
             }
         };
 
-        foreach ($neededRegions as $region){
+        foreach ($neededRegions as $region) {
             $errors = [];
             $real_region = $regionRepo->getRegionById($region);
-            foreach ($chunked_items as $items){
+            foreach ($chunked_items as $items) {
                 $progress = new ProgressBar($output, count($items));
                 $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s% <question>%memory:6s%</question> <info> Updating %message% </info>');
 
@@ -79,45 +80,44 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                 $progress->setMessage($real_region['regionName']);
 
                 $pool = new Pool($client, $requests($region, $items), [
-                    'fulfilled' => function($response, $i) use (&$processableData, $progress, $log) {
+                    'fulfilled' => function ($response, $i) use (&$processableData, $progress, $log) {
                         $obj = json_decode($response->getBody()->getContents(), true);
                         $processableData[$i] = array_pop($obj['items']);
                         $progress->advance();
                     },
-                    'rejected' => function($reason, $i) use ($log, $progress, $real_region) {
+                    'rejected' => function ($reason, $i) use ($log, $progress, $real_region) {
                         $errors[$i] = $reason;
                         $progress->setMessage(sprintf("{$real_region['regionName']} with %s errors", count($errors)));
                         $progress->advance();
-                    }
+                    },
                 ]);
 
                 $promise = $pool->promise();
                 $promise->wait();
-
 
                 $progress->finish();
                 $progress = new ProgressBar($output, count($processableData));
                 $progress->setFormat('<comment> %current%/%max% </comment>[%bar%] %percent:3s%%  <question>%memory:6s%</question> <info> Updating Database </info>');
 
                 $count = 0;
-                foreach ($processableData as $i => $processableItem){
+                foreach ($processableData as $i => $processableItem) {
                     if (is_array($processableItem) && isset($index[$i])) {
                         $exists = $em->getRepository('EveBundle:ItemPrice')
                             ->hasItem($real_region['regionID'], $index[$i]['typeID']);
 
-                        if ($exists instanceof ItemPrice){
+                        if ($exists instanceof ItemPrice) {
                             $p = $this->updatePriceData($processableItem, $exists);
                             $log->addDebug("Updating item {$p->getTypeName()} in {$p->getRegionName()}");
-                        } else  {
+                        } else {
                             $p = $this->makePriceData($processableItem, $real_region, $index[$i]);
                             $log->addDebug("Adding item {$p->getTypeName()} in {$p->getRegionName()}");
                         }
                         $progress->advance();
 
                         $em->persist($p);
-                        $count++;
+                        ++$count;
 
-                        if ($count % (count($processableData) / 20) === 0){
+                        if ($count % (count($processableData) / 20) === 0) {
                             $log->addDebug('Flushing Set');
                             $em->flush();
                             $em->clear();
@@ -126,13 +126,12 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                 }
                 $progress->finish();
                 $em->flush();
-
             }
         }
-
     }
 
-    protected function updatePriceData(array $item, ItemPrice $price){
+    protected function updatePriceData(array $item, ItemPrice $price)
+    {
         $price->setVolume($item['volume'])
             ->setOrderCount($item['orderCount'])
             ->setHighPrice($item['highPrice'])
@@ -141,10 +140,10 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
             ->setDate(new \DateTime($item['date']));
 
         return $price;
-
     }
 
-    protected function makePriceData(array $data, array $region, array $item){
+    protected function makePriceData(array $data, array $region, array $item)
+    {
         $price = new ItemPrice();
 
         $price->setTypeId($item['typeID'])
@@ -161,9 +160,10 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         return $price;
     }
 
-    protected function getCrestUrl($region, $item){
+    protected function getCrestUrl($region, $item)
+    {
         $baseUri = 'https://public-crest.eveonline.com/';
+
         return $baseUri."market/$region/types/$item/history/";
     }
-
 }

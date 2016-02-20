@@ -2,28 +2,30 @@
 
 namespace EveBundle\Repository;
 
-class RegionRepository extends AbstractDbalRepository implements RepositoryInterface {
-
-    public function getName(){
+class RegionRepository extends AbstractDbalRepository implements RepositoryInterface
+{
+    public function getName()
+    {
         return 'EveBundle:Region';
     }
 
-    public function getTableName(){
+    public function getTableName()
+    {
         return 'mapRegions';
     }
 
-    public function getRegionById($regionId){
-
+    public function getRegionById($regionId)
+    {
         $sql = "SELECT * FROM {$this->getTableName()} WHERE regionID = :id ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute(['id' => $regionId]);
 
         return $stmt->fetch();
-
     }
 
-    public function getRegionsInList(array $regions){
+    public function getRegionsInList(array $regions)
+    {
         $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getTableName()} WHERE regionID IN (?)",
             array($regions),
             array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
@@ -34,7 +36,8 @@ class RegionRepository extends AbstractDbalRepository implements RepositoryInter
         return $stmt->fetchAll();
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         $sql = "SELECT * FROM {$this->getTableName()}";
 
         $stmt = $this->conn->prepare($sql);
@@ -42,6 +45,4 @@ class RegionRepository extends AbstractDbalRepository implements RepositoryInter
 
         return $stmt->fetchAll();
     }
-
 }
-

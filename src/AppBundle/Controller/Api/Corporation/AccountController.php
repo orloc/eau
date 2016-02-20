@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Account controller.
  */
-class AccountController extends AbstractController implements ApiControllerInterface {
-
+class AccountController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/account", name="api.corporation.account", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -41,7 +41,6 @@ class AccountController extends AbstractController implements ApiControllerInter
         $json = $this->get('serializer')->serialize($accounts, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -50,8 +49,8 @@ class AccountController extends AbstractController implements ApiControllerInter
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
-    public function dataAllAction(Request $request, Corporation $corp){
-
+    public function dataAllAction(Request $request, Corporation $corp)
+    {
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $date = $request->get('date', null);
@@ -63,9 +62,8 @@ class AccountController extends AbstractController implements ApiControllerInter
         $accountData = [];
 
         // roll up our data for the graph
-        foreach ($accounts as $acc){
-
-            if (null === $date){
+        foreach ($accounts as $acc) {
+            if (null === $date) {
                 $balances = $balanceRepo->getOrderedBalances($acc);
             } else {
                 $dateTime = Carbon::createFromTimestamp($date);
@@ -73,12 +71,12 @@ class AccountController extends AbstractController implements ApiControllerInter
                 $balances = $balanceRepo->getOrderedBalancesByDate($acc, $dateTime);
             }
 
-            foreach ($balances as $b){
+            foreach ($balances as $b) {
                 $accountData[] = [
                     'name' => $acc->getName(),
                     'date' => $b->getCreatedAt()->setTimezone(new \DateTimeZone('UTC'))
                         ->format("Y-m-d\Th:i:s\Z"),
-                    'balance' => floatval($b->getBalance())
+                    'balance' => floatval($b->getBalance()),
                 ];
             }
         }
@@ -86,8 +84,5 @@ class AccountController extends AbstractController implements ApiControllerInter
         $json = $this->get('serializer')->serialize($accountData, 'json');
 
         return $this->jsonResponse($json);
-
     }
-
-
 }

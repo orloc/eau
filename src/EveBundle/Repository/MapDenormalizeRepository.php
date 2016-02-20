@@ -4,7 +4,6 @@ namespace EveBundle\Repository;
 
 class MapDenormalizeRepository extends AbstractDbalRepository implements RepositoryInterface
 {
-
     public function getName()
     {
         return 'EveBundle:MapDenormalize';
@@ -15,7 +14,8 @@ class MapDenormalizeRepository extends AbstractDbalRepository implements Reposit
         return 'mapDenormalize';
     }
 
-    public function getLocationInfoBySolarSystem($id){
+    public function getLocationInfoBySolarSystem($id)
+    {
         $sql = "SELECT
                 *
                 FROM {$this->getTableName()}
@@ -27,8 +27,8 @@ class MapDenormalizeRepository extends AbstractDbalRepository implements Reposit
         return $stmt->fetch();
     }
 
-    public function getLocationInfoById($typeId){
-
+    public function getLocationInfoById($typeId)
+    {
         $sql = "SELECT
                 *
                 FROM {$this->getTableName()}

@@ -20,28 +20,29 @@ class DefaultController extends Controller
     /**
      * @Route("/login_redirect", name="eve.login.redirect", options={"expose": true })
      */
-    public function loginRedirect(){
+    public function loginRedirect()
+    {
         return $this->redirectToRoute('fos_user_security_login');
     }
 
     /**
      * @Route("/registration", name="eve.register")
      */
-    public function eveRegistration(Request $request){
-
+    public function eveRegistration(Request $request)
+    {
         $session = $this->get('session');
         if (($auth = $session->get('registration_authorized', false)) !== false) {
             return $this->redirect($this->generateUrl('fos_user_registration_register'));
         }
 
         return $this->render('@App/Marketing/eve_registration.html.twig');
-
     }
 
     /**
      * @Route("/legal", name="legal")
      */
-    public function legalAction(Request $request){
+    public function legalAction(Request $request)
+    {
         return $this->isGranted('ROLE_USER') === true
             ? $this->render('@App/Admin/legal.html.twig')
             : $this->render('@App/Marketing/legal.html.twig');

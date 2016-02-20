@@ -14,8 +14,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
-class JournalTransactionController extends AbstractController implements ApiControllerInterface {
-
+class JournalTransactionController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/{id}/account/{acc_id}/journal_transactions", name="api.corporation.account.journaltransactions", options={"expose"=true})
      * @ParamConverter(name="corp", class="AppBundle:Corporation")
@@ -29,7 +29,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
 
         $date = $request->get('date', null);
 
-        if ($date === null){
+        if ($date === null) {
             $dt = Carbon::now();
         } else {
             $dt = Carbon::createFromTimestamp($date);
@@ -41,7 +41,6 @@ class JournalTransactionController extends AbstractController implements ApiCont
         $json = $this->get('serializer')->serialize($transactions, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -50,7 +49,8 @@ class JournalTransactionController extends AbstractController implements ApiCont
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
-    public function getByTypeAction(Request $request, Corporation $corp){
+    public function getByTypeAction(Request $request, Corporation $corp)
+    {
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
         $date = $request->get('date', null);
 
@@ -60,7 +60,7 @@ class JournalTransactionController extends AbstractController implements ApiCont
 
         $typeList = $this->getDoctrine()->getRepository('AppBundle:RefType')->getRefTypeIds();
 
-        $typeIds =  array_map(function($d){
+        $typeIds = array_map(function ($d) {
             return intval($d->getRefTypeId());
         }, $typeList);
 
@@ -78,7 +78,8 @@ class JournalTransactionController extends AbstractController implements ApiCont
      * @Secure(roles="ROLE_DIRECTOR")
      * @Method("GET")
      */
-    public function getByUserAction(Request $request, Corporation $corp){
+    public function getByUserAction(Request $request, Corporation $corp)
+    {
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $date = $request->get('date', null);
@@ -89,14 +90,14 @@ class JournalTransactionController extends AbstractController implements ApiCont
         $members = $this->getRepository('AppBundle:CorporationMember')
             ->findBy(['corporation' => $corp, 'disbanded_at' => null]);
 
-        $memberIds =  array_map(function($d){
+        $memberIds = array_map(function ($d) {
             return intval($d->getCharacterId());
         }, $members);
 
         $transactions = $this->getDoctrine()->getRepository('AppBundle:JournalTransaction')
             ->getTransactionsByMember($corp, $memberIds, $dt);
 
-        foreach ($transactions as $k => $t){
+        foreach ($transactions as $k => $t) {
             $u = $this->getRepository('AppBundle:CorporationMember')
                 ->findOneBy(['character_id' => $t['user']]);
             $transactions[$k]['user'] = $u;

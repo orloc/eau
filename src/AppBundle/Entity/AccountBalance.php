@@ -3,20 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AccountBalanceRepository")
  * @ORM\Table(name="account_balances")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class AccountBalance
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -40,14 +35,15 @@ class AccountBalance
      */
     protected $account;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -55,9 +51,10 @@ class AccountBalance
     }
 
     /**
-     * Set balance
+     * Set balance.
      *
      * @param string $balance
+     *
      * @return AccountBalance
      */
     public function setBalance($balance)
@@ -68,9 +65,9 @@ class AccountBalance
     }
 
     /**
-     * Get balance
+     * Get balance.
      *
-     * @return string 
+     * @return string
      */
     public function getBalance()
     {
@@ -78,9 +75,10 @@ class AccountBalance
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return AccountBalance
      */
     public function setCreatedAt($createdAt)
@@ -91,9 +89,9 @@ class AccountBalance
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -101,9 +99,10 @@ class AccountBalance
     }
 
     /**
-     * Set account
+     * Set account.
      *
      * @param \AppBundle\Entity\Account $account
+     *
      * @return AccountBalance
      */
     public function setAccount(\AppBundle\Entity\Account $account = null)
@@ -114,9 +113,9 @@ class AccountBalance
     }
 
     /**
-     * Get account
+     * Get account.
      *
-     * @return \AppBundle\Entity\Account 
+     * @return \AppBundle\Entity\Account
      */
     public function getAccount()
     {

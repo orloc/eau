@@ -2,14 +2,14 @@
 
 namespace AppBundle\Repository;
 
-
 use AppBundle\Entity\Asset;
 use AppBundle\Entity\AssetGroup;
 use Doctrine\ORM\EntityRepository;
 
-class AssetRepository extends EntityRepository {
-
-    public function getAllByGroup(AssetGroup $group){
+class AssetRepository extends EntityRepository
+{
+    public function getAllByGroup(AssetGroup $group)
+    {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group = :group')
@@ -17,7 +17,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery();
     }
 
-    public function getAllByGroups(array $groups){
+    public function getAllByGroups(array $groups)
+    {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group in (:groups)')
@@ -25,7 +26,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
-    public function getTopLevelAssetsByGroup(AssetGroup $group){
+    public function getTopLevelAssetsByGroup(AssetGroup $group)
+    {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group = :group')
@@ -38,7 +40,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery();
     }
 
-    public function getNestedAssets(Asset $asset){
+    public function getNestedAssets(Asset $asset)
+    {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.parent = :id')
@@ -50,7 +53,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery();
     }
 
-    public function getDeliveriesByGroup(AssetGroup $group){
+    public function getDeliveriesByGroup(AssetGroup $group)
+    {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group = :agroup')
@@ -60,7 +64,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery();
     }
 
-    public function getLocationsByAssetGroup(AssetGroup $group){
+    public function getLocationsByAssetGroup(AssetGroup $group)
+    {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group = :a_group')
@@ -69,7 +74,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
-    public function getTypeIDSByAssetGroup(AssetGroup $group){
+    public function getTypeIDSByAssetGroup(AssetGroup $group)
+    {
         return $this->createQueryBuilder('a')
             ->select('distinct a.typeId')
             ->where('a.asset_group = :a_group')
@@ -77,7 +83,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
-    public function getAssetsByLocation(AssetGroup $group, $locaitonId){
+    public function getAssetsByLocation(AssetGroup $group, $locaitonId)
+    {
         return $this->createQueryBuilder('a')
             ->select('a')
             ->where('a.asset_group = :a_group')
@@ -87,7 +94,8 @@ class AssetRepository extends EntityRepository {
             ->getQuery()->getResult();
     }
 
-    public function getAssetCountByLocation(AssetGroup $group, $locaitonId){
+    public function getAssetCountByLocation(AssetGroup $group, $locaitonId)
+    {
         return $this->createQueryBuilder('a')
             ->select('count(a)')
             ->where('a.asset_group = :a_group')
@@ -95,10 +103,10 @@ class AssetRepository extends EntityRepository {
             ->setParameter('a_group', $group)
             ->setParameter('locid', $locaitonId)
             ->getQuery()->getResult();
-
     }
 
-    public function getAssetItemSummary(AssetGroup $group){
+    public function getAssetItemSummary(AssetGroup $group)
+    {
         return $this->createQueryBuilder('a')
             ->select('a.typeId as type_id, sum(a.quantity) as asset_count, a.descriptors as descriptors')
             ->where('a.asset_group = :a_group')

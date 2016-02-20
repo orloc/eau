@@ -12,8 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 /**
  * Region controller.
  */
-class RegionController extends AbstractController implements ApiControllerInterface {
-
+class RegionController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/regions", name="api.regions", options={"expose"=true})
      * @Secure(roles="ROLE_CORP_MEMBER")
@@ -21,14 +21,12 @@ class RegionController extends AbstractController implements ApiControllerInterf
      */
     public function indexAction(Request $request)
     {
-
         $regions = $this->get('evedata.registry')
             ->get('EveBundle:Region')->getAll();
 
         $json = $this->get('serializer')->serialize($regions, 'json');
 
         return $this->jsonResponse($json);
-
     }
 
     /**
@@ -36,8 +34,8 @@ class RegionController extends AbstractController implements ApiControllerInterf
      * @Secure(roles="ROLE_CORP_MEMBER")
      * @Method("GET")
      */
-    public function availablePriceRegions(Request $request){
-
+    public function availablePriceRegions(Request $request)
+    {
         $rRepo = $this->get('evedata.registry')->get('EveBundle:Region');
         $rids = $this->getDoctrine()->getManager('eve_data')
             ->getRepository('EveBundle:ItemPrice')
@@ -49,5 +47,4 @@ class RegionController extends AbstractController implements ApiControllerInterf
 
         return $this->jsonResponse(json_encode($data));
     }
-
 }

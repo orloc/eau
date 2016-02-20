@@ -4,20 +4,15 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AssetRepository")
  * @ORM\Table(name="assets")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class Asset
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -83,25 +78,27 @@ class Asset
      */
     protected $asset_group;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->contents = new ArrayCollection();
     }
 
-    public function getDescriptors(){
+    public function getDescriptors()
+    {
         return $this->descriptors === null ? [] :  $this->descriptors;
     }
 
-    public function setDescriptors(array $desc) {
+    public function setDescriptors(array $desc)
+    {
         $this->descriptors = $desc;
 
         return $this;
     }
 
-
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -109,9 +106,10 @@ class Asset
     }
 
     /**
-     * Set itemId
+     * Set itemId.
      *
-     * @param integer $itemId
+     * @param int $itemId
+     *
      * @return Asset
      */
     public function setItemId($itemId)
@@ -122,9 +120,9 @@ class Asset
     }
 
     /**
-     * Get itemId
+     * Get itemId.
      *
-     * @return integer 
+     * @return int
      */
     public function getItemId()
     {
@@ -132,9 +130,10 @@ class Asset
     }
 
     /**
-     * Set locationId
+     * Set locationId.
      *
-     * @param integer $locationId
+     * @param int $locationId
+     *
      * @return Asset
      */
     public function setLocationId($locationId)
@@ -145,9 +144,9 @@ class Asset
     }
 
     /**
-     * Get locationId
+     * Get locationId.
      *
-     * @return integer 
+     * @return int
      */
     public function getLocationId()
     {
@@ -155,9 +154,10 @@ class Asset
     }
 
     /**
-     * Set typeId
+     * Set typeId.
      *
-     * @param integer $typeId
+     * @param int $typeId
+     *
      * @return Asset
      */
     public function setTypeId($typeId)
@@ -168,9 +168,9 @@ class Asset
     }
 
     /**
-     * Get typeId
+     * Get typeId.
      *
-     * @return integer 
+     * @return int
      */
     public function getTypeId()
     {
@@ -178,9 +178,10 @@ class Asset
     }
 
     /**
-     * Set quantity
+     * Set quantity.
      *
-     * @param integer $quantity
+     * @param int $quantity
+     *
      * @return Asset
      */
     public function setQuantity($quantity)
@@ -191,9 +192,9 @@ class Asset
     }
 
     /**
-     * Get quantity
+     * Get quantity.
      *
-     * @return integer 
+     * @return int
      */
     public function getQuantity()
     {
@@ -201,9 +202,10 @@ class Asset
     }
 
     /**
-     * Set flag
+     * Set flag.
      *
-     * @param integer $flag
+     * @param int $flag
+     *
      * @return Asset
      */
     public function setFlagId($flag)
@@ -214,9 +216,9 @@ class Asset
     }
 
     /**
-     * Get flag
+     * Get flag.
      *
-     * @return integer 
+     * @return int
      */
     public function getFlagId()
     {
@@ -224,22 +226,23 @@ class Asset
     }
 
     /**
-     * Set singleton
+     * Set singleton.
      *
-     * @param integer $singleton
+     * @param int $singleton
+     *
      * @return Asset
      */
     public function setSingleton($singleton)
     {
-        $this->singleton = (bool)$singleton;
+        $this->singleton = (bool) $singleton;
 
         return $this;
     }
 
     /**
-     * Get singleton
+     * Get singleton.
      *
-     * @return integer 
+     * @return int
      */
     public function getSingleton()
     {
@@ -247,9 +250,10 @@ class Asset
     }
 
     /**
-     * Set asset_group
+     * Set asset_group.
      *
      * @param \AppBundle\Entity\AssetGroup $assetGroup
+     *
      * @return Asset
      */
     public function setAssetGroup(\AppBundle\Entity\AssetGroup $assetGroup = null)
@@ -260,7 +264,7 @@ class Asset
     }
 
     /**
-     * Get asset_group
+     * Get asset_group.
      *
      * @return \AppBundle\Entity\AssetGroup
      */
@@ -270,14 +274,15 @@ class Asset
     }
 
     /**
-     * Add contents
+     * Add contents.
      *
      * @param \AppBundle\Entity\Asset $contents
+     *
      * @return Asset
      */
     public function addContent(\AppBundle\Entity\Asset $contents)
     {
-        if (!$this->contents->contains($contents)){
+        if (!$this->contents->contains($contents)) {
             $this->contents[] = $contents;
             $contents->setParent($this);
         }
@@ -286,7 +291,7 @@ class Asset
     }
 
     /**
-     * Remove contents
+     * Remove contents.
      *
      * @param \AppBundle\Entity\Asset $contents
      */
@@ -296,9 +301,9 @@ class Asset
     }
 
     /**
-     * Get contents
+     * Get contents.
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getContents()
     {
@@ -306,9 +311,10 @@ class Asset
     }
 
     /**
-     * Set parent
+     * Set parent.
      *
      * @param \AppBundle\Entity\Asset $parent
+     *
      * @return Asset
      */
     public function setParent(\AppBundle\Entity\Asset $parent = null)
@@ -319,9 +325,9 @@ class Asset
     }
 
     /**
-     * Get parent
+     * Get parent.
      *
-     * @return \AppBundle\Entity\Asset 
+     * @return \AppBundle\Entity\Asset
      */
     public function getParent()
     {

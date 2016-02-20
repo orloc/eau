@@ -3,20 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MarketOrderGroupRepository")
  * @ORM\Table(name="market_order_groups")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class MarketOrderGroup
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -46,7 +41,7 @@ class MarketOrderGroup
     protected $created_at;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -56,9 +51,9 @@ class MarketOrderGroup
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -66,14 +61,15 @@ class MarketOrderGroup
     }
 
     /**
-     * Add assets
+     * Add assets.
      *
      * @param \AppBundle\Entity\Asset $assets
+     *
      * @return AssetGrouping
      */
     public function addMarketOrder(\AppBundle\Entity\MarketOrder $order)
     {
-        if (!$this->market_orders->contains($order)){
+        if (!$this->market_orders->contains($order)) {
             $this->market_orders[] = $order;
             $order->setMarketOrderGroup($this);
         }
@@ -81,11 +77,11 @@ class MarketOrderGroup
         return $this;
     }
 
-
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return MarketOrderGroup
      */
     public function setCreatedAt($createdAt)
@@ -96,7 +92,7 @@ class MarketOrderGroup
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
      * @return \DateTime
      */
@@ -106,7 +102,7 @@ class MarketOrderGroup
     }
 
     /**
-     * Remove market_orders
+     * Remove market_orders.
      *
      * @param \AppBundle\Entity\MarketOrder $marketOrders
      */
@@ -116,7 +112,7 @@ class MarketOrderGroup
     }
 
     /**
-     * Get market_orders
+     * Get market_orders.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -126,9 +122,10 @@ class MarketOrderGroup
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return MarketOrderGroup
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -139,7 +136,7 @@ class MarketOrderGroup
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
      * @return \AppBundle\Entity\Corporation
      */
@@ -149,9 +146,10 @@ class MarketOrderGroup
     }
 
     /**
-     * Set has_been_updated
+     * Set has_been_updated.
      *
-     * @param boolean $hasBeenUpdated
+     * @param bool $hasBeenUpdated
+     *
      * @return MarketOrderGroup
      */
     public function setHasBeenUpdated($hasBeenUpdated)
@@ -162,9 +160,9 @@ class MarketOrderGroup
     }
 
     /**
-     * Get has_been_updated
+     * Get has_been_updated.
      *
-     * @return boolean
+     * @return bool
      */
     public function getHasBeenUpdated()
     {

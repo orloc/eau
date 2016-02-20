@@ -17,8 +17,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
  *
  * @Route("/user", options={"expose"=true})
  */
-class UserController extends AbstractController implements ApiControllerInterface {
-
+class UserController extends AbstractController implements ApiControllerInterface
+{
     /**
      * Lists all User entities.
      *
@@ -35,19 +35,19 @@ class UserController extends AbstractController implements ApiControllerInterfac
         $userRepo = $doctrine->getRepository('AppBundle:User');
         $corpRepo = $doctrine->getRepository('AppBundle:Corporation');
 
-        if ($this->isGranted('ROLE_SUPER_ADMIN') || $this->isGranted('ROLE_ADMIN')){
+        if ($this->isGranted('ROLE_SUPER_ADMIN') || $this->isGranted('ROLE_ADMIN')) {
             $users = $userRepo->getUsers();
-        } else if ($this->isGranted('ROLE_ALLIANCE_LEADER')){
+        } elseif ($this->isGranted('ROLE_ALLIANCE_LEADER')) {
             $main = $charRepo->getMainCharacter($currentUser);
-            $corp =  $corpRepo->findByCorpName($main->getCorporationName());
+            $corp = $corpRepo->findByCorpName($main->getCorporationName());
             $corps = $corpRepo->findCorporationsByAlliance($corp->getCorporationDetails()->getAllianceName());
 
-            $ids = array_map(function($c){
+            $ids = array_map(function ($c) {
                 return $c->getEveId();
             }, $corps);
 
             $users = $userRepo->findAllByCorporationIds($ids);
-        } else if ($this->isGranted('ROLE_CEO') ){
+        } elseif ($this->isGranted('ROLE_CEO')) {
             $main = $charRepo->getMainCharacter($currentUser);
             $names = $charRepo->getCharNamesByCorpName($main->getCorporationName());
 
@@ -57,7 +57,6 @@ class UserController extends AbstractController implements ApiControllerInterfac
         $json = $this->get('jms_serializer')->serialize($users, 'json');
 
         return $this->jsonResponse($json);
-
     }
     /**
      * Creates a new User entity.
@@ -73,7 +72,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
 
         $errors = $this->processRequest($user, $request->request);
 
-        if (count($errors) > 0 ){
+        if (count($errors) > 0) {
             return $this->getErrorResponse($errors);
         }
 
@@ -81,15 +80,14 @@ class UserController extends AbstractController implements ApiControllerInterfac
 
         try {
             $userManager->updateUser($user, true);
-        } catch (\Exception $e){
-            return $this->jsonResponse($jms->serialize([ ['message' => 'There was an error with this request - likely the email OR username is already taken.']], 'json'), 409);
+        } catch (\Exception $e) {
+            return $this->jsonResponse($jms->serialize([['message' => 'There was an error with this request - likely the email OR username is already taken.']], 'json'), 409);
         }
 
         return $this->jsonResponse($jms->serialize($user, 'json'), 201, [
-            'Location' => $this->generateUrl('api.user_show', [ 'id' => $user->getId()])
+            'Location' => $this->generateUrl('api.user_show', ['id' => $user->getId()]),
         ]);
     }
-
 
     /**
      * Finds and displays a User entity.
@@ -103,10 +101,8 @@ class UserController extends AbstractController implements ApiControllerInterfac
     {
         $auth = $this->get('security.authorization_checker');
 
-        if ($auth->isGranted('ROLE_ADMIN') || $auth->isGranted('ROLE_SUPER_ADMIN')){
-
+        if ($auth->isGranted('ROLE_ADMIN') || $auth->isGranted('ROLE_SUPER_ADMIN')) {
         }
-
 
         // TODO implement user checks
         return $this->jsonResponse($this->get('serializer')->serialize($user, 'json'), 200);
@@ -125,7 +121,7 @@ class UserController extends AbstractController implements ApiControllerInterfac
         // TODO implement user checks
         $errors = $this->processRequest($user, $request->request, false);
 
-        if (count($errors) > 0 ){
+        if (count($errors) > 0) {
             return $this->getErrorResponse($errors);
         }
 
@@ -135,8 +131,8 @@ class UserController extends AbstractController implements ApiControllerInterfac
 
         try {
             $this->get('fos_user.user_manager')->updateUser($user);
-        } catch (\Exception $e){
-            return $this->jsonResponse($jms->serialize([ ['message' => 'There was an error with this request - likely the email OR username is already taken.']], 'json'), 409);
+        } catch (\Exception $e) {
+            return $this->jsonResponse($jms->serialize([['message' => 'There was an error with this request - likely the email OR username is already taken.']], 'json'), 409);
         }
 
         return $this->jsonResponse($jms->serialize($user, 'json'));
@@ -162,16 +158,17 @@ class UserController extends AbstractController implements ApiControllerInterfac
         return $this->jsonResponse(null, 204);
     }
 
-    private function processRequest(User $user, ParameterBag $content, $new = true){
-        if (strcmp($user->getUsername(), $content->get('username')) !== 0){
+    private function processRequest(User $user, ParameterBag $content, $new = true)
+    {
+        if (strcmp($user->getUsername(), $content->get('username')) !== 0) {
             $user->setUsername($content->get('username'));
         }
 
-        if (strcmp($user->getEmail(), $content->get('email')) !== 0){
+        if (strcmp($user->getEmail(), $content->get('email')) !== 0) {
             $user->setEmail($content->get('email'));
         }
 
-        if (strlen($content->get('plainPassword')) > 6){
+        if (strlen($content->get('plainPassword')) > 6) {
             $user->setPlainPassword($content->get('plainPassword'));
         }
 

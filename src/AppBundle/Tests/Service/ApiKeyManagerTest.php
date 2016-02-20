@@ -5,16 +5,15 @@ namespace AppBundle\Tests\Service;
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Service\DataManager\ApiKeyManager;
 use AppBundle\Tests\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Log\NullLogger;
 
 class ApiKeyManagerTest extends WebTestCase
 {
-
     protected $manager;
 
-    public function setUp(){
+    public function setUp()
+    {
         $pheal = $this->getContainer()->get('tarioch.pheal.factory');
         $doctrine = $this->getContainer()->get('doctrine');
         $registry = $this->getContainer()->get('evedata.registry');
@@ -22,28 +21,29 @@ class ApiKeyManagerTest extends WebTestCase
         $this->manager = new ApiKeyManager($pheal, $doctrine, $registry, new NullLogger());
     }
 
-    public function testBuildInstanceFromRequest(){
+    public function testBuildInstanceFromRequest()
+    {
         $request = new Request();
 
-        $request->request->replace(['api_key' => 'apiKey', 'verification_code' => 'code'] );
+        $request->request->replace(['api_key' => 'apiKey', 'verification_code' => 'code']);
 
         $apiKey = $this->manager->buildInstanceFromRequest($request->request);
 
         $this->assertTrue($apiKey instanceof ApiCredentials);
         $this->assertSame('apiKey', $apiKey->getApiKey());
         $this->assertSame('code', $apiKey->getVerificationCode());
-
-
     }
 
-    public function testUpdateKey(){
+    public function testUpdateKey()
+    {
         //@TODO rethink the use of this and test me when ready
     }
 
     /**
      * @expectedException Pheal\Exceptions\ConnectionException
      */
-    public function testBadPhealRequest(){
+    public function testBadPhealRequest()
+    {
         $noExpire = new ApiCredentials();
         $this->manager->validateKey($noExpire, 'Account', '1073741823');
     }
@@ -51,8 +51,8 @@ class ApiKeyManagerTest extends WebTestCase
     /**
      * @expectedException AppBundle\Exception\InvalidExpirationException
      */
-
-    public function testBadExpireException(){
+    public function testBadExpireException()
+    {
         $config = $this->getContainer()->getParameter('test_config');
 
         $key = new ApiCredentials();
@@ -66,8 +66,8 @@ class ApiKeyManagerTest extends WebTestCase
     /**
      * @expectedException AppBundle\Exception\InvalidApiKeyTypeException
      */
-
-    public function testBadTypeException(){
+    public function testBadTypeException()
+    {
         $config = $this->getContainer()->getParameter('test_config');
 
         $key = new ApiCredentials();
@@ -81,8 +81,8 @@ class ApiKeyManagerTest extends WebTestCase
     /**
      * @expectedException \Exception
      */
-
-    public function testDuplicateApiException(){
+    public function testDuplicateApiException()
+    {
         $config = $this->getContainer()->getParameter('test_config');
 
         $key = new ApiCredentials();
@@ -98,13 +98,13 @@ class ApiKeyManagerTest extends WebTestCase
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $existing = $em->getRepository('AppBundle:ApiCredentials')->findAll();
-        foreach ($existing as $e){
+        foreach ($existing as $e) {
             $em->remove($e);
         }
 
         $em->flush();
 
-        $afterPurge =  $em->getRepository('AppBundle:ApiCredentials')->findAll();
+        $afterPurge = $em->getRepository('AppBundle:ApiCredentials')->findAll();
 
         $this->assertCount(0, $afterPurge);
     }
@@ -112,8 +112,8 @@ class ApiKeyManagerTest extends WebTestCase
     /**
      * @expectedException AppBundle\Exception\InvalidAccessMaskException
      */
-
-    public function testBadAccessMaskException(){
+    public function testBadAccessMaskException()
+    {
         $config = $this->getContainer()->getParameter('test_config');
 
         $key = new ApiCredentials();
@@ -124,7 +124,8 @@ class ApiKeyManagerTest extends WebTestCase
         $this->manager->validateKey($key, 'Account', '1073741823');
     }
 
-    public function testGoodCharKey(){
+    public function testGoodCharKey()
+    {
         $config = $this->getContainer()->getParameter('test_config');
 
         $key = new ApiCredentials();
@@ -138,11 +139,11 @@ class ApiKeyManagerTest extends WebTestCase
         $this->assertSame('1073741823', $res['accessMask']);
     }
 
-
     /*
      * @depends testDuplicateApiException
      */
-    public function testGoodCorpKey(){
+    public function testGoodCorpKey()
+    {
         $this->loadFixtures(['AppBundle\DataFixtures\Test\LoadUserData']);
         $config = $this->getContainer()->getParameter('test_config');
 
@@ -159,7 +160,5 @@ class ApiKeyManagerTest extends WebTestCase
 
         $this->assertSame('Corporation', $key->getType());
         $this->assertSame('134217727', $key->getAccessMask());
-
     }
-
 }

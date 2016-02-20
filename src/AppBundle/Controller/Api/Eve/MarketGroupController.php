@@ -11,11 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * MarketOrder controller.
- *
  */
 class MarketGroupController extends AbstractController implements ApiControllerInterface
 {
-
     /**
      * @Route("/market_groups", name="api.marketgroups", options={"expose"=true})
      * @Method("GET")
@@ -24,7 +22,6 @@ class MarketGroupController extends AbstractController implements ApiControllerI
      */
     public function indexAction(Request $requst)
     {
-
         $registry = $this->get('evedata.registry');
         $groups = $registry->get('EveBundle:MarketGroup')
             ->getTopLevelGroups();

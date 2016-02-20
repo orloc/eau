@@ -2,13 +2,15 @@
 
 namespace EveBundle\Repository;
 
-class ControlTowerResourceRepository extends AbstractDbalRepository implements RepositoryInterface {
-
-    public function getName(){
+class ControlTowerResourceRepository extends AbstractDbalRepository implements RepositoryInterface
+{
+    public function getName()
+    {
         return 'EveBundle:ControlTowerResource';
     }
 
-    public function getFuelConsumption($itemId){
+    public function getFuelConsumption($itemId)
+    {
         $sql = "SELECT * FROM {$this->getTableName()}
                 WHERE controlTowerTypeID = :id
                 AND  minSecurityLevel IS NULL
@@ -19,10 +21,10 @@ class ControlTowerResourceRepository extends AbstractDbalRepository implements R
         $stmt->execute(['id' => $itemId]);
 
         return $stmt->fetch();
-
     }
 
-    public function getResources(array $ids = []){
+    public function getResources(array $ids = [])
+    {
         $stmt = $this->conn->executeQuery("SELECT * FROM {$this->getDetailTableName()} WHERE controlTowerTypeID IN (?)",
             array($ids),
             array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
@@ -31,16 +33,15 @@ class ControlTowerResourceRepository extends AbstractDbalRepository implements R
         $stmt->execute();
 
         return $stmt->fetchAll();
-
     }
 
-    public function getTableName(){
+    public function getTableName()
+    {
         return 'invControlTowerResources';
     }
 
-    public function getPurposeTableName(){
+    public function getPurposeTableName()
+    {
         return 'invControlTowerResourcePurposes';
     }
-
 }
-

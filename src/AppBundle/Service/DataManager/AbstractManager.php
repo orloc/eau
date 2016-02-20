@@ -11,8 +11,8 @@ use EveBundle\Repository\Registry as EveRegistry;
 use Psr\Log\LoggerInterface;
 use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
-abstract class AbstractManager {
-
+abstract class AbstractManager
+{
     protected $doctrine;
 
     protected $registry;
@@ -21,39 +21,42 @@ abstract class AbstractManager {
 
     protected $log;
 
-    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, LoggerInterface $logger){
+    public function __construct(PhealFactory $pheal, Registry $doctrine, EveRegistry $registry, LoggerInterface $logger)
+    {
         $this->pheal = $pheal;
         $this->doctrine = $doctrine;
         $this->registry = $registry;
         $this->log = $logger;
     }
 
-    public function buildTransactionParams(Account $acc, $fromID = null){
-        $params =  [
+    public function buildTransactionParams(Account $acc, $fromID = null)
+    {
+        $params = [
             'accountKey' => $acc->getDivision(),
-            'rowCount' => 2000
+            'rowCount' => 2000,
         ];
 
-        if ($fromID){
-            $params = array_merge($params, [ 'fromID' => $fromID]);
+        if ($fromID) {
+            $params = array_merge($params, ['fromID' => $fromID]);
         }
 
         return $params;
     }
 
-    public function getApiKey(Corporation $entity){
+    public function getApiKey(Corporation $entity)
+    {
         $apiKey = $this->doctrine->getRepository('AppBundle:ApiCredentials')
             ->getActiveKey($entity);
 
-        if ($apiKey === null){
-            throw new InvalidApiKeyException('No active api key for corp' . $entity->getId() .' found');
+        if ($apiKey === null) {
+            throw new InvalidApiKeyException('No active api key for corp'.$entity->getId().' found');
         }
 
         return $apiKey;
     }
 
-    public function getClient(ApiCredentials $key, $scope = 'corp'){
-
+    public function getClient(ApiCredentials $key, $scope = 'corp')
+    {
         $client = $this->pheal->createEveOnline(
             $key->getApiKey(),
             $key->getVerificationCode()

@@ -3,43 +3,46 @@
 namespace AppBundle\Tests\Security;
 
 use AppBundle\Tests\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
 
 class SuperAdminTest extends WebTestCase
 {
-
-    public function setUp(){
+    public function setUp()
+    {
         $this->client = static::createClient();
         $this->logIn('super_admin', true);
     }
 
-    public function testSuperAdminLogin(){
+    public function testSuperAdminLogin()
+    {
         $crawler = $this->client->request('GET', '/admin/dashboard');
         $this->assertStatusCode(200, $this->client);
 
         $menuItems = [];
-        foreach($crawler->filter('ul#side-menu li a') as $item){
+        foreach ($crawler->filter('ul#side-menu li a') as $item) {
             $menuItems[] = $item->textContent;
         }
 
         $this->assertCount(7, $menuItems);
     }
 
-    public function testCorpPage(){
+    public function testCorpPage()
+    {
         $crawler = $this->client->request('GET', '/admin/corporation');
         $this->assertStatusCode(200, $this->client);
 
         $this->assertCount(1, $crawler->filter('slide-button'));
     }
 
-    public function testUserPage(){
+    public function testUserPage()
+    {
         $crawler = $this->client->request('GET', '/admin/user');
         $this->assertStatusCode(200, $this->client);
 
         $this->assertCount(2, $crawler->filter('slide-button'));
     }
 
-    public function testIndustryPages(){
+    public function testIndustryPages()
+    {
         $crawler = $this->client->request('GET', '/admin/industry');
         $this->assertStatusCode(200, $this->client);
 
@@ -49,14 +52,16 @@ class SuperAdminTest extends WebTestCase
         $this->assertStatusCode(200, $this->client);
     }
 
-    public function setCharacters(){
+    public function setCharacters()
+    {
         $crawler = $this->client->request('GET', '/admin/character');
         $this->assertStatusCode(200, $this->client);
 
         $this->assertCount(1, $crawler->filter('slide-button'));
     }
 
-    public function testGeneralRoutes(){
+    public function testGeneralRoutes()
+    {
         $routes = [
             '/admin/character' => 1,
             '/admin/user' => 1,
@@ -69,10 +74,10 @@ class SuperAdminTest extends WebTestCase
             '/admin/template/corp_market_orders' => 1,
             '/admin/template/api_keys' => 1,
             '/admin/template/corp_members' => 1,
-            '/admin/template/corp_towers' => 1
+            '/admin/template/corp_towers' => 1,
         ];
 
-        foreach ($routes as $r => $expected){
+        foreach ($routes as $r => $expected) {
             $this->client->request('GET', $r);
             $this->assertStatusCode($expected === 1 ? 200 : 403, $this->client,
                 "On $r"

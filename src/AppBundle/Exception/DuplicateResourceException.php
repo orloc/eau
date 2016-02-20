@@ -2,6 +2,6 @@
 
 namespace AppBundle\Exception;
 
-class DuplicateResourceException extends \Exception {
-
+class DuplicateResourceException extends \Exception
+{
 }

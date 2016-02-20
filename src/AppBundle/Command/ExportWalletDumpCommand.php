@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use League\Csv\Writer;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ExportWalletDumpCommand extends ContainerAwareCommand
@@ -20,7 +19,6 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
         $em = $this->getContainer()->get('doctrine.orm.entity_manager');
         $corps = $em->getRepository('AppBundle:Corporation')->findAll();
 
@@ -29,13 +27,13 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
         $accRepo = $em->getRepository('AppBundle:Account');
 
         $index = [];
-        foreach ($corps as $c){
+        foreach ($corps as $c) {
             $index[$c->getEveId()] = [
                 'buy' => [],
-                'sell' => []
+                'sell' => [],
             ];
             $accounts = $accRepo->findBy(['corporation' => $c]);
-            foreach ($accounts as $ac){
+            foreach ($accounts as $ac) {
                 $index[$c->getEveId()][$ac->getName()] = $jtRepo->getTransactionsByAccountInRange($ac, $this->getDateRange());
 
                 $index[$c->getEveId()]['buy'] = array_merge(
@@ -50,36 +48,36 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
             }
         }
 
-
-        foreach ($index as $corp){
+        foreach ($index as $corp) {
             $buyData = $corp['buy'];
             unset($corp['buy']);
             $sellData = $corp['sell'];
             unset($corp['sell']);
-            $accounts =  $corp;
+            $accounts = $corp;
             $this->makeTransactionCsv($buyData, 'buy');
             $this->makeTransactionCsv($sellData, 'sell');
 
-            foreach ($accounts as $a){
+            foreach ($accounts as $a) {
                 $this->makeJournalTransaction($a);
             }
         }
     }
 
-    protected function makeTransactionCsv(array $data, $name){
+    protected function makeTransactionCsv(array $data, $name)
+    {
         $corpName = strtolower(str_replace(' ', '_', $data[0]->getAccount()->getCorporation()->getCorporationDetails()->getName()));
 
         $fileName = __DIR__.sprintf('/../../../export/%s_%s_data.%s.csv', $corpName, $name, Carbon::now()->toDateTimeString());
-        if (!file_exists($fileName)){
+        if (!file_exists($fileName)) {
             $fh = fopen($fileName, 'w');
             fclose($fh);
         }
 
         $csv = Writer::createFromPath($fileName);
-        $csv->insertOne(['corp', 'account', 'date', 'time', 'transaction_id', 'quantity', 'item_name', 'item_id', 'price', 'client_id', 'client_name', 'character_id', 'character_name', 'station_id', 'station_name', 'transaction_type', 'transaction_for', 'journal_transaction_id', 'client_type_id' ]);
+        $csv->insertOne(['corp', 'account', 'date', 'time', 'transaction_id', 'quantity', 'item_name', 'item_id', 'price', 'client_id', 'client_name', 'character_id', 'character_name', 'station_id', 'station_name', 'transaction_type', 'transaction_for', 'journal_transaction_id', 'client_type_id']);
 
         $insertData = [];
-        foreach ($data as $d){
+        foreach ($data as $d) {
             $arr = [
                 'corp' => $d->getAccount()->getCorporation()->getCorporationDetails()->getName(),
                 'account' => $d->getAccount()->getName(),
@@ -99,31 +97,31 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
                 'transaction_type' => $d->getTransactionType(),
                 'transaction_for' => $d->getTransactionFor(),
                 'journal_transaction_id' => $d->getJournalTransactionId(),
-                'client_type_id' =>  $d->getClientTypeId()
+                'client_type_id' => $d->getClientTypeId(),
             ];
 
             $insertData[] = $arr;
         }
 
         $csv->insertAll($insertData);
-
     }
 
-    protected function makeJournalTransaction(array $data){
+    protected function makeJournalTransaction(array $data)
+    {
         $corpName = strtolower(str_replace(' ', '_', $data[0]->getAccount()->getCorporation()->getCorporationDetails()->getName()));
-        $accountName = strtolower(str_replace(' ', '_',$data[0]->getAccount()->getName()));
+        $accountName = strtolower(str_replace(' ', '_', $data[0]->getAccount()->getName()));
 
         $fileName = __DIR__.sprintf('/../../../export/%s_%s_data.%s.csv', $corpName, $accountName, Carbon::now()->toDateTimeString());
-        if (!file_exists($fileName)){
+        if (!file_exists($fileName)) {
             $fh = fopen($fileName, 'w');
             fclose($fh);
         }
 
         $csv = Writer::createFromPath($fileName);
-        $csv->insertOne(['corp', 'account', 'date', 'time', 'ref_id', 'ref_type_id', 'ref_type', 'owner_name1', 'owner_id1', 'owner_id2', 'arg_name1', 'arg_id1', 'amount', 'balance', 'reason', 'owner1_type_id', 'owner2_type_id' ]);
+        $csv->insertOne(['corp', 'account', 'date', 'time', 'ref_id', 'ref_type_id', 'ref_type', 'owner_name1', 'owner_id1', 'owner_id2', 'arg_name1', 'arg_id1', 'amount', 'balance', 'reason', 'owner1_type_id', 'owner2_type_id']);
 
         $insertData = [];
-        foreach ($data as $d){
+        foreach ($data as $d) {
             $arr = [
                 'corp' => $d->getAccount()->getCorporation()->getCorporationDetails()->getName(),
                 'account' => $d->getAccount()->getName(),
@@ -142,7 +140,7 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
                 'balance' => $d->getBalance(),
                 'reason' => $d->getReason(),
                 'owner1_type_id' => $d->getOwner1TypeId(),
-                'owner2_type_id' => $d->getOwner2TypeId()
+                'owner2_type_id' => $d->getOwner2TypeId(),
             ];
 
             $insertData[] = $arr;
@@ -151,10 +149,11 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
         $csv->insertAll($insertData);
     }
 
-    protected function getDateRange(){
+    protected function getDateRange()
+    {
         return [
             'end' => Carbon::now(),
-            'start' => Carbon::create()->subDays(30)
+            'start' => Carbon::create()->subDays(30),
         ];
     }
 }

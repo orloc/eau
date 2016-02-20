@@ -2,15 +2,15 @@
 
 namespace AppBundle\Repository;
 
-
 use AppBundle\Entity\Account;
 use AppBundle\Entity\Corporation;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityRepository;
 
-class MarketTransactionRepository extends EntityRepository {
-
-     protected function getTransactionByAccountQuery(Account $account, Carbon $start, Carbon $end){
+class MarketTransactionRepository extends EntityRepository
+{
+    protected function getTransactionByAccountQuery(Account $account, Carbon $start, Carbon $end)
+    {
         return $this->createQueryBuilder('mt')
             ->select('mt')
             ->where('mt.account = :account')
@@ -19,28 +19,28 @@ class MarketTransactionRepository extends EntityRepository {
             ->setParameters([
                 'account' => $account,
                 'start' => $start,
-                'end' => $end
+                'end' => $end,
             ]);
     }
 
-    public function getTransactionsByAccount(Account $account,Carbon $date){
+    public function getTransactionsByAccount(Account $account, Carbon $date)
+    {
         $start = $date->copy();
-        $start->setTime(0,0,0);
+        $start->setTime(0, 0, 0);
 
         $end = $start->copy();
-        $end->setTime(23,59,59);
+        $end->setTime(23, 59, 59);
 
         return $this->getTransactionByAccountQuery($account, $start, $end)->getQuery()->getResult();
-
     }
 
-    public function getTransactionsByAccountInRange(Account $account, array $range, $type){
-
+    public function getTransactionsByAccountInRange(Account $account, array $range, $type)
+    {
         $start = $range['start']->copy();
-        $start->setTime(0,0,0);
+        $start->setTime(0, 0, 0);
 
         $end = $range['end']->copy();
-        $end->setTime(23,59,59);
+        $end->setTime(23, 59, 59);
 
         $q = $this->getTransactionByAccountQuery($account, $start, $end)
                 ->andWhere('mt.transaction_type = :trans_type')
@@ -49,7 +49,8 @@ class MarketTransactionRepository extends EntityRepository {
         return $q->getQuery()->getResult();
     }
 
-    public function hasTransaction(Account $acc, $transactionId, $jTransID){
+    public function hasTransaction(Account $acc, $transactionId, $jTransID)
+    {
         return $this->createQueryBuilder('mt')
             ->leftJoin('mt.account', 'acc')
             ->where('acc = :account')
@@ -59,7 +60,8 @@ class MarketTransactionRepository extends EntityRepository {
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function findLatestTransactionByItemType(Corporation $corp, $type, $itemID){
+    public function findLatestTransactionByItemType(Corporation $corp, $type, $itemID)
+    {
         return $this->createQueryBuilder('mt')
             ->select('mt')
             ->leftJoin('mt.account', 'acc')
@@ -70,26 +72,29 @@ class MarketTransactionRepository extends EntityRepository {
             ->setParameters([
                 'corporation' => $corp,
                 'item_id' => $itemID,
-                'type' => $type
+                'type' => $type,
             ])
             ->setMaxResults(1)
             ->getQuery()->getResult();
     }
 
-    public function getTotalBuyForDate(Account $acc, Carbon $date){
+    public function getTotalBuyForDate(Account $acc, Carbon $date)
+    {
         return $this->getTotalByTypeDate('buy', $acc, $date)->getQuery()->getResult();
     }
 
-    public function getTotalSellForDate(Account $acc, Carbon $date){
+    public function getTotalSellForDate(Account $acc, Carbon $date)
+    {
         return $this->getTotalByTypeDate('sell', $acc, $date)->getQuery()->getResult();
     }
 
-    protected function getTotalByTypeDate($type, Account $acc, Carbon $date){
+    protected function getTotalByTypeDate($type, Account $acc, Carbon $date)
+    {
         $start = $date->copy();
-        $start->setTime(0,0,0);
+        $start->setTime(0, 0, 0);
 
         $end = $start->copy();
-        $end->setTime(23,59,59);
+        $end->setTime(23, 59, 59);
 
         return $this->createQueryBuilder('mt')
             ->leftJoin('mt.account', 'acc')
@@ -101,7 +106,7 @@ class MarketTransactionRepository extends EntityRepository {
                 'acc' => $acc,
                 'start' => $start,
                 'end' => $end,
-                'type' => $type
+                'type' => $type,
             ]);
     }
 }

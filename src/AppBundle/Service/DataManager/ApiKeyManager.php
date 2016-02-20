@@ -4,16 +4,16 @@ namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidAccessMaskException;
-use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
 use Pheal\Core\Element;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-class ApiKeyManager extends AbstractManager implements DataManagerInterface {
-
-    public function validateKey(ApiCredentials $entity, $required_type = false, $required_mask = false){
+class ApiKeyManager extends AbstractManager implements DataManagerInterface
+{
+    public function validateKey(ApiCredentials $entity, $required_type = false, $required_mask = false)
+    {
         $key = $this->getKeyInfo($entity);
 
         list($type, $expires, $accessMask) = [$key->type, $key->expires, $key->accessMask];
@@ -22,25 +22,26 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }
 
-        if ($required_mask !== $accessMask){
+        if ($required_mask !== $accessMask) {
             throw new InvalidAccessMaskException('Your Access Mask is invalid - please use the link above to generate a valid key');
         }
 
-        if ($required_type && $type !== $required_type){
+        if ($required_type && $type !== $required_type) {
             throw new InvalidApiKeyTypeException('Api Key must be of type:'.$required_type.' - '.$type.' given');
         }
 
         $exists = $this->doctrine->getRepository('AppBundle:ApiCredentials')
             ->findOneBy(['api_key' => $entity->getApiKey(), 'verification_code' => $entity->getVerificationCode()]);
 
-        if ($exists instanceof ApiCredentials){
+        if ($exists instanceof ApiCredentials) {
             throw new \Exception('API key already exists');
         }
 
         return $key;
     }
 
-    public function updateCorporationKey(ApiCredentials $key, Element $result){
+    public function updateCorporationKey(ApiCredentials $key, Element $result)
+    {
         $result_key = $result->toArray();
         $character = array_pop($result_key['characters']);
 
@@ -52,7 +53,8 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
         return $key;
     }
 
-    public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false, $required_mask = false){
+    public function validateAndUpdateApiKey(ApiCredentials $entity, $required_type = false, $required_mask = false)
+    {
         $key = $this->validateKey($entity, $required_type, $required_mask);
 
         $entity->setAccessMask($key->accessMask)
@@ -62,7 +64,8 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
         return $key;
     }
 
-    public function buildInstanceFromRequest(ParameterBag $content){
+    public function buildInstanceFromRequest(ParameterBag $content)
+    {
         $creds = new ApiCredentials();
 
         $creds->setVerificationCode($content->get('verification_code'))
@@ -71,22 +74,25 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface {
         return $creds;
     }
 
-    public function buildInstanceFromArray(array $content){
+    public function buildInstanceFromArray(array $content)
+    {
         $creds = new ApiCredentials();
 
         $accessor = PropertyAccess::createPropertyAccessor();
-        foreach ($content as $k => $v){
+        foreach ($content as $k => $v) {
             $accessor->setValue($creds, $k, $v);
         }
 
         return $creds;
     }
 
-    public static function getName(){
+    public static function getName()
+    {
         return 'api_key_manager';
     }
 
-    protected function getKeyInfo(ApiCredentials $entity){
+    protected function getKeyInfo(ApiCredentials $entity)
+    {
         $client = $this->getClient($entity, 'account');
         $result = $client->APIKeyInfo();
 

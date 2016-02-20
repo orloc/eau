@@ -3,23 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MarketOrderRepository")
  * @ORM\Table(name="market_orders", uniqueConstraints={
  *  @ORM\UniqueConstraint(name="datePlacedAt_indx", columns={"placed_by_id", "issued","market_order_group_id", "type_id", "placed_at_id"})
  * })
-* @JMS\ExclusionPolicy("all")
-*
-* @package AppBundle\Entity
-*/
+ * @JMS\ExclusionPolicy("all")
+ */
 class MarketOrder
 {
-
     const OPEN = 0,
           CLOSED = 1,
           ENDED = 2,
@@ -28,11 +22,11 @@ class MarketOrder
           DELETED = 5;
 
     /**
-    * @ORM\Id
-    * @ORM\Column(type="integer")
-    * @ORM\GeneratedValue(strategy="AUTO")
-    * @JMS\Expose()
-    */
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @JMS\Expose()
+     */
     protected $id;
 
     /**
@@ -136,24 +130,29 @@ class MarketOrder
      */
     protected $descriptors;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
-    public function getDescriptors(){
+    public function getDescriptors()
+    {
         return $this->descriptors;
     }
 
-    public function setDescriptors(array $val){
+    public function setDescriptors(array $val)
+    {
         $this->descriptors = $val;
+
         return $this;
     }
 
     /**
      * @JMS\VirtualProperty()
      */
-    public function getNiceState(){
-        switch($this->getState()) {
+    public function getNiceState()
+    {
+        switch ($this->getState()) {
             case self::OPEN: return 'Open';
             case self::ENDED: return 'Ended';
             case self::CANCELED: return 'Canceled';
@@ -164,9 +163,9 @@ class MarketOrder
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -174,9 +173,10 @@ class MarketOrder
     }
 
     /**
-     * Set placed_by_id
+     * Set placed_by_id.
      *
-     * @param integer $placedById
+     * @param int $placedById
+     *
      * @return MarketOrder
      */
     public function setPlacedById($placedById)
@@ -187,9 +187,9 @@ class MarketOrder
     }
 
     /**
-     * Get placed_by_id
+     * Get placed_by_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getPlacedById()
     {
@@ -197,9 +197,10 @@ class MarketOrder
     }
 
     /**
-     * Set placed_at_id
+     * Set placed_at_id.
      *
-     * @param integer $placedAtId
+     * @param int $placedAtId
+     *
      * @return MarketOrder
      */
     public function setPlacedAtId($placedAtId)
@@ -210,9 +211,9 @@ class MarketOrder
     }
 
     /**
-     * Get placed_at_id
+     * Get placed_at_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getPlacedAtId()
     {
@@ -220,9 +221,10 @@ class MarketOrder
     }
 
     /**
-     * Set type_id
+     * Set type_id.
      *
-     * @param integer $typeId
+     * @param int $typeId
+     *
      * @return MarketOrder
      */
     public function setTypeId($typeId)
@@ -233,9 +235,9 @@ class MarketOrder
     }
 
     /**
-     * Get type_id
+     * Get type_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getTypeId()
     {
@@ -243,9 +245,10 @@ class MarketOrder
     }
 
     /**
-     * Set state
+     * Set state.
      *
-     * @param integer $state
+     * @param int $state
+     *
      * @return MarketOrder
      */
     public function setState($state)
@@ -256,9 +259,9 @@ class MarketOrder
     }
 
     /**
-     * Get state
+     * Get state.
      *
-     * @return integer 
+     * @return int
      */
     public function getState()
     {
@@ -266,9 +269,10 @@ class MarketOrder
     }
 
     /**
-     * Set total_volume
+     * Set total_volume.
      *
-     * @param integer $totalVolume
+     * @param int $totalVolume
+     *
      * @return MarketOrder
      */
     public function setTotalVolume($totalVolume)
@@ -279,9 +283,9 @@ class MarketOrder
     }
 
     /**
-     * Get total_volume
+     * Get total_volume.
      *
-     * @return integer 
+     * @return int
      */
     public function getTotalVolume()
     {
@@ -289,9 +293,10 @@ class MarketOrder
     }
 
     /**
-     * Set volume_remaining
+     * Set volume_remaining.
      *
-     * @param integer $volumeRemaining
+     * @param int $volumeRemaining
+     *
      * @return MarketOrder
      */
     public function setVolumeRemaining($volumeRemaining)
@@ -302,9 +307,9 @@ class MarketOrder
     }
 
     /**
-     * Get volume_remaining
+     * Get volume_remaining.
      *
-     * @return integer 
+     * @return int
      */
     public function getVolumeRemaining()
     {
@@ -312,9 +317,10 @@ class MarketOrder
     }
 
     /**
-     * Set range
+     * Set range.
      *
-     * @param integer $range
+     * @param int $range
+     *
      * @return MarketOrder
      */
     public function setOrderRange($range)
@@ -325,9 +331,9 @@ class MarketOrder
     }
 
     /**
-     * Get range
+     * Get range.
      *
-     * @return integer 
+     * @return int
      */
     public function getOrderRange()
     {
@@ -335,9 +341,10 @@ class MarketOrder
     }
 
     /**
-     * Set account_key
+     * Set account_key.
      *
-     * @param integer $accountKey
+     * @param int $accountKey
+     *
      * @return MarketOrder
      */
     public function setAccountKey($accountKey)
@@ -348,9 +355,9 @@ class MarketOrder
     }
 
     /**
-     * Get account_key
+     * Get account_key.
      *
-     * @return integer 
+     * @return int
      */
     public function getAccountKey()
     {
@@ -358,9 +365,10 @@ class MarketOrder
     }
 
     /**
-     * Set duration
+     * Set duration.
      *
-     * @param integer $duration
+     * @param int $duration
+     *
      * @return MarketOrder
      */
     public function setDuration($duration)
@@ -371,9 +379,9 @@ class MarketOrder
     }
 
     /**
-     * Get duration
+     * Get duration.
      *
-     * @return integer 
+     * @return int
      */
     public function getDuration()
     {
@@ -381,9 +389,10 @@ class MarketOrder
     }
 
     /**
-     * Set escrow
+     * Set escrow.
      *
      * @param string $escrow
+     *
      * @return MarketOrder
      */
     public function setEscrow($escrow)
@@ -394,9 +403,9 @@ class MarketOrder
     }
 
     /**
-     * Get escrow
+     * Get escrow.
      *
-     * @return string 
+     * @return string
      */
     public function getEscrow()
     {
@@ -404,9 +413,10 @@ class MarketOrder
     }
 
     /**
-     * Set price
+     * Set price.
      *
      * @param string $price
+     *
      * @return MarketOrder
      */
     public function setPrice($price)
@@ -417,9 +427,9 @@ class MarketOrder
     }
 
     /**
-     * Get price
+     * Get price.
      *
-     * @return string 
+     * @return string
      */
     public function getPrice()
     {
@@ -427,9 +437,10 @@ class MarketOrder
     }
 
     /**
-     * Set bid
+     * Set bid.
      *
-     * @param boolean $bid
+     * @param bool $bid
+     *
      * @return MarketOrder
      */
     public function setBid($bid)
@@ -440,9 +451,9 @@ class MarketOrder
     }
 
     /**
-     * Get bid
+     * Get bid.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getBid()
     {
@@ -450,9 +461,10 @@ class MarketOrder
     }
 
     /**
-     * Set issued
+     * Set issued.
      *
      * @param \DateTime $issued
+     *
      * @return MarketOrder
      */
     public function setIssued(\DateTime $issued)
@@ -463,9 +475,9 @@ class MarketOrder
     }
 
     /**
-     * Get issued
+     * Get issued.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getIssued()
     {
@@ -473,9 +485,10 @@ class MarketOrder
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return MarketOrder
      */
     public function setCreatedAt($createdAt)
@@ -486,9 +499,9 @@ class MarketOrder
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -496,9 +509,10 @@ class MarketOrder
     }
 
     /**
-     * Set order_id
+     * Set order_id.
      *
-     * @param integer $orderId
+     * @param int $orderId
+     *
      * @return MarketOrder
      */
     public function setOrderId($orderId)
@@ -509,9 +523,9 @@ class MarketOrder
     }
 
     /**
-     * Get order_id
+     * Get order_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getOrderId()
     {
@@ -519,9 +533,10 @@ class MarketOrder
     }
 
     /**
-     * Set market_order_group
+     * Set market_order_group.
      *
      * @param \AppBundle\Entity\MarketOrderGroup $marketOrderGroup
+     *
      * @return MarketOrder
      */
     public function setMarketOrderGroup(\AppBundle\Entity\MarketOrderGroup $marketOrderGroup = null)
@@ -532,9 +547,9 @@ class MarketOrder
     }
 
     /**
-     * Get market_order_group
+     * Get market_order_group.
      *
-     * @return \AppBundle\Entity\MarketOrderGroup 
+     * @return \AppBundle\Entity\MarketOrderGroup
      */
     public function getMarketOrderGroup()
     {

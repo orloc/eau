@@ -2,6 +2,6 @@
 
 namespace AppBundle\Controller;
 
-
-interface ApiControllerInterface {
+interface ApiControllerInterface
+{
 }

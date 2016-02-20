@@ -4,20 +4,16 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CorporationMemberRepository")
  * @ORM\Table(name="corporation_members", uniqueConstraints={
-    @ORM\UniqueConstraint(name="member_corp_idx", columns={"character_id","corporation_id"})
+ @ORM\UniqueConstraint(name="member_corp_idx", columns={"character_id","corporation_id"})
  * })
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class CorporationMember
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -67,8 +63,8 @@ class CorporationMember
     protected $created_at;
 
     /**
-    * @JMS\Expose()
-    */
+     * @JMS\Expose()
+     */
     protected $api_key = null;
 
     /**
@@ -86,39 +82,46 @@ class CorporationMember
      */
     protected $mains_name;
 
-    public function setApiKey($creds){
+    public function setApiKey($creds)
+    {
         $this->api_key = $creds;
     }
 
-    public function setIsMain($bool){
+    public function setIsMain($bool)
+    {
         $this->is_main = $bool;
     }
 
-    public function setAssociatedChars(array $chars){
+    public function setAssociatedChars(array $chars)
+    {
         $this->associated_chars = $chars;
     }
 
-    public function getAssociatedChars(){
+    public function getAssociatedChars()
+    {
         return $this->associated_chars;
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
         $this->is_registered = false;
     }
 
-    public function getIsMain(){
+    public function getIsMain()
+    {
         return $this->is_main;
     }
 
-    public function getMainsName(){
+    public function getMainsName()
+    {
         return $this->mains_name;
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -126,9 +129,10 @@ class CorporationMember
     }
 
     /**
-     * Set character_id
+     * Set character_id.
      *
-     * @param integer $characterId
+     * @param int $characterId
+     *
      * @return CorporationMember
      */
     public function setCharacterId($characterId)
@@ -139,9 +143,9 @@ class CorporationMember
     }
 
     /**
-     * Get character_id
+     * Get character_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getCharacterId()
     {
@@ -149,9 +153,10 @@ class CorporationMember
     }
 
     /**
-     * Set character_name
+     * Set character_name.
      *
      * @param string $characterName
+     *
      * @return CorporationMember
      */
     public function setCharacterName($characterName)
@@ -162,9 +167,9 @@ class CorporationMember
     }
 
     /**
-     * Get character_name
+     * Get character_name.
      *
-     * @return string 
+     * @return string
      */
     public function getCharacterName()
     {
@@ -172,9 +177,10 @@ class CorporationMember
     }
 
     /**
-     * Set start_time
+     * Set start_time.
      *
      * @param \DateTime $startTime
+     *
      * @return CorporationMember
      */
     public function setStartTime($startTime)
@@ -185,9 +191,9 @@ class CorporationMember
     }
 
     /**
-     * Get start_time
+     * Get start_time.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getStartTime()
     {
@@ -195,9 +201,10 @@ class CorporationMember
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return CorporationMember
      */
     public function setCreatedAt($createdAt)
@@ -208,9 +215,9 @@ class CorporationMember
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -218,9 +225,10 @@ class CorporationMember
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return CorporationMember
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -231,9 +239,9 @@ class CorporationMember
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -241,9 +249,10 @@ class CorporationMember
     }
 
     /**
-     * Set is_registered
+     * Set is_registered.
      *
-     * @param boolean $isRegistered
+     * @param bool $isRegistered
+     *
      * @return CorporationMember
      */
     public function setIsRegistered($isRegistered)
@@ -254,9 +263,9 @@ class CorporationMember
     }
 
     /**
-     * Get is_registered
+     * Get is_registered.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getIsRegistered()
     {
@@ -264,9 +273,10 @@ class CorporationMember
     }
 
     /**
-     * Set disbanded_at
+     * Set disbanded_at.
      *
-     * @param boolean $disbandedAt
+     * @param bool $disbandedAt
+     *
      * @return CorporationMember
      */
     public function setDisbandedAt($disbandedAt)
@@ -277,9 +287,9 @@ class CorporationMember
     }
 
     /**
-     * Get disbanded_at
+     * Get disbanded_at.
      *
-     * @return boolean 
+     * @return bool
      */
     public function getDisbandedAt()
     {

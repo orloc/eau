@@ -13,8 +13,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
  *
  * @Route("/server", options={"expose"=true})
  */
-class ServerController extends AbstractController implements ApiControllerInterface {
-
+class ServerController extends AbstractController implements ApiControllerInterface
+{
     /**
      * @Route("/status", name="api.server.status")
      * @Secure(roles="ROLE_CORP_MEMBER")
@@ -29,13 +29,11 @@ class ServerController extends AbstractController implements ApiControllerInterf
 
         $data = [
             'online' => $status->serverOpen ? true : false,
-            "players" => $status->onlinePlayers
+            'players' => $status->onlinePlayers,
         ];
 
         $json = $this->get('jms_serializer')->serialize($data, 'json');
 
         return $this->jsonResponse($json);
-
     }
-
 }

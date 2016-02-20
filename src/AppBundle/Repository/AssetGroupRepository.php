@@ -5,10 +5,10 @@ namespace AppBundle\Repository;
 use AppBundle\Entity\Corporation;
 use Doctrine\ORM\EntityRepository;
 
-class AssetGroupRepository extends EntityRepository {
-
-    public function getLatestAssetGroup(Corporation $entity){
-
+class AssetGroupRepository extends EntityRepository
+{
+    public function getLatestAssetGroup(Corporation $entity)
+    {
         return $this->createQueryBuilder('ag')
             ->select('ag')
             ->where('ag.corporation = :corporation')
@@ -16,10 +16,10 @@ class AssetGroupRepository extends EntityRepository {
             ->setMaxResults(1)
             ->setParameter('corporation', $entity)
             ->getQuery()->getOneOrNullResult();
-
     }
 
-    public function getLatestNeedsUpdateAssetGroupByIds(array $ids){
+    public function getLatestNeedsUpdateAssetGroupByIds(array $ids)
+    {
         $res = $this->createQueryBuilder('ag')
             ->select('max(ag.created_at) created_at')
             ->where('ag.corporation IN ( :corporation_ids )')
@@ -28,7 +28,7 @@ class AssetGroupRepository extends EntityRepository {
             ->setParameter('corporation_ids', $ids)
             ->getQuery()->getResult();
 
-        $dates = array_map(function($r){
+        $dates = array_map(function ($r) {
             return $r['created_at'];
         }, $res);
 
@@ -36,6 +36,5 @@ class AssetGroupRepository extends EntityRepository {
             ->where('ag.created_at in ( :dates ) ')
             ->setParameter('dates', $dates)
             ->getQuery()->getResult();
-
     }
 }

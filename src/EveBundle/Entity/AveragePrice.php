@@ -7,11 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="EveBundle\Repository\AveragePriceRepository")
  * @ORM\Table(name="average_prices")
- * @package AppBundle\Entity
  */
 class AveragePrice
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -39,14 +37,15 @@ class AveragePrice
      */
     protected $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -54,9 +53,10 @@ class AveragePrice
     }
 
     /**
-     * Set adjusted_price
+     * Set adjusted_price.
      *
      * @param string $adjustedPrice
+     *
      * @return AveragePrice
      */
     public function setAdjustedPrice($adjustedPrice)
@@ -67,9 +67,9 @@ class AveragePrice
     }
 
     /**
-     * Get adjusted_price
+     * Get adjusted_price.
      *
-     * @return string 
+     * @return string
      */
     public function getAdjustedPrice()
     {
@@ -77,9 +77,10 @@ class AveragePrice
     }
 
     /**
-     * Set average_price
+     * Set average_price.
      *
      * @param string $averagePrice
+     *
      * @return AveragePrice
      */
     public function setAveragePrice($averagePrice)
@@ -90,9 +91,9 @@ class AveragePrice
     }
 
     /**
-     * Get average_price
+     * Get average_price.
      *
-     * @return string 
+     * @return string
      */
     public function getAveragePrice()
     {
@@ -100,9 +101,10 @@ class AveragePrice
     }
 
     /**
-     * Set type_id
+     * Set type_id.
      *
-     * @param integer $typeId
+     * @param int $typeId
+     *
      * @return AveragePrice
      */
     public function setTypeId($typeId)
@@ -113,9 +115,9 @@ class AveragePrice
     }
 
     /**
-     * Get type_id
+     * Get type_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getTypeId()
     {
@@ -123,9 +125,10 @@ class AveragePrice
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return AveragePrice
      */
     public function setCreatedAt($createdAt)
@@ -136,9 +139,9 @@ class AveragePrice
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {

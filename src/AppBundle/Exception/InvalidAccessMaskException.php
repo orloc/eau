@@ -2,6 +2,6 @@
 
 namespace AppBundle\Exception;
 
-class InvalidAccessMaskException extends \Exception {
-
+class InvalidAccessMaskException extends \Exception
+{
 }

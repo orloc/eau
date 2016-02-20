@@ -4,21 +4,22 @@ namespace AppBundle\DataFixtures\Test;
 
 use AppBundle\Entity\ApiCredentials;
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use \Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
-class LoadCorporateData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface {
-
+class LoadCorporateData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+{
     private $container;
 
-    public function setContainer(ContainerInterface $container = null){
+    public function setContainer(ContainerInterface $container = null)
+    {
         $this->container = $container;
     }
 
-    public function load(ObjectManager $manager){
+    public function load(ObjectManager $manager)
+    {
         $goodKey = $this->container->getParameter('test_config')['api_keys']['good_corp_key'];
         $corpManager = $this->container->get('app.corporation.manager');
 
@@ -42,7 +43,8 @@ class LoadCorporateData extends AbstractFixture implements OrderedFixtureInterfa
         $manager->flush();
     }
 
-    public function getOrder(){
+    public function getOrder()
+    {
         return 2;
     }
 }

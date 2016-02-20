@@ -3,22 +3,17 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MarketTransactionRepository")
  * @ORM\Table(name="market_transactions", uniqueConstraints={
-    @ORM\UniqueConstraint(name="date_transID_jTransID_acc_idx", columns={"date", "transaction_id", "account_id", "journal_transaction_id"}),
+ @ORM\UniqueConstraint(name="date_transID_jTransID_acc_idx", columns={"date", "transaction_id", "account_id", "journal_transaction_id"}),
  * })
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class MarketTransaction
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -129,14 +124,15 @@ class MarketTransaction
      */
     protected $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -144,9 +140,10 @@ class MarketTransaction
     }
 
     /**
-     * Set date
+     * Set date.
      *
      * @param \DateTime $date
+     *
      * @return MarketTransaction
      */
     public function setDate($date)
@@ -157,7 +154,7 @@ class MarketTransaction
     }
 
     /**
-     * Get date
+     * Get date.
      *
      * @return \DateTime
      */
@@ -167,9 +164,10 @@ class MarketTransaction
     }
 
     /**
-     * Set transaction_id
+     * Set transaction_id.
      *
-     * @param integer $transactionId
+     * @param int $transactionId
+     *
      * @return MarketTransaction
      */
     public function setTransactionId($transactionId)
@@ -180,9 +178,9 @@ class MarketTransaction
     }
 
     /**
-     * Get transaction_id
+     * Get transaction_id.
      *
-     * @return integer
+     * @return int
      */
     public function getTransactionId()
     {
@@ -190,9 +188,10 @@ class MarketTransaction
     }
 
     /**
-     * Set quantity
+     * Set quantity.
      *
-     * @param integer $quantity
+     * @param int $quantity
+     *
      * @return MarketTransaction
      */
     public function setQuantity($quantity)
@@ -203,9 +202,9 @@ class MarketTransaction
     }
 
     /**
-     * Get quantity
+     * Get quantity.
      *
-     * @return integer
+     * @return int
      */
     public function getQuantity()
     {
@@ -213,9 +212,10 @@ class MarketTransaction
     }
 
     /**
-     * Set item_name
+     * Set item_name.
      *
      * @param string $itemName
+     *
      * @return MarketTransaction
      */
     public function setItemName($itemName)
@@ -226,7 +226,7 @@ class MarketTransaction
     }
 
     /**
-     * Get item_name
+     * Get item_name.
      *
      * @return string
      */
@@ -236,9 +236,10 @@ class MarketTransaction
     }
 
     /**
-     * Set item_id
+     * Set item_id.
      *
-     * @param integer $itemId
+     * @param int $itemId
+     *
      * @return MarketTransaction
      */
     public function setItemId($itemId)
@@ -249,9 +250,9 @@ class MarketTransaction
     }
 
     /**
-     * Get item_id
+     * Get item_id.
      *
-     * @return integer
+     * @return int
      */
     public function getItemId()
     {
@@ -259,9 +260,10 @@ class MarketTransaction
     }
 
     /**
-     * Set price
+     * Set price.
      *
      * @param string $price
+     *
      * @return MarketTransaction
      */
     public function setPrice($price)
@@ -272,7 +274,7 @@ class MarketTransaction
     }
 
     /**
-     * Get price
+     * Get price.
      *
      * @return string
      */
@@ -282,9 +284,10 @@ class MarketTransaction
     }
 
     /**
-     * Set client_id
+     * Set client_id.
      *
-     * @param integer $clientId
+     * @param int $clientId
+     *
      * @return MarketTransaction
      */
     public function setClientId($clientId)
@@ -295,9 +298,9 @@ class MarketTransaction
     }
 
     /**
-     * Get client_id
+     * Get client_id.
      *
-     * @return integer
+     * @return int
      */
     public function getClientId()
     {
@@ -305,9 +308,10 @@ class MarketTransaction
     }
 
     /**
-     * Set client_name
+     * Set client_name.
      *
      * @param string $clientName
+     *
      * @return MarketTransaction
      */
     public function setClientName($clientName)
@@ -318,7 +322,7 @@ class MarketTransaction
     }
 
     /**
-     * Get client_name
+     * Get client_name.
      *
      * @return string
      */
@@ -328,9 +332,10 @@ class MarketTransaction
     }
 
     /**
-     * Set station_id
+     * Set station_id.
      *
-     * @param integer $stationId
+     * @param int $stationId
+     *
      * @return MarketTransaction
      */
     public function setStationId($stationId)
@@ -341,9 +346,9 @@ class MarketTransaction
     }
 
     /**
-     * Get station_id
+     * Get station_id.
      *
-     * @return integer
+     * @return int
      */
     public function getStationId()
     {
@@ -351,9 +356,10 @@ class MarketTransaction
     }
 
     /**
-     * Set station_name
+     * Set station_name.
      *
      * @param string $stationName
+     *
      * @return MarketTransaction
      */
     public function setStationName($stationName)
@@ -364,7 +370,7 @@ class MarketTransaction
     }
 
     /**
-     * Get station_name
+     * Get station_name.
      *
      * @return string
      */
@@ -374,9 +380,10 @@ class MarketTransaction
     }
 
     /**
-     * Set transaction_type
+     * Set transaction_type.
      *
      * @param string $transactionType
+     *
      * @return MarketTransaction
      */
     public function setTransactionType($transactionType)
@@ -387,7 +394,7 @@ class MarketTransaction
     }
 
     /**
-     * Get transaction_type
+     * Get transaction_type.
      *
      * @return string
      */
@@ -397,9 +404,10 @@ class MarketTransaction
     }
 
     /**
-     * Set transaction_for
+     * Set transaction_for.
      *
      * @param string $transactionFor
+     *
      * @return MarketTransaction
      */
     public function setTransactionFor($transactionFor)
@@ -410,7 +418,7 @@ class MarketTransaction
     }
 
     /**
-     * Get transaction_for
+     * Get transaction_for.
      *
      * @return string
      */
@@ -420,9 +428,10 @@ class MarketTransaction
     }
 
     /**
-     * Set journal_transaction_id
+     * Set journal_transaction_id.
      *
-     * @param integer $journalTransactionId
+     * @param int $journalTransactionId
+     *
      * @return MarketTransaction
      */
     public function setJournalTransactionId($journalTransactionId)
@@ -433,9 +442,9 @@ class MarketTransaction
     }
 
     /**
-     * Get journal_transaction_id
+     * Get journal_transaction_id.
      *
-     * @return integer
+     * @return int
      */
     public function getJournalTransactionId()
     {
@@ -443,9 +452,10 @@ class MarketTransaction
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return MarketTransaction
      */
     public function setCreatedAt($createdAt)
@@ -456,7 +466,7 @@ class MarketTransaction
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
      * @return \DateTime
      */
@@ -466,9 +476,10 @@ class MarketTransaction
     }
 
     /**
-     * Set account
+     * Set account.
      *
      * @param \AppBundle\Entity\Account $account
+     *
      * @return MarketTransaction
      */
     public function setAccount(\AppBundle\Entity\Account $account = null)
@@ -479,7 +490,7 @@ class MarketTransaction
     }
 
     /**
-     * Get account
+     * Get account.
      *
      * @return \AppBundle\Entity\Account
      */
@@ -489,9 +500,10 @@ class MarketTransaction
     }
 
     /**
-     * Set character_id
+     * Set character_id.
      *
-     * @param integer $characterId
+     * @param int $characterId
+     *
      * @return MarketTransaction
      */
     public function setCharacterId($characterId)
@@ -502,9 +514,9 @@ class MarketTransaction
     }
 
     /**
-     * Get character_id
+     * Get character_id.
      *
-     * @return integer
+     * @return int
      */
     public function getCharacterId()
     {
@@ -512,9 +524,10 @@ class MarketTransaction
     }
 
     /**
-     * Set character_name
+     * Set character_name.
      *
      * @param string $characterName
+     *
      * @return MarketTransaction
      */
     public function setCharacterName($characterName)
@@ -525,7 +538,7 @@ class MarketTransaction
     }
 
     /**
-     * Get character_name
+     * Get character_name.
      *
      * @return string
      */
@@ -535,9 +548,10 @@ class MarketTransaction
     }
 
     /**
-     * Set client_type_id
+     * Set client_type_id.
      *
-     * @param integer $clientTypeId
+     * @param int $clientTypeId
+     *
      * @return MarketTransaction
      */
     public function setClientTypeId($clientTypeId)
@@ -548,9 +562,9 @@ class MarketTransaction
     }
 
     /**
-     * Get client_type_id
+     * Get client_type_id.
      *
-     * @return integer
+     * @return int
      */
     public function getClientTypeId()
     {

@@ -2,27 +2,29 @@
 
 namespace AppBundle\Service;
 
-
 use AppBundle\Service\DataManager\DataManagerInterface;
 
-class DataManagerRegistry {
+class DataManagerRegistry
+{
+    protected $managers = [];
 
-    protected  $managers = [];
-
-    public function set(DataManagerInterface $value){
-
+    public function set(DataManagerInterface $value)
+    {
         $this->managers[$value::getName()] = $value;
     }
 
-    public function get($key){
+    public function get($key)
+    {
         return $this->managers[$key];
     }
 
-    public function has($key){
+    public function has($key)
+    {
         return isset($this->managers[$key]);
     }
 
-    public function getAll(){
+    public function getAll()
+    {
         return $this->managers;
     }
 }

@@ -3,20 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AssetGroupRepository")
  * @ORM\Table(name="asset_groups")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class AssetGroup
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -51,7 +46,7 @@ class AssetGroup
     protected $created_at;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
@@ -61,9 +56,9 @@ class AssetGroup
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -71,14 +66,15 @@ class AssetGroup
     }
 
     /**
-     * Add assets
+     * Add assets.
      *
      * @param \AppBundle\Entity\Asset $assets
+     *
      * @return AssetGrouping
      */
     public function addAsset(\AppBundle\Entity\Asset $assets)
     {
-        if (!$this->assets->contains($assets)){
+        if (!$this->assets->contains($assets)) {
             $this->assets[] = $assets;
             $assets->setAssetGroup($this);
         }
@@ -87,7 +83,7 @@ class AssetGroup
     }
 
     /**
-     * Remove assets
+     * Remove assets.
      *
      * @param \AppBundle\Entity\Asset $assets
      */
@@ -97,7 +93,7 @@ class AssetGroup
     }
 
     /**
-     * Get assets
+     * Get assets.
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -107,9 +103,10 @@ class AssetGroup
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return AssetGrouping
      */
     public function setCreatedAt($createdAt)
@@ -120,7 +117,7 @@ class AssetGroup
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
      * @return \DateTime
      */
@@ -130,9 +127,10 @@ class AssetGroup
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return AssetGrouping
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -143,7 +141,7 @@ class AssetGroup
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
      * @return \AppBundle\Entity\Corporation
      */
@@ -153,9 +151,10 @@ class AssetGroup
     }
 
     /**
-     * Set asset_sum
+     * Set asset_sum.
      *
      * @param string $assetSum
+     *
      * @return AssetGroup
      */
     public function setAssetSum($assetSum)
@@ -166,7 +165,7 @@ class AssetGroup
     }
 
     /**
-     * Get asset_sum
+     * Get asset_sum.
      *
      * @return string
      */
@@ -176,9 +175,10 @@ class AssetGroup
     }
 
     /**
-     * Set has_been_updated
+     * Set has_been_updated.
      *
-     * @param boolean $hasBeenUpdated
+     * @param bool $hasBeenUpdated
+     *
      * @return AssetGroup
      */
     public function setHasBeenUpdated($hasBeenUpdated)
@@ -189,9 +189,9 @@ class AssetGroup
     }
 
     /**
-     * Get has_been_updated
+     * Get has_been_updated.
      *
-     * @return boolean
+     * @return bool
      */
     public function getHasBeenUpdated()
     {

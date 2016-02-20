@@ -3,21 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use JMS\Serializer\Annotation as JMS;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CorporationTitleRepository")
  * @ORM\Table(name="corporation_titles")
  * @JMS\ExclusionPolicy("all")
- *
- * @package AppBundle\Entity
  */
 class CorporationTitle
 {
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -83,14 +77,15 @@ class CorporationTitle
      */
     protected $created_at;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
     }
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer 
+     * @return int
      */
     public function getId()
     {
@@ -98,9 +93,10 @@ class CorporationTitle
     }
 
     /**
-     * Set corporation
+     * Set corporation.
      *
      * @param \AppBundle\Entity\Corporation $corporation
+     *
      * @return CorporationTitle
      */
     public function setCorporation(\AppBundle\Entity\Corporation $corporation = null)
@@ -111,9 +107,9 @@ class CorporationTitle
     }
 
     /**
-     * Get corporation
+     * Get corporation.
      *
-     * @return \AppBundle\Entity\Corporation 
+     * @return \AppBundle\Entity\Corporation
      */
     public function getCorporation()
     {
@@ -121,9 +117,10 @@ class CorporationTitle
     }
 
     /**
-     * Set eve_title_id
+     * Set eve_title_id.
      *
-     * @param integer $eveTitleId
+     * @param int $eveTitleId
+     *
      * @return CorporationTitle
      */
     public function setEveTitleId($eveTitleId)
@@ -134,9 +131,9 @@ class CorporationTitle
     }
 
     /**
-     * Get eve_title_id
+     * Get eve_title_id.
      *
-     * @return integer 
+     * @return int
      */
     public function getEveTitleId()
     {
@@ -144,9 +141,10 @@ class CorporationTitle
     }
 
     /**
-     * Set title_name
+     * Set title_name.
      *
      * @param string $titleName
+     *
      * @return CorporationTitle
      */
     public function setTitleName($titleName)
@@ -157,9 +155,9 @@ class CorporationTitle
     }
 
     /**
-     * Get title_name
+     * Get title_name.
      *
-     * @return string 
+     * @return string
      */
     public function getTitleName()
     {
@@ -167,9 +165,10 @@ class CorporationTitle
     }
 
     /**
-     * Set roles
+     * Set roles.
      *
      * @param array $roles
+     *
      * @return CorporationTitle
      */
     public function setRoles($roles)
@@ -180,9 +179,9 @@ class CorporationTitle
     }
 
     /**
-     * Get roles
+     * Get roles.
      *
-     * @return array 
+     * @return array
      */
     public function getRoles()
     {
@@ -190,9 +189,10 @@ class CorporationTitle
     }
 
     /**
-     * Set grantable_roles
+     * Set grantable_roles.
      *
      * @param array $grantableRoles
+     *
      * @return CorporationTitle
      */
     public function setGrantableRoles($grantableRoles)
@@ -203,9 +203,9 @@ class CorporationTitle
     }
 
     /**
-     * Get grantable_roles
+     * Get grantable_roles.
      *
-     * @return array 
+     * @return array
      */
     public function getGrantableRoles()
     {
@@ -213,9 +213,10 @@ class CorporationTitle
     }
 
     /**
-     * Set roles_at_hq
+     * Set roles_at_hq.
      *
      * @param array $rolesAtHq
+     *
      * @return CorporationTitle
      */
     public function setRolesAtHq($rolesAtHq)
@@ -226,9 +227,9 @@ class CorporationTitle
     }
 
     /**
-     * Get roles_at_hq
+     * Get roles_at_hq.
      *
-     * @return array 
+     * @return array
      */
     public function getRolesAtHq()
     {
@@ -236,9 +237,10 @@ class CorporationTitle
     }
 
     /**
-     * Set grantable_roles_at_hq
+     * Set grantable_roles_at_hq.
      *
      * @param array $grantableRolesAtHq
+     *
      * @return CorporationTitle
      */
     public function setGrantableRolesAtHq($grantableRolesAtHq)
@@ -249,9 +251,9 @@ class CorporationTitle
     }
 
     /**
-     * Get grantable_roles_at_hq
+     * Get grantable_roles_at_hq.
      *
-     * @return array 
+     * @return array
      */
     public function getGrantableRolesAtHq()
     {
@@ -259,9 +261,10 @@ class CorporationTitle
     }
 
     /**
-     * Set roles_at_other
+     * Set roles_at_other.
      *
      * @param array $rolesAtOther
+     *
      * @return CorporationTitle
      */
     public function setRolesAtOther($rolesAtOther)
@@ -272,9 +275,9 @@ class CorporationTitle
     }
 
     /**
-     * Get roles_at_other
+     * Get roles_at_other.
      *
-     * @return array 
+     * @return array
      */
     public function getRolesAtOther()
     {
@@ -282,9 +285,10 @@ class CorporationTitle
     }
 
     /**
-     * Set grantable_roles_at_other
+     * Set grantable_roles_at_other.
      *
      * @param array $grantableRolesAtOther
+     *
      * @return CorporationTitle
      */
     public function setGrantableRolesAtOther($grantableRolesAtOther)
@@ -295,9 +299,9 @@ class CorporationTitle
     }
 
     /**
-     * Get grantable_roles_at_other
+     * Get grantable_roles_at_other.
      *
-     * @return array 
+     * @return array
      */
     public function getGrantableRolesAtOther()
     {
@@ -305,9 +309,10 @@ class CorporationTitle
     }
 
     /**
-     * Set created_at
+     * Set created_at.
      *
      * @param \DateTime $createdAt
+     *
      * @return CorporationTitle
      */
     public function setCreatedAt($createdAt)
@@ -318,9 +323,9 @@ class CorporationTitle
     }
 
     /**
-     * Get created_at
+     * Get created_at.
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getCreatedAt()
     {

@@ -72,7 +72,8 @@ class TemplateController extends Controller
      * @Route("/corpoverview", name="template.corpoverview")
      * @Secure(roles="ROLE_DIRECTOR")
      */
-    public function corpOverViewAction(){
+    public function corpOverViewAction()
+    {
         return $this->render('AppBundle:Templates:corp/corpOverview.html.twig');
     }
 
@@ -80,7 +81,8 @@ class TemplateController extends Controller
      * @Route("/corpinventory", name="template.corpinventory")
      * @Secure(roles="ROLE_DIRECTOR")
      */
-    public function corpInventoryAction(){
+    public function corpInventoryAction()
+    {
         return $this->render('AppBundle:Templates:corp/corpInventory.html.twig');
     }
 
@@ -88,7 +90,8 @@ class TemplateController extends Controller
      * @Route("/corpdeliveries", name="template.corpdeliveries")
      * @Secure(roles="ROLE_DIRECTOR")
      */
-    public function corpDeliveryAction(){
+    public function corpDeliveryAction()
+    {
         return $this->render('AppBundle:Templates:corp/corpDeliveries.html.twig');
     }
 
