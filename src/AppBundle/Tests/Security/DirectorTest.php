@@ -22,7 +22,7 @@ class DirectorTest extends WebTestCase
             $menuItems[] = $item->textContent;
         }
 
-        $this->assertCount(6, $menuItems);
+        $this->assertCount(7, $menuItems);
     }
 
     public function testCorpPage()

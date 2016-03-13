@@ -19,9 +19,6 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface
 
         list($type, $expires, $accessMask) = [$key->type, $key->expires, $key->accessMask];
 
-        if ($key->getInvalid()){
-            throw new InvalidApiKeyException('Has had too many failed attempts');
-        }
         if (strlen($expires) > 0) {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }

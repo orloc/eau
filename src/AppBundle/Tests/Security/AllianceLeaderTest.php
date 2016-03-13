@@ -22,7 +22,7 @@ class AllianceLeaderTest extends WebTestCase
             $menuItems[] = $item->textContent;
         }
 
-        $this->assertCount(7, $menuItems);
+        $this->assertCount(8, $menuItems);
     }
 
     public function testCorpPage()
