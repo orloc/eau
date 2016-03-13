@@ -8,6 +8,8 @@ use Symfony\Component\BrowserKit\Cookie;
 
 class WebTestCase extends BaseCase
 {
+
+    const MENU_COUNT = 8;
     protected $client = null;
 
     protected function logIn($username, $string = false)

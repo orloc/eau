@@ -22,7 +22,7 @@ class CorpMemberTest extends WebTestCase
             $menuItems[] = $item->textContent;
         }
 
-        $this->assertCount(5, $menuItems);
+        $this->assertCount(self::MENU_COUNT - 3, $menuItems);
     }
 
     public function testCorpPage()
