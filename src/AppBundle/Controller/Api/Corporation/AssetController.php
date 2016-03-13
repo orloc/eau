@@ -28,7 +28,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $group = $this->getRepository('AppBundle:AssetGroup')
-            ->getLatestAssetGroup($corp);
+            ->getLatest($corp);
 
         $query = $this->getRepository('AppBundle:Asset')
             ->getAllByGroup($group);
@@ -58,7 +58,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $group = $this->getRepository('AppBundle:AssetGroup')
-            ->getLatestAssetGroup($corp);
+            ->getLatest($corp);
 
         $query = $this->getRepository('AppBundle:Asset')->getAssetItemSummary($group);
 
@@ -86,7 +86,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         }
 
         $group = $this->getRepository('AppBundle:AssetGroup')
-            ->getLatestAssetGroup($corp);
+            ->getLatest($corp);
         $repo = $this->getRepository('AppBundle:Asset');
 
         switch ($sort) {
@@ -177,7 +177,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         }
 
         $group = $this->getRepository('AppBundle:AssetGroup')
-            ->getLatestAssetGroup($corp);
+            ->getLatest($corp);
 
         $repo = $this->getRepository('AppBundle:Asset');
         $assets = $repo->getAssetsByLocation($group, $loc);
@@ -203,7 +203,7 @@ class AssetController extends AbstractController implements ApiControllerInterfa
         $this->denyAccessUnlessGranted(AccessTypes::VIEW, $corp, 'Unauthorized access!');
 
         $group = $this->getRepository('AppBundle:AssetGroup')
-            ->getLatestAssetGroup($corp);
+            ->getLatest($corp);
 
         $query = $this->getRepository('AppBundle:Asset')
             ->getDeliveriesByGroup($group);

@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 
 class AssetGroupRepository extends EntityRepository
 {
-    public function getLatestAssetGroup(Corporation $entity)
+    public function getLatest(Corporation $entity)
     {
         return $this->createQueryBuilder('ag')
             ->select('ag')
@@ -18,23 +18,18 @@ class AssetGroupRepository extends EntityRepository
             ->getQuery()->getOneOrNullResult();
     }
 
-    public function getLatestNeedsUpdateAssetGroupByIds(array $ids)
+    public function getLatestNeedsUpdate(Corporation $c)
     {
         $res = $this->createQueryBuilder('ag')
-            ->select('max(ag.created_at) created_at')
-            ->where('ag.corporation IN ( :corporation_ids )')
+            ->select('ag')
+            ->where('ag.corporation = :corporation )')
             ->andWhere('ag.has_been_updated = 0')
-            ->groupBy('ag.corporation')
-            ->setParameter('corporation_ids', $ids)
-            ->getQuery()->getResult();
+            ->orderBy('ag.created_at', 'DESC')
+            ->setMaxResults(1)
+            ->setParameter('corporation', $c)
+            ->getQuery()->getOneOrNullResult();
 
-        $dates = array_map(function ($r) {
-            return $r['created_at'];
-        }, $res);
+        return $res;
 
-        return $this->createQueryBuilder('ag')
-            ->where('ag.created_at in ( :dates ) ')
-            ->setParameter('dates', $dates)
-            ->getQuery()->getResult();
     }
 }

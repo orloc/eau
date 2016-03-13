@@ -75,7 +75,6 @@ angular.module('eveTool')
                 $scope.page = data.current_page_number;
                 $scope.$parent.loading = false;
 
-
                 return data;
             });
         }
@@ -88,12 +87,11 @@ angular.module('eveTool')
 
         $scope.$on('view_changed', function(event, val ){
             if (val === 'all'){
-                if ($scope.assets.length === 0){
-                    updateInventory().then(function(data){
-                        $scope.total_items = data.total_count;
-                        $scope.$parent.total_price = data.items.total_price;
-                    });
-                }
+                updateInventory().then(function(data){
+                    $scope.total_items = data.total_count;
+                    $scope.$parent.total_price = data.items.total_price;
+                    console.log(data.items);
+                });
             }
         });
 

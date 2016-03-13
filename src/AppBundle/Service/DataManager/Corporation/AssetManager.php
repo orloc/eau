@@ -87,36 +87,45 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
         return $item;
     }
 
-    public function updateAssetGroupCache(array $corp_ids)
+    public function updateAssetGroupCache(array $corp_ids, $force = false)
     {
         $start = microtime(true);
-        $groups = $this->doctrine->getRepository('AppBundle:AssetGroup')
-            ->getLatestNeedsUpdateAssetGroupByIds($corp_ids);
+        $em = $this->doctrine->getManager();
 
-        $allItems = $this->doctrine->getRepository('AppBundle:Asset')
-            ->getAllByGroups($groups);
+        $agRepo = $this->doctrine->getRepository('AppBundle:AssetGroup');
+        $aRepo = $this->doctrine->getRepository('AppBundle:Asset');
 
-        $updatedItems = $this->price_manager->updatePrices(
-            $this->item_manager->updateDetails($allItems)
-        );
+        foreach ($corp_ids as  $c){
+            $group = !$force === true
+                ? $agRepo->getLatestNeedsUpdate($c)
+                : $agRepo->getLatest();
 
-        $this->log->info(sprintf('Done updating assets in %s', microtime(true) - $start));
-        $start = microtime(true);
-        $filteredList = array_filter($updatedItems, function ($i) {
-            if (!isset($i->getDescriptors()['name'])) {
-                return false;
+            if (!$group){
+                throw new \Exception('no asset group found');
             }
 
-            $name = $i->getDescriptors()['name'];
-            $t = strstr($name, 'Blueprint');
+            $allItems = $aRepo->getAllByGroup($group);
 
-            return $t === false;
-        });
+            $updatedItems = $this->price_manager->updatePrices(
+                $this->item_manager->updateDetails($allItems)
+            );
 
-        $this->log->info(sprintf('Blueprints removed from calculation list in %s', microtime(true) - $start));
-        $em = $this->doctrine->getManager();
-        $start = microtime(true);
-        foreach ($groups as $g) {
+            $this->log->info(sprintf('Done updating assets in %s', microtime(true) - $start));
+            $start = microtime(true);
+            $filteredList = array_filter($updatedItems, function ($i) {
+                if (!isset($i->getDescriptors()['name'])) {
+                    return false;
+                }
+
+                $name = $i->getDescriptors()['name'];
+                $t = strstr($name, 'Blueprint');
+
+                return $t === false;
+            });
+
+            $this->log->info(sprintf('Blueprints removed from calculation list in %s', microtime(true) - $start));
+            $start = microtime(true);
+
             $total_price = array_reduce($filteredList, function ($carry, $data) {
                 if ($carry === null) {
                     return $data->getDescriptors()['total_price'];
@@ -124,14 +133,15 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
 
                 return $carry + $data->getDescriptors()['total_price'];
             });
-            $g->setAssetSum($total_price)
+            $group->setAssetSum($total_price)
                 ->setHasBeenUpdated(true);
 
-            $em->persist($g);
-        }
-        $this->log->info(sprintf('Done with price cleanup in %s', microtime(true) - $start));
+            $em->persist($group);
 
-        $em->flush();
+            $this->log->info(sprintf('Done with price cleanup in %s', microtime(true) - $start));
+
+            $em->flush();
+        }
     }
 
     public function flattenAssets(Asset $asset)
