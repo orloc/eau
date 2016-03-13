@@ -95,6 +95,7 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
     public function checkCorporationDetails(Corporation $c)
     {
         $em = $this->doctrine->getManager();
+        $changed = false;
         if ($c->getEveId() === null) {
             $this->log->info('Updating corp details');
             $result = $this->getCorporationDetails($c);
@@ -106,9 +107,12 @@ class CorporationManager extends AbstractManager implements DataManagerInterface
             $result = $this->getCorporationSheet($c);
 
             $c->setCorporationDetails($result);
+            $changed = true;
         }
 
         $em->persist($c);
+
+        return  $changed;
     }
 
     public function getCorporationSheet(Corporation $corporation)

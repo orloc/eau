@@ -73,9 +73,18 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
         $corp_ids = [];
         foreach ($corps as $c) {
-            $log->info("Starting Update {$c->getCorporationDetails()->getName()}\n\n");
+            if ($c->getCorporationDetails()){
+                $log->info("Starting Update {$c->getCorporationDetails()->getName()}\n\n");
+            } else {
+                $log->info("Starting New Corp\n\n");
+            }
             try {
-                $this->getContainer()->get('app.corporation.manager')->checkCorporationDetails($c);
+                $changed = $this->getContainer()->get('app.corporation.manager')->checkCorporationDetails($c);
+
+                if ($changed){
+                    $em->flush();
+                }
+
                 $dataUpdateService->updateShortTimerCalls($c, $force);
                 $em->flush();
                 $dataUpdateService->updateLongTimerCalls($c, $force);
