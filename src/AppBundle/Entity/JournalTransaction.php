@@ -69,13 +69,14 @@ class JournalTransaction
     protected $owner_id2;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @JMS\Expose()
      */
     protected $arg_name1;
 
     /**
      * @JMS\Expose()
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $arg_id1;
 

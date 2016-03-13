@@ -4,6 +4,7 @@ namespace AppBundle\Service\DataManager;
 
 use AppBundle\Entity\ApiCredentials;
 use AppBundle\Exception\InvalidAccessMaskException;
+use AppBundle\Exception\InvalidApiKeyException;
 use AppBundle\Exception\InvalidApiKeyTypeException;
 use AppBundle\Exception\InvalidExpirationException;
 use Pheal\Core\Element;
@@ -18,6 +19,9 @@ class ApiKeyManager extends AbstractManager implements DataManagerInterface
 
         list($type, $expires, $accessMask) = [$key->type, $key->expires, $key->accessMask];
 
+        if ($key->getInvalid()){
+            throw new InvalidApiKeyException('Has had too many failed attempts');
+        }
         if (strlen($expires) > 0) {
             throw new InvalidExpirationException('Expiration Date on API Key is finite.');
         }
