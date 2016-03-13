@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="EveBundle\Repository\ItemPriceRepository")
- * @ORM\Table(name="item_prices", uniqueConstraints={
+ * @ORM\Table(name="item_prices")
  */
 class ItemPrice
 {
