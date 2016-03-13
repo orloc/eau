@@ -54,17 +54,29 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
             $sellData = $corp['sell'];
             unset($corp['sell']);
             $accounts = $corp;
-            $this->makeTransactionCsv($buyData, 'buy');
-            $this->makeTransactionCsv($sellData, 'sell');
+
+            if (!empty($buyData)){
+                $this->makeTransactionCsv($buyData, 'buy');
+            }
+
+            if (!empty($sellData)){
+                $this->makeTransactionCsv($sellData, 'sell');
+            }
 
             foreach ($accounts as $a) {
-                $this->makeJournalTransaction($a);
+                if(!empty($a)){
+                    $this->makeJournalTransaction($a);
+                }
             }
         }
     }
 
     protected function makeTransactionCsv(array $data, $name)
     {
+        if (empty($data)){
+            throw new \Exception('Empty data when making csv');
+        }
+
         $corpName = strtolower(str_replace(' ', '_', $data[0]->getAccount()->getCorporation()->getCorporationDetails()->getName()));
 
         $fileName = __DIR__.sprintf('/../../../export/%s_%s_data.%s.csv', $corpName, $name, Carbon::now()->toDateTimeString());
@@ -108,6 +120,9 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
 
     protected function makeJournalTransaction(array $data)
     {
+        if (empty($data)){
+            throw new \Exception('Empty data when creating journal Transaction');
+        }
         $corpName = strtolower(str_replace(' ', '_', $data[0]->getAccount()->getCorporation()->getCorporationDetails()->getName()));
         $accountName = strtolower(str_replace(' ', '_', $data[0]->getAccount()->getName()));
 
@@ -153,7 +168,7 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
     {
         return [
             'end' => Carbon::now(),
-            'start' => Carbon::create()->subDays(30),
+            'start' => Carbon::create()->firstOfQuarter(),
         ];
     }
 }
