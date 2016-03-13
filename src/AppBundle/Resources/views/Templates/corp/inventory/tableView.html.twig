@@ -5,7 +5,7 @@
     </div>
     <div class="row" ng-show="loading === false">
         <div class="col-sm-9" >
-            <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="max_size" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
+            <uib-pagination ng-disabled="loading === true" class="pagination-sm pull-left" max-size="(total_items / per_page) + 1" total-items="total_items" ng-model="page" ng-change="pageChanged()" rotate="false" boundry-links="true"></uib-pagination>
         </div>
         <div class="col-sm-3">
             {#

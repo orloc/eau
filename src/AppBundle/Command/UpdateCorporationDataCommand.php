@@ -75,7 +75,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
         }
         $this->log->info('Updating Compound Fields.');
         $start = microtime(true);
-        $this->update_service->updateAssetCache($corps);
+        $this->update_service->updateAssetCache($corps, $force);
         $this->log->info(sprintf('Done in %s', microtime(true) - $start));
     }
 

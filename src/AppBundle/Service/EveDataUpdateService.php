@@ -83,10 +83,10 @@ class EveDataUpdateService
             ->getLongTimerExpired($c, $call);
     }
 
-    public function updateAssetCache(array $c)
+    public function updateAssetCache(array $c, $force = false)
     {
         $this->registry->get(AssetManager::getName())
-            ->updateAssetGroupCache($c);
+            ->updateAssetGroupCache($c, $force);
     }
 
     public function createApiUpdate($type, $call, $success, Corporation $corp = null)

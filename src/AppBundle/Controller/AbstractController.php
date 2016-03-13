@@ -35,7 +35,7 @@ abstract class AbstractController extends Controller
         $paginator = $this->get('knp_paginator');
 
         $pagination = $paginator->paginate($result,
-            $request->query->get('page', 1),
+            $request->query->get('page', $request->get('page', 1)),
             $request->query->get('per_page', $request->get('per_page', $noLimit ? 1000000 : 15))
         );
 

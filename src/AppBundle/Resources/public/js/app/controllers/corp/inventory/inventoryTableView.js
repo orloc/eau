@@ -74,6 +74,10 @@ angular.module('eveTool')
                 $scope.per_page = data.num_items_per_page;
                 $scope.page = data.current_page_number;
                 $scope.$parent.loading = false;
+                $scope.total_items = data.total_count;
+
+                console.log(data.total_count);
+                $scope.$parent.total_price = data.items.total_price;
 
                 return data;
             });
@@ -87,11 +91,7 @@ angular.module('eveTool')
 
         $scope.$on('view_changed', function(event, val ){
             if (val === 'all'){
-                updateInventory().then(function(data){
-                    $scope.total_items = data.total_count;
-                    $scope.$parent.total_price = data.items.total_price;
-                    console.log(data.items);
-                });
+                updateInventory();
             }
         });
 
