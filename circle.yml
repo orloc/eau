@@ -1,3 +1,7 @@
 machine:
     php: 
         version: 5.5.11
+
+depedencies:
+    pre:
+        - cp deploy/roles/php/templates/php.ini ~/.phpenv/versions/$(phpenv global)/etc/conf.d/

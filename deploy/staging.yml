@@ -1,7 +1,7 @@
 ---
 - name: Staging DO Configuration for EAU
   hosts: eve_platform
-  remote_user: root
+  remote_user: deploy
   roles:
     - php
     - servergrove.symfony2

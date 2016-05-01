@@ -1,0 +1,36 @@
+---
+
+- name: Install PHP and Mods
+  apt: name={{ item }} state=present
+  sudo: yes
+  with_items:
+      - curl
+      - git
+      - htop
+      - aptitude
+      - npm
+      - ruby-compass
+      - php5-fpm
+      - php5-cli
+      - php5-xdebug
+      - php5-gd
+      - php5-intl
+      - php5-imagick
+      - php5-curl
+      - php5-mysql
+  tags: packages
+
+- name: install composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin creates=/usr/local/bin/composer
+  sudo: yes
+  tags: composer
+
+- name: rename composer.phar to composer
+  shell: mv /usr/local/bin/composer.phar /usr/local/bin/composer creates=/usr/local/bin/composer
+  sudo: yes
+  tags: composer
+
+- name: make composer executable
+  file: path=/usr/local/bin/composer mode=a+x state=file
+  sudo: yes
+  tags: composer
