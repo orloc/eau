@@ -49,7 +49,7 @@ abstract class AbstractManager
             ->getActiveKey($entity);
 
         if ($apiKey === null) {
-            throw new InvalidApiKeyException('No active api key for corp'.$entity->getId().' found');
+            throw new InvalidApiKeyException(sprintf('No active API KEY for Corp %s, with ID %s', $entity->getCorporationDetails()->getName(), $entity->getId()));
         }
 
         if ($apiKey->getInvalid()){

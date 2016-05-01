@@ -22,7 +22,7 @@ class AssetGroupRepository extends EntityRepository
     {
         $res = $this->createQueryBuilder('ag')
             ->select('ag')
-            ->where('ag.corporation = :corporation )')
+            ->where('ag.corporation = :corporation')
             ->andWhere('ag.has_been_updated = 0')
             ->orderBy('ag.created_at', 'DESC')
             ->setMaxResults(1)

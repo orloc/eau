@@ -101,7 +101,8 @@ class AssetManager extends AbstractManager implements DataManagerInterface, Mapp
                 : $agRepo->getLatest($c);
 
             if (!$group){
-                throw new \Exception('no asset group found');
+                $this->log->warning('No updated needed');
+                continue;
             }
 
             $allItems = $aRepo->getAllByGroup($group)->getResult();
