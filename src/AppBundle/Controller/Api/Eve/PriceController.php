@@ -23,7 +23,7 @@ class PriceController extends AbstractController implements ApiControllerInterfa
     {
         $em = $this->get('doctrine')->getManager('eve_data');
 
-        $price = $em->getRepository('EveBundle:AveragePrice')
+        $price = $em->getRepository('AppBundle:AveragePrice')
             ->getAveragePriceByType($id);
 
         $json = $this->get('serializer')->serialize($price, 'json');
@@ -39,8 +39,7 @@ class PriceController extends AbstractController implements ApiControllerInterfa
     public function getListAction(Request $request)
     {
         $ids = $request->query->get('typeId', false);
-        $repo = $this->getDoctrine()->getManager('eve_data')
-            ->getRepository('EveBundle:AveragePrice');
+        $repo = $this->getDoctrine()->getRepository('AppBundle:AveragePrice');
 
         if (!$ids) {
             $entities = $repo->findAll();

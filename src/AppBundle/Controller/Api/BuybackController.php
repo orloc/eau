@@ -29,7 +29,7 @@ class BuybackController extends AbstractController implements ApiControllerInter
 
         $eveReg = $this->get('evedata.registry');
         $priceManager = $this->get('app.price.manager');
-        $itemPriceRepo = $this->getRepository('EveBundle:ItemPrice', 'eve_data');
+        $itemPriceRepo = $this->getRepository('AppBundle:ItemPrice');
         $items = $eveReg->get('EveBundle:ItemType')
             ->findTypesByName($names);
 

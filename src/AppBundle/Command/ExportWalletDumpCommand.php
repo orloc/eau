@@ -13,7 +13,7 @@ class ExportWalletDumpCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('evetool:export_wallet_dump')
+            ->setName('eau:export_wallet_dump')
             ->setDescription('Exports wallets to a csv for excell spreadsheet');
     }
 

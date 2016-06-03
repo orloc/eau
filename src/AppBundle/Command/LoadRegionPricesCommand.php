@@ -1,9 +1,9 @@
 <?php
 
-namespace EveBundle\Command;
+namespace AppBundle\Command;
 
 use AppBundle\Entity\BuybackConfiguration;
-use EveBundle\Entity\ItemPrice;
+use AppBundle\Entity\ItemPrice;
 use GuzzleHttp\Client;
 use GuzzleHttp\Pool;
 use GuzzleHttp\Psr7\Request;
@@ -17,7 +17,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('evedata:load_region_data')
+            ->setName('eau:load_region_data')
             ->setDescription('Loads region specific price history from the crest API.');
     }
 
@@ -37,7 +37,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
     {
         $registry = $this->getContainer()->get('doctrine');
         $log = $this->getContainer()->get('logger');
-        $em = $registry->getManager('eve_data');
+        $em = $registry->getManager();
 
         $eveRegistry = $this->getContainer()->get('evedata.registry');
 
@@ -69,7 +69,6 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
         };
 
         foreach ($neededRegions as $region) {
-            $errors = [];
             $real_region = $regionRepo->getRegionById($region);
             foreach ($chunked_items as $items) {
                 $progress = new ProgressBar($output, count($items));
@@ -102,7 +101,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
                 $count = 0;
                 foreach ($processableData as $i => $processableItem) {
                     if (is_array($processableItem) && isset($index[$i])) {
-                        $exists = $em->getRepository('EveBundle:ItemPrice')
+                        $exists = $em->getRepository('AppBundle:ItemPrice')
                             ->hasItem($real_region['regionID'], $index[$i]['typeID']);
 
                         if ($exists instanceof ItemPrice) {

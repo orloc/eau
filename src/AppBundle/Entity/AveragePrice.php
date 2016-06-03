@@ -1,11 +1,11 @@
 <?php
 
-namespace EveBundle\Entity;
+namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="EveBundle\Repository\AveragePriceRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AveragePriceRepository")
  * @ORM\Table(name="average_prices")
  */
 class AveragePrice

@@ -1,6 +1,6 @@
 <?php
 
-namespace EveBundle\Repository;
+namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

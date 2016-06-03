@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\Common\Collections\ArrayCollection;
-use EveBundle\Entity\AveragePrice;
+use AppBundle\Entity\AveragePrice;
 
 class PriceUpdateManager
 {
@@ -39,8 +39,7 @@ class PriceUpdateManager
 
     protected function doUpdate($i, $object = true)
     {
-        $prices = $this->doctrine->getManager('eve_data')
-            ->getRepository('EveBundle:AveragePrice');
+        $prices = $this->doctrine->getRepository('AppBundle:AveragePrice');
 
         $typeId = $object
             ? $i->getTypeId()

@@ -30,7 +30,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('evetool:update_corp')
+            ->setName('eau:update_corp')
             ->addOption('force', InputOption::VALUE_OPTIONAL)
             ->setDescription('Updates Corporations in the database with the most recent data based on individual cache timers.');
     }

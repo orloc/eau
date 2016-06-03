@@ -37,8 +37,7 @@ class RegionController extends AbstractController implements ApiControllerInterf
     public function availablePriceRegions(Request $request)
     {
         $rRepo = $this->get('evedata.registry')->get('EveBundle:Region');
-        $rids = $this->getDoctrine()->getManager('eve_data')
-            ->getRepository('EveBundle:ItemPrice')
+        $rids = $this->getDoctrine()->getRepository('AppBundle:ItemPrice')
             ->getRegionIds();
 
         $regions = $rRepo->getRegionsInList($rids);

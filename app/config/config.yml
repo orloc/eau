@@ -92,14 +92,6 @@ doctrine:
                         dir: Entity
 
 
-            eve_data:
-                naming_strategy: doctrine.orm.naming_strategy.underscore
-                connection: eve_data
-                mappings:
-                    EveBundle:
-                        type: annotation
-                        dir: Entity
-
 # Swiftmailer Configuration
 swiftmailer:
     transport: "%mailer_transport%"

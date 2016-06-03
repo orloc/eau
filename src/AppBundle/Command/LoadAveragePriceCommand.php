@@ -1,8 +1,8 @@
 <?php
 
-namespace EveBundle\Command;
+namespace AppBundle\Command;
 
-use EveBundle\Entity\AveragePrice;
+use AppBundle\Entity\AveragePrice;
 use GuzzleHttp\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,14 +13,14 @@ class LoadAveragePriceCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('evedata:load_averageprices')
+            ->setName('eau:load_averageprices')
             ->setDescription('Loads average prices from the crest API.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $registry = $this->getContainer()->get('doctrine');
-        $em = $registry->getManager('eve_data');
+        $em = $registry->getManager();
 
         $client = new Client();
 
@@ -32,8 +32,6 @@ class LoadAveragePriceCommand extends ContainerAwareCommand
             $data = $this->getContainer()->get('jms_serializer')->deserialize($json, 'array', 'json');
 
             $prices = $data['items'];
-
-            $em = $this->getContainer()->get('doctrine')->getManager('eve_data');
 
             foreach ($prices as $p) {
                 $e = $this->createAvgPrice($p);

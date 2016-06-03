@@ -58,7 +58,7 @@ class PriceLookupController extends AbstractController implements ApiControllerI
                         'avg_price' => $p->getAveragePrice(),
                         'type_id' => $p->getTypeId(),
                     ];
-                }, $doctrine->getRepository('EveBundle:AveragePrice', 'eve_data')->findInList($items));
+                }, $doctrine->getRepository('AppBundle:AveragePrice')->findInList($items));
             } else {
                 $item_prices = array_map(function ($p) {
                     return [
@@ -69,7 +69,7 @@ class PriceLookupController extends AbstractController implements ApiControllerI
                         'order_count' => $p->getOrderCount(),
                         'volume' => $p->getVolume(),
                     ];
-                }, $doctrine->getRepository('EveBundle:ItemPrice', 'eve_data')->getItems($r, $items));
+                }, $doctrine->getRepository('AppBundle:ItemPrice')->getItems($r, $items));
             }
             foreach ($item_prices as $p) {
                 $pRef[$r][$p['type_id']] = $p;
