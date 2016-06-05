@@ -58,6 +58,11 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
             return array_merge($carry, $value->getRegions());
         });
+        
+        if (!$neededRegions){
+            $log->addInfo('No regions to update');
+            return;
+        }
 
         $log->addDebug('Beginning Import');
 
