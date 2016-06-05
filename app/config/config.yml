@@ -120,6 +120,12 @@ fos_user:
         address:        donotreply@dev.servall.xyz
         sender_name:    EAU
 
+lexik_jwt_authentication:
+    private_key_path: %jwt_private_key_path%
+    public_key_path: %jwt_public_key_path%
+    passphrase: %jwt_key_pass_phrase%
+    token_ttl: %jwt_token_ttl%
+
 jms_serializer:
     metadata:
         directories:
