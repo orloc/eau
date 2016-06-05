@@ -154,3 +154,15 @@ services:
       class: AppBundle\Service\EveDataUpdateService
 
 
+  app.event.jwt_response_listener:
+      class: AppBundle\EventListener\JWTRepsonseListener
+      tags:
+          - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+  app.event.jwt_created_listener:
+      class: %acme_api.event.jwt_created_listener.class%
+      tags:
+          - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+  app.event.jwt_decoded_listener:
+      class: %acme_api.event.jwt_decoded_listener.class%
+      tags:
+          - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }

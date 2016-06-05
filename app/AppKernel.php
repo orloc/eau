@@ -28,6 +28,7 @@ class AppKernel extends Kernel
             new \Tarioch\PhealBundle\TariochPhealBundle(),
             new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
+            new Gfreeau\Bundle\GetJWTBundle\GfreeauGetJWTBundle(),
             new AppBundle\AppBundle(),
             new EveBundle\EveBundle(),
         );

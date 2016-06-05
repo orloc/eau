@@ -19,7 +19,8 @@ class AuthController extends AbstractController implements ApiControllerInterfac
 {
     
     /**
-     * @Route("/login")
+     * @Route("/login", name="api.login")
+     * @Method("POST")
      */
     public function getTokenAction()
     {

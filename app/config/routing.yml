@@ -31,10 +31,6 @@ api.eve:
     prefix: /api/eve
     type: annotation
 
-#replace me with an annotated controller in the api bundle please
-api_login_check:
-    path: /api/login_check
-
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
