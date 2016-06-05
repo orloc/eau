@@ -36,10 +36,24 @@ security:
           logout: true
           anonymous: true
 
+      api_login:
+          patter: ^/api/login
+          stateless: true
+          anonymous: true
+          form_login:
+              check_path:   /api/login_check
+              success_handler: ''
+              failure_handler: ''
+              require_previous_session: false
+
+      api:
+          pattern: ^/api
+          stateless: true
 
   access_control:
     - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/admin/, role: ROLE_CORP_MEMBER }
-    - { path: ^/api/, role: ROLE_CORP_MEMBER }
+    - { path: ^/api/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/admin, role: ROLE_CORP_MEMBER }
+    - { path: ^/api, role: ROLE_CORP_MEMBER }
