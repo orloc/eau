@@ -27,6 +27,7 @@ class AppKernel extends Kernel
             new \JMS\AopBundle\JMSAopBundle(),
             new \Tarioch\PhealBundle\TariochPhealBundle(),
             new \Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             new AppBundle\AppBundle(),
             new EveBundle\EveBundle(),
         );
