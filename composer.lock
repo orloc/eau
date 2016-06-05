@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "afc64811aefd8af06407bcd169ae04b0",
-    "content-hash": "f5f25638fb306338fd27d53476bbaf8f",
+    "hash": "e0306418ef4b7707a20e3e58acf09cd5",
+    "content-hash": "6e5ba5f984db252c3a16fc91bf71fcce",
     "packages": [
         {
             "name": "3rdpartyeve/phealng",
@@ -1053,6 +1053,59 @@
                 "User management"
             ],
             "time": "2015-12-05 09:38:57"
+        },
+        {
+            "name": "gfreeau/get-jwt-bundle",
+            "version": "1.0.5",
+            "target-dir": "Gfreeau/Bundle/GetJWTBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/gfreeau/GfreeauGetJWTBundle.git",
+                "reference": "d03080ff6d1d8d8b832660ee7432370f0de1a28e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/gfreeau/GfreeauGetJWTBundle/zipball/d03080ff6d1d8d8b832660ee7432370f0de1a28e",
+                "reference": "d03080ff6d1d8d8b832660ee7432370f0de1a28e",
+                "shasum": ""
+            },
+            "require": {
+                "lexik/jwt-authentication-bundle": "~1.2",
+                "php": ">=5.3.3",
+                "symfony/framework-bundle": "~2.3",
+                "symfony/symfony": "~2.3"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Gfreeau\\Bundle\\GetJWTBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Greg Freeman",
+                    "homepage": "http://www.gregfreeman.org"
+                }
+            ],
+            "description": "This Symfony2 bundle provides a security listener to return a JWT",
+            "homepage": "https://github.com/gfreeau/GfreeauGetJWTBundle",
+            "keywords": [
+                "Authentication",
+                "JWS",
+                "Symfony2",
+                "bundle",
+                "jwt"
+            ],
+            "time": "2015-12-03 13:13:39"
         },
         {
             "name": "guzzlehttp/guzzle",

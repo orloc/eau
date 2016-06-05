@@ -37,14 +37,10 @@ security:
           anonymous: true
 
       api_login:
-          patter: ^/api/login
+          patter: ^/api/auth/login
           stateless: true
           anonymous: true
-          form_login:
-              check_path:   /api/login_check
-              success_handler: ''
-              failure_handler: ''
-              require_previous_session: false
+          gfreeau_get_jwt: ~
 
       api:
           pattern: ^/api
