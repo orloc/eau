@@ -111,7 +111,7 @@ class EveSSOController extends Controller
 
         // character isnt in a corp that is registered by an admin
         if ($exists === null) {
-            $session->getFlashBag()->add('warning', 'Sorry we do not support non-alpha tester registrations at this time.<br><b>COME BACK SOON</b> or make a request to add your corproation through a support ticket below.');
+            $session->getFlashBag()->add('warning', 'Sorry we do not support non-alpha tester registrations at this time.<br><b>COME BACK SOON</b> or make a request to add your corporation through a support ticket below.');
 
             $this->get('logger')->info(sprintf('ATTEMPTED REGISTRATION: char_id = %s char_name = %s', $cId, $cName));
 
