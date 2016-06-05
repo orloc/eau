@@ -22,6 +22,8 @@ parameters:
     mailer_port:       587
     mailer_password:   xxxxxxxxxxxxxxxxxxxxxx
 
+    crest_market_url: 'https://crest-tq.eveonline.com/market/prices/'
+
     secret: xxxxxxx
 
     eve_client_id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

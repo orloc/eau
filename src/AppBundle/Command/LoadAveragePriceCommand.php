@@ -23,17 +23,14 @@ class LoadAveragePriceCommand extends ContainerAwareCommand
         $em = $registry->getManager();
 
         $client = new Client();
-
-        $result = $client->get('https://public-crest.eveonline.com/market/prices/');
-
+        
+        $result = $client->get($this->getContainer()->getParameter('crest_market_url'));
+        
         if ($result->getStatusCode() === 200) {
             $json = $result->getBody()->getContents();
-
             $data = $this->getContainer()->get('jms_serializer')->deserialize($json, 'array', 'json');
-
-            $prices = $data['items'];
-
-            foreach ($prices as $p) {
+            
+            foreach ($data['items'] as $p) {
                 $e = $this->createAvgPrice($p);
                 $em->persist($e);
             }

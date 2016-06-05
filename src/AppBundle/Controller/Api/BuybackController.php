@@ -11,12 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+
 /**
- * Buyback Controller controller.
+ * Class BuybackController
+ * @package AppBundle\Controller\Api
  */
 class BuybackController extends AbstractController implements ApiControllerInterface
 {
     /**
+     * Calculates buyback price from a paste
      * @Route("/industry/buyback", name="api.buyback_items", options={"expose"=true})
      * @Method("POST")
      * @Secure(roles="ROLE_USER")

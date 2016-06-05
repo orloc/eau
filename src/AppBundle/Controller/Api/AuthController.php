@@ -10,13 +10,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * User controller.
- *
+ * Class AuthController
+ * Exposes routes for re-authentication and fetching of current user roles
+ * @package AppBundle\Controller\Api
  * @Route("/auth", options={"expose"=true})
  */
 class AuthController extends AbstractController implements ApiControllerInterface
 {
     /**
+     * Route: GET {base}/auth/ 
+     * Returns a list of roles for the current user session
      * @Route("/", name="api.auth")
      * @Method("GET")
      */
@@ -35,6 +38,8 @@ class AuthController extends AbstractController implements ApiControllerInterfac
     }
 
     /**
+     * Route: POST {base}/auth/re-authenticate
+     * Re-authentication screen  
      * @Route("/re-authenticate", name="api.reAuth")
      * @Method("POST")
      * @Secure(roles="ROLE_CEO")

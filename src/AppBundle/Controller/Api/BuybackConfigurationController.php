@@ -12,14 +12,19 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
+/**
+ * Class BuybackConfigurationController
+ * @package AppBundle\Controller\Api
+ */
 class BuybackConfigurationController extends AbstractController implements ApiControllerInterface
 {
     /**
+     * Return the current buyback configurations
      * @Route("/buyback_configuration", name="api.buyback_configuration", options={"expose"=true})
      * @Method("GET")
      * @Secure(roles="ROLE_CEO")
      */
-    public function getAllAction(Request $request)
+    public function getAllConfigurationsAction(Request $request)
     {
         $configs = $this->getDoctrine()
             ->getRepository('AppBundle:BuybackConfiguration')
@@ -31,11 +36,12 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
     }
 
     /**
+     * Create a new buyback configuration
      * @Route("/buyback_configuration", name="api.buyback_configuration.new", options={"expose"=true})
      * @Method("POST")
      * @Secure(roles="ROLE_CEO")
      */
-    public function postAction(Request $request)
+    public function postConfigurationAction(Request $request)
     {
         $content = $request->request->all();
         $config = new BuybackConfiguration();
@@ -76,6 +82,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
     }
 
     /**
+     * Update an existing buyback configuration
      * @Route("/buyback_configuration/{id}", name="api.buyback_configuration.patch", options={"expose"=true})
      * @ParamConverter(name="config", class="AppBundle:BuybackConfiguration")
      * @Method("PATCH")
@@ -104,6 +111,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
     }
 
     /**
+     * Removes a configuration
      * @Route("/buyback_configuration/{id}", name="api.buyback_configuration.delete", options={"expose"=true})
      * @ParamConverter(name="config", class="AppBundle:BuybackConfiguration")
      * @Method("DELETE")
