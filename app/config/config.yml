@@ -111,7 +111,7 @@ jms_di_extra:
 
 fos_user:
     db_driver: orm
-    firewall_name: main
+    firewall_name: api
     user_class: AppBundle\Entity\User
     registration:
         confirmation:

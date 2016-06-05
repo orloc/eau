@@ -11,6 +11,9 @@ admin:
     prefix: /admin
     type: annotation
 
+login_check:
+    path: /api/login_check
+
 api:
     resource: "@AppBundle/Controller/Api"
     prefix: /api

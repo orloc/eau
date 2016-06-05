@@ -27,22 +27,27 @@ security:
           pattern: ^/(_(profiler|wdt)|css|images|js)/
           security: false
 
+      main:
+          pattern: ^/
+          form_login:
+            provider: fos_userbundle
+            csrf_provider: security.csrf.token_manager
+            default_target_path: /admin/dashboard
+          logout: true
+          anonymous: true
+
       api_login:
-          pattern: ^/api/auth/login
-          provider: fos_userbundle
+          pattern: ^/api/login
           stateless: true
           anonymous: true
           form_login:
-              check_path: /api/auth/login
-              username_parameter: username
-              password_parameter: password
-              provider: fos_userbundle
+              check_path:   /api/login_check
               success_handler: lexik_jwt_authentication.handler.authentication_success
               failure_handler: lexik_jwt_authentication.handler.authentication_failure
+              require_previous_session: false
 
       api:
           pattern: ^/api
-          provider: fos_userbundle
           stateless: true
           lexik_jwt: ~
 
@@ -52,4 +57,4 @@ security:
     - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/api/login, role: IS_AUTHENTICATED_ANONYMOUSLY }
     - { path: ^/admin, role: ROLE_CORP_MEMBER }
-    - { path: ^/api/, role: ROLE_CORP_MEMBER }
+    - { path: ^/api, role: ROLE_CORP_MEMBER }
