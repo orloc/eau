@@ -44,12 +44,18 @@
     <script>
         var logged_in_user_roles = {{ app.getUser().getRoles() | json_encode | raw }};
         var current_user = {{ app.getUser().getId() | json_encode | raw }};
+        {% if  token is defined %}
+            var token = '{{ token | raw }}';
+        {% endif %}
     </script>
     {% endif %}
 
     {% javascripts
         'bower_components/humanize-duration/humanize-duration.js'
         'bower_components/angularjs/angular.js'
+        'bower_components/angular-cookies/angular-cookies.js'
+        'bower_components/a0-angular-storage/dist/angular-storage.js'
+        'bower_components/angular-jwt/dist/angular-jwt.js'
         'bower_components/AngularSlideables/angularSlideables.js'
         'bower_components/angular-bootstrap/ui-bootstrap.js'
         'bower_components/angular-timer/dist/angular-timer.js'
