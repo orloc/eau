@@ -27,6 +27,27 @@ security:
           pattern: ^/(_(profiler|wdt)|css|images|js)/
           security: false
 
+      api_login:
+          pattern: ^/api/login
+          stateless: true
+          provider: fos_userbundle
+          anonymous: true
+          gfreeau_get_jwt:
+                # this is the default config
+                username_parameter: username
+                password_parameter: password
+                post_only: true
+                authentication_provider: security.authentication.provider.dao
+                user_checker: security.user_checker
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+      api:
+          pattern: ^/api
+          stateless: true
+          lexik_jwt: ~
+
+
       main:
           pattern: ^/
           form_login:
@@ -35,21 +56,6 @@ security:
             default_target_path: /admin/dashboard
           logout: true
           anonymous: true
-
-      api_login:
-          pattern: ^/api/login
-          stateless: true
-          anonymous: true
-          form_login:
-              check_path:   /api/login_check
-              success_handler: lexik_jwt_authentication.handler.authentication_success
-              failure_handler: lexik_jwt_authentication.handler.authentication_failure
-              require_previous_session: false
-
-      api:
-          pattern: ^/api
-          stateless: true
-          lexik_jwt: ~
 
   access_control:
     - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }

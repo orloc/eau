@@ -19,15 +19,6 @@ class AuthController extends AbstractController implements ApiControllerInterfac
 {
     
     /**
-     * @Route("/login", name="api.login")
-     * @Method("POST")
-     */
-    public function getTokenAction()
-    {
-        // The security layer will intercept this request
-        return $this->jsonResponse('', 401);
-    }
-    /**
      * 
      * Route: GET {base}/auth/ 
      * Returns a list of roles for the current user session
