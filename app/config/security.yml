@@ -47,7 +47,6 @@ security:
           stateless: true
           lexik_jwt: ~
 
-
       main:
           pattern: ^/
           form_login:
