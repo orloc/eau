@@ -27,6 +27,8 @@
   with_items:
     - { src: "{{symfony2_project_root}}/shared/app/logs", path: "{{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/logs" }
     - { src: "{{symfony2_project_root}}/shared/web/uploads", path: "{{symfony2_project_root}}/releases/{{symfony2_project_release}}/web/uploads" }
+    - { src: "{{symfony2_project_root}}/shared/app/var/jwt/private.pem", path: "{{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/var/jwt/private.pem" }
+    - { src: "{{symfony2_project_root}}/shared/app/var/jwt/public.pem", path: "{{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/var/jwt/public.pem" }
 
 - name: Check if config dir exists.
   stat: path={{symfony2_project_root}}/releases/{{symfony2_project_release}}/app/config
