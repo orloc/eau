@@ -8,10 +8,10 @@ use JMS\Serializer\Annotation as JMS;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MarketOrderRepository")
  * @ORM\Table(name="market_orders", uniqueConstraints={
- *  @ORM\UniqueConstraint(name="datePlacedAt_indx", columns={"placed_by_id", "issued","market_order_group_id", "type_id", "placed_at_id"})
  * })
  * @JMS\ExclusionPolicy("all")
  */
+///  @ORM\UniqueConstraint(name="datePlacedAt_indx", columns={"placed_by_id", "issued","market_order_group_id", "type_id", "placed_at_id"})
 class MarketOrder
 {
     const OPEN = 0,

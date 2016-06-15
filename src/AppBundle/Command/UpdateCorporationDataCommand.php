@@ -42,7 +42,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
 
         $this->log->info('Preparing Reference Data');
         $update = $this->updateConquerableStations() || $this->updateRefTypes();
-
+        
         if ($update) {
             $this->log->info('Flushing Data');
             $this->em->flush();
@@ -101,7 +101,7 @@ class UpdateCorporationDataCommand extends ContainerAwareCommand
     protected function updateRefTypes(){
         $refTypeLastUpdate = $this->em->getRepository('AppBundle:ApiUpdate')
             ->getLastUpdateByType(ApiUpdate::REF_TYPES);
-
+        
         $update = false;
         if ($refTypeLastUpdate === null || $this->now->diffInHours(Carbon::Instance($refTypeLastUpdate->getCreatedAt())) > 24) {
             $this->log->info('Updating Reference Types');

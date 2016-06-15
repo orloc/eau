@@ -79,6 +79,7 @@ class ActiveApiRequestListener
             $activeKeys = $this->doctrine->getRepository('AppBundle:ApiCredentials')
                 ->getActiveKeyForUser($user);
 
+            
             if (count($characters) == 0 || count($activeKeys) <= 0) {
                 $this->log->debug(sprintf('LISTENER REDIRECT for %s', $request->attributes->get('_route')));
                 $response = new RedirectResponse($this->router->generate('characters'));

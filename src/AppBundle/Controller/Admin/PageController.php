@@ -51,8 +51,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("", name="characters")
-     * @Route("/character/")
+     * @Route("/character/", name="characters")
      * @Method("GET")
      * @Secure(roles="ROLE_CORP_MEMBER")
      */
@@ -62,8 +61,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("", name="corporation")
-     * @Route("/corporation/")
+     * @Route("/corporation/", name="corporation")
      * @Method("GET")
      * @Secure(roles="ROLE_DIRECTOR")
      */
@@ -83,8 +81,7 @@ class PageController extends Controller
     }
 
     /**
-     * @Route("", name="user")
-     * @Route("/user/")
+     * @Route("/user", name="user")
      * @Method("GET")
      * @Secure(roles="ROLE_CEO")
      */

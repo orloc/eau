@@ -34,7 +34,8 @@ class JournalTransaction
     protected $ref_id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @TODO nullable ? 
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $ref_type_id;
 
