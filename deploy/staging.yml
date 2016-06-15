@@ -3,6 +3,7 @@
   hosts: eve_platform
   remote_user: deploy
   roles:
+    - php
     - servergrove.symfony2
     - post-install
   vars:
