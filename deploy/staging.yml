@@ -11,7 +11,7 @@
     symfony2_project_root: /srv/eau
     symfony2_project_name: eau
     symfony2_project_composer_path: /srv/eau/shared
-    symfony2_project_repo: git@github.com:orloc/evetool.git
+    symfony2_project_repo: git@github.com:Remnant-Legion/eau.git
     symfony2_project_branch: "staging"
     symfony2_project_php_path: php
     symfony2_project_env: dev
