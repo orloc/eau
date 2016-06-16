@@ -64,7 +64,7 @@
   register: bower_file
 
 - name: Run bower
-  bower: path={{symfony2_project_root}}/releases/{{symfony2_project_release}} state=latest
+  bower: path={{symfony2_project_root}}/releases/{{symfony2_project_release}} state=present
   when: bower_file.stat.exists == true
 
 - name: Check if Compass exists
