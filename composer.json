@@ -32,7 +32,8 @@
         "liip/functional-test-bundle": "^1.3",
         "league/csv": "^8.0",
         "lexik/jwt-authentication-bundle": "^1.5",
-        "gfreeau/get-jwt-bundle": "^1.0"
+        "gfreeau/get-jwt-bundle": "^1.0",
+        "nelmio/cors-bundle": "^1.4"
     },
     "scripts": {
         "post-root-package-install": [
