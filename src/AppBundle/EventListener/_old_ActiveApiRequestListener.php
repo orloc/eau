@@ -11,6 +11,11 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+/**
+ * @DEPRECATED
+ * Class ActiveApiRequestListener
+ * @package AppBundle\EventListener
+ */
 class ActiveApiRequestListener
 {
     const ACTIVE_API_CHECK = 'EveAppActiveApiCheck';

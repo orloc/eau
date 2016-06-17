@@ -27,12 +27,6 @@ services:
      tags:
          - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
-  app.user.request_listener:
-     class: AppBundle\EventListener\ActiveApiRequestListener
-     arguments: [ "@security.token_storage", "@router", "@session", "@logger", "@doctrine" ]
-     tags:
-         - { name: kernel.event_listener, event: kernel.request, method: onRequest }
-
 
   # Doctrine Subscribers
   app.corporation.subscriber:
