@@ -57,4 +57,5 @@ class CorporationMemberController extends AbstractController implements ApiContr
 
         return $this->jsonResponse($json);
     }
+    
 }

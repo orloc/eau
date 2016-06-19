@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
@@ -25,6 +27,25 @@ class DefaultController extends Controller
         return $this->redirectToRoute('fos_user_security_login');
     }
 
+    /**
+     * @Route("/public/{corp}/member_list", name="public.member_list")
+     */
+    public function memberList(Request $request, $corp){
+        if ($corp !== 'remnant'){
+            return new JsonResponse(['error' => 'Sorry dude'], 400);
+        }
+        
+        $corp = $this->getDoctrine()->getRepository('AppBundle:Corporation') 
+            ->findByCorpName('Remnant Legion');
+        
+        $members = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')
+            ->findBy(['disbanded_at' => null, 'corporation' => $corp]);
+        
+        return new Response($this->get('serializer')->serialize($members, 'json'), 200, [
+            'Content-Type' => 'application/json'
+        ]);
+        
+    }
     /**
      * @Route("/registration", name="eve.register")
      */
