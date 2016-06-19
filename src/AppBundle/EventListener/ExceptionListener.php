@@ -16,6 +16,7 @@ class ExceptionListener
 
         $response = new Response();
 
+        var_dump($e);
         if (strtolower($request->getContentType()) === 'json') {
             $code = 500;
             if ($e instanceof NotFoundHttpException) {

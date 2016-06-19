@@ -54,6 +54,10 @@ class BuybackController extends AbstractController implements ApiControllerInter
             list($global, $specifics, $numberedPrices) = $this->determineDiscountTypeApplication($corp, $items);
 
             foreach ($items as $k => $i) {
+                if (!isset($numberedPrices[$i['typeID']])){
+                    continue;
+                }
+                
                 $priceCall = $numberedPrices[$i['typeID']] instanceof AveragePrice
                     ? 'getAveragePrice'
                     : 'getAvgPrice';
@@ -93,7 +97,7 @@ class BuybackController extends AbstractController implements ApiControllerInter
         $itemIds = array_map(function ($i) {
             return intval($i['typeID']);
         }, $items);
-
+        
         foreach ($types as $t) {
             $configs = $this->getDoctrine()->getRepository('AppBundle:BuybackConfiguration')
                 ->findConfigByType($corp, $t);
@@ -101,7 +105,6 @@ class BuybackController extends AbstractController implements ApiControllerInter
             if (empty($configs)){
                 continue;
             }
-
 
             if ($t === BuybackConfiguration::TYPE_REGION) {
                 $prices = $itemPriceRepo->getItems(10000002, $itemIds);

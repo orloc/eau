@@ -47,6 +47,7 @@ class LoadRegionPricesCommand extends ContainerAwareCommand
 
         $chunked_items = array_chunk($items, count($items) / 30);
 
+
         // regions we actually need
         $configs = $registry->getManager()->getRepository('AppBundle:BuybackConfiguration')
             ->findBy(['type' => BuybackConfiguration::TYPE_REGION]);

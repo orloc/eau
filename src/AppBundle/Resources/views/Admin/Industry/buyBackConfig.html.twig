@@ -14,6 +14,7 @@
                         </label>
                         <select
                                 chosen
+                                required
                                 class="form-control"
                                 ng-model="configuration.corporation"
                                 ng-options="c.id as c.corporation_details.name for c in corporations"
@@ -69,7 +70,6 @@
                         </label>
                         <select
                                 chosen
-                                multiple
                                 class="form-control"
                                 ng-model="configuration.base_regions"
                                 ng-options="r.regionID as r.regionName for r in regions"

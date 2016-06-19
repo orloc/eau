@@ -37,7 +37,9 @@ class PageController extends Controller
      */
     public function industryAction(Request $request)
     {
-        return $this->render('@App/Admin/Industry/buyBackCalculator.html.twig');
+        return $this->render('@App/Admin/Industry/buyBackCalculator.html.twig', [
+            'token' => $this->generateHackToken()   
+        ]);
     }
 
     /**
@@ -47,7 +49,9 @@ class PageController extends Controller
      */
     public function industryHelperAction(Request $request)
     {
-        return $this->render('@App/Admin/Industry/priceHelper.html.twig');
+        return $this->render('@App/Admin/Industry/priceHelper.html.twig', [
+            'token' => $this->generateHackToken()   
+        ]);
     }
 
     /**
@@ -57,7 +61,9 @@ class PageController extends Controller
      */
     public function characterAction()
     {
-        return $this->render('AppBundle:Admin/Character:index.html.twig');
+        return $this->render('AppBundle:Admin/Character:index.html.twig', [
+            'token' => $this->generateHackToken()
+        ]);
     }
 
     /**
@@ -67,7 +73,9 @@ class PageController extends Controller
      */
     public function corporationAction()
     {
-        return $this->render('AppBundle:Admin/Corporation:index.html.twig');
+        return $this->render('AppBundle:Admin/Corporation:index.html.twig', [
+            'token' => $this->generateHackToken()
+        ]);
     }
 
     /**
@@ -77,7 +85,9 @@ class PageController extends Controller
      */
     public function marketManager(Request $request)
     {
-        return $this->render('@App/Admin/marketManager.html.twig');
+        return $this->render('@App/Admin/marketManager.html.twig', [
+            'token' => $this->generateHackToken()
+        ]);
     }
 
     /**
@@ -87,6 +97,8 @@ class PageController extends Controller
      */
     public function userAction()
     {
-        return $this->render('AppBundle:Admin/User:index.html.twig');
+        return $this->render('AppBundle:Admin/User:index.html.twig', [
+            'token' => $this->generateHackToken()
+        ]);
     }
 }

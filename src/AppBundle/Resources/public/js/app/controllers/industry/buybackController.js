@@ -10,10 +10,9 @@ angular.module('eveTool')
 
         $scope.submit = function(){
             $scope.loading = true;
-            var inputs = $scope.input_data.split("\n");
-
-            var r = /\d{1,3}(,\d{3})*(\.\d+)?(?=\s)/;
-            var data = [];
+            var inputs = $scope.input_data.split("\n"),
+                r= /(\s)(\d{1,3}(,{1}\d{3})*?)(?=\s)(\s)/,
+                data = [];
 
             angular.forEach(inputs, function(i){
                 i.trim();
@@ -22,22 +21,18 @@ angular.module('eveTool')
                     var res = r.exec(i);
                     if (res !== null){
                         var name = i.substr(0, res.index).trim();
-
                         if (name.length > 0){
                             var datum = {
                                 name: name,
-                                quantity: res[0].trim()
+                                quantity: res[0].trim().replace(',','')
                             };
 
-                            if (datum.quantity.length >= 4){
-                                datum.quantity = datum.quantity.replace(',','');
-                            }
-
+                            
                             var exists = _.find(data, function(i){
                                 return i.name === datum.name;
                             });
-
-                            if (typeof exists !== 'undefined'){
+                            
+                            if (exists){
                                 exists.quantity = parseInt(exists.quantity);
                                 exists.quantity += parseInt(datum.quantity);
                             } else {

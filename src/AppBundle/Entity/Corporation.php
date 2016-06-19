@@ -536,7 +536,10 @@ class Corporation
      */
     public function addBuybackConfiguration(\AppBundle\Entity\BuybackConfiguration $buybackConfigurations)
     {
-        $this->buyback_configurations[] = $buybackConfigurations;
+        if (!$this->buyback_configurations->contains(($buybackConfigurations))){
+            $this->buyback_configurations[] = $buybackConfigurations;
+            $buybackConfigurations->setCorporation($this);
+        }
 
         return $this;
     }

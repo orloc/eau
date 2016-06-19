@@ -25,16 +25,16 @@ class BuybackConfiguration
     protected $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="buyback_configurations")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Corporation", inversedBy="buyback_configurations", fetch="EAGER")
      * @JMS\Expose()
      */
     protected $corporation;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="bigint", nullable=true)
      * @JMS\Expose()
      */
-    protected $regions;
+    protected $region;
 
     /**
      * @ORM\Column(type="integer")
@@ -91,9 +91,9 @@ class BuybackConfiguration
      *
      * @return BuybackConfiguration
      */
-    public function setRegions($regions)
+    public function setRegion($region)
     {
-        $this->regions = $regions;
+        $this->region = $region;
 
         return $this;
     }
@@ -103,9 +103,9 @@ class BuybackConfiguration
      *
      * @return array
      */
-    public function getRegions()
+    public function getRegion()
     {
-        return $this->regions;
+        return $this->region;
     }
 
     /**

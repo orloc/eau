@@ -29,7 +29,7 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
         $configs = $this->getDoctrine()
             ->getRepository('AppBundle:BuybackConfiguration')
             ->findAll();
-
+        
         $json = $this->get('serializer')->serialize($configs, 'json');
 
         return $this->jsonResponse($json);
@@ -54,10 +54,8 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
             return $this->jsonResponse(['error' => 'Not found', 'code' => 400], 400);
         }
 
-        $config->setCorporation($corp);
-
         $config->setOverride($content['override_price'])
-            ->setRegions(count($content['base_regions']) ? $content['base_regions'] : null)
+            ->setRegion(count($content['base_regions']) ? $content['base_regions'] : null)
             ->setSingleItem($content['search_item'] != null
                 ? (int) $content['search_item']
                 : null)
@@ -70,8 +68,10 @@ class BuybackConfigurationController extends AbstractController implements ApiCo
                         ? BuybackConfiguration::TYPE_GLOBAL
                         : BuybackConfiguration::TYPE_REGION
                 ));
-
+        
         $em = $this->getDoctrine()->getManager();
+        
+        $corp->addBuybackConfiguration($config);
         $em->persist($config);
 
         $em->flush();
