@@ -5,7 +5,7 @@
             <cube-grid-spinner></cube-grid-spinner>
         </div>
         <div class="col-xs-12" ng-if="!loading">
-            <p class="pull-left">Showing past 7 days ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
+            <p class="pull-left">Showing past Month ending on: {{ '{{ current_date | date:"dateShort"}}' }}</p>
             <div class="button-group pull-right">
                 <button class="btn btn-sm btn-default" ng-click="showView(0)" ng-class="{ 'active': selected === 0}">
                     <i class="fa fa-bank"></i> Transactions
