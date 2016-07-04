@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7e4d8f270d8712240556c9e3dae04be6",
-    "content-hash": "c30bffce4b648ede70836cb1626936ec",
+    "hash": "a87b10d276c459743aa37e9f88d0d9f3",
+    "content-hash": "64f4cba81cd67acbc5dd1ed3c4c47c7b",
     "packages": [
         {
             "name": "3rdpartyeve/phealng",
@@ -59,6 +59,119 @@
                 "PhealNG"
             ],
             "time": "2015-12-14 14:44:35"
+        },
+        {
+            "name": "cleentfaar/slack",
+            "version": "0.20.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cleentfaar/slack.git",
+                "reference": "ba7073cb79ccea423cd68f6a69096384a730a013"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cleentfaar/slack/zipball/ba7073cb79ccea423cd68f6a69096384a730a013",
+                "reference": "ba7073cb79ccea423cd68f6a69096384a730a013",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/collections": "^1.2",
+                "ext-curl": "*",
+                "guzzlehttp/guzzle": "^6.0",
+                "jms/serializer": "^1.0",
+                "php": ">=5.5",
+                "symfony/event-dispatcher": "^2.3|^3.0",
+                "symfony/yaml": "^2.3|^3.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9",
+                "phpunit/phpunit": "^4.7",
+                "symfony/var-dumper": "^2.3|^3.0"
+            },
+            "suggest": {
+                "cleentfaar/slack-bundle": "For easy integration with your Symfony projects",
+                "cleentfaar/slack-cli": "Command-line application for interacting with the Slack API"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "CL\\Slack\\": "src/CL/Slack/",
+                    "CL\\Slack\\Test\\": "tests/src/CL/Slack/Test/",
+                    "CL\\Slack\\Tests\\": "tests/src/CL/Slack/Tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cas Leentfaar",
+                    "email": "info@casleentfaar.com",
+                    "homepage": "https://github.com/cleentfaar"
+                }
+            ],
+            "description": "Access your Slack Team's API through PHP objects",
+            "homepage": "http://cleentfaar.github.io/slack/",
+            "keywords": [
+                "chat",
+                "slack",
+                "slack api"
+            ],
+            "time": "2016-05-30 21:02:28"
+        },
+        {
+            "name": "cleentfaar/slack-bundle",
+            "version": "0.20.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cleentfaar/CLSlackBundle.git",
+                "reference": "f9fec94912a845f44d8de686ed06925168c1fc5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cleentfaar/CLSlackBundle/zipball/f9fec94912a845f44d8de686ed06925168c1fc5b",
+                "reference": "f9fec94912a845f44d8de686ed06925168c1fc5b",
+                "shasum": ""
+            },
+            "require": {
+                "cleentfaar/slack": "~0.20",
+                "php": ">=5.5",
+                "symfony/framework-bundle": "^2.3|^3.0"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-config-test": "^0.2",
+                "matthiasnoback/symfony-dependency-injection-test": "^0.7",
+                "phpunit/phpunit": "^4.0|^5.0"
+            },
+            "suggest": {
+                "cleentfaar/slack-cli": "Command-line application for interacting with the Slack API"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "CL\\Bundle\\SlackBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cas Leentfaar",
+                    "email": "info@casleentfaar.com",
+                    "homepage": "https://github.com/cleentfaar"
+                }
+            ],
+            "description": "This bundle provides integration with the Slack API library, allowing you to interact with the Slack API from within your Symfony projects",
+            "keywords": [
+                "api",
+                "bundle",
+                "slack",
+                "symfony"
+            ],
+            "time": "2016-05-30 22:12:25"
         },
         {
             "name": "doctrine/annotations",

@@ -4,13 +4,30 @@ namespace AppBundle\Service\DataManager\Corporation;
 
 use AppBundle\Entity\Corporation;
 use AppBundle\Entity\Starbase;
+use AppBundle\Service\AssetDetailUpdateManager;
+use AppBundle\Service\PriceUpdateManager;
 use Carbon\Carbon;
 use AppBundle\Service\DataManager\MappableDataManagerInterface;
 use AppBundle\Service\DataManager\DataManagerInterface;
 use AppBundle\Service\DataManager\AbstractManager;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use \EveBundle\Repository\Registry as EveRegistry;
+use Psr\Log\LoggerInterface;
+use Tarioch\PhealBundle\DependencyInjection\PhealFactory;
 
 class StarbaseManager extends AbstractManager implements DataManagerInterface, MappableDataManagerInterface
 {
+    
+    private $assetManager;
+    private $priceManager;
+    
+    public function __construct(PhealFactory $pheal, Registry $doctrine,  EveRegistry $registry, LoggerInterface $logger, AssetDetailUpdateManager $itemManager, PriceUpdateManager $priceManager)
+    {
+        parent::__construct($pheal, $doctrine, $registry, $logger);
+        $this->assetManager = $itemManager;
+        $this->priceManager = $priceManager;
+    }
+
     public function getStarbases(Corporation $c)
     {
         $apiKey = $this->getApiKey($c);
@@ -82,6 +99,64 @@ class StarbaseManager extends AbstractManager implements DataManagerInterface, M
 
             $em->persist($obj);
         }
+    }
+    
+    public function getUpdatedStarbaseList(Corporation $corp){
+        $stations = $this->doctrine->getRepository('AppBundle:Starbase')
+            ->findBy(['corporation' => $corp]);
+
+        $typeRepo = $this->registry->get('EveBundle:ItemType');
+        $attributeRepo = $this->registry->get('EveBundle:ItemAttribute');
+        $locationRepo = $this->registry->get('EveBundle:MapDenormalize');
+        $resourceRepo = $this->registry->get('EveBundle:ControlTowerResource');
+        
+        foreach ($stations as $s) {
+            $attributeData = $attributeRepo->getItemAttributes($s->getTypeId());
+
+            $ids = array_map(function ($i) {
+                return intval($i['attributeID']);
+            }, $attributeData);
+
+            $attrDetails = $attributeRepo->getAttributes($ids);
+            $fuelDetails = $resourceRepo->getFuelConsumption($s->getTypeId());
+            $mergedData = [];
+            foreach ($attributeData as $k => $d) {
+                foreach ($attrDetails as $m) {
+                    if ($d['attributeID'] === $m['attributeID']) {
+                        $mergedData[] = array_merge($attributeData[$k], $m);
+                    }
+                }
+            }
+            
+            $descriptors = array_merge(
+                ['attributes' => $mergedData],
+                $this->assetManager->determineLocationDetails($s->getLocationId()),
+                $typeRepo->getItemTypeData($s->getTypeId()),
+                [
+                    'fuel' => is_array($s->getFuel())
+                        ? array_map(function ($d) use ($typeRepo, $attributeRepo) {
+                            $data = $typeRepo->getItemTypeData($d['typeID']);
+
+                            return [
+                                'type' => $data,
+                                'typeID' => $d['typeID'],
+                                'quantity' => $d['quantity'],
+                            ];
+                        }, $s->getFuel())
+                        : [],
+                    'moon' => $locationRepo->getLocationInfoById($s->getMoonId())
+                ]
+            );
+
+            $fuels = $this->priceManager->updatePrices($descriptors['fuel']);
+
+            $descriptors['fuel_consumption'] = $fuelDetails;
+            $descriptors['fuel'] = $fuels;
+
+            $s->setDescriptors($descriptors);
+        }
+
+        return $stations;
     }
 
     public function mapItem($item, Starbase $existing = null)

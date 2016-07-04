@@ -47,6 +47,7 @@ angular.module('eveTool')
         
         var tower_list = [];
         $scope.loading = true;
+        $scope.towerFilter = 'on';
         $scope.bases = [];
         $scope.selected_corp = null;
         $scope.image = {
@@ -80,7 +81,7 @@ angular.module('eveTool')
                             b.costPerDay = getTowerCost(b);
                         } catch (e){
                             b.timeToOffline = 0;
-                            console.log(e);
+                            b.costPerDay = 0;
                         }
                         return b;
                     });
@@ -92,6 +93,29 @@ angular.module('eveTool')
                     });
                     $scope.loading = false;
                 });
+        });
+        
+        $scope.$watch('towerFilter', function(val, prev){
+            if ( !val || val === prev ){
+                return;
+            }
+            
+            switch (val){
+                case 'all':
+                    $scope.bases = tower_list;
+                    break;
+                case 'off':
+                    $scope.bases = _.filter(tower_list, function(t) {
+                        return t.state === 1;
+                    });
+                    break;
+                case 'on':
+                    $scope.bases = _.filter(tower_list, function(t) {
+                        return t.state === 4;
+                    });
+                    break;
+                default: break;
+            }
         });
         
         $scope.sumDailyCost = function(){
@@ -112,24 +136,6 @@ angular.module('eveTool')
             },0);
         };
         
-        $scope.showTowers = function(state){
-            switch (state){
-                case 'all':
-                    $scope.bases = tower_list;
-                    break;
-                case 'off':
-                    $scope.bases = _.filter(tower_list, function(t) {
-                        return t.state === 1;
-                    });
-                    break;
-                case 'on':
-                    $scope.bases = _.filter(tower_list, function(t) {
-                        return t.state === 4;
-                    });
-                    break;
-                default: break;
-            }
-        };
 
         $scope.hasAllianceAccess = function(settings){
             return  settings.allowAllianceMembers === '1';
@@ -153,5 +159,4 @@ angular.module('eveTool')
                     return 'Online';
             }
         };
-
     }]);

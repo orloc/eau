@@ -1,9 +1,9 @@
 <div ng-controller="structureController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
         <div class="button-group pull-left">
-            <button ng-click="showTowers('all')" class="btn btn-default btn-small">All</button>
-            <button ng-click="showTowers('on')" class="btn btn-default btn-small">Online</button>
-            <button ng-click="showTowers('off')" class="btn btn-default btn-small">Offline</button>
+            <button ng-click="towerFilter = 'all'" ng-class="{ 'active': towerFilter === 'all' }" class="btn btn-default btn-small">All</button>
+            <button ng-click="towerFilter = 'on'" ng-class="{ 'active': towerFilter === 'on' }" class="btn btn-default btn-small">Online</button>
+            <button ng-click="towerFilter = 'off'" ng-class="{ 'active': towerFilter === 'off' }" class="btn btn-default btn-small">Offline</button>
         </div>
         <div class="pull-right">
             <p>Total Cost Daily: {{ '{{ sumDailyCost() | currency:"ISK" }}' }} <br>

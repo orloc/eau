@@ -29,6 +29,7 @@ parameters:
     jwt_key_pass_phrase:  ''                                      # ssh key pass phrase
     jwt_token_ttl:        86400
 
+    slack_webhook_url: https://hooks.slack.com/services/xxxxxxxxx/xxxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxx
     secret: xxxxxxx
 
     eve_client_id: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
