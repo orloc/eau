@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Character;
 use AppBundle\Entity\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
@@ -81,23 +82,27 @@ class EveSSOController extends Controller
         $session = $this->get('session');
         $cId = $decoded->CharacterID;
         $cName = $decoded->CharacterName;
+        
+        $isRegistered = $this->getDoctrine()->getRepository('AppBundle:Character')
+            ->findOneBy(['eve_id' => $cId]);
+        
+        if ($isRegistered instanceof Character) {
+            $session->getFlashBag()->add('warning', 'This character is already associated with a user.');
+            return $this->redirect($this->generateUrl('eve.register'));
+        }
 
-        $exists = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')->findOneBy(['character_id' => intval($cId)]);
+        $canRegister = $this->getDoctrine()->getRepository('AppBundle:CorporationMember')->findOneBy(['character_id' => intval($cId)]);
 
         // character isnt in a corp that is registered by an admin
-        if ($exists === null) {
+        if (!$canRegister) {
             $session->getFlashBag()->add('warning', 'Sorry we do not support non-alpha tester registrations at this time.<br><b>COME BACK SOON</b> or make a request to add your corporation through a support ticket below.');
             $this->get('logger')->info(sprintf('ATTEMPTED REGISTRATION: char_id = %s char_name = %s', $cId, $cName));
             return $this->redirect($this->generateUrl('eve.register'));
-        } else {
-            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(['username' => strtolower(str_replace(' ', '_', trim($exists->getCharacterName())))]);
-            if ($user instanceof User) {
-                $session->getFlashBag()->add('warning', 'This character is already associated with a user.');
-                return $this->redirect($this->generateUrl('eve.register'));
-            }
-            $session->set('registration_authorized', ['id' => $cId, 'name' => $cName]);
-            return $this->redirect($this->generateUrl('fos_user_registration_register'));
-        }
+        } 
+        
+        $session->set('registration_authorized', ['id' => $cId, 'name' => $cName]);
+        
+        return $this->redirect($this->generateUrl('fos_user_registration_register'));
     }
     
     protected function buildAuthRequest($code) {

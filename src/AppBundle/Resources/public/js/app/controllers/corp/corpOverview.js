@@ -1,7 +1,187 @@
 'use strict';
 
 angular.module('eveTool')
-    .controller('corpOverviewController', ['$scope', 'corporationDataManager', 'selectedCorpManager', function($scope, corporationDataManager, selectedCorpManager){
+    .controller('corpOverviewController', ['$scope', '$http', 'corporationDataManager', 'selectedCorpManager', function($scope, $http, corporationDataManager, selectedCorpManager){
+        var getMemberTransactionDistribution = function(member){
+            var trans = member.orig_ids;
+            var res = _.groupBy(trans, 'ref_type.ref_type_id');
+
+            return Object.keys(res).map(function(key){
+                return res[key];
+            });
+        };
+
+        var sumTotals = function (list){
+            angular.forEach(list, function(ref, i){
+                var sum = _.reduce(_.pluck(ref.trans, 'amount'), function(init, carry){
+                    return init + carry;
+                });
+
+                list[i]['total'] = sum;
+            });
+
+            return list;
+
+        };
+
+        function resetParams (){
+            $scope.buy_orders = [];
+            $scope.journal_transactions = [];
+            $scope.sell_orders = [];
+            $scope.members = [];
+            $scope.ref_types = [];
+        }
+
+        /**
+         * Begin D3 Graph
+         */
+        function updateSVG(){
+            $('svg').remove();
+
+            $scope.svg_start_date = $scope.current_date;
+            var margins = {
+                top: 10,
+                right: 40,
+                bottom: 15,
+                left: 115
+            };
+
+            var height = 100 - margins.top ;
+            var width = $('.graphs')[0].clientWidth - margins.right;
+
+            var color = d3.scale.category10();
+
+            var xScale = d3.time.scale().range([0,  width - margins.left]);
+            var yScale = d3.scale.linear().range([ height, 0]);
+
+            var xAxis = d3.svg.axis()
+                .scale(xScale)
+                .ticks(d3.time.hour, 12)
+                .tickSize(-height)
+                .orient("bottom");
+
+            var area = d3.svg.area()
+                .interpolate("basis")
+                .x(function (d) { return xScale(d.date); })
+                .y0(function (d) { return yScale(d.y0); })
+                .y1(function (d) { return yScale(d.y0 + d.y); });
+
+            var stack = d3.layout.stack()
+                .values(function(d){ return d.values; });
+
+            var parse = d3.time.format("%Y-%m-%dT%H:%M:%LZ").parse;
+
+            var vis = d3.select('.graphs').append('svg')
+                .attr('width', "100%")
+                .attr('height', height+margins.top+margins.bottom)
+                .append("g")
+                .attr("transform", "translate("+ margins.bottom+"," + margins.top +")");
+
+            $http.get(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id , date: moment($scope.current_date).format('X') })).then(function(data){
+                if (data.length > 10){
+                    // Nest stock values by symbol.
+                    var wallets  = d3.nest()
+                        .key(function(d) { return d.name; })
+                        .entries(data);
+
+                    var cDomain = [];
+
+                    var maxTotal = 0;
+                    wallets.forEach(function(w) {
+                        w.values.forEach(function(d) { d.date = parse(d.date); d.balance = +d.balance; });
+
+                        maxTotal += d3.max(w.values, function(d) { return d.balance; });
+                        cDomain.push(w.key);
+
+                        w.values.sort(function(a,b){
+                            return a.date - b.date;
+                        });
+
+                    });
+
+                    var yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .tickSize(-width)
+                        .ticks((maxTotal / 100000000) / 3)
+                        .tickFormat(d3.format('$s'))
+                        .orient("right");
+
+                    color.domain(cDomain);
+
+                    var wStack = stack(color.domain().map(function(name){
+                        return {
+                            name: name,
+                            values: _.find(wallets, function(w){ return w.key == name; }).values.map(function(d){
+                                return {
+                                    date: d.date,
+                                    y: d.balance
+                                };
+                            })
+                        };
+                    }));
+
+                    xScale.domain(d3.extent(data, function(d){
+                        return d.date;
+                    }));
+
+
+                    yScale.domain(d3.extent([0, maxTotal], function(d){
+                        return d;
+                    }));
+
+                    var svgWallets = vis.selectAll('.wallet')
+                        .data(wStack)
+                        .enter().append("g")
+                        .attr("class", "wallet");
+
+                    svgWallets.append("path")
+                        .attr("class", "area")
+                        .attr("d", function(d){ return area(d.values); })
+                        .style("fill", function(d){ return color(d.name); });
+
+                    vis.append("g")
+                        .attr("class", "x-axis")
+                        .attr("transform", "translate(0,"+height+")")
+                        .call(xAxis);
+
+                    vis.append("g")
+                        .attr("class", "x-axis")
+                        .call(yAxis);
+
+                    vis.append("circle");
+
+                    var legend = vis.selectAll(".legend")
+                        .data(color.domain().slice().reverse())
+                        .enter().append("g")
+                        .attr("class", "legend")
+                        .attr("transform", function (d, i) {
+                            return "translate(0," + i * 15 + ")";
+                        });
+
+                    legend.append("rect")
+                        .attr("x", width - 18)
+                        .attr("width", 10)
+                        .attr("height", 10)
+                        .style("fill", color);
+
+                    legend.append("text")
+                        .attr("x", width - 24)
+                        .attr("y", 9)
+                        .attr("dy", ".35em")
+                        .style("text-anchor", "end")
+                        .text(function (d) {
+                            return d;
+                        });
+                } else {
+                    $scope.not_enough_data = true;
+                }
+            });
+        }
+
+        /**
+         * End D3
+         */
+        
         $scope.selected_account = null;
         $scope.selected = 0;
         $scope.buy_orders = [];
@@ -73,15 +253,6 @@ angular.module('eveTool')
                 $scope.loading = false;
             });
         });
-
-        var getMemberTransactionDistribution = function(member){
-            var trans = member.orig_ids;
-            var res = _.groupBy(trans, 'ref_type.ref_type_id');
-
-            return Object.keys(res).map(function(key){
-                return res[key];
-            });
-        };
 
         $scope.sumTrans = function(trans){
             return _.reduce(_.pluck(trans, 'amount'), function(init, carry){
@@ -244,176 +415,5 @@ angular.module('eveTool')
             return _.chunk(list, size);
         };
 
-        var sumTotals = function (list){
-            angular.forEach(list, function(ref, i){
-                var sum = _.reduce(_.pluck(ref.trans, 'amount'), function(init, carry){
-                    return init + carry;
-                });
-
-                list[i]['total'] = sum;
-            });
-
-            return list;
-
-        };
-
-        function resetParams (){
-            $scope.buy_orders = [];
-            $scope.journal_transactions = [];
-            $scope.sell_orders = [];
-            $scope.members = [];
-            $scope.ref_types = [];
-        }
-
-        /**
-         * Begin D3 Graph
-         */
-        function updateSVG(){
-            $('svg').remove();
-
-            $scope.svg_start_date = $scope.current_date;
-            var margins = {
-                top: 10,
-                right: 40,
-                bottom: 15,
-                left: 115
-            };
-
-            var height = 100 - margins.top ;
-            var width = $('.graphs')[0].clientWidth - margins.right;
-
-            var color = d3.scale.category10();
-
-            var xScale = d3.time.scale().range([0,  width - margins.left]);
-            var yScale = d3.scale.linear().range([ height, 0]);
-
-            var xAxis = d3.svg.axis()
-                .scale(xScale)
-                .ticks(d3.time.hour, 12)
-                .tickSize(-height)
-                .orient("bottom");
-
-            var area = d3.svg.area()
-                .interpolate("basis")
-                .x(function (d) { return xScale(d.date); })
-                .y0(function (d) { return yScale(d.y0); })
-                .y1(function (d) { return yScale(d.y0 + d.y); });
-
-            var stack = d3.layout.stack()
-                .values(function(d){ return d.values; });
-
-            var parse = d3.time.format("%Y-%m-%dT%H:%M:%LZ").parse;
-
-            var vis = d3.select('.graphs').append('svg')
-                .attr('width', "100%")
-                .attr('height', height+margins.top+margins.bottom)
-                .append("g")
-                .attr("transform", "translate("+ margins.bottom+"," + margins.top +")");
-
-            d3.json(Routing.generate('api.corporation.account_data', { id: $scope.selected_corp.id , date: moment($scope.current_date).format('X') }), function(data){
-                console.log(data.length);
-                if (data.length > 50){
-                    // Nest stock values by symbol.
-                    var wallets  = d3.nest()
-                        .key(function(d) { return d.name; })
-                        .entries(data);
-
-                    var cDomain = [];
-
-                    var maxTotal = 0;
-                    wallets.forEach(function(w) {
-                        w.values.forEach(function(d) { d.date = parse(d.date); d.balance = +d.balance; });
-
-                        maxTotal += d3.max(w.values, function(d) { return d.balance; });
-                        cDomain.push(w.key);
-
-                        w.values.sort(function(a,b){
-                            return a.date - b.date;
-                        });
-
-                    });
-
-                    var yAxis = d3.svg.axis()
-                        .scale(yScale)
-                        .tickSize(-width)
-                        .ticks((maxTotal / 100000000) / 3)
-                        .tickFormat(d3.format('$s'))
-                        .orient("right");
-
-                    color.domain(cDomain);
-
-                    var wStack = stack(color.domain().map(function(name){
-                        return {
-                            name: name,
-                            values: _.find(wallets, function(w){ return w.key == name; }).values.map(function(d){
-                                return {
-                                    date: d.date,
-                                    y: d.balance
-                                };
-                            })
-                        };
-                    }));
-
-                    xScale.domain(d3.extent(data, function(d){
-                        return d.date;
-                    }));
-
-
-                    yScale.domain(d3.extent([0, maxTotal], function(d){
-                        return d;
-                    }));
-
-                    var svgWallets = vis.selectAll('.wallet')
-                        .data(wStack)
-                        .enter().append("g")
-                        .attr("class", "wallet");
-
-                    svgWallets.append("path")
-                        .attr("class", "area")
-                        .attr("d", function(d){ return area(d.values); })
-                        .style("fill", function(d){ return color(d.name); });
-
-                    vis.append("g")
-                        .attr("class", "x-axis")
-                        .attr("transform", "translate(0,"+height+")")
-                        .call(xAxis);
-
-                    vis.append("g")
-                        .attr("class", "x-axis")
-                        .call(yAxis);
-
-                    vis.append("circle");
-
-                    var legend = vis.selectAll(".legend")
-                        .data(color.domain().slice().reverse())
-                        .enter().append("g")
-                        .attr("class", "legend")
-                        .attr("transform", function (d, i) {
-                            return "translate(0," + i * 15 + ")";
-                        });
-
-                    legend.append("rect")
-                        .attr("x", width - 18)
-                        .attr("width", 10)
-                        .attr("height", 10)
-                        .style("fill", color);
-
-                    legend.append("text")
-                        .attr("x", width - 24)
-                        .attr("y", 9)
-                        .attr("dy", ".35em")
-                        .style("text-anchor", "end")
-                        .text(function (d) {
-                            return d;
-                        });
-                } else {
-                    $scope.not_enough_data = true;
-                }
-            });
-        }
-
-        /**
-         * End D3
-         */
 
     }]);
