@@ -1,5 +1,10 @@
 <div ng-controller="structureController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
+        <div class="button-group">
+            <button ng-click="showTowers('all')" class="btn btn-default btn-small">All</button>
+            <button ng-click="showTowers('on')" class="btn btn-default btn-small">Online</button>
+            <button ng-click="showTowers('off')" class="btn btn-default btn-small">Offline</button>
+        </div>
         <div class="table-responsive">
             <table class="table data-table table-striped table-hover table-condensed">
                 <thead>
@@ -33,7 +38,7 @@
                 </tr>
                 <tr ng-repeat="item in bases" ng-if="bases.length">
                     <td>
-                        <eve-image image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
+                        <eve-image ng-if="item.state === 4" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         {{ '{{ item.descriptors.itemName }}' }}
                     </td>
                     <td>
