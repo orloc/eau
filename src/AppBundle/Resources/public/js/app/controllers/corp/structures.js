@@ -8,14 +8,19 @@ angular.module('eveTool')
                 });
 
             var perCycle = parseInt(tower.descriptors.fuel_consumption.quantity);
-            var secStatus = parseFloat(tower.descriptors.security) <= 0;
             
-            if (secStatus){
-                perCycle = perCycle - (perCycle * 0.25) ;
-            }
             var remaining = parseInt(fuel.quantity) / perCycle;
             date.add(remaining, 'hours');
             return parseFloat(date.format('x'));
+        }
+
+        function getTowerCost (tower){
+            var perCycle = parseInt(tower.descriptors.fuel_consumption.quantity);
+            var block = _.find(tower.descriptors.fuel, function(f){
+                return f.typeID !== "16275";
+            });
+
+            return (perCycle * block.price) * 24;
         }
 
         function resolveTowerSize(tower, scale){
@@ -61,16 +66,6 @@ angular.module('eveTool')
             }
         };
 
-        $scope.getTowerCost = function(tower){
-            var actualSize = 40;
-            var consumption = resolveTowerSize(tower, actualSize) * 24;
-            var block = _.find(tower.descriptors.fuel, function(f){
-                return f.typeID !== "16275";
-            });
-
-            return consumption * block.price;
-        };
-
         $scope.$watch(function(){ return selectedCorpManager.get(); }, function(val){
             if (typeof val.id === 'undefined'){
                 return;
@@ -82,6 +77,7 @@ angular.module('eveTool')
                     return _.map(data, function(b){
                         try {
                             b.timeToOffline = getTimeToOffline(b);
+                            b.costPerDay = getTowerCost(b);
                         } catch (e){
                             b.timeToOffline = 0;
                             console.log(e);
@@ -97,6 +93,24 @@ angular.module('eveTool')
                     $scope.loading = false;
                 });
         });
+        
+        $scope.sumDailyCost = function(){
+            return _.reduce($scope.bases, function(p, d){
+                if (d.state !== 4){
+                    return p;
+                }
+                return p + d.costPerDay;
+            },0);
+        };
+
+        $scope.sumMonthlyCost = function(){
+            return _.reduce($scope.bases, function(p, d){
+                if (d.state !== 4){
+                    return p;
+                }
+                return p + (d.costPerDay * 30);
+            },0);
+        };
         
         $scope.showTowers = function(state){
             switch (state){

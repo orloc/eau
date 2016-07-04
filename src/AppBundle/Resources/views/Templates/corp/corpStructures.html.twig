@@ -1,9 +1,13 @@
 <div ng-controller="structureController" class="row">
     <div class="col-xs-12 well" ng-show="selected_corp" ng-cloak>
-        <div class="button-group">
+        <div class="button-group pull-left">
             <button ng-click="showTowers('all')" class="btn btn-default btn-small">All</button>
             <button ng-click="showTowers('on')" class="btn btn-default btn-small">Online</button>
             <button ng-click="showTowers('off')" class="btn btn-default btn-small">Offline</button>
+        </div>
+        <div class="pull-right">
+            <p>Total Cost Daily: {{ '{{ sumDailyCost() | currency:"ISK" }}' }} <br>
+            Total Monthly Cost: {{ '{{ sumMonthlyCost() | currency:"ISK" }}' }}</p>
         </div>
         <div class="table-responsive">
             <table class="table data-table table-striped table-hover table-condensed">
@@ -36,7 +40,7 @@
                 <tr ng-show="!loading && bases.length <= 0">
                     <td colspan="7" class="text-center"> No POS's found</td>
                 </tr>
-                <tr ng-repeat="item in bases" ng-if="bases.length">
+                <tr ng-repeat="item in bases | orderBy:'state':true" ng-if="bases.length">
                     <td>
                         <eve-image ng-if="item.state === 4" image-type="'Type'" object-id="item.type_id" img-width="64"></eve-image>
                         {{ '{{ item.descriptors.itemName }}' }}
@@ -44,13 +48,10 @@
                     <td>
                         {{ '{{ item.descriptors.name }}' }}
                     </td>
-                    <td width="400">
+                    <td width="300">
                         <div class='row' ng-repeat="i in item.descriptors.fuel" ng-init="percentValue = getTowerFuelQuantities(i, item)">
                             <div class="col-xs-3">
                                 <eve-image image-type="'Type'" object-id="i.typeID" img-width="32" override-width="image.width"></eve-image>
-                                <span class="small muted">
-                                    {{ '{{ percentValue.actual }} / {{ percentValue.max }}' }}
-                                </span>
                             </div>
                             <div class="col-xs-9">
                                 <div class="progress">
@@ -67,11 +68,11 @@
                         </label>
                     </td>
                     <td>
-                        <timer end-time="item.timeToOffline">{{ '{{ days }}' }}d, {{ '{{ hours }}'}} h, {{ '{{ minutes }}' }} m, {{ '{{ seconds }}'}} s</timer>
+                        <timer ng-if="item.state === 4" end-time="item.timeToOffline">{{ '{{ days }}' }}d, {{ '{{ hours }}'}} h, {{ '{{ minutes }}' }} m, {{ '{{ seconds }}'}} s</timer>
                     </td>
                     <td> <i ng-class="{ 'fa fa-check': hasCorpAccess(item.general_settings), 'fa fa-minus': !hasCorpAccess(item.general_settings) }"></i></td>
                     <td> <i ng-class="{ 'fa fa-check': hasAllianceAccess(item.general_settings), 'fa fa-minus': !hasAllianceAccess(item.general_settings) }"></i></td>
-                    <td>{{ '{{ getTowerCost(item) | currency:"ISK" }}' }}</td>
+                    <td>{{ '{{ item.costPerDay | currency:"ISK" }}' }}</td>
                 </tr>
                 </tbody>
             </table>
