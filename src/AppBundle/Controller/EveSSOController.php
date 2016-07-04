@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Character;
-use AppBundle\Entity\User;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

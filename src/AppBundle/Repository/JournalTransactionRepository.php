@@ -51,7 +51,7 @@ class JournalTransactionRepository extends EntityRepository
     public function getTransactionsByTypes(Corporation $corp, array $types, Carbon $date)
     {
         $start = $date->copy();
-        $start->subWeek()->setTime(0, 0, 0);
+        $start->subMonth()->setTime(0, 0, 0);
 
         $end = $date->copy();
         $end->setTime(23, 59, 59);
@@ -101,7 +101,7 @@ class JournalTransactionRepository extends EntityRepository
     public function getTransactionsByMember(Corporation $corp, array $member_ids, Carbon $date)
     {
         $start = $date->copy();
-        $start->subWeek()->setTime(0, 0, 0);
+        $start->subMonth()->setTime(0, 0, 0);
 
         $end = $date->copy();
         $end->setTime(23, 59, 59);
